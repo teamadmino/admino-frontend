@@ -1,0 +1,17 @@
+<div class="wrapper mh-100">
+    <!-- <div class="flex-grow-1 bord"> -->
+    <div class="inner-wrapper mh-100 container-fluid ">
+        <div class="row mh-100">
+            <div class=" col-12 mh-100 pt-3 pb-3 routeAnimated">
+                <admino-screen [@slotTransition]="screenConfig" (actionEvent)="actionEvent($event)"
+                    [config]="screenConfig" *ngIf="screenConfig">
+                </admino-screen>
+                <!-- <admino-form [fields]="categoryForm"></admino-form> -->
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+    <!-- <div class="keyboard">
+        <admino-keyboard></admino-keyboard>
+    </div> -->
+</div>

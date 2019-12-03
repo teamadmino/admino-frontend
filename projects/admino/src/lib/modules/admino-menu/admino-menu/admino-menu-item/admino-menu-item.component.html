@@ -1,0 +1,19 @@
+<!-- [ngClass]="{'subRouteActive':menuItem.url===nav.activeRoute[0] && submenu.url.split('/')[0]===nav.activeRoute[1]}" -->
+
+<button (click)="this.clicked()" class="admino-menu-button" [ngStyle]="{'padding-left': (level*40)+'px'}"
+    [ngClass]="{routeActive: this.menuItem._isActive, open:open}" mat-button>
+    <mat-icon class="material-icons-round admino-menu-icon" *ngIf="menuItem.icon">{{menuItem.icon}}</mat-icon>
+    {{menuItem.label}}
+    <mat-icon *ngIf="!this.menuItem.children" class="material-icons-round new-window-button" (click)="clicked(true)">
+        open_in_new</mat-icon>
+    <mat-icon *ngIf="menuItem.children" class="material-icons-round arrow">keyboard_arrow_down</mat-icon>
+    <!-- 
+    <mat-icon *ngIf="this.user.settings.multiWindowAllowed" class="material-icons-round new-window-button"
+        (click)="openInNew($event,menuItem.url+'/'+submenu.url)">
+        open_in_new</mat-icon> -->
+</button>
+<div class="item-wrapper" [@menuItemAnimation]="open">
+    <admino-menu-item (clickEvent)="this.childClicked($event)" *ngFor="let menu of menuItem.children" [level]="level+1"
+        [menuItem]="menu">
+    </admino-menu-item>
+</div>

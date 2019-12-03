@@ -1,0 +1,22 @@
+<mat-card class="example-card admino-message">
+    <mat-card-title *ngIf="message.title">{{message.title}}</mat-card-title>
+    <mat-card-subtitle *ngIf="message.subtitle">{{message.subtitle}}</mat-card-subtitle>
+    <mat-card-header>
+    </mat-card-header>
+    <mat-card-content *ngIf="message.text">
+        <p>
+            {{message.text}}
+        </p>
+    </mat-card-content>
+    <mat-card-actions class=" d-flex">
+        <div class="fill-space"></div>
+        <!-- <button mat-button>Elvetés</button> -->
+        <!-- <button mat-button color="primary" class='grad-primary'>Megtekint</button> -->
+        <button class="mr-3 clear-icon" mat-icon-button>
+            <mat-icon class="material-icons-round">clear</mat-icon>
+        </button>
+        <button class="mr-3" mat-icon-button>
+            <mat-icon class="material-icons-round c-primary">check</mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>

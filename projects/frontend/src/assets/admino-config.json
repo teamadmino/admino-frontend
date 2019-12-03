@@ -1,0 +1,11 @@
+{
+    "server": "http://localhost:4080",
+    "company": "CompanyName",
+    "theme": {
+        "themeColor": "gold",
+        "isDark": true
+    },
+    "loginScreen": "LoginScreen",
+    "userConfigScreen": "UserConfigScreen",
+    "translations": {}
+}

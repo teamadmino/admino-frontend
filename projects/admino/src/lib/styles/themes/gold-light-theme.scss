@@ -1,0 +1,149 @@
+@import '~@angular/material/theming';
+@import '../component-themes';
+
+@import '../palettes/gold.scss';
+@import '../palettes/purple.scss';
+@import '../palettes/lightbg.scss';
+@import '../palettes/darkbg.scss';
+@import '../palettes/darkgold.scss';
+@import '../palettes/green.scss';
+
+
+
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+// $primary: mat-palette($md-darkgoldpalette);
+// $accent: mat-palette($mat-grey, 900);
+// $warn: mat-palette($md-peach);
+
+// $primary: mat-palette($md-darkgoldpalette);
+// $accent: mat-palette($md-gold3, 400, 500, 600);
+// $warn: mat-palette($md-goldpalette);
+.gold-light-theme {
+
+  $primary: mat-palette($md-darkgoldpalette);
+  $accent: mat-palette($md-vividgreen);
+  $warn: mat-palette($mat-red, 400);
+
+
+  // $primary: mat-palette($md-nicepurple);
+  // $accent: mat-palette($mat-amber);
+  // $warn: mat-palette($mat-pink);
+
+  // $primary: mat-palette($md-darkgoldpalette);
+  // $accent: mat-palette($mat-amber);
+  // $warn: mat-palette($mat-pink);
+
+
+  // $primary: mat-palette($mat-blue);
+  // $accent: mat-palette($mat-light-blue, A200, A100, A400);
+  // $warn: mat-palette($mat-cyan);
+
+
+  // , A200, A100, A400
+  // The warn palette is optional (defaults to red).
+  // Create the theme object (a Sass map containing all of the palettes).
+  $gold-light-theme: mat-light-theme($primary, $accent, $warn);
+
+
+  $background-color: $md-lightbgpalette;
+  $background: map-get($gold-light-theme, background);
+  $background: map_merge($background, (status-bar: map_get($background-color, 900)));
+  $background: map_merge($background, (app-bar: map_get($background-color, 700)));
+  $background: map_merge($background, (background: map_get($background-color, 600)));
+  $background: map_merge($background, (hover:map_get($background-color, 900)));
+  $background: map_merge($background, (dialog:map_get($background-color, 600)));
+  $background: map_merge($background, (card:map_get($background-color, 50)));
+  $background: map_merge($background, (disabled-button:map_get($background-color, 800)));
+  $background: map_merge($background, (raised-button:map_get($background-color, 700)));
+  $background: map_merge($background, (focused-button:map_get($background-color, 500)));
+  $background: map_merge($background, (selected-button:map_get($background-color, 500)));
+  $background: map_merge($background, (selected-disabled-button:map_get($background-color, 650)));
+  $background: map_merge($background, (disabled-button-toggle:map_get($background-color, 650)));
+  $gold-light-theme: map_merge($gold-light-theme, (background: $background));
+
+
+  // $foreground-color: $md-mcgpalette0;
+  // $foreground-base: 400;
+  // $foreground: map-get($gold-light-theme, foreground);
+  // $foreground: map_merge($foreground, (base: map_get($foreground-color, $foreground-base)));
+  // $foreground: map_merge($foreground, (divider: rgba(map_get($foreground-color, 200), 0.2)));
+  // $foreground: map_merge($foreground, (dividers:rgba(map_get($foreground-color, $foreground-base), 0.2)));
+  // $foreground: map_merge($foreground, (disabled:rgba(map_get($foreground-color, $foreground-base), 0.38)));
+  // $foreground: map_merge($foreground, (disabled-button:rgba(map_get($foreground-color, $foreground-base), 0.38)));
+  // $foreground: map_merge($foreground, (disabled-text:rgba(map_get($foreground-color, $foreground-base), 0.38)));
+  // $foreground: map_merge($foreground, (hint-text:rgba(map_get($foreground-color, $foreground-base), 0.38)));
+  // $foreground: map_merge($foreground, (secondary-text:rgba(map_get($foreground-color, $foreground-base), 0.38)));
+  // $foreground: map_merge($foreground, (icon:rgba(map_get($foreground-color, $foreground-base), 0.54)));
+  // $foreground: map_merge($foreground, (icons:rgba(map_get($foreground-color, $foreground-base), 0.54)));
+  // $foreground: map_merge($foreground, (text:rgba(map_get($foreground-color, $foreground-base), 0.87)));
+  // $foreground: map_merge($foreground, (slider-off:rgba(map_get($foreground-color, $foreground-base), 0.38)));
+  // $foreground: map_merge($foreground, (slider-off-active:rgba(map_get($foreground-color, $foreground-base), 0.38)));
+  // $gold-light-theme: map_merge($gold-light-theme, (foreground: $foreground));
+
+  .admino-toolbar {
+    .toolbar-button {
+      &.toolbar-button-active {
+        text-shadow: 0px 0px 20px mat-color($accent, 50) !important;
+      }
+    }
+  }
+
+  .admino-sidenav-wrapper {
+    .account-avatar {
+      box-shadow: 0px 0px 20px 0px mat-color($primary, 50) !important;
+    }
+
+    .avatar-name {
+      text-shadow: 0px 0px 20px mat-color($primary, 50) !important;
+    }
+  }
+
+  .mat-card-title {
+    text-shadow: 0px 0px 20px mat-color($primary, 50) !important;
+  }
+
+
+
+  .admino-menu {
+    .admino-menu-button {
+      &::before {
+        box-shadow: 0px 0px 20px 0px mat-color($accent, 50) !important;
+      }
+    }
+
+    .admino-menu-button.routeActive {
+      text-shadow: 0px 0px 20px mat-color($primary, 50) !important;
+    }
+  }
+
+
+  .admino-table {
+    tr.selected td {
+      &::after {
+        box-shadow: 0px 0px 20px 0px mat-color($accent, 50) !important;
+      }
+    }
+  }
+
+
+
+  admino-theme-emitter {
+    .multi::after {
+      content: mat-color($primary)+";"+ mat-color($accent)+";"+ mat-color($primary, 800)+";"+ mat-color($accent, 800) !important;
+    }
+  }
+
+
+  @include angular-material-theme($gold-light-theme);
+  @include component-themes($gold-light-theme);
+
+}

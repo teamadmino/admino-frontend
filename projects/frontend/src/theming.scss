@@ -1,0 +1,26 @@
+// .something {
+//   background-color: red;
+// }
+
+// @import '~admino/styles/admino-theming.scss';
+@import "../../admino/src/lib/styles/admino-theming.scss";
+// @import "./app/core/sidenav/sidenav.component.scss";
+
+@mixin custom-styles($theme) {
+  // @include sidenav-theme($theme);
+  $accent: map-get($theme, accent);
+  $primary: map-get($theme, primary);
+  $warn: map-get($theme, warn);
+
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $foreground-color: mat-color($foreground, slider-off);
+
+  // .something {
+  //   background-color: mat-color($primary);
+  // }
+
+}
+
+// @import "~admino/admino.scss";
+@import "../../admino/src/lib/styles/admino.scss";

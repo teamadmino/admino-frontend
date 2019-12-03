@@ -1,0 +1,158 @@
+@import "../../../styles/admino-variables.scss";
+
+.admino-menu {
+  .level0 {
+    >.admino-menu-button {
+      padding-left: 1rem !important;
+    }
+  }
+
+}
+
+@mixin admino-menu-theme($theme) {
+  $accent: map-get($theme, accent);
+  $primary: map-get($theme, primary);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $foreground-color: mat-color($foreground, slider-off);
+
+
+  .admino-menu-button {}
+
+  //   mat-expansion-panel {
+  //     // color: mat-color($primary, default-contrast) !important;
+  //     // background-color: mat-color($primary) !important;
+  //     background: none !important;
+  //     color: mat-color($foreground, hint-text) !important;
+
+  //     &.mat-expanded {
+  //       // background: none !important;
+  //     }
+
+  //     .mat-expansion-panel-header.mat-expanded {
+  //       background: none !important;
+  //     }
+
+
+  //     .mat-expansion-panel-header:hover {
+  //       // background: mat-color($background, hover) !important;
+
+  //       // color: mat-contrast($primary, default-contrast) !important;
+  //       // background: mat-color($primary, 600) !important;
+  //       // color: mat-contrast($primary, default-contrast) !important;
+  //       // background: mat-color($background, base) !important;
+
+  //     }
+
+  //     .mat-expansion-panel-body {
+  //       padding: 0;
+
+  //       button {
+  //         padding-left: 72px;
+  //         height: 48px;
+  //       }
+  //     }
+
+  //     &.no-submenu {
+  //       .mat-expansion-panel-content {
+  //         visibility: hidden !important;
+  //         display: none !important;
+  //       }
+
+  //       .mat-expansion-indicator::after {
+  //         display: none !important;
+  //       }
+  //     }
+  //   }
+
+  .level0 {
+    >.admino-menu-button {
+      &::before {
+        content: '';
+        width: 10px;
+        height: 20px;
+        left: -10px;
+        opacity: 0;
+        top: 50%;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        transform: translateY(-50%);
+        position: absolute;
+        background-color: mat-color($primary) !important;
+        transition: opacity $anim, left $anim;
+      }
+    }
+  }
+
+  .admino-menu-button {
+
+    .anims-enabled & {
+      transition: color $anim;
+    }
+
+    &:hover {
+      background: mat-color($background, background) !important;
+    }
+
+    color: mat-color($foreground, hint-text) !important;
+
+    position: relative;
+
+
+
+    &.routeActive {
+      &::before {
+        left: 0;
+        opacity: 1;
+
+      }
+    }
+  }
+
+
+  .admino-menu-button {
+    &.routeActive {
+      position: relative;
+      color: mat-color($primary) !important;
+    }
+
+    // mat-panel-title {
+    //   .anims-enabled & {
+    //     transition: color $anim;
+    //   }
+
+    //   color: mat-color($primary) !important;
+    // }
+
+    // .submenu-button.subRouteActive {
+    //   .anims-enabled & {
+    //     transition: color $anim;
+    //   }
+
+    //   color: mat-color($primary) !important;
+    // }
+
+  }
+
+
+
+  // mat-expansion-panel-header:hover,
+  // .mat-expanded {
+
+  //   // background-color: mat-color($primary, 600) !important;
+  // }
+
+  // mat-expansion-panel-header,
+  // mat-panel-title {
+  //   .mat-content {
+  //     overflow: visible;
+  //   }
+
+  //   color: mat-color($foreground, hint-text) !important;
+
+  //   .mat-expansion-indicator::after {
+  //     color: mat-color($foreground, divider) !important;
+  //   }
+  // }
+
+}

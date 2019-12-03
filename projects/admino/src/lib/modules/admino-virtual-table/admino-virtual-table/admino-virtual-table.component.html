@@ -1,0 +1,99 @@
+<!-- <div class="atable">
+    <div class="athead" #headerRef>
+        <span class="acell">Id</span>
+        <span class="acell">First </span>
+        <span class="acell">Last</span>
+        <span class="acell">Action</span>
+    </div>
+    <div class="vr-container atbody" #bodyRef (scroll)="handleScroll()">
+        <ng-template adminoVsFor [adminoVsForOf]="items" [adminoVsForTotalsize]="this.totalsize" let-item
+            let-position="__position__" (afterRender)="afterRender($event)">
+            <div class="arow" [style.marginTop.px]="position">
+                <span class="acell">1</span>
+                <span class="acell">Mark {{item.__id}}</span>
+                <span class="acell">Otto</span>
+
+                <span class="acell stickyEnd">
+                    <button tabindex="-1" type='button' mat-icon-button>
+                        <mat-icon class="material-icons-round">edit
+                        </mat-icon>
+                    </button>
+                </span>
+            </div>
+        </ng-template>
+    </div>
+</div> -->
+<div class="admino-virtual-table">
+
+    <table class="table table-dark" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize()"
+        #tableRef>
+        <thead class="header-container" #headerRef>
+            <tr class="header-row">
+                <!-- <th>Index</th> -->
+                <th *ngFor="let column of dataSource.columns, let i=index"
+                    [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px'}"
+                    scope="col">
+                    <admino-admino-virtual-table-sorter [enabled]="column.sortable"
+                        [active]="column===this.sortedColumn?true:false"
+                        (click)="column.sortable?sortClicked(column, sorter):null;" #sorter>
+                        {{column.label}}
+                    </admino-admino-virtual-table-sorter>
+
+                </th>
+                <!-- <th class="stickyEnd" [ngStyle]="{width: columnWidths[columnWidths.length-1]+'px','max-width': columnWidths[columnWidths.length-1]+'px',
+                    'min-width': columnWidths[columnWidths.length-1]+'px'}" scope="col">Action asd asd asdasd asdasd
+                    asdss</th> -->
+            </tr>
+        </thead>
+        <tbody class="vr-container" #bodyRef (scroll)="handleScroll()">
+            <ng-template adminoVsFor [adminoVsForTotalsize]="this.totalsize" [itemSize]="itemSize" let-item
+                let-position="__position__" let-index="index" let-content="content" let-cacheIndex="cacheIndex"
+                (afterRender)="afterRender($event)">
+                <tr (click)="setSelected(content,cacheIndex, index)" class="vr-row" [style.top.px]="position"
+                    [style.height.px]="itemSize" [ngClass]="{active: index===dataSource.cursorAbsPos}"
+                    [@adminoTableRowAnimation]="content.__loaded__">
+                    <!-- -->
+                    <!-- [style.transform]="'translateY('+(-(cacheIndex*itemSize))+'px)'" -->
+                    <!-- [style.top.px]="position" -->
+                    <!-- <td>{{index+1}}</td> -->
+                    <td *ngFor="let column of dataSource.displayedColumns; let i=index" [style.height.px]="itemSize"
+                        [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px'}">
+                        <div class="cell-content">
+                            {{content[column.id]}}
+                        </div>
+                        <!-- viewI {{cacheIndex}} absI {{index}}  -->
+                    </td>
+
+                    <!-- <td class="stickyEnd">
+                        <button tabindex="-1" type='button' mat-icon-button>
+                            <mat-icon class="material-icons-round">edit
+                            </mat-icon>
+                        </button>
+                    </td> -->
+                </tr>
+            </ng-template>
+        </tbody>
+    </table>
+
+    <div class="admino-virtual-table-footer">
+        <div class="status flex-grow-1">
+            {{prevVisibleStart+1}} - {{prevVisibleEnd}} / {{totalsize}}
+        </div>
+        <div class="actions">
+            <button type="button" mat-raised-button color="primary">Új</button>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- <div class=" vr-container">
+                <ng-template adminoVsFor [adminoVsForOf]="items" [adminoVsForTotalsize]="6000000" let-item
+                    let-position="__position__" (afterRender)="afterRender($event)">
+                    <div class="vr-row" [style.top.px]="position">Entry-{{item.__id}}</div>
+                </ng-template>
+        </div> -->

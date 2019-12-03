@@ -1,0 +1,20 @@
+<!-- [adminoKeyItem]="this.keyAreaId" [adminoKeyIndex]="index" [focusElementSelector]="'input'" -->
+<mat-form-field class="admino-input" [formGroup]="group">
+    <mat-label>{{element.label}}</mat-label>
+
+    <input (focus)="this.focused=true;this.focusEvent(inputRef)" (blur)="this.focused=false; this.blurEvent(inputRef)"
+        matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.label" #inputRef
+        #focusRef>
+
+    <!-- *ngIf="element.value && focused===false" -->
+    <!-- <div class="print-helper">
+        {{(element.config.prefix?element.config.prefix:'')+element.value +(element.config.suffix?' '+element.config.suffix:'')}}
+    </div> -->
+
+    <ng-container *ngFor="let validation of element.validators; let i=index;" ngProjectAs="mat-error">
+        <mat-error *ngIf="group.get(element.id).hasError(validation.name)">
+            {{validation.message?validation.message:group.get(element.id).errors[validation.name]}}</mat-error>
+    </ng-container>
+    <span *ngIf="element.config && element.config.prefix" matPrefix>{{element.config.prefix}}</span>
+    <span *ngIf="element.config && element.config.suffix" matSuffix>{{element.config.suffix}}</span>
+</mat-form-field>

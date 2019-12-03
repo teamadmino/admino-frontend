@@ -1,0 +1,67 @@
+<div class="admino-wrapper" [ngClass]="{
+  'admino-sidenav-open': this.site.isSideNavOpen | async, 
+'admino-messages-open': this.site.isMessagesOpen | async,
+  'mobile-size':this.site.screen.w<this.site.breakpoints.sm,
+  'anims-enabled':!this.ts.isThemeChanging}" *ngIf="this.cs.configLoaded.value">
+  <admino-theme-emitter [ngClass]="this.ts.currentTheme"></admino-theme-emitter>
+
+  <div class="admino-sidenav-wrapper admino-panel">
+    <div class="admino-panel-inside h-100 d-flex flex-column">
+
+      <div class="container-fluid account-info-wrapper d-flex align-items-center">
+        <div class="account-info w-100">
+          <div class="account-avatar grad-primary">
+            {{this.user.firstname.slice(0,1) + this.user.lastname.slice(0,1)}}
+          </div>
+          <div class="avatar-name ">
+            <h6 class="name w-100 c-primary ">
+              {{this.user.firstname +' '+ this.user.lastname}}
+            </h6>
+          </div>
+          <div class="fill-space"></div>
+          <div class="avatar-icon">
+            <!-- <button mat-icon-button (click)="this.user.setLoginState(false)">
+              <mat-icon class="material-icons-round c-fg-secondary-text" [inline]='true'>exit_to_app</mat-icon>
+            </button> -->
+          </div>
+        </div>
+      </div>
+      <admino-menu [menus]="this.user.menu" (clickEvent)="this.menuClicked($event)"></admino-menu>
+      <div class="flex-grow-1"></div>
+      <div class="text-center">
+        <div *ngFor="let bbutton of this.user.bottomButtons" class="d-block">
+          <button (click)="this.bottomMenuClicked(bbutton)" class="  mb-3" mat-flat-button
+            [color]="bbutton.color?bbutton.color:'primary'">
+            <mat-icon class="material-icons-round" *ngIf="bbutton.icon"> {{bbutton.icon}}</mat-icon> {{bbutton.label}}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="admino-messages-wrapper admino-panel">
+    <div class="admino-panel-inside h-100">
+      <admino-messages></admino-messages>
+    </div>
+  </div>
+  <div class="admino-sidenav-backdrop" (click)='closeSidenav()'></div>
+  <div class="admino-main-bg admino-main-wrapper">
+    <admino-toolbar> </admino-toolbar>
+    <div class="admino-main fill-height">
+      <admino-modal-container></admino-modal-container>
+
+      <div #scrollAreaRef class="scroll-area">
+        <admino-universal-editor></admino-universal-editor>
+      </div>
+
+      <!-- <div #scrollAreaRef class="scroll-area" [@slotTransition]="getState(outlet)"> -->
+      <!-- <admino-module-loader></admino-module-loader> -->
+      <!-- <admino-window-manager></admino-window-manager> -->
+      <!-- <router-outlet #outlet="outlet"></router-outlet> -->
+      <!-- </div> -->
+    </div>
+  </div>
+
+
+
+</div>

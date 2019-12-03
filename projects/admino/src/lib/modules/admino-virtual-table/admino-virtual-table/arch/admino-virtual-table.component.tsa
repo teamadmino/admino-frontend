@@ -1,0 +1,64 @@
+import { CustomVirtualScrollStrategy } from './virtual.scrollstrategy';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef, AfterViewInit } from '@angular/core';
+import { CdkVirtualScrollViewport, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { GridTableDataSource } from './grid-table.datasource';
+
+@Component({
+  selector: 'admino-virtual-table',
+  templateUrl: './admino-virtual-table.component.html',
+  styleUrls: ['./admino-virtual-table.component.scss'],
+  providers: [{ provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy }],
+
+})
+export class AdminoVirtualTableComponent implements OnInit, AfterViewInit {
+  placeholderHeight = 0;
+  displayedColumns: string[] = ['id', 'name', 'age'];
+  dataSource: GridTableDataSource;
+  rows = Array(50000).fill(0).map((x, i) => {
+    return { name: 'name' + i, id: i, age: 27 };
+  });
+  itemSize = 48;
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) viewport: CdkVirtualScrollViewport;
+
+  @ViewChild('headerRef', { static: false, read: ElementRef }) headerRef: ElementRef;
+  @ViewChild('tableRef', { static: false, read: ElementRef }) tableRef: ElementRef;
+  headerHeight = 50;
+  availableSpace = 200;
+
+  constructor(private cd: ChangeDetectorRef) { }
+
+  ngOnInit() {
+    this.dataSource = new GridTableDataSource(this.rows, this.viewport, this.itemSize);
+    this.dataSource.offsetSub.subscribe(offset => {
+      this.placeholderHeight = offset;
+      this.cd.detectChanges();
+    });
+    this.dataSource.allData = this.rows;
+  }
+  ngAfterViewInit() {
+    this.resize();
+  }
+  placeholderWhen(index: number, _: any) {
+    return index === 0;
+  }
+
+  resize() {
+    console.log(this.tableRef.nativeElement.offsetHeight)
+    let headerHeight = 0;
+    if (this.headerRef) {
+      headerHeight = this.headerRef.nativeElement.offsetHeight;
+    }
+    this.headerHeight = headerHeight;
+    this.availableSpace = this.tableRef.nativeElement.offsetHeight - headerHeight;
+    this.dataSource.count = Math.floor(this.availableSpace / this.itemSize) + 20;
+    if (this.dataSource.count < 1) {
+      this.dataSource.count = 1;
+    }
+    console.log(this.dataSource.count);
+    // if (this.dataSource.cursor > this.dataSource.count - 1) {
+    //   this.dataSource.cursor = this.dataSource.count - 1;
+    // }
+    // this.dataSource.loadData();
+
+  }
+}

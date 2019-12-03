@@ -1,0 +1,22 @@
+<div class="admino-screen">
+    <h2 class="admino-screen-label mb-4" *ngIf="_config.label">{{_config.label}}</h2>
+    <form [formGroup]="form" (submit)="onSubmit($event)">
+
+        <div class="row justify-content-center mb-5" *ngFor="let section of _config.sections">
+            <div class="col">
+                <admino-card [printingEnabled]="false" [title]="section.label">
+                    <div class="row">
+                        <div class="col admino-form-col mt-3 " *ngFor="let element of section.elements; let i=index;"
+                            [ngClass]="this.prepareClasses(element)">
+                            <ng-container adminoScreenElement [element]="element" [group]="form"
+                                [screenComponent]='this' [index]="i">
+                            </ng-container>
+                        </div>
+                    </div>
+                </admino-card>
+            </div>
+        </div>
+
+    </form>
+
+</div>

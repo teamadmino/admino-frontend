@@ -1,0 +1,9 @@
+.title-row {
+  height: 64px;
+}
+
+.messages-wrapper {
+  overflow: hidden;
+  overflow-y: auto;
+  position: relative;
+}

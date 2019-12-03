@@ -1,0 +1,19 @@
+.admino-message {
+
+  border-bottom: 1px solid red;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+
+
+
+
+mat-card-title {
+  font-size: 14px;
+  font-weight: 700 !important;
+}
+
+.clear-icon {
+  opacity: 0.4;
+}

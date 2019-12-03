@@ -1,0 +1,712 @@
+// @import '../modules/card-components/card/card.component.scss';
+// @import '../modules/card-components/table/table.component.scss';
+// @import '../modules/module-loader/module-loader.component.scss';
+@import '../modules/main/toolbar/toolbar.component.scss';
+@import '../modules/admino-menu/admino-menu/admino-menu.component.scss';
+// @import './admino-theming.scss';
+
+
+@mixin component-themes($theme) {
+  // @include card-theme($theme);
+  @include toolbar-theme($theme);
+  // @include table-theme($theme);
+  @include admino-menu-theme($theme);
+  @include multi-theme($theme);
+  // @include module-loader-theme($theme);
+  @include custom-styles($theme);
+  // @include graph-theme($theme);
+}
+
+///////////////////////
+
+@mixin multi-theme($theme) {
+  $accent: map-get($theme, accent);
+  $primary: map-get($theme, primary);
+  $warn: map-get($theme, warn);
+
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $foreground-color: mat-color($foreground, slider-off);
+
+  $bgrad: lighten(mat-color($background, background), 5%);
+  $bgrad1: darken(mat-color($background, background), 5%);
+
+
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px mat-color($background, raised-button) inset;
+    // background-color: transparent;
+    -webkit-text-fill-color: mat-color($foreground, secondary-text) !important;
+
+  }
+
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px mat-color($background, raised-button) inset;
+    -webkit-text-fill-color: mat-color($foreground, base) !important;
+  }
+
+  div:focus,
+  button:focus,
+  *:focus {
+    outline: rgba(mat-color($foreground, divider), 0.2) auto 1px;
+
+  }
+
+  .admino-main-bg {
+    background-color: mat-color($background, background) !important;
+    background: linear-gradient(-20deg, $bgrad1, $bgrad) !important;
+  }
+
+  .admino-toolbar {
+    &.scrolling {
+      border-bottom-color: rgba(mat-color($foreground, divider), 0.2);
+      background-color: rgba(mat-color($background, card), 0.6) !important;
+    }
+
+    .toolbar-button {
+      &.toolbar-button-active {
+        color: mat-color($accent, 300);
+        text-shadow: 0px 0px 20px mat-color($accent, 500);
+      }
+    }
+  }
+
+  .admino-sidenav-backdrop {
+    background-color: darken(mat-color($background, background), 50%);
+  }
+
+  .admino-message {
+    border-bottom-color: mat-color($foreground, divider) !important;
+
+  }
+
+  .admino-sidenav-wrapper {
+    background-color: rgba(mat-color($background, card), 0.6) !important;
+    border-right-color: rgba(mat-color($foreground, divider), 0.2) !important;
+
+    .account-avatar {
+      box-shadow: 0px 0px 20px 0px mat-color($primary, 600);
+    }
+
+    .avatar-name {
+      text-shadow: 0px 0px 20px mat-color($primary, 600);
+    }
+
+    .logout {
+      background-color: mat-color($background, card);
+
+      &:before {
+        background: linear-gradient(0deg, mat-color($background, card) 0%, rgba(mat-color($background, card), 0) 100%) !important;
+      }
+    }
+  }
+
+  .admino-messages-wrapper {
+    background-color: rgba(mat-color($background, card), 0.6);
+    border-left-color: rgba(mat-color($foreground, divider), 0.2) !important;
+
+    .admino-message {
+      &:hover {
+        background-color: rgba(mat-color($background, hover), 0.6) !important;
+        box-shadow: 0px 0px 20px 0px rgba(mat-color($primary, 600), 0.2) !important;
+
+      }
+    }
+  }
+
+  .mat-card-title {
+    text-shadow: 0px 0px 20px mat-color($primary, 600);
+    color: mat-color($primary, 400);
+    font-weight: 300;
+  }
+
+  .mat-card {
+    background-color: rgba(mat-color($background, card), 0.5) !important;
+  }
+
+
+
+  .admino-menu {
+    .admino-menu-button {
+      &::before {
+        background-color: mat-color($accent, 300) !important;
+        box-shadow: 0px 0px 15px 0px mat-color($accent, 500);
+      }
+    }
+
+    .admino-menu-button.routeActive {
+      color: mat-color($primary, 400) !important;
+      text-shadow: 0px 0px 15px mat-color($primary, 600);
+
+    }
+  }
+
+  /////////////////////////////////
+  .admino-screen {
+    .admino-screen-label {
+      text-shadow: 0px 0px 20px mat-color($primary, 600);
+      color: mat-color($primary, 400);
+      font-weight: 300;
+    }
+
+  }
+
+  /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+  /////////////////////////////////////////////////
+
+
+
+  .abg-primary {
+    background: mat-color($background, background);
+  }
+
+  .grad-primary {
+    // background: linear-gradient(141deg, mat-color($primary, 300) 0%, mat-color($primary, 600) 51%, mat-color($primary, 700) 75%) !important;
+    color: mat-color($primary, default-contrast) !important;
+    background: linear-gradient(160deg, mat-color($primary, 300) 0%, mat-color($primary, 400) 51%, mat-color($primary, 500) 75%) !important;
+  }
+
+  .grad-accent {
+    // background: linear-gradient(141deg, mat-color($primary, 300) 0%, mat-color($primary, 600) 51%, mat-color($primary, 700) 75%) !important;
+    color: mat-color($accent, default-contrast) !important;
+    background: linear-gradient(340deg, mat-color($accent, 300) 0%, mat-color($accent, 400) 51%, mat-color($accent, 500) 75%) !important;
+  }
+
+  .c-primary-contrast {
+    color: mat-color($primary, default-contrast) !important;
+  }
+
+  .c-primary {
+    color: mat-color($primary) !important;
+  }
+
+  .c-accent {
+    color: mat-color($accent) !important;
+  }
+
+  .c-fg {
+    color: mat-color($foreground, base);
+  }
+
+  .c-fg-secondary-text {
+    color: mat-color($foreground, secondary-text);
+  }
+
+  .c-bg {
+    color: mat-color($background, background);
+  }
+
+  ///ADVANCED SEARCH
+  .advanced-search {
+    background-color: mat-color($background, raised-button);
+
+    mat-expansion-panel {
+      background-color: mat-color($background, raised-button);
+    }
+
+    .mat-expansion-panel-body {
+      background-color: mat-color($background, raised-button);
+    }
+
+    mat-chip.simple {
+      background-color: mat-color($background, card);
+    }
+
+    mat-chip.transparent {
+      background: none;
+    }
+
+    mat-chip.rectangle {
+      border-radius: 0;
+      // border: 2px solid mat-color($primary);
+      // color: 2px solid mat-color($primary, primary-contrast);
+
+    }
+
+    mat-chip.secondary {
+      background-color: rgba(mat-color($foreground, divider), 0.1);
+
+
+    }
+
+    mat-chip.outline {
+      border: 2px solid mat-color($primary);
+      background: none;
+    }
+  }
+
+  .mat-button-toggle-checked {
+    background-color: mat-color($primary) !important;
+    font-weight: bold;
+    color: mat-color($primary, default-contrast) !important;
+
+    .mat-button-toggle-label-content {
+      color: mat-color($primary, default-contrast) !important;
+    }
+  }
+
+
+  .module-slot-placeholder {
+    mat-icon {
+      color: mat-color($foreground, base) !important;
+
+      &.landscape {
+        $shdist: 4px;
+        $shcol: mat-color($background, hover);
+        text-shadow: 0px (-5px) 0px $shcol,
+          0px $shdist 0px $shcol,
+          (-$shdist) 0px 0px $shcol,
+          $shdist 0px 0px $shcol;
+      }
+    }
+  }
+
+  .expanded {
+    .module-slot-placeholder {
+      mat-icon {
+        &.landscape {
+          $shdist: 4px;
+          $shcol: mat-color($background, background);
+          text-shadow: 0px (-5px) 0px $shcol,
+            0px $shdist 0px $shcol,
+            (-$shdist) 0px 0px $shcol,
+            $shdist 0px 0px $shcol;
+        }
+      }
+    }
+  }
+
+  // .graph-wrapper {
+  //   border: 1px solid mat-color($foreground, divider);
+  // }
+
+  .chart-wrapper {
+    text {
+      fill: mat-color($foreground, base) !important;
+    }
+
+    .gauge .gauge-tick path {
+      stroke: mat-color($foreground, divider) !important;
+    }
+  }
+
+  .sh-dark-xs,
+  .sh-dark-xs.override {
+    box-shadow: 0 0px 10px rgba(darken(mat-color($background, background), 20%), 0.5) !important;
+  }
+
+  .sh-bg-xs,
+  .sh-bg-xs.override {
+    box-shadow: 0 0px 10px rgba(mat-color($foreground, base), 0.5) !important;
+  }
+
+  .sh-bg-lg,
+  .sh-bg-lg.override {
+    box-shadow: 0 0px 30px rgba(mat-color($foreground, base), 0.5) !important;
+  }
+
+  .shad-primary-xs,
+  .shad-primary-xs.override {
+    box-shadow: 0 0px 10px rgba(mat-color($primary), 0.2) !important;
+  }
+
+  .shad-primary-lg,
+  .shad-primary-lg.override {
+    box-shadow: 0 0px 30px rgba(mat-color($primary), 0.2) !important;
+  }
+
+  // .mat-drawer-inner-container {
+  //   height: auto !important;
+  //   min-height: 100%;
+  // }
+
+  .mat-drawer-backdrop {
+    background-color: rgba(mat-color($background, status-bar), 0) !important;
+
+    &.mat-drawer-shown {
+      background-color: rgba(mat-color($background, status-bar), 0.9) !important;
+
+    }
+  }
+
+  mat-sidenav {
+
+    // color: mat-color($primary, default-contrast) !important;
+    // // background-color: mat-color($primary) !important;
+
+    background-color: mat-color($background, card) !important;
+  }
+
+  ::-webkit-scrollbar-track {
+    // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    // background-color: mat-color($primary, card);
+    background-color: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: none;
+    z-index: 2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $foreground-color;
+  }
+
+
+  .primary-contrast {
+    color: mat-color($primary, default-contrast);
+  }
+
+
+
+  // .gold-dark-theme {
+
+  //   .main-bg {
+  //     background-color: mat-color($primary) !important;
+  //   }
+
+  //   // .slot-box {
+  //   //   background-color: rgba(mat-color($background, background), 0.9);
+  //   //   border-color: mat-color($foreground, divider) !important;
+
+  //   //   &.active {
+  //   //     border-color: mat-color($primary) !important;
+  //   //   }
+
+  //   //   &.expanded {
+  //   //     background-color: mat-color($background, background);
+  //   //   }
+  //   // }
+  // }
+
+  admino-theme-emitter {
+
+    .multi::after {
+      content: mat-color($primary)+";"+ mat-color($accent)+";"+ mat-color($warn);
+      position: fixed;
+      top: -10000px;
+      height: 0;
+      width: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    // &.gold-dark-theme {
+
+    //   // content: rgb(255, 0, 0)+';' !important;
+    //   .multi::after {
+    //     content: mat-color($primary)+";"+ white+";"+ mat-color($primary, 200)+";"+ white !important;
+    //   }
+    // }
+
+    .primary {
+      color: mat-color($primary);
+    }
+
+    .primary-contrast {
+      color: mat-color($primary, default-contrast);
+    }
+
+    .accent {
+      color: mat-color($accent);
+    }
+
+    .accent-contrast {
+      color: mat-color($accent, default-contrast);
+    }
+
+    .warn {
+      color: mat-color($warn);
+    }
+
+    .warn-contrast {
+      color: mat-color($warn, default-contrast);
+    }
+
+    .bg {
+      color: mat-color($background, background);
+    }
+
+    .fg {
+      color: mat-color($foreground, base);
+    }
+  }
+
+
+
+
+  .key-area {
+    // border: 1px solid blue !important;
+
+    &.key-area-active {
+
+      outline: rgba(mat-color($primary), 1) auto 1px !important;
+
+      &.admino-form {
+        // box-shadow: inset 0 0 10px mat-color($primary), 0 0 10px mat-color($primary);
+        // box-shadow: inset 0 0 0px 2px mat-color($primary);
+        // border: 2px solid mat-color($primary) !important;
+
+        // border: 5px solid red !important;
+        .key-active {
+          // background: mat-color($background, hover) !important;
+          color: rgba(mat-color($foreground, base), 1) !important;
+          // background: radial-gradient(rgba(mat-color($foreground, base), 0.05), rgba(mat-color($background, background), 0), rgba(mat-color($background, background), 0)) !important;
+          // box-shadow: inset 0 0 10px mat-color($primary, A400);
+          border: 1px solid rgba(mat-color($primary), 0.3) !important;
+          padding: 8px;
+          border-radius: 5px;
+          box-shadow: 0 0 15px 0px rgba(darken(mat-color($background, background), 50%), 0.05);
+          // text-shadow: 2px 2px 10px mat-color($accent);
+          // box-shadow: 10px 10px 10px 0px red;
+        }
+      }
+
+      &.admino-sidenav {
+
+        .key-active {
+          background: mat-color($background, background) !important;
+          // color: rgba(mat-color($foreground, base), 1) !important;
+          border: 1px solid rgba(mat-color($primary), 1) !important;
+          // padding: 8px;
+          // border-radius: 5px;
+          // box-shadow: 0 0 15px 0px rgba(darken(mat-color($background, background), 50%), 0.3);
+        }
+      }
+
+
+    }
+
+
+
+    // &.admino-sidenav {
+    //   .key-active {
+    //     // background: red;
+    //     box-shadow: inset 0 0 10px mat-color($primary, A400);
+    //     // border: 1px solid mat-color($accent) !important;
+    //   }
+    // }
+  }
+
+
+  .admino-keyboard {
+    .key {
+      background-color: mat-color($background, background) !important;
+      $kgrad1: lighten(mat-color($background, background), 20%);
+      $kgrad2: lighten(mat-color($background, background), 10%);
+
+      // background-color: mat-color($primary) !important;
+      // $kgrad1: lighten(mat-color($primary, 400), 0%);
+      // $kgrad2: lighten(mat-color($primary, 700), 0%);
+
+      background: linear-gradient(to bottom, $kgrad1, $kgrad2) !important;
+      color: mat-color($foreground, base) !important;
+      border-color: $kgrad2 !important;
+      border-left-color: $kgrad1 !important;
+      border-top-color: $kgrad1 !important;
+      box-shadow: 3px 3px 3px 0px rgba(darken(mat-color($background, background), 70%), 0.1);
+
+      &:after {
+        background: linear-gradient(to bottom, $kgrad2, $kgrad2) !important;
+      }
+
+
+      &:active {
+        border-color: $kgrad2 !important;
+        border-left-color: $kgrad2 !important;
+        border-top-color: $kgrad2 !important;
+        box-shadow: 1px 1px 1px 0px rgba(darken(mat-color($background, background), 70%), 0.1);
+
+
+        // border-color: mat-color($background, selected-button) !important;
+
+
+      }
+    }
+  }
+
+  .admino-table {
+    .admino-table-footer {
+      background-color: mat-color($background, background) !important;
+      border-top: 1px solid mat-color($foreground, divider) !important;
+    }
+
+    // .mat-column-admino-actions {
+    //   border-left: 1px solid mat-color($foreground, divider);
+    // }
+
+    .table-scroll-wrapper {
+      background-color: mat-color($background, background) !important;
+
+    }
+
+    .mat-table {
+      background: mat-color($background, background) !important;
+
+      th {
+        background-color: mat-color($background, card) !important;
+      }
+
+      // .mat-table-sticky:first-child {
+      //   border-right: 1px solid mat-color($foreground, divider);
+      // }
+      td {
+        &.mat-table-sticky {
+          background-color: mat-color($background, background) !important;
+          // border-left: 1px solid mat-color($foreground, divider);
+        }
+
+      }
+
+      tr {
+        &.selected {
+          // border-left: 15px solid mat-color($accent);
+          position: relative;
+
+          td:first-child {
+            &::after {
+              background-color: mat-color($accent, 300) !important;
+              box-shadow: 0px 0px 15px 0px mat-color($accent, 500);
+            }
+          }
+
+
+          background-color: lighten(mat-color($background, card), 8%) !important;
+
+          .mat-table-sticky {
+            background-color: lighten(mat-color($background, card), 8%) !important;
+          }
+
+        }
+
+        // .mat-table-sticky {
+        //   background-color: mat-color($background, background) !important;
+        // }
+        &.active {
+          // background-color: transparent !important;
+          background-color: lighten(mat-color($background, card), 10%) !important;
+
+          .mat-table-sticky {
+            background-color: lighten(mat-color($background, card), 10%) !important;
+          }
+
+        }
+      }
+
+    }
+  }
+
+  ///////////////////////
+
+
+  .admino-virtual-table {
+    .admino-virtual-table-footer {
+      background-color: mat-color($background, background) !important;
+      border-top: 1px solid mat-color($foreground, divider) !important;
+    }
+
+    .table {
+      color: mat-color($foreground, base);
+      background-color: mat-color($background, background) !important;
+
+      thead {
+        background-color: mat-color($background, card) !important;
+      }
+
+      th {
+        background-color: mat-color($background, card) !important;
+        border-color: mat-color($foreground, divider);
+        color: rgba(mat-color($foreground, base), 0.7);
+      }
+
+      td {
+        border-color: mat-color($foreground, divider);
+
+        &:first-of-type() {
+          border-left: none;
+        }
+
+        &.mat-table-sticky {
+          background-color: mat-color($background, background) !important;
+          // border-left: 1px solid mat-color($foreground, divider);
+        }
+      }
+
+      tr {
+        &.selected {
+          // border-left: 15px solid mat-color($accent);
+          position: relative;
+
+          td:first-child {
+            &::after {
+              background-color: mat-color($accent, 300) !important;
+              box-shadow: 0px 0px 15px 0px mat-color($accent, 500);
+            }
+          }
+
+
+          background-color: lighten(mat-color($background, card), 8%) !important;
+
+          .mat-table-sticky {
+            background-color: lighten(mat-color($background, card), 8%) !important;
+          }
+
+        }
+
+        // .mat-table-sticky {
+        //   background-color: mat-color($background, background) !important;
+        // }
+        &.active {
+          // background-color: transparent !important;
+          background-color: lighten(mat-color($background, card), 10%) !important;
+
+          .mat-table-sticky {
+            background-color: lighten(mat-color($background, card), 10%) !important;
+          }
+
+        }
+      }
+
+    }
+  }
+
+  ///////////////////////
+  .admino-modal {
+    .admino-modal-content-bg {
+      background-color: mat-color($background, background) !important;
+      // box-shadow: 5px 5px 10px rgba(mat-color($foreground, base), 0.5) !important;
+      box-shadow: 5px 5px 30px rgba(darken(mat-color($background, card), 20%), 0.3) !important;
+      border: 1px solid mat-color($foreground, divider) !important
+    }
+
+    .admino-modal-bg {
+      background: mat-color($background, background) !important;
+      // background: linear-gradient(-20deg, $bgrad1, $bgrad) !important;
+      // background: darken(mat-color($background, background), 2%) !important;
+      background: linear-gradient(-20deg, $bgrad1, $bgrad) !important;
+
+
+
+    }
+
+  }
+
+  ///////////////////////
+
+  .admino-card {
+    &.mat-card.opaque {
+      background-color: mat-color($background, card) !important;
+    }
+
+  }
+
+
+
+
+
+}

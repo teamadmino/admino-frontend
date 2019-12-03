@@ -1,0 +1,169 @@
+@import "./fonts.scss";
+// $font-family-base: 'Roboto',
+// sans-serif !default;
+
+@import "./themes/purple-light-theme.scss";
+@import "./themes/purple-dark-theme.scss";
+@import "./themes/gold-dark-theme.scss";
+@import "./themes/gold-light-theme.scss";
+@import "./themes/blue-dark-theme.scss";
+@import "./themes/blue-light-theme.scss";
+@include mat-core();
+// @include angular-material-theme($gold-dark-theme);
+// $custom-typography: mat-typography-config($font-family: $font-body);
+// @include mat-core($custom-typography);
+// $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+// @import '~material-design-icons-iconfont/src/material-design-icons';
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.fill-space {
+  // This fills the remaining space, by using flexbox.
+  // Every toolbar row uses a flexbox row layout.
+  flex: 1 1 auto;
+}
+
+mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: $soft-shadow !important;
+}
+
+.soft-shadow {
+  box-shadow: $soft-shadow !important;
+}
+
+.strong-shadow {
+  box-shadow: $strong-shadow !important;
+}
+
+button {
+  outline: none !important;
+  -moz-outline-style: none !important;
+
+}
+
+.mh-100 {
+  height: 1px;
+  min-height: 100%;
+
+}
+
+// .align-self-flex-start {
+//   align-self: flex-start !important;
+// }
+
+// .ng-animating {
+//   outline: 1px solid red;
+// }
+
+// @for $v from 0 through 20 {
+//   .ts-#{$v} {
+//     font-size: $v*0.1rem;
+//   }
+// }
+
+button {
+  cursor: pointer;
+}
+
+.btn-large {
+  font-size: 1.2rem !important;
+  padding: 0 1.2rem !important;
+  line-height: 2.4rem !important;
+  font-weight: 400;
+}
+
+.btn-sm {
+  font-size: 0.6rem !important;
+  padding: 0 0.3rem !important;
+  line-height: 1.2rem !important;
+  font-weight: 400;
+  min-width: 0px !important;
+}
+
+.mat-form-field-sm {
+  min-width: 0px !important;
+
+  .mat-form-field-infix {
+    width: 100px;
+  }
+}
+
+.big-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.card-actions {
+  // background: red;
+  width: calc(100% - 32px);
+  height: 48px;
+  // text-align: right;
+  position: absolute;
+  top: -48px;
+  right: 16px;
+  display: flex;
+
+  .card-action {
+    display: inline-block;
+    font-size: 0.7rem;
+  }
+
+  @include xs {
+    display: block;
+    text-align: right;
+    position: relative;
+    top: auto;
+    right: auto;
+    height: auto;
+    width: auto;
+    padding: 0 16px;
+    max-width: 100%;
+
+    .mat-form-field-infix {
+      width: auto;
+    }
+  }
+}
+
+.mat-icon-sm {
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+
+  .mat-icon {
+    font-size: 16px;
+  }
+}
+
+
+
+// @mixin make-col($size, $columns: $grid-columns) {
+//   flex: 0 0 percentage($size / $columns);
+//   // Add a `max-width` to ensure content within each column does not blow out
+//   // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
+//   // do not appear to require this.
+//   max-width: percentage($size / $columns);
+// }
+// @import "~bootstrap/scss/_variables.scss";
+// @import "~bootstrap/scss/_mixins.scss";
+
+.app-sm,
+.app-xs {
+
+  .col-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  // @include make-grid-columns();
+
+}

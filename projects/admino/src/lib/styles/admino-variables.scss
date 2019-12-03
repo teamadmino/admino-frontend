@@ -1,0 +1,67 @@
+$primary-color:#b29551;
+$primary-gradient: linear-gradient(200deg, rgba(221, 204, 135, 1) 0%, rgba(178, 149, 81, 1) 100%);
+$accent-gradient: linear-gradient(200deg, #98afff 0%, rgb(64, 92, 162) 100%);
+$strong-shadow: 0 0px 25px rgba(0, 0, 0, 0.2);
+$soft-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+$anim: .3s ease-in-out;
+
+
+$xxs-width: 320px;
+$xs-width: 480px;
+$sm-width: 768px;
+$md-width: 992px;
+$lg-width: 1200px;
+
+@mixin xxs {
+  @media (max-width: #{$xs-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin xs {
+  @media (max-width: #{$sm-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media (max-width: #{$md-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (max-width: #{$lg-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: #{$lg-width}) {
+    @content;
+  }
+}
+
+@mixin min-xs {
+  @media (min-width: #{$xs-width }) {
+    @content;
+  }
+}
+
+@mixin min-sm {
+  @media (min-width: #{ $sm-width }) {
+    @content;
+  }
+}
+
+@mixin min-md {
+  @media (min-width: #{$md-width }) {
+    @content;
+  }
+}
+
+@mixin min-lg {
+  @media (min-width: #{ $lg-width }) {
+    @content;
+  }
+}

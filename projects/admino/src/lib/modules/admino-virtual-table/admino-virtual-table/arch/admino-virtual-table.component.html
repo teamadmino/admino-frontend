@@ -1,0 +1,32 @@
+<cdk-virtual-scroll-viewport class="example-viewport" [itemSize]="itemSize" #tableRef adminoResizeObserver
+    [debounceAdminoResize]="50" (adminoResize)="resize()">
+    <table class="mytable" mat-table [dataSource]="dataSource" [multiTemplateDataRows]="true">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> No.</th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="age" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef> Age</th>
+            <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+        </ng-container>
+
+        <tr class="header" tabindex="-1" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true " #headerRef>
+        </tr>
+        <tr class="placeholder" tabindex="0" [style.height.px]="placeholderHeight" mat-row
+            *matRowDef="let row; let index = index; columns: []; when: placeholderWhen"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</cdk-virtual-scroll-viewport>
+
+
+
+
+<!-- cdkVirtualScrollViewport uses transform: translateY to correct for all elements that are removed. 
+            We will use a plcaholder row in the table instead because the translate causes problems with the sticky header -->
