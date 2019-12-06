@@ -1,4 +1,4 @@
-import { AdminoAction } from '../../interfaces';
+import { AdminoAction, AdminoButton } from '../../interfaces';
 
 export interface ScreenConfig {
     label?: string;
@@ -15,7 +15,7 @@ export interface ScreenSection {
 
 export interface ScreenElement {
     type: 'input' | 'checkbox' | 'radiobutton' | 'select' | 'multi'
-    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'text' | 'table';
+    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'text' | 'table' | 'timer';
     id: string;
     label?: string;
     defaultValue?: any;
@@ -27,14 +27,18 @@ export interface ScreenElement {
     // create element at specific index
     createAt?: { sectionIndex: number, elementIndex: number };
 
-
-    config?: any | InputConfig | CheckboxConfig | RadiobuttonConfig | SelectConfig | MultiConfig;
+    config?: any | InputConfig | CheckboxConfig | RadiobuttonConfig | SelectConfig | MultiConfig | TimerConfig;
     validators?: ScreenElementValidator[];
     classes?: string[];
     conditions?: Condition[];
     actions?: ScreenAction[];
 }
-
+export interface TimerConfig {
+    action: AdminoAction;
+    frequency: number;
+    disabled: boolean;
+    forceRefresh: number;
+}
 export interface InputConfig {
     prefix: string;
     suffix: string;
@@ -44,6 +48,8 @@ export interface ButtonConfig {
 }
 export interface TableConfig {
     viewName: string;
+    tableButtons: AdminoButton[];
+    rowButtons: AdminoButton[];
 }
 
 export interface CheckboxConfig { }
@@ -62,6 +68,7 @@ export interface Condition {
 export interface ScreenAction {
     color: 'primary' | 'accent' | 'warn';
     icon: 'string';
+    action: AdminoAction;
 }
 export interface ScreenElementValidator {
     name: string;

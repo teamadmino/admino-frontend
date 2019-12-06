@@ -5,9 +5,11 @@ import { AdminoApiService } from './api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AdminoAction, ActionEvent } from '../interfaces';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenConfig } from '../modules/admino-screen/admino-screen.interfaces';
 import { encodeParams, decodeParams } from '../utils/encodeparams';
+import { map } from 'rxjs/operators';
+import { wrapIntoObservable } from '../utils/wrap-into-observable';
 
 @Injectable({
   providedIn: 'root'
@@ -22,29 +24,31 @@ export class AdminoActionService {
     private user: AdminoUserService, private api: AdminoApiService, private cs: ConfigService) { }
 
   init() {
-    this.backendRequest(this.cs.config.loginScreen);
+    this.backendRequest(this.cs.config.loginScreen).subscribe();
     this.route.queryParams.subscribe(params => {
       this.currentQueryParams = decodeParams(params);
     });
   }
 
-  handleAction(actionEvent: ActionEvent) {
-    if (typeof actionEvent.action === 'string') {
-      // this.router.navigate([], { queryParams: { screen: actionEvent.action } });
-    } else if (actionEvent.action.type === 'screen') {
-      // this.router.navigate([], { queryParams: { screen: actionEvent.action.config.id } });
-      // this.handleFrontendAction(actionEvent.action.config, actionEvent.form);
-      const screenValue = actionEvent.form ? actionEvent.form.value : null;
-      console.log(actionEvent.action.id);
-      this.backendRequest(actionEvent.action.id, screenValue);
-    } else if (actionEvent.action.type === 'frontend') {
-      // console.log(actionEvent);
-      this.handleFrontendAction(actionEvent.action);
+  handleAction(actionEvent: ActionEvent): Observable<any> {
+    if (!actionEvent.action) {
+      console.warn('No action defined');
+      return wrapIntoObservable(null);
     }
+    if (typeof actionEvent.action === 'string') {
+      // return wrapIntoObservable(null);
+    } else if (actionEvent.action.type === 'screen') {
+      const screenValue = actionEvent.form ? actionEvent.form.value : null;
+      return this.backendRequest(actionEvent.action.requestedScreen, screenValue);
+    } else if (actionEvent.action.type === 'frontend') {
+      return this.handleFrontendAction(actionEvent.action);
+    }
+    return wrapIntoObservable(null);
+
   }
   backendRequest(screen, screenValue = null) {
     // const backendRequest: BackendRequest = {};
-    this.api.request(screen, screenValue, this.currentQueryParams).subscribe((response: BackendResponse) => {
+    return this.api.request(screen, screenValue, this.currentQueryParams).pipe(map((response: BackendResponse) => {
       if (response.setScreen) {
         this.redrawScreen.next(response.setScreen);
       }
@@ -69,18 +73,17 @@ export class AdminoActionService {
       if (response.setQueryParams) {
         this.setQueryParams(response.setQueryParams);
       }
-    });
+    }));
   }
 
   handleFrontendAction(action: AdminoAction, form = null) {
-    if (action.actionType === 'login') {
-      this.api.login(form.value).subscribe((params) => {
-      });
-    } else if (action.actionType === 'logout') {
+    if (action.frontendAction === 'login') {
+      return this.api.login(form.value).pipe(map((params) => {
+      }));
+    } else if (action.frontendAction === 'logout') {
       this.user.logout();
       this.redrawScreen.next(null);
-      this.backendRequest(this.cs.config.loginScreen);
-
+      return this.backendRequest(this.cs.config.loginScreen);
     }
   }
 

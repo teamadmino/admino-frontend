@@ -27,7 +27,7 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
 
   // dataSource;
 
-  constructor(private route: ActivatedRoute, private as: AdminoActionService,
+  constructor(private route: ActivatedRoute, public as: AdminoActionService,
     private nav: AdminoNavService, private ms: AdminoModalService, private api: AdminoApiService, private cd: ChangeDetectorRef) {
     this.as.redrawScreen.subscribe((screen: ScreenConfig) => {
       if (screen) {
@@ -85,7 +85,7 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
 
 
   actionEvent(actionEvent: ActionEvent) {
-    this.as.handleAction(actionEvent);
+    this.as.handleAction(actionEvent).subscribe();
   }
 
   ngOnDestroy() {

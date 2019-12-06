@@ -1,6 +1,7 @@
+import { ActionEvent, AdminoButton, AdminoAction } from './../../../interfaces';
 import { takeUntil } from 'rxjs/operators';
 import { AdminoVirtualTableDataSource } from '../admino-virtual-table.datasource';
-import { Component, OnInit, ChangeDetectorRef, ElementRef, AfterViewInit, ViewChild, Input, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, AfterViewInit, ViewChild, Input, OnDestroy, HostListener, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoVirtualScrollDirective } from '../admino-virtual-scroll.directive';
 import { DOWN_ARROW, UP_ARROW, PAGE_DOWN, PAGE_UP, ENTER, SHIFT, CONTROL } from '@angular/cdk/keycodes';
@@ -26,6 +27,11 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   columns = [];
   sortedColumn;
   @Input() dataSource: AdminoVirtualTableDataSource;
+  @Input() tableButtons: AdminoButton[];
+  @Input() rowButtons: AdminoButton[];
+  @Output() actionEvent: EventEmitter<AdminoAction> = new EventEmitter();
+  @Output() valueChange: EventEmitter<any> = new EventEmitter();
+
   prevStart = 0;
   prevEnd = 0;
   prevVisibleStart = 0;
@@ -84,7 +90,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     // }, 5500)
   }
   ngOnInit() {
-
   }
 
   ngAfterViewInit() {
@@ -97,6 +102,10 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       if (isLoaded) {
         this.calculateWidths();
       }
+    });
+
+    this.dataSource.loadDataEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
+      this.valueChange.next(state);
     });
 
     this.dataSource.connect().pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) => {
@@ -169,7 +178,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     // }
   }
   handleLoadData(shift) {
-    this.dataSource.loadData(shift)
+    this.dataSource.loadData(shift);
   }
   afterRender(e) {
     if (this.prevStart !== e.start || this.prevEnd !== e.end) {
@@ -274,8 +283,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     });
   }
 
-
-
   setSelected(e, index, absIndex) {
     if (e.__loaded__) {
       this.dataSource.cursorAbsPos = absIndex;
@@ -284,6 +291,12 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     }
     this.dataSource.loadData();
   }
+
+  tableButtonClicked(btn: AdminoButton) {
+    this.actionEvent.next(btn.action);
+  }
+
+
   resize() {
     // this.afterRender();
     this.calculateWidths();

@@ -54,6 +54,11 @@
   // justify-content: center;
   align-items: center;
   padding: 1rem;
+  padding-bottom: 0;
+
+  .actions {
+    text-align: right;
+  }
 
 }
 

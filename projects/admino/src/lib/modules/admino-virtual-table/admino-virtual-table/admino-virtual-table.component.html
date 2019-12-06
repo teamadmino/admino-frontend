@@ -76,12 +76,13 @@
     </table>
 
     <div class="admino-virtual-table-footer">
-        <div class="status flex-grow-1">
+        <div class="status flex-grow-1 mb-3">
             {{prevVisibleStart+1}} - {{prevVisibleEnd}} / {{totalsize}}
         </div>
         <div class="actions">
-            <button type="button" mat-raised-button color="primary">Új</button>
-
+            <button type="button" (click)="tableButtonClicked(tbutton)" mat-raised-button class="ml-3 mb-3"
+                [color]="tbutton.color?tbutton.color:'primary'"
+                *ngFor="let tbutton of tableButtons">{{tbutton.label}}</button>
         </div>
     </div>
 </div>

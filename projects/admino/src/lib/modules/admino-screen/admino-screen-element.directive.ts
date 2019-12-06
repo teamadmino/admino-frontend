@@ -6,7 +6,7 @@ import {
   OnInit, OnDestroy, ComponentRef, DoCheck
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { ScreenElement, ScreenElementValidator } from './admino-screen.interfaces';
 
@@ -14,6 +14,7 @@ import { InputComponent } from './elements/input/input.component';
 import { ButtonComponent } from './elements/button/button.component';
 import { GroupComponent } from './elements/group/group.component';
 import { TableComponent } from './elements/table/table.component';
+import { TimerComponent } from './elements/timer/timer.component';
 
 
 const componentMapper = {
@@ -21,6 +22,7 @@ const componentMapper = {
   button: ButtonComponent,
   table: TableComponent,
   group: GroupComponent,
+  timer: TimerComponent,
 
 };
 
@@ -33,6 +35,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
   @Input() element: ScreenElement;
   // @Input() fields: FieldConfig[];
   @Input() group: FormGroup;
+  control: FormControl;
   @Input() screenComponent: AdminoScreenComponent;
   @Input() keyAreaId: string;
   @Input() index: number;
@@ -103,6 +106,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
     //   });
     // }
     this.createControl();
+    this.elementComponent.control = this.control;
+
   }
   createComponent() {
     this.activeElementConfig = cloneDeep(this.element);
@@ -131,6 +136,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
       updateOn: this.element.updateOn
     }
     );
+    this.control = control;
     this.group.addControl(this.element.id, control);
   }
   removeControl() {

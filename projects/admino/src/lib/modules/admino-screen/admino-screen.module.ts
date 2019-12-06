@@ -10,13 +10,15 @@ import { ButtonComponent } from './elements/button/button.component';
 import { InputComponent } from './elements/input/input.component';
 import { TableComponent } from './elements/table/table.component';
 import { GroupComponent } from './elements/group/group.component';
+import { TimerComponent } from './elements/timer/timer.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
     ButtonComponent,
     InputComponent,
     TableComponent,
-    GroupComponent
+    GroupComponent,
+    TimerComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,9 @@ import { GroupComponent } from './elements/group/group.component';
   entryComponents: [
     ButtonComponent,
     InputComponent,
-    TableComponent
+    TableComponent,
+    GroupComponent,
+    TimerComponent
   ]
 })
 export class AdminoScreenModule { }

@@ -43,34 +43,17 @@ export interface ActionEvent {
 
 ////////////
 export interface AdminoAction {
-  type: 'screen' | 'frontend' | 'url';
-
+  type: 'backend' | 'screen' | 'frontend' | 'url';
+  // backend
+  backendAction?: string;
   // screen
-  id?: any;
-  popup?: boolean;
-  data?: any;
-
-  //frontend
-  actionType?: 'login' | 'logout' | 'print';
-
+  requestedScreen?: any;
+  // frontend
+  frontendAction?: 'login' | 'logout' | 'print';
   //url config
   url?: string;
   target?: '_blank' | '_self';
 }
-// export interface ScreenActionConfig {
-//   id: string;
-//   popup?: boolean;
-//   data: any;
-// }
-// export interface FrontendActionConfig {
-//   type: 'login' | 'logout' | 'print';
-
-// }
-// export interface UrlActionConfig {
-//   url: string;
-//   target: '_blank' | '_self';
-// }
-
 
 export interface BackendRequest {
 
@@ -107,36 +90,5 @@ export interface BackendResponse {
   setMenu: AdminoMenuItem[];
   setBottomButtons: AdminoButton[];
   setQueryParams: { [id: string]: string; };
-
-}
-// export interface ElementUpdate {
-//   value: any;
-//   label: any;
-// }
-export interface BackendCommands {
-
-  elementsUpdate: { [id: string]: ScreenElement; };
-
-  // 'elementUpdate': {
-  //   "user": {
-  //     "value": "admin",
-  //     "label": "valami"
-  //   },
-  //   "password": "pass",
-  //   "timer": {
-  //     "freq": 5,
-  //     "action": 4
-  //   }
-  // },
-
-
-
-  // "setQueryParams": {
-  //   "screen": "CikkszamModositas",
-  //   "id": { key1: "asasdasd", key2: "asdasdasd" },
-  //   "screasden": "Screen1",
-  //   "asd": "Screen1",
-  //   "sidebarOpen": false
-  // },
 
 }

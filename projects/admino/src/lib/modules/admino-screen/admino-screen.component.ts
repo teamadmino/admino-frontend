@@ -1,5 +1,6 @@
+import { AdminoActionService } from './../../services/action.service';
 import { AdminoApiService } from './../../services/api.service';
-import { ScreenConfig } from './admino-screen.interfaces';
+import { ScreenConfig, ScreenElement } from './admino-screen.interfaces';
 import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
@@ -24,9 +25,10 @@ export class AdminoScreenComponent implements OnInit {
 
   @Output() actionEvent: EventEmitter<ActionEvent> = new EventEmitter();
 
+
   form: FormGroup;
 
-  constructor(public fb: FormBuilder, public api: AdminoApiService, private cd: ChangeDetectorRef) { }
+  constructor(public fb: FormBuilder, public api: AdminoApiService, public as: AdminoActionService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     // setTimeout((params) => {
@@ -101,7 +103,10 @@ export class AdminoScreenComponent implements OnInit {
   //   }
   // }
 
-  prepareClasses(element, i) {
+  prepareClasses(element: ScreenElement, i) {
+    if (element.type === 'timer') {
+      return 'd-none';
+    }
     return element.classes ? element.classes : ['col-12'];
   }
 }

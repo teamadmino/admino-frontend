@@ -1,4 +1,5 @@
 <div class="d-block " [formGroup]="group">
 
-  <button [type]="'button'" (click)="clicked()" mat-flat-button color="primary" #focusRef>{{element.label}}</button>
+  <button [type]="'button'" (click)="handleAction(this.element.config.action)" mat-flat-button color="primary"
+    #focusRef>{{element.label}}</button>
 </div>

@@ -1,6 +1,7 @@
+import { AdminoAction, ActionEvent } from './../../../interfaces';
 import { AdminoApiService } from './../../../services/api.service';
 import { AdminoScreenComponent } from '../admino-screen.component';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ScreenElement } from '../admino-screen.interfaces';
 import { ViewChild, ElementRef } from '@angular/core';
 
@@ -9,11 +10,20 @@ export class AdminoScreenElement {
     public element: ScreenElement;
     // public fields: FieldConfig[];
     public group: FormGroup;
+    public control: FormControl;
 
     public screenComponent: AdminoScreenComponent;
 
     public index: number;
 
+
+    handleAction(action: AdminoAction) {
+        const actionEvent: ActionEvent = {
+            action,
+            form: this.screenComponent.form
+        };
+        this.screenComponent.actionEvent.next(actionEvent);
+    }
 
     focus() {
         if (this.focusRef) {

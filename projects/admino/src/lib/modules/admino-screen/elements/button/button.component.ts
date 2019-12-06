@@ -12,11 +12,7 @@ export class ButtonComponent extends AdminoScreenElement implements OnInit {
   ngOnInit() {
   }
   clicked() {
-    const actionEvent: ActionEvent = {
-      action: this.element.config.action,
-      form: this.screenComponent.form,
-    };
-    this.screenComponent.actionEvent.next(actionEvent);
+
     // if (this.field.action === 'cancel') {
     //   // this.form.cancelForm();
     // }

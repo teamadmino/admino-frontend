@@ -1,7 +1,7 @@
-import { AdminoMenuItem } from './../interfaces';
+import { AdminoMenuItem, BackendResponse } from './../interfaces';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, delay } from 'rxjs/operators';
 import { Subject, Observable, ObservableInput } from 'rxjs';
 import { AdminoNavService } from './nav.service';
 import { AdminoUserService } from './user.service';
@@ -102,9 +102,9 @@ export class AdminoApiService {
 
 
   request(screen: string, screenValue: any = null, queryParams: any = null, ) {
-    return this.http.post(this.BASE_URL + this.SCREEN + '/' + screen, { screen, queryParams, screenValue });
+    return this.http.post(this.BASE_URL + this.SCREEN + '/' + screen, { screen, queryParams, screenValue })
+      .pipe(delay(0));
   }
-
 
 
   stringifyObject(obj: any) {

@@ -30,6 +30,7 @@ export class AdminoVirtualTableDataSource {
     public result$ = this.resultSubject.asObservable();
 
     public infoLoaded = new BehaviorSubject<boolean>(false);
+    public loadDataEvent = new Subject<any>();
 
     currentRequests: { subscription: Subscription, shift: number, rejectPromise: () => void }[] = [];
 
@@ -107,8 +108,22 @@ export class AdminoVirtualTableDataSource {
         return new Promise((resolve, reject) => {
 
             const requestObj = { subscription: null, shift, rejectPromise: reject };
-            requestObj.subscription = this.config.listFunction(this.keys ? this.keys : { '#position': 'first' },
-                this.cursor, calculatedShift, this.count, this.selectedIndex, this.count, this.count).pipe(
+
+            const state = {
+                keys: this.keys ? Object.assign({}, this.keys) : { '#position': 'first' },
+                cursor: this.cursor,
+                shift: calculatedShift,
+                count: this.count,
+                index: this.selectedIndex,
+                before: this.count,
+                after: this.count
+            };
+            delete state.keys.__index__;
+            delete state.keys.__loaded__;
+            this.loadDataEvent.next(state);
+
+            requestObj.subscription = this.config.listFunction(state.keys,
+                state.cursor, state.shift, state.count, state.index, state.before, state.after).pipe(
                     takeUntil(this.ngUnsubscribe),
                     catchError(() => of([])),
                     // finalize(() => {
@@ -161,7 +176,6 @@ export class AdminoVirtualTableDataSource {
 
         if (this.currentRequests.length === 0) {
             this.cursorAbsPos = this.viewpos + cursorpos;
-            console.log("update")
         }
 
         for (let i = 0; i < this.data.before.length; i++) {

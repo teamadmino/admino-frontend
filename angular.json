@@ -3,6 +3,41 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "admino": {
+      "projectType": "library",
+      "root": "projects/admino",
+      "sourceRoot": "projects/admino/src",
+      "prefix": "admino",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admino/tsconfig.lib.json",
+            "project": "projects/admino/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admino/src/test.ts",
+            "tsConfig": "projects/admino/tsconfig.spec.json",
+            "karmaConfig": "projects/admino/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admino/tsconfig.lib.json",
+              "projects/admino/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
     "frontend": {
       "projectType": "application",
       "schematics": {
