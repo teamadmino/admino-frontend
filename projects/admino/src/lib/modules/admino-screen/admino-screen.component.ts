@@ -1,32 +1,41 @@
+import { cloneDeep } from 'lodash';
+import { takeUntil } from 'rxjs/operators';
 import { AdminoActionService } from './../../services/action.service';
 import { AdminoApiService } from './../../services/api.service';
-import { ScreenConfig, ScreenElement } from './admino-screen.interfaces';
-import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { ScreenElementScreen, ScreenElement } from './admino-screen.interfaces';
+import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
+import { Subject } from 'rxjs';
+import { deepMerge, isObject } from '../../utils/deepmerge';
 
 @Component({
   selector: 'admino-screen',
   templateUrl: './admino-screen.component.html',
   styleUrls: ['./admino-screen.component.scss']
 })
-export class AdminoScreenComponent implements OnInit {
+export class AdminoScreenComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe: Subject<null> = new Subject();
 
-  _config: ScreenConfig;
 
-  @Input() public set config(config: ScreenConfig) {
-    this._config = config;
-    this.form = this.fb.group({});
+  _screenElement: ScreenElementScreen;
+
+  @Input() public set screenElement(element: ScreenElementScreen) {
+    this._screenElement = element;
   }
 
-  public get config(): ScreenConfig {
-    return this._config;
+  public get screenElement(): ScreenElementScreen {
+    return this._screenElement;
   }
 
   @Output() actionEvent: EventEmitter<ActionEvent> = new EventEmitter();
+  @Output() valueChange: EventEmitter<any> = new EventEmitter();
+  public updateEvent: Subject<any> = new Subject();
 
 
-  form: FormGroup;
+
+  @Input() group: FormGroup = this.fb.group({});
+
 
   constructor(public fb: FormBuilder, public api: AdminoApiService, public as: AdminoActionService, private cd: ChangeDetectorRef) { }
 
@@ -38,75 +47,137 @@ export class AdminoScreenComponent implements OnInit {
     //   this.config.sections.pop();
     //   this.cd.detectChanges();
     // }, 1500);
+    this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      this.valueChange.next(value);
+    });
   }
 
   onSubmit(event) {
-    console.log(this.form.value);
+    console.log(this.group.value);
+  }
+
+  update(element: ScreenElementScreen) {
+    // console.log(config);
+
+
+    // deepMerge(this.config, config);
+    this.mergeConfig(this.screenElement, element);
+    const values = this.extractValue(this.screenElement.elements);
+    this.updateValue(values);
+    // const origValues = this.group.value;
+    // const merged = deepMerge(origValues, values);
+    // this.group.patchValue(merged);
+    this.cd.detectChanges();
+    this.updateEvent.next();
+  }
+
+  extractValue(elements: any[], val = {}) {
+    for (const element of elements) {
+      if (element && element.elements) {
+        val[element.id] = this.extractValue(element.elements);
+      } else if (element.value) {
+        val[element.id] = element.value;
+      }
+    }
+    return val;
+  }
+
+  updateValue(values: any, group = this.group) {
+    for (const key of Object.keys(values)) {
+      const controlOrGroup = group.get(key);
+      const value = values[key];
+      if (controlOrGroup) {
+        if ((controlOrGroup as any).controls) {
+          // if FormGroup
+          this.updateValue(value, controlOrGroup as FormGroup);
+        } else {
+          let mergedValue = controlOrGroup.value;
+          if (isObject(value)) {
+            mergedValue = Object.assign(mergedValue ? mergedValue : {}, value);
+            mergedValue.__update__ = true;
+          } else {
+            mergedValue = value;
+          }
+          controlOrGroup.patchValue(mergedValue);
+        }
+      }
+    }
   }
 
 
-  // createControls(group, fields) {
-  //   fields.forEach(field => {
-  //     if (field.type === 'button' || field.type === 'divider') {
-  //       return;
-  //     }
-  //     this.addControl(group, field);
-  //   });
-  //   return group;
-  // }
+  mergeConfig(target, source) {
+    if (isObject(target) && isObject(source)) {
+      for (const key in source) {
+        if (isObject(source[key])) {
+          if (!target[key]) { Object.assign(target, { [key]: {} }); }
+          this.mergeConfig(target[key], source[key]);
+        } else if (Array.isArray(source[key])) {
+          if (key.split('__')[1] === 'replace') {
+            target[key.split('__')[0]] = source[key];
+          } else if (!source[key][0].id) {
+            target[key] = source[key];
+          } else {
+            target[key] = this.mergeArrays(target[key], source[key]);
+          }
+        } else {
+          Object.assign(target, { [key]: source[key] });
+        }
+      }
+    }
+    return target;
+  }
 
-  // addControl(group, field: ScreenElement) {
-  //   let control;
-  //   if (field.type === 'multi') {
-  //     // control = this.createArrayControl(group, field);
-  //   } else {
-  //     control = this.createControl(group, field);
-  //   }
-  //   group.addControl(field.id, control);
-  // }
+  mergeArrays(target: any[], source) {
+    if (!target) {
+      target = [];
+    }
+    for (const item of source) {
+      if (item.id) {
+        const foundTargetItem = target.find((titem) => {
+          return titem.id === item.id;
+        });
+        if (foundTargetItem) {
+          this.mergeConfig(foundTargetItem, item);
+        } else {
+          if (item.createAt) {
+            target.splice(item.createAt, 0, item);
+          } else {
+            target.push(item);
+          }
+        }
+        if (item.destroy) {
+          target.splice(target.indexOf(foundTargetItem), 1);
+        }
+      }
+    }
+    return target;
+  }
 
-  // createControl(group, field: ScreenElement) {
-  //   const control = this.fb.control(
-  //     field.value, {
-  //     validators: this.bindValidations(field.validators || []),
-  //     asyncValidators: this.getAsyncValidations(field.validators || []),
-  //     updateOn: field.updateOn
-  //   }
-  //   );
-  //   return control;
-  // }
 
 
-
-
-  // bindValidations(validators: any) {
-  //   if (validators.length > 0) {
-  //     const validList = [];
-  //     validators.forEach((valid: ScreenElementValidator) => {
-  //       if (!valid.isAsync) {
-  //         validList.push(valid.validator);
-  //       }
-  //     });
-  //     return Validators.compose(validList);
-  //   }
-  //   return null;
-  // }
-  // getAsyncValidations(validations: any) {
-  //   if (validations.length > 0) {
-  //     const validList = [];
-  //     validations.forEach((valid: ScreenElementValidator) => {
-  //       if (valid.isAsync) {
-  //         validList.push(valid.validator);
-  //       }
-  //     });
-  //     return validList;
-  //   }
-  // }
-
-  prepareClasses(element: ScreenElement, i) {
+  prepareClasses(element: ScreenElement, isRoot: boolean = false) {
     if (element.type === 'timer') {
       return 'd-none';
     }
-    return element.classes ? element.classes : ['col-12'];
+
+    const arr = element.classes ? element.classes : isRoot ? [] : ['col-12'];
+    if (element.fillHeight) {
+      arr.push('fill-height-flex');
+    }
+    return arr;
+  }
+  prepareInnerClasses() {
+    let arr = cloneDeep(this.screenElement.innerClasses);
+    if (!arr) {
+      arr = [];
+    }
+    if (this.screenElement.fillHeight) {
+      arr.push('fill-height');
+    }
+    return arr;
+  }
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

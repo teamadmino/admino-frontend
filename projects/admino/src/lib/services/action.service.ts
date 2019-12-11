@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { AdminoUserService } from './user.service';
 import { ConfigService } from './config.service';
 import { BackendRequest, BackendResponse } from './../interfaces';
@@ -5,20 +6,23 @@ import { AdminoApiService } from './api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AdminoAction, ActionEvent } from '../interfaces';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ScreenConfig } from '../modules/admino-screen/admino-screen.interfaces';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { ScreenElementScreen } from '../modules/admino-screen/admino-screen.interfaces';
 import { encodeParams, decodeParams } from '../utils/encodeparams';
 import { map } from 'rxjs/operators';
 import { wrapIntoObservable } from '../utils/wrap-into-observable';
+import { isObject } from '../utils/deepmerge';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminoActionService {
-  redrawScreen: BehaviorSubject<ScreenConfig> = new BehaviorSubject(null);
+  redrawScreen: BehaviorSubject<ScreenElementScreen> = new BehaviorSubject(null);
   updateScreen: BehaviorSubject<any> = new BehaviorSubject(null);
 
   currentQueryParams = null;
+
+  activeRequests: { sub: Subscription }[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute,
     private user: AdminoUserService, private api: AdminoApiService, private cs: ConfigService) { }
@@ -37,18 +41,24 @@ export class AdminoActionService {
     }
     if (typeof actionEvent.action === 'string') {
       // return wrapIntoObservable(null);
-    } else if (actionEvent.action.type === 'screen') {
-      const screenValue = actionEvent.form ? actionEvent.form.value : null;
-      return this.backendRequest(actionEvent.action.requestedScreen, screenValue);
+    } else if (actionEvent.action.type === 'backend') {
+      let screenValue = actionEvent.form ? actionEvent.form.value : null;
+      screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
+
+      let schema = null;
+      if (actionEvent.action.includeSchema) {
+        schema = actionEvent.screenConfig;
+      }
+
+      return this.backendRequest(actionEvent.action.backendAction, schema, screenValue);
     } else if (actionEvent.action.type === 'frontend') {
       return this.handleFrontendAction(actionEvent.action);
     }
     return wrapIntoObservable(null);
-
   }
-  backendRequest(screen, screenValue = null) {
+  backendRequest(screen, schema = null, screenValue = null) {
     // const backendRequest: BackendRequest = {};
-    return this.api.request(screen, screenValue, this.currentQueryParams).pipe(map((response: BackendResponse) => {
+    return this.api.request(screen, screenValue, schema, this.currentQueryParams).pipe(map((response: BackendResponse) => {
       if (response.setScreen) {
         this.redrawScreen.next(response.setScreen);
       }
@@ -77,10 +87,7 @@ export class AdminoActionService {
   }
 
   handleFrontendAction(action: AdminoAction, form = null) {
-    if (action.frontendAction === 'login') {
-      return this.api.login(form.value).pipe(map((params) => {
-      }));
-    } else if (action.frontendAction === 'logout') {
+    if (action.frontendAction === 'logout') {
       this.user.logout();
       this.redrawScreen.next(null);
       return this.backendRequest(this.cs.config.loginScreen);
@@ -102,5 +109,31 @@ export class AdminoActionService {
   setLastName(params) { }
 
 
+
+  filterScreenValue(filters: any, value: any, filtered = {}) {
+    if (!filters) {
+      return value;
+    }
+    for (const key of Object.keys(filters)) {
+      // const element = parentElement && parentElement.elements.find((el: Element) => {
+      //   return el.id === key;
+      // });
+      if (!isObject(filters[key])) {
+        // if (filters[key] === false && filters[key] !== undefined) {
+        filtered[key] = value[key];
+        // } else {
+        //   const config = cloneDeep(element);
+        //   delete config.value;
+        //   filtered[key] = { config, value: value[key] };
+        // }
+      } else {
+        const filteredSubObject = this.filterScreenValue(filters[key], value[key], filtered[key]);
+        if (Object.keys(filteredSubObject).length > 0) {
+          filtered[key] = filteredSubObject;
+        }
+      }
+    }
+    return filtered;
+  }
 
 }

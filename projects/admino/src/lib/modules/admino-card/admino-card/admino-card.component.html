@@ -1,26 +1,17 @@
-<mat-card [ngClass]="{'hide-bg': hideBg, opaque:opaque,'d-flex flex-column': fillHeight}"
-    class="admino-card routeAnimated " [ngStyle]="{'height': fillHeight?'100%':''}">
-    <div class="print-div d-flex flex-column h-100"
-        [ngStyle]="{'flex': fillHeight?1:null, 'height': fillHeight?'100%':''}" #printRef>
+<mat-card
+    [ngClass]="{'hide-bg': !showBorder, opaque:opaque,'d-flex flex-column': fillHeight,'nopadding': nopadding && !showBorder}"
+    class="admino-card  " [ngStyle]="{'height': fillHeight?'100%':''}">
+    <!-- <div class="print-div d-flex flex-column h-100"
+        [ngStyle]="{'flex': fillHeight?1:null, 'height': fillHeight?'100%':''}" #printRef> -->
 
-        <mat-card-title *ngIf="title" class="d-flex">
-            {{title}}
-            <div class="card-action spinner-container ml-2 mr-2" *ngIf="this.loading$ | async">
-                <mat-spinner [diameter]="21"></mat-spinner>
-            </div>
-            <button tabindex="-1" *ngIf="printingEnabled" class="mr-3 mat-icon-sm" mat-icon-button
-                [useExistingCss]="true" adminoPrint [printSectionRef]='printRef'>
-                <mat-icon class="material-icons-round">print</mat-icon>
-            </button>
-            <span class="fill-space"></span>
-        </mat-card-title>
-        <mat-card-subtitle *ngIf="subtitle">{{subtitle}}</mat-card-subtitle>
+    <!-- <mat-card-title *ngIf="title" class="d-flex">
+        {{title}}
+    </mat-card-title> -->
+    <!-- <mat-card-subtitle *ngIf="subtitle">{{subtitle}}</mat-card-subtitle> -->
 
-        <mat-card-content class='mb-0 ' [ngClass]="{'nopadding': nopadding}"
-            [ngStyle]="{'height': fillHeight?'100%':''}">
-            <ng-content #content></ng-content>
-            <ng-template cdkPortalOutlet></ng-template>
-        </mat-card-content>
+    <mat-card-content class='mb-0' [ngClass]="{'nopadding': nopadding}" [ngStyle]="{'height': fillHeight?'100%':''}">
+        <ng-content #content></ng-content>
+    </mat-card-content>
 
-    </div>
+    <!-- </div> -->
 </mat-card>

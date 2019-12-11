@@ -1,61 +1,70 @@
 import { AdminoAction, AdminoButton } from '../../interfaces';
 
-export interface ScreenConfig {
-    label?: string;
-    sections: ScreenSection[];
-    isPopup?: boolean;
-}
-export interface ScreenSection {
-    elements: ScreenElement[];
-    label?: string;
-    collapsible?: boolean;
-    classes?: string[];
-    conditions?: Condition[];
-}
-
 export interface ScreenElement {
     type: 'input' | 'checkbox' | 'radiobutton' | 'select' | 'multi'
-    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'text' | 'table' | 'timer';
+    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'image' | 'text' | 'group' | 'table' | 'timer';
     id: string;
-    label?: string;
-    defaultValue?: any;
     updateOn?: 'change' | 'blur' | 'submit';
-
     // use only in elementUpdate
     value?: any;
     destroy?: boolean;
     // create element at specific index
-    createAt?: { sectionIndex: number, elementIndex: number };
+    createAt?: number;
 
-    config?: any | InputConfig | CheckboxConfig | RadiobuttonConfig | SelectConfig | MultiConfig | TimerConfig;
-    validators?: ScreenElementValidator[];
     classes?: string[];
+    innerClasses?: string[];
+    validators?: ScreenElementValidator[];
     conditions?: Condition[];
     actions?: ScreenAction[];
+
+    breakBefore: boolean;
+    fillHeight: boolean;
 }
-export interface TimerConfig {
+
+export interface ScreenElementScreen extends ScreenElement {
+    label?: string;
+    elements: ScreenElement[];
+    isPopup?: boolean;
+    showBorder?: boolean;
+}
+
+export interface ScreenElementTimer extends ScreenElement {
     action: AdminoAction;
     frequency: number;
     disabled: boolean;
     forceRefresh: number;
 }
-export interface InputConfig {
+export interface ScreenElementInput extends ScreenElement {
+    label?: string;
     prefix: string;
     suffix: string;
 }
-export interface ButtonConfig {
+export interface ScreenElementButton extends ScreenElement {
+    label?: string;
     action: AdminoAction;
 }
-export interface TableConfig {
+export interface ScreenElementImage extends ScreenElement {
+    label?: string;
+    src?: string; // "http://localhost/valami.jpg";
+    width: number;
+    height: number;
+}
+export interface ScreenElementTable extends ScreenElement {
+    label?: string;
     viewName: string;
+    columns: any[];
+    indexes: any[];
     tableButtons: AdminoButton[];
     rowButtons: AdminoButton[];
 }
 
-export interface CheckboxConfig { }
-export interface RadiobuttonConfig { }
-export interface SelectConfig { }
-export interface MultiConfig { }
+
+
+export interface TableValue {
+    keys: any;
+    // Visible cursor position in percent 0-1;
+    cursorPosPercent: number;
+}
 
 
 

@@ -100,7 +100,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     const virtualPos = index * this.itemSize;
     const currPage = /*this.currPage*/  Math.floor(virtualPos / this.pageHeight);
     const currPageOffset = /*this.currPageOffset*/  Math.round(currPage * this.jumpCoefficient);
-    //this.$viewport[this.isHorzontal() ? 'scrollLeft' : 'scrollTop'] = this.prevScrollPos = (virtualPos - this.currPageOffset);
+    // this.$viewport[this.isHorzontal() ? 'scrollLeft' : 'scrollTop'] = this.prevScrollPos = (virtualPos - this.currPageOffset);
     this.$viewport.scrollTop = virtualPos - currPageOffset;
   }
 

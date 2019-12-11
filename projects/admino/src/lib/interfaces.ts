@@ -1,4 +1,4 @@
-import { ScreenElement } from './modules/admino-screen/admino-screen.interfaces';
+import { ScreenElementScreen } from './modules/admino-screen/admino-screen.interfaces';
 import { FormGroup } from '@angular/forms';
 
 
@@ -39,20 +39,25 @@ export interface AdminoConfig {
 export interface ActionEvent {
   action: AdminoAction;
   form?: FormGroup;
+  screenConfig?: ScreenElementScreen;
 }
 
 ////////////
 export interface AdminoAction {
-  type: 'backend' | 'screen' | 'frontend' | 'url';
+  type: 'backend' | 'frontend' | 'url';
   // backend
-  backendAction?: string;
-  // screen
-  requestedScreen?: any;
+  backendAction?: any;
   // frontend
-  frontendAction?: 'login' | 'logout' | 'print';
-  //url config
+  frontendAction?: 'logout' | 'print';
+  // url config
   url?: string;
   target?: '_blank' | '_self';
+
+  //
+  filterValue?: any;
+  // excludeValues: boolean;
+  includeSchema?: boolean;
+  // isBlocking?: boolean;
 }
 
 export interface BackendRequest {
@@ -61,34 +66,28 @@ export interface BackendRequest {
   queryParams: {};
   screenValue: {};
 
-  baseScreen?: string;
-  requestedScreen?: string;
+  previousBackendAction?: string;
 
+  backendAction?: string;
 
-  // bizonylat: 'jancsi',
-  // table: {
-  //   cursor:
-  //   index:
-  // },
-  // chart: {
-  //   type: "bar"
-  // }
 
 }
 
 //////////////
 export interface BackendResponse {
-  // screenSchema: any;
-  // commands: BackendCommands;
+
   setScreen: any;
-  updateScreen: { [id: string]: ScreenElement; };
+  updateScreen: any;
 
   setSid: string;
   setFirstName: string;
   setLastname: string;
-  setThemeColor: ThemeConfig;
   setMenu: AdminoMenuItem[];
-  setBottomButtons: AdminoButton[];
   setQueryParams: { [id: string]: string; };
+  setBottomButtons: AdminoButton[];
+
+
+
+  setThemeColor: ThemeConfig;
 
 }

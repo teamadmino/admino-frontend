@@ -11,6 +11,7 @@ import { InputComponent } from './elements/input/input.component';
 import { TableComponent } from './elements/table/table.component';
 import { GroupComponent } from './elements/group/group.component';
 import { TimerComponent } from './elements/timer/timer.component';
+import { TextComponent } from './elements/text/text.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -18,7 +19,8 @@ import { TimerComponent } from './elements/timer/timer.component';
     InputComponent,
     TableComponent,
     GroupComponent,
-    TimerComponent
+    TimerComponent,
+    TextComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import { TimerComponent } from './elements/timer/timer.component';
     InputComponent,
     TableComponent,
     GroupComponent,
-    TimerComponent
+    TimerComponent,
+    TextComponent
   ]
 })
 export class AdminoScreenModule { }

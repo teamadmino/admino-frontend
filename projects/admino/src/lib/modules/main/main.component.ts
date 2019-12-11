@@ -111,7 +111,7 @@ export class MainComponent implements OnInit, OnDestroy {
   menuClicked(menuEvent: AdminoMenuEvent) {
     // console.log(menuEvent.menuItem.action);
     // this.nav.navigate(menuEvent.menuItem.action);
-    this.as.handleAction({ action: { type: 'screen', requestedScreen: menuEvent.menuItem.action } }).subscribe();
+    this.as.handleAction({ action: { type: 'backend', backendAction: menuEvent.menuItem.action } }).subscribe();
   }
   bottomMenuClicked(button: AdminoButton) {
     this.as.handleAction({ action: button.action }).subscribe();

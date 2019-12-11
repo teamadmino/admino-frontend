@@ -15,6 +15,6 @@
         <mat-error *ngIf="group.get(element.id).hasError(validation.name)">
             {{validation.message?validation.message:group.get(element.id).errors[validation.name]}}</mat-error>
     </ng-container>
-    <span *ngIf="element.config && element.config.prefix" matPrefix>{{element.config.prefix}}</span>
-    <span *ngIf="element.config && element.config.suffix" matSuffix>{{element.config.suffix}}</span>
+    <span *ngIf="element && element.prefix" matPrefix>{{element.prefix}}</span>
+    <span *ngIf="element && element.suffix" matSuffix>{{element.suffix}}</span>
 </mat-form-field>

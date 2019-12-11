@@ -34,21 +34,21 @@ export class AdminoApiService {
   }
 
 
-  login(body: any) {
-    // const body = { user: 'admin', password: 'admin' };
-    return this.http.post(this.BASE_URL + this.LOGIN, this.stringifyObject(body)).pipe(map((result: any) => {
-      this.user.sid = result.sid;
-      this.user.homeScreen = this.getFirstMenu(result.menu[0]);
-      this.user.setMenu(result.menu);
-      this.user.setName(result.firstname, result.lastname);
-      this.user.setLoginState(true);
-      if (this.user.requestedScreenName) {
-        this.nav.navigate(this.user.requestedScreenName);
-      } else {
-        this.nav.navigate(this.user.homeScreen.action);
-      }
-    }));
-  }
+  // login(body: any) {
+  //   // const body = { user: 'admin', password: 'admin' };
+  //   return this.http.post(this.BASE_URL + this.LOGIN, this.stringifyObject(body)).pipe(map((result: any) => {
+  //     this.user.sid = result.sid;
+  //     this.user.homeScreen = this.getFirstMenu(result.menu[0]);
+  //     this.user.setMenu(result.menu);
+  //     this.user.setName(result.firstname, result.lastname);
+  //     this.user.setLoginState(true);
+  //     if (this.user.requestedScreenName) {
+  //       this.nav.navigate(this.user.requestedScreenName);
+  //     } else {
+  //       this.nav.navigate(this.user.homeScreen.action);
+  //     }
+  //   }));
+  // }
   getFirstMenu(menu: AdminoMenuItem) {
     if (menu.children) {
       return (this.getFirstMenu(menu.children[0]));
@@ -101,8 +101,8 @@ export class AdminoApiService {
   }
 
 
-  request(screen: string, screenValue: any = null, queryParams: any = null, ) {
-    return this.http.post(this.BASE_URL + this.SCREEN + '/' + screen, { screen, queryParams, screenValue })
+  request(screen: string, screenValue: any = null, schema: any = null, queryParams: any = null, ) {
+    return this.http.post(this.BASE_URL + this.SCREEN + '/' + screen, { screen, schema, queryParams, screenValue })
       .pipe(delay(0));
   }
 

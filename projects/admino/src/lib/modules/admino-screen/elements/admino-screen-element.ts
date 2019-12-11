@@ -4,23 +4,27 @@ import { AdminoScreenComponent } from '../admino-screen.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ScreenElement } from '../admino-screen.interfaces';
 import { ViewChild, ElementRef } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export class AdminoScreenElement {
     @ViewChild('inputRef', { static: true }) focusRef: ElementRef;
-    public element: ScreenElement;
+    public element: ScreenElement | any;
     // public fields: FieldConfig[];
-    public group: FormGroup;
+    public parentGroup: FormGroup;
     public control: FormControl;
+    public group: FormGroup;
 
     public screenComponent: AdminoScreenComponent;
 
     public index: number;
+    // public configChange: Subject<any> = new Subject();
 
 
     handleAction(action: AdminoAction) {
         const actionEvent: ActionEvent = {
             action,
-            form: this.screenComponent.form
+            form: this.screenComponent.group,
+            screenConfig: this.screenComponent.screenElement
         };
         this.screenComponent.actionEvent.next(actionEvent);
     }

@@ -1,6 +1,7 @@
+import { TableValue } from './../../admino-screen/admino-screen.interfaces';
 import { ActionEvent, AdminoButton, AdminoAction } from './../../../interfaces';
 import { takeUntil } from 'rxjs/operators';
-import { AdminoVirtualTableDataSource } from '../admino-virtual-table.datasource';
+import { AdminoVirtualTableDataSource, VirtualDataSourceInfoField } from '../admino-virtual-table.datasource';
 import { Component, OnInit, ChangeDetectorRef, ElementRef, AfterViewInit, ViewChild, Input, OnDestroy, HostListener, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoVirtualScrollDirective } from '../admino-virtual-scroll.directive';
@@ -24,11 +25,50 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   scrollBarWidth = 10;
   totalsize = 40000;
 
-  columns = [];
   sortedColumn;
   @Input() dataSource: AdminoVirtualTableDataSource;
+
+
+  _columns: any[];
+  @Input() public set columns(v: any) {
+    this._columns = v;
+    this.dataSource.columns = [];
+    this.dataSource.displayedColumns = [];
+    this.dataSource.keyIds = [];
+    this._columns.forEach((field: VirtualDataSourceInfoField) => {
+      const column = { label: field.description, length: field.length, id: field.id };
+      this.dataSource.columns.push(column);
+      this.dataSource.displayedColumns.push(column);
+      this.dataSource.keyIds.push(field.id);
+    });
+    this.calculateWidths();
+  }
+  public get columns(): any {
+    return this._columns;
+  }
+  _indexes: any[];
+  @Input() public set indexes(v: any) {
+    this._indexes = v;
+    this.dataSource.indexes = v;
+    this._indexes.forEach((index) => {
+      const id = index.keys[0];
+      const found = this.dataSource.columns.find((column) => {
+        return column.id === id;
+      });
+      if (found) {
+        found.sortable = true;
+      }
+    });
+  }
+  public get indexes(): any {
+    return this._indexes;
+  }
+
+
+
   @Input() tableButtons: AdminoButton[];
   @Input() rowButtons: AdminoButton[];
+
   @Output() actionEvent: EventEmitter<AdminoAction> = new EventEmitter();
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
 
@@ -92,17 +132,30 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
-    setTimeout((params) => {
-      this.cd.detectChanges();
-      this.refresh();
-    });
 
-    this.dataSource.infoLoaded.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isLoaded) => {
-      if (isLoaded) {
-        this.calculateWidths();
+  update(value: TableValue) {
+    if (value.keys) {
+      this.dataSource.keys = value.keys;
+    }
+    this.dataSource.loadData().then((result: any) => {
+      const cursorPosPercent = value.cursorPosPercent;
+      if (cursorPosPercent !== undefined) {
+        const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.count - 1) * cursorPosPercent);
+        // console.log(this.dataSource.cursorAbsPos);
+        // console.log(cursorPos);
+        // console.log(Math.floor(this.dataSource.count * cursorPosPercent));
+        this.vsRef.scrollToItem(cursorPos);
       }
     });
+  }
+
+
+  ngAfterViewInit() {
+    // setTimeout((params) => {
+    //   this.cd.detectChanges();
+    //   this.refresh();
+    // });
+    this.calculateWidths();
 
     this.dataSource.loadDataEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
       this.valueChange.next(state);
@@ -148,7 +201,13 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       }
     }
     this.vsRef.clearData();
-    this.dataSource.loadData();
+    // this.vsRef.refresh();
+    const cursorPosPercent = this.dataSource.cursor / (this.dataSource.count - 1);
+
+    this.dataSource.loadData().then(() => {
+      const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.count - 1) * cursorPosPercent);
+      this.vsRef.scrollToItem(cursorPos);
+    });
   }
 
 
@@ -182,7 +241,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   }
   afterRender(e) {
     if (this.prevStart !== e.start || this.prevEnd !== e.end) {
-      // console.log(e);
       const count = e.visibleEnd - e.visibleStart;
       this.dataSource.count = count;
       // console.log(e.start, e.end);
@@ -223,6 +281,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   }
 
   calculateWidths() {
+    if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
+      return;
+    }
     const fullWidth = this.tableRef.nativeElement.clientWidth;
     const trArr = (this.bodyRef.nativeElement as HTMLElement).children[0].children;
     this.scrollBarWidth = this.bodyRef.nativeElement.offsetWidth - this.bodyRef.nativeElement.clientWidth;
@@ -298,6 +359,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
 
   resize() {
+    console.log("resize");
     // this.afterRender();
     this.calculateWidths();
     this.vsRef.refresh();

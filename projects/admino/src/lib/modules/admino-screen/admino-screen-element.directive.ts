@@ -1,3 +1,4 @@
+import { TextComponent } from './elements/text/text.component';
 import { AdminoScreenElement } from './elements/admino-screen-element';
 
 import { AdminoScreenComponent } from './admino-screen.component';
@@ -8,7 +9,7 @@ import {
 import { Subject } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { cloneDeep } from 'lodash';
-import { ScreenElement, ScreenElementValidator } from './admino-screen.interfaces';
+import { ScreenElementValidator, ScreenElement } from './admino-screen.interfaces';
 
 import { InputComponent } from './elements/input/input.component';
 import { ButtonComponent } from './elements/button/button.component';
@@ -23,6 +24,7 @@ const componentMapper = {
   table: TableComponent,
   group: GroupComponent,
   timer: TimerComponent,
+  text: TextComponent,
 
 };
 
@@ -34,8 +36,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
 
   @Input() element: ScreenElement;
   // @Input() fields: FieldConfig[];
-  @Input() group: FormGroup;
+  @Input() parentGroup: FormGroup;
   control: FormControl;
+  group: FormGroup;
   @Input() screenComponent: AdminoScreenComponent;
   @Input() keyAreaId: string;
   @Input() index: number;
@@ -58,29 +61,26 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
       }
       // Value change
       if (this.element.value !== this.activeElementConfig.value) {
-        const control = this.group.get(this.element.id);
+        const control = this.parentGroup.get(this.element.id);
         if (control) {
           control.setValue(this.element.value);
         }
       }
+      // // Destroy
+      // if (this.element.destroy) {
+      //     for (const element of _config.elements) {
+      //       if (element.id === this.element.id) {
+      //         _config.elements.splice(_config.elements.indexOf(element), 1);
+      //       }
+      //     }
 
-      // Destroy
-      if (this.element.destroy) {
-        for (const section of this.screenComponent._config.sections) {
-          for (const element of section.elements) {
-            if (element.id === this.element.id) {
-              section.elements.splice(section.elements.indexOf(element), 1);
-            }
-          }
-        }
-
-      }
+      // }
 
       this.activeElementConfig = cloneDeep(this.element);
-
     }
-
   }
+
+
   ngOnInit() {
     this.createComponent();
 
@@ -88,9 +88,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
     //   screenElement.focus();
     // }
 
-    if (!this.element.config) {
-      this.element.config = {};
-    }
+    // if (!this.element.config) {
+    //   this.element.config = {};
+    // }
     // const control = this.group.get(this.field.name);
     // if (control) {
     //   const subscription = control.valueChanges.pipe(startWith(this.field.value), takeUntil(this.ngUnsubscribe)).subscribe(val => {
@@ -105,21 +105,29 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
     //     }
     //   });
     // }
-    this.createControl();
-    this.elementComponent.control = this.control;
+
+    if (this.element.type === 'group') {
+
+      this.createGroup();
+      this.elementComponent.group = this.group;
+
+    } else {
+      this.createControl();
+      this.elementComponent.control = this.control;
+    }
 
   }
+
+
   createComponent() {
     this.activeElementConfig = cloneDeep(this.element);
-
     const factory = this.resolver.resolveComponentFactory(
       componentMapper[this.element.type]
     );
     this.componentRef = this.container.createComponent(factory);
-
     this.elementComponent = this.componentRef.instance as AdminoScreenElement;
     this.elementComponent.element = this.element;
-    this.elementComponent.group = this.group;
+    this.elementComponent.group = this.parentGroup;
     this.elementComponent.screenComponent = this.screenComponent;
     this.elementComponent.index = this.index;
   }
@@ -127,20 +135,32 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
     this.componentRef.destroy();
   }
 
+  createGroup() {
+    const group = this.screenComponent.fb.group(
+      {}, {
+      validators: this.bindValidations(this.element.validators || []),
+      asyncValidators: this.getAsyncValidations(this.element.validators || []),
+      updateOn: this.element.updateOn
+    }
+    );
+    this.group = group;
+    this.parentGroup.addControl(this.element.id, group);
+  }
 
   createControl() {
     const control = this.screenComponent.fb.control(
-      this.element.defaultValue, {
+      this.element.value, {
       validators: this.bindValidations(this.element.validators || []),
       asyncValidators: this.getAsyncValidations(this.element.validators || []),
       updateOn: this.element.updateOn
     }
     );
     this.control = control;
-    this.group.addControl(this.element.id, control);
+
+    this.parentGroup.addControl(this.element.id, control);
   }
   removeControl() {
-    this.group.removeControl(this.element.id);
+    this.parentGroup.removeControl(this.element.id);
   }
 
   bindValidations(validators: any) {

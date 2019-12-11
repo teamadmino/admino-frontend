@@ -1,5 +1,5 @@
-<admino-virtual-table [dataSource]="this.dataSource" [tableButtons]="this.element.config.tableButtons"
-    [rowButtons]="this.element.config.rowButtons" (actionEvent)="handleAction($event)"
-    (valueChange)="valueChange($event)">
+<admino-virtual-table [dataSource]="this.dataSource" [tableButtons]="this.element.tableButtons"
+    [rowButtons]="this.element.rowButtons" [indexes]="this.element.indexes" [columns]="this.element.columns"
+    (actionEvent)="handleAction($event)" (valueChange)="valueChange($event)">
 
 </admino-virtual-table>

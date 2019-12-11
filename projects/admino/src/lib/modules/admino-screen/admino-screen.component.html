@@ -1,22 +1,22 @@
-<div class="admino-screen">
-    <h2 class="admino-screen-label mb-4" *ngIf="_config.label">{{_config.label}}</h2>
-    <form [formGroup]="form" (submit)="onSubmit($event)">
+<div class="admino-screen " [ngClass]="prepareInnerClasses(_screenElement.innerClasses)">
+    <admino-card [nopadding]="true" [showBorder]="_screenElement.showBorder">
+        <!-- [fillHeight]="_screenElement.fillHeight" -->
+        <form [formGroup]="group" (submit)="onSubmit($event)">
+            <!-- [ngClass]="{'fill-height': _screenElement.fillHeight}" -->
+            <h2 class="admino-screen-label" *ngIf="_screenElement.label">{{_screenElement.label}}</h2>
+            <div class="row">
 
-        <div class="row justify-content-center mb-5" *ngFor="let section of _config.sections">
-            <div class="col">
-                <admino-card [printingEnabled]="false" [title]="section.label">
-                    <div class="row">
-                        <div class="col admino-form-col mt-3 " *ngFor="let element of section.elements; let i=index;"
-                            [ngClass]="this.prepareClasses(element)">
-                            <ng-container adminoScreenElement [element]="element" [group]="form"
-                                [screenComponent]='this' [index]="i">
-                            </ng-container>
-                        </div>
+                <ng-container *ngFor="let element of _screenElement.elements; let i=index;">
+                    <div class="col-12" *ngIf="element.breakBefore">
                     </div>
-                </admino-card>
+                    <div class="col admino-form-col mt-3 " [ngClass]="this.prepareClasses(element)">
+                        <ng-container adminoScreenElement [element]="element" [parentGroup]="group"
+                            [screenComponent]='this' [index]="i">
+                        </ng-container>
+                    </div>
+                </ng-container>
+
             </div>
-        </div>
-
-    </form>
-
+        </form>
+    </admino-card>
 </div>

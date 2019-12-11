@@ -25,7 +25,7 @@
 </div> -->
 <div class="admino-virtual-table">
 
-    <table class="table table-dark" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize()"
+    <table class="table table-dark" adminoResizeObserver [debounceAdminoResize]="10" (adminoResize)="resize()"
         #tableRef>
         <thead class="header-container" #headerRef>
             <tr class="header-row">
@@ -60,6 +60,7 @@
                         [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px'}">
                         <div class="cell-content">
                             {{content[column.id]}}
+                            <!-- {{content.__loaded__}} -->
                         </div>
                         <!-- viewI {{cacheIndex}} absI {{index}}  -->
                     </td>

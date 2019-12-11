@@ -2,18 +2,20 @@ import { DataSource } from '@angular/cdk/table';
 import { Observable, Subject, BehaviorSubject, of, Subscription } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 export interface AdminoVirtualTableDataSourceConfig {
+    view?: string;
+    infoFunction: Observable<any>;
     listFunction: (keys, cursor, shift, count, index, before, after) => Observable<any>;
 }
 export interface VirtualDataSourceInfoField {
-    id: string;
+    field: string;
     format: string;
     length: number;
     description: string;
 }
-// export interface VirtualDataSourceInfo {
-//     view: VirtualDataSourceInfoField[];
-//     indexes: { keys: string[], description: string }[];
-// }
+export interface VirtualDataSourceInfo {
+    view: VirtualDataSourceInfoField[];
+    indexes: { keys: string[], description: string }[];
+}
 export interface VirtualDataSourceColumn {
     label: string;
     id: string;
@@ -27,6 +29,7 @@ export class AdminoVirtualTableDataSource {
     public resultSubject = new BehaviorSubject<any[]>(null);
     public result$ = this.resultSubject.asObservable();
 
+    public infoLoaded = new BehaviorSubject<boolean>(false);
     public loadDataEvent = new Subject<any>();
 
     currentRequests: { subscription: Subscription, shift: number, rejectPromise: () => void }[] = [];
@@ -51,6 +54,7 @@ export class AdminoVirtualTableDataSource {
     constructor(public config: AdminoVirtualTableDataSourceConfig) {
     }
     connect(): Observable<any[]> {
+        this.loadInfo();
         return this.resultSubject.asObservable();
     }
 
@@ -59,10 +63,45 @@ export class AdminoVirtualTableDataSource {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }
-
+    loadInfo() {
+        this.config.infoFunction.pipe(takeUntil(this.ngUnsubscribe)).subscribe((info: VirtualDataSourceInfo) => {
+            this.indexes = info.indexes;
+            info.view.forEach((field: VirtualDataSourceInfoField) => {
+                const column = { label: field.description, length: field.length, id: field.field };
+                this.columns.push(column);
+                this.displayedColumns.push(column);
+                this.keyIds.push(field.field);
+            });
+            this.keyIds.push('#position');
+            this.indexes.forEach((index) => {
+                const id = index.keys[0];
+                const found = this.columns.find((column) => {
+                    return column.id === id;
+                });
+                if (found) {
+                    found.sortable = true;
+                }
+            });
+            // this.displayedColumns.push('admino-actions');
+            this.infoLoaded.next(true);
+            // this.loadData();
+        }, (error) => {
+            setTimeout((params) => {
+                this.loadInfo();
+            }, 1000);
+        });
+    }
 
     loadData(shift: number = 0) {
-
+        if (!this.infoLoaded.value) {
+            const sub = this.infoLoaded.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isLoaded) => {
+                if (isLoaded) {
+                    sub.unsubscribe();
+                    this.loadData(shift);
+                }
+            });
+            return;
+        }
         // const calculatedShift = this.calculateShift(shift);
         const calculatedShift = shift;
 

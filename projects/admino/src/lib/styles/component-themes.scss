@@ -187,6 +187,10 @@
     color: mat-color($accent) !important;
   }
 
+  .c-warn {
+    color: mat-color($warn) !important;
+  }
+
   .c-fg {
     color: mat-color($foreground, base);
   }

@@ -34,6 +34,9 @@
       }
     }
 
+    &.nopadding {
+      padding: 0;
+    }
   }
 
   mat-card-content {
@@ -44,12 +47,13 @@
     flex-direction: column;
     align-items: stretch;
 
+    &.nopadding {
+      // margin-left: -16px;
+      // margin-right: -16px;
+      // width: auto;
+    }
 
   }
 
-  .nopadding {
-    margin-left: -16px;
-    margin-right: -16px;
-    width: auto;
-  }
+
 }
