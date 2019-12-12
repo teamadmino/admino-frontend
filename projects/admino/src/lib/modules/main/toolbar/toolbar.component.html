@@ -4,7 +4,7 @@
     <button class="toolbar-button ml-2 mr-2"
       [ngClass]="{'hide': !this.user.userLoggedIn.value, 'toolbar-button-active':this.site.isSideNavOpen | async}"
       mat-icon-button (click)="this.site.toggleSideNav()">
-      <mat-icon class="material-icons-round">menu</mat-icon>
+      <mat-icon class="">menu</mat-icon>
     </button>
 
     <!-- <admino-logo class="toolbar-button" [ngClass]="{'hide': this.user.userLoggedIn.value}"></admino-logo> -->
@@ -21,14 +21,14 @@
       [disabled]="this.nav.activeSlot && this.nav.activeSlot.urlHistory.length>0?null:'true'"
       class="toolbar-button mr-3"
       [ngClass]="{'hide': !this.user.userLoggedIn.value || !this.nav.isFullscreenMode.value}" mat-icon-button>
-      <mat-icon class="material-icons-round">arrow_back</mat-icon>
+      <mat-icon class="">arrow_back</mat-icon>
     </button>
 
     <button (click)="this.nav.navigateForward()"
       [disabled]="this.nav.activeSlot && this.nav.activeSlot.urlForwardHistory.length>0?null:'true'"
       class="toolbar-button" [ngClass]="{'hide': !this.user.userLoggedIn.value || !this.nav.isFullscreenMode.value}"
       mat-icon-button>
-      <mat-icon class="material-icons-round">arrow_forward</mat-icon>
+      <mat-icon class="">arrow_forward</mat-icon>
     </button> -->
 
     <span class="fill-space"></span>
@@ -36,42 +36,42 @@
     <!-- <button (click)="this.nav.toggleFullscreenWindow()" class="toolbar-button mr-3" mat-icon-button
       [ngClass]="{'hide': !this.user.userLoggedIn.value ||  !this.user.settings.multiWindowAllowed, 'toolbar-button-active':!this.nav.isFullscreenMode.value}">
       <mat-icon [matBadge]="this.nav.openWindows" matBadgeColor="primary" [matBadgeHidden]="this.nav.openWindows<=1"
-        class="material-icons-round">
+        class="">
         view_module</mat-icon>
     </button> -->
 
     <!-- <button class="toolbar-button mr-3" mat-icon-button [ngClass]="{'hide': !this.user.userLoggedIn.value}">
-      <mat-icon matBadge="6" [matBadgeHidden]="true" class="material-icons-round">chat</mat-icon>
+      <mat-icon matBadge="6" [matBadgeHidden]="true" class="">chat</mat-icon>
     </button> -->
 
     <!-- <button (click)="this.site.toggleMessages()" class="toolbar-button mr-4" mat-icon-button
       [ngClass]="{'hide': !this.user.userLoggedIn.value, 'toolbar-button-active':this.site.isMessagesOpen | async}">
-      <mat-icon matBadge="6" matBadgeColor="accent" class="material-icons-round">notifications</mat-icon>
+      <mat-icon matBadge="6" matBadgeColor="accent" class="">notifications</mat-icon>
     </button> -->
 
     <!-- <mat-slide-toggle [labelPosition]="'before'" class="nodrag" (change)="this.ts.toggleTheme()">
-      <mat-icon class="material-icons-round" *ngIf="!this.ts.isDarkTheme">wb_sunny</mat-icon>
-      <mat-icon class="material-icons-round" *ngIf="this.ts.isDarkTheme">brightness_2</mat-icon>
+      <mat-icon class="" *ngIf="!this.ts.isDarkTheme">wb_sunny</mat-icon>
+      <mat-icon class="" *ngIf="this.ts.isDarkTheme">brightness_2</mat-icon>
     </mat-slide-toggle> -->
 
 
     <button mat-icon-button (click)="this.ts.toggleTheme()">
-      <mat-icon class="material-icons-round" *ngIf="!this.ts.isDarkTheme">wb_sunny</mat-icon>
-      <mat-icon class="material-icons-round" *ngIf="this.ts.isDarkTheme">brightness_2</mat-icon>
+      <mat-icon class="" *ngIf="!this.ts.isDarkTheme">wb_sunny</mat-icon>
+      <mat-icon class="" *ngIf="this.ts.isDarkTheme">brightness_2</mat-icon>
     </button>
 
     <div class="ml-3">
       <!-- <button *ngIf="this.site.isElectron" mat-icon-button (click)="this.site.minimize()">
-        <mat-icon class="material-icons-round">minimize</mat-icon>
+        <mat-icon class="">minimize</mat-icon>
       </button> -->
 
       <button mat-icon-button (click)="this.site.maximize()">
-        <mat-icon class="material-icons-round" *ngIf="!this.site.isMaximized">fullscreen</mat-icon>
-        <mat-icon class="material-icons-round" *ngIf="this.site.isMaximized">fullscreen_exit</mat-icon>
+        <mat-icon class="" *ngIf="!this.site.isMaximized">fullscreen</mat-icon>
+        <mat-icon class="" *ngIf="this.site.isMaximized">fullscreen_exit</mat-icon>
       </button>
 
       <!-- <button *ngIf="this.site.isElectron" mat-icon-button (click)="this.site.close()">
-        <mat-icon class="material-icons-round">close</mat-icon>
+        <mat-icon class="">close</mat-icon>
       </button> -->
 
 

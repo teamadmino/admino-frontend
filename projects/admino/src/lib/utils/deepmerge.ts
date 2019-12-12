@@ -1,8 +1,4 @@
-
-export function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
-}
-
+import { isObject } from './isobject';
 
 export function deepMerge(target, ...sources) {
     if (!sources.length) { return target; }

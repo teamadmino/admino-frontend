@@ -11,7 +11,7 @@ import { ScreenElementScreen } from '../modules/admino-screen/admino-screen.inte
 import { encodeParams, decodeParams } from '../utils/encodeparams';
 import { map } from 'rxjs/operators';
 import { wrapIntoObservable } from '../utils/wrap-into-observable';
-import { isObject } from '../utils/deepmerge';
+import { isObject } from '../utils/isobject';
 
 @Injectable({
   providedIn: 'root'

@@ -203,6 +203,21 @@
     color: mat-color($background, background);
   }
 
+  $_colors: mat-color($primary) mat-color($accent) mat-color($warn) mat-color($background, background) mat-color($foreground, base);
+  $_colornames: primary accent warn background foreground;
+
+  @for $i from 1 through length($_colors) {
+    .color-#{nth($_colornames, $i)} {
+      color: nth($_colors, $i) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
+    .highlight-#{nth($_colornames, $i)} {
+      background-color: nth($_colors, $i) !important;
+    }
+  }
+
   ///ADVANCED SEARCH
   .advanced-search {
     background-color: mat-color($background, raised-button);

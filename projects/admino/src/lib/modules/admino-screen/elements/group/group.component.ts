@@ -1,17 +1,24 @@
 import { AdminoScreenComponent } from './../../admino-screen.component';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'admino-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss']
 })
-export class GroupComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
+export class GroupComponent extends AdminoScreenElement implements OnInit, AfterViewInit, OnDestroy {
+  private ngUnsubscribe: Subject<null> = new Subject();
+
   @ViewChild(AdminoScreenComponent, { static: true }) screen: AdminoScreenComponent;
 
   ngOnInit() {
     // console.log(this.screen.form.value);
+    // this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+    // });
+
   }
   ngAfterViewInit() {
     // this.control.setValue(this.screen.form.value);
@@ -19,8 +26,12 @@ export class GroupComponent extends AdminoScreenElement implements OnInit, After
   actionEvent(e) {
     console.log(e);
   }
-  valueChange(e) {
-    // console.log(e);
-    // this.control.setValue(this.screen.form.value);
+  onChange(changes: any) {
+    this.screen.update(this.element);
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,5 +1,10 @@
 import { AdminoAction, AdminoButton } from '../../interfaces';
 
+export interface ScreenElementChange {
+    new: any;
+    old: any;
+}
+
 export interface ScreenElement {
     type: 'input' | 'checkbox' | 'radiobutton' | 'select' | 'multi'
     | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'image' | 'text' | 'group' | 'table' | 'timer';
@@ -51,11 +56,13 @@ export interface ScreenElementImage extends ScreenElement {
 }
 export interface ScreenElementTable extends ScreenElement {
     label?: string;
-    viewName: string;
-    columns: any[];
-    indexes: any[];
-    tableButtons: AdminoButton[];
-    rowButtons: AdminoButton[];
+    viewName?: string;
+    columns?: any[];
+    indexes?: any[];
+    refreshFrequency?: number;
+    forceRefresh?: boolean;
+    tableButtons?: AdminoButton[];
+    rowButtons?: AdminoButton[];
 }
 
 

@@ -7,7 +7,7 @@ import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDe
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
 import { Subject } from 'rxjs';
-import { deepMerge, isObject } from '../../utils/deepmerge';
+import { isObject } from '../../utils/isobject';
 
 @Component({
   selector: 'admino-screen',
@@ -56,14 +56,16 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     console.log(this.group.value);
   }
 
-  update(element: ScreenElementScreen) {
+  update(element: ScreenElementScreen, replace: boolean = false) {
     // console.log(config);
-
-
     // deepMerge(this.config, config);
-    this.mergeConfig(this.screenElement, element);
-    const values = this.extractValue(this.screenElement.elements);
-    this.updateValue(values);
+    if (replace) {
+      this.screenElement = element;
+    } else {
+      this.screenElement = this.mergeConfig(this.screenElement, element);
+    }
+    // const values = this.extractValue(this.screenElement.elements);
+    // this.updateValue(values);
     // const origValues = this.group.value;
     // const merged = deepMerge(origValues, values);
     // this.group.patchValue(merged);
@@ -71,38 +73,38 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     this.updateEvent.next();
   }
 
-  extractValue(elements: any[], val = {}) {
-    for (const element of elements) {
-      if (element && element.elements) {
-        val[element.id] = this.extractValue(element.elements);
-      } else if (element.value) {
-        val[element.id] = element.value;
-      }
-    }
-    return val;
-  }
+  // extractValue(elements: any[], val = {}) {
+  //   for (const element of elements) {
+  //     if (element && element.elements) {
+  //       val[element.id] = this.extractValue(element.elements);
+  //     } else if (element.value) {
+  //       val[element.id] = element.value;
+  //     }
+  //   }
+  //   return val;
+  // }
 
-  updateValue(values: any, group = this.group) {
-    for (const key of Object.keys(values)) {
-      const controlOrGroup = group.get(key);
-      const value = values[key];
-      if (controlOrGroup) {
-        if ((controlOrGroup as any).controls) {
-          // if FormGroup
-          this.updateValue(value, controlOrGroup as FormGroup);
-        } else {
-          let mergedValue = controlOrGroup.value;
-          if (isObject(value)) {
-            mergedValue = Object.assign(mergedValue ? mergedValue : {}, value);
-            mergedValue.__update__ = true;
-          } else {
-            mergedValue = value;
-          }
-          controlOrGroup.patchValue(mergedValue);
-        }
-      }
-    }
-  }
+  // updateValue(values: any, group = this.group) {
+  //   for (const key of Object.keys(values)) {
+  //     const controlOrGroup = group.get(key);
+  //     const value = values[key];
+  //     if (controlOrGroup) {
+  //       if ((controlOrGroup as any).controls) {
+  //         // if FormGroup
+  //         this.updateValue(value, controlOrGroup as FormGroup);
+  //       } else {
+  //         let mergedValue = controlOrGroup.value;
+  //         if (isObject(value)) {
+  //           mergedValue = Object.assign(mergedValue ? mergedValue : {}, value);
+  //           mergedValue.__update__ = true;
+  //         } else {
+  //           mergedValue = value;
+  //         }
+  //         controlOrGroup.patchValue(mergedValue);
+  //       }
+  //     }
+  //   }
+  // }
 
 
   mergeConfig(target, source) {
@@ -123,6 +125,8 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
           Object.assign(target, { [key]: source[key] });
         }
       }
+    } else {
+      target = source;
     }
     return target;
   }
@@ -139,7 +143,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
         if (foundTargetItem) {
           this.mergeConfig(foundTargetItem, item);
         } else {
-          if (item.createAt) {
+          if (item.createAt !== undefined) {
             target.splice(item.createAt, 0, item);
           } else {
             target.push(item);

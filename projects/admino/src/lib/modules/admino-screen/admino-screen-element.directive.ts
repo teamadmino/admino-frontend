@@ -6,9 +6,9 @@ import {
   Directive, Input, ComponentFactoryResolver, ViewContainerRef,
   OnInit, OnDestroy, ComponentRef, DoCheck
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import { ScreenElementValidator, ScreenElement } from './admino-screen.interfaces';
 
 import { InputComponent } from './elements/input/input.component';
@@ -16,6 +16,8 @@ import { ButtonComponent } from './elements/button/button.component';
 import { GroupComponent } from './elements/group/group.component';
 import { TableComponent } from './elements/table/table.component';
 import { TimerComponent } from './elements/timer/timer.component';
+import { takeUntil } from 'rxjs/operators';
+import { deepCompare } from '../../utils/deepcompare';
 
 
 const componentMapper = {
@@ -31,19 +33,23 @@ const componentMapper = {
 @Directive({
   selector: '[adminoScreenElement]'
 })
-export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck {
+export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
 
   @Input() element: ScreenElement;
   // @Input() fields: FieldConfig[];
   @Input() parentGroup: FormGroup;
+
   control: FormControl;
   group: FormGroup;
+  valueChangeSub: Subscription;
+
+
   @Input() screenComponent: AdminoScreenComponent;
   @Input() keyAreaId: string;
   @Input() index: number;
   componentRef: ComponentRef<any>;
-  elementComponent;
+  elementComponent: AdminoScreenElement;
 
   activeElementConfig: any = {};
 
@@ -52,86 +58,69 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef) {
 
   }
-  ngDoCheck() {
-    if (this.componentRef && this.element) {
-      // Type change
-      if (this.element.type !== this.activeElementConfig.type) {
-        this.destroyComponent();
-        this.createComponent();
-      }
-      // Value change
-      if (this.element.value !== this.activeElementConfig.value) {
-        const control = this.parentGroup.get(this.element.id);
-        if (control) {
-          control.setValue(this.element.value);
-        }
-      }
-      // // Destroy
-      // if (this.element.destroy) {
-      //     for (const element of _config.elements) {
-      //       if (element.id === this.element.id) {
-      //         _config.elements.splice(_config.elements.indexOf(element), 1);
-      //       }
-      //     }
-
-      // }
-
-      this.activeElementConfig = cloneDeep(this.element);
-    }
-  }
 
 
   ngOnInit() {
+    this.activeElementConfig = cloneDeep(this.element);
+
+    this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      if (this.componentRef && this.element) {
+
+        // Type change
+        if (this.element.type !== this.activeElementConfig.type) {
+          this.destroyComponent();
+          this.createComponent();
+        }
+
+        // Value change
+        const control = this.parentGroup.get(this.element.id);
+        if (this.element.value && !isEqual(control.value, this.activeElementConfig.value)) {
+          if (control) {
+            control.setValue(this.element.value);
+          }
+        }
+
+        // console.log(this.element);
+        const changes = deepCompare(this.activeElementConfig, this.element);
+        if (Object.keys(changes).length > 0) {
+          this.elementComponent.onChange(changes);
+        }
+
+        // Destroy
+        if (this.element.destroy) {
+          this.destroyComponent();
+        }
+
+        this.activeElementConfig = cloneDeep(this.element);
+      }
+    });
     this.createComponent();
-
-    // if (this.index === 0) {
-    //   screenElement.focus();
-    // }
-
-    // if (!this.element.config) {
-    //   this.element.config = {};
-    // }
-    // const control = this.group.get(this.field.name);
-    // if (control) {
-    //   const subscription = control.valueChanges.pipe(startWith(this.field.value), takeUntil(this.ngUnsubscribe)).subscribe(val => {
-
-    //     // console.log(val)
-
-    //     this.field.value = val;
-    //     if (this.field.conditionController) {
-    //       this.removeAllConditionalFields();
-    //       this.addMatchingConditionalFields(val);
-    //       // console.log(this.fields);
-    //     }
-    //   });
-    // }
-
-    if (this.element.type === 'group') {
-
-      this.createGroup();
-      this.elementComponent.group = this.group;
-
-    } else {
-      this.createControl();
-      this.elementComponent.control = this.control;
-    }
-
   }
 
 
+
+
   createComponent() {
-    this.activeElementConfig = cloneDeep(this.element);
     const factory = this.resolver.resolveComponentFactory(
       componentMapper[this.element.type]
     );
     this.componentRef = this.container.createComponent(factory);
     this.elementComponent = this.componentRef.instance as AdminoScreenElement;
     this.elementComponent.element = this.element;
-    this.elementComponent.group = this.parentGroup;
     this.elementComponent.screenComponent = this.screenComponent;
     this.elementComponent.index = this.index;
+
+    if (this.element.type === 'group') {
+      this.createGroup();
+      this.elementComponent.group = this.group;
+    } else {
+      this.createControl();
+      this.elementComponent.group = this.parentGroup;
+      this.elementComponent.control = this.control;
+    }
   }
   destroyComponent() {
+    this.removeControl();
     this.componentRef.destroy();
   }
 
@@ -144,6 +133,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
     }
     );
     this.group = group;
+    this.valueChangeSub = this.group.valueChanges.subscribe((changes) => {
+      this.elementComponent.valueChanges.next(changes);
+    });
     this.parentGroup.addControl(this.element.id, group);
   }
 
@@ -156,10 +148,15 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
     }
     );
     this.control = control;
-
+    this.valueChangeSub = this.control.valueChanges.subscribe((changes) => {
+      this.elementComponent.valueChanges.next(changes);
+    });
     this.parentGroup.addControl(this.element.id, control);
   }
   removeControl() {
+    if (this.valueChangeSub) {
+      this.valueChangeSub.unsubscribe();
+    }
     this.parentGroup.removeControl(this.element.id);
   }
 
@@ -215,7 +212,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy, DoCheck 
   }
 
   ngOnDestroy() {
-    this.removeControl();
+    this.destroyComponent();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

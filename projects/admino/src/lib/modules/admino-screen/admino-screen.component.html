@@ -1,4 +1,4 @@
-<div class="admino-screen " [ngClass]="prepareInnerClasses(_screenElement.innerClasses)">
+<div class="admino-screen " [ngClass]="prepareInnerClasses(_screenElement.innerClasses)" *ngIf="_screenElement">
     <admino-card [nopadding]="true" [showBorder]="_screenElement.showBorder">
         <!-- [fillHeight]="_screenElement.fillHeight" -->
         <form [formGroup]="group" (submit)="onSubmit($event)">

@@ -21,7 +21,7 @@
           <div class="fill-space"></div>
           <div class="avatar-icon">
             <!-- <button mat-icon-button (click)="this.user.setLoginState(false)">
-              <mat-icon class="material-icons-round c-fg-secondary-text" [inline]='true'>exit_to_app</mat-icon>
+              <mat-icon class=" c-fg-secondary-text" [inline]='true'>exit_to_app</mat-icon>
             </button> -->
           </div>
         </div>
@@ -32,7 +32,7 @@
         <div *ngFor="let bbutton of this.user.bottomButtons" class="d-block">
           <button (click)="this.bottomMenuClicked(bbutton)" class="  mb-3" mat-flat-button
             [color]="bbutton.color?bbutton.color:'primary'">
-            <mat-icon class="material-icons-round" *ngIf="bbutton.icon"> {{bbutton.icon}}</mat-icon> {{bbutton.label}}
+            <mat-icon class="" *ngIf="bbutton.icon"> {{bbutton.icon}}</mat-icon> {{bbutton.label}}
           </button>
         </div>
 

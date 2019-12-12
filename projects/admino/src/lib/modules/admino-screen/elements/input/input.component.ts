@@ -11,6 +11,8 @@ export class InputComponent extends AdminoScreenElement implements OnInit {
 
   focused = false;
   ngOnInit() {
-  }
 
+  }
+  onChange(changes: any) {
+  }
 }

@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenElementTimer } from './../../admino-screen.interfaces';
+import { ScreenElementTimer, ScreenElementChange } from './../../admino-screen.interfaces';
 import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 import { Subject } from 'rxjs';
@@ -14,31 +14,27 @@ import { ActionEvent } from 'admino';
 export class TimerComponent extends AdminoScreenElement implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
 
-  activeConfig: ScreenElementTimer;
-
   timeoutHelper;
   ngOnInit() {
     this.init();
-    this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      if (this.activeConfig.frequency !== this.element.frequency) {
-        this.init();
-      }
-    });
   }
-
+  onChange(changes: { [id: string]: ScreenElementChange; }) {
+    if (changes.frequency) {
+      this.init();
+    }
+  }
   init() {
-    this.activeConfig = cloneDeep(this.element as ScreenElementTimer);
     this.startTimeout();
   }
 
   startTimeout() {
     this.clearTimeout();
-    const actionEvent: ActionEvent = {
-      action: this.activeConfig.action,
-      form: this.screenComponent.group
-    };
+    if (this.element.frequency > 0) {
+      const actionEvent: ActionEvent = {
+        action: this.element.action,
+        form: this.screenComponent.group
+      };
 
-    if (this.activeConfig.frequency > 0) {
       this.timeoutHelper = setTimeout(() => {
         this.screenComponent.as.handleAction(actionEvent).pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
           this.startTimeout();
@@ -46,7 +42,7 @@ export class TimerComponent extends AdminoScreenElement implements OnInit, OnDes
           this.startTimeout();
         });
         // this.handleAction(this.element.config.action).pipe(takeUntil(this.ngUnsubscribe));
-      }, this.activeConfig.frequency);
+      }, this.element.frequency);
     }
   }
 

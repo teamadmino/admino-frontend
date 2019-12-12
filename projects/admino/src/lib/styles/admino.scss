@@ -1,6 +1,7 @@
-@import "./fonts.scss";
-// $font-family-base: 'Roboto',
-// sans-serif !default;
+$material-icons-font-path: '~material-icons/iconfont/';
+@import '~material-icons/iconfont/material-icons.scss';
+@import '~typeface-roboto/index.css';
+@import '~typeface-roboto-mono/index.css';
 
 @import "./themes/purple-light-theme.scss";
 @import "./themes/purple-dark-theme.scss";
@@ -9,11 +10,7 @@
 @import "./themes/blue-dark-theme.scss";
 @import "./themes/blue-light-theme.scss";
 @include mat-core();
-// @include angular-material-theme($gold-dark-theme);
-// $custom-typography: mat-typography-config($font-family: $font-body);
-// @include mat-core($custom-typography);
-// $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-// @import '~material-design-icons-iconfont/src/material-design-icons';
+
 
 
 html,
@@ -53,7 +50,6 @@ button {
 .mh-100 {
   height: 1px;
   min-height: 100%;
-
 }
 
 // .align-self-flex-start {
@@ -166,4 +162,43 @@ button {
 
   // @include make-grid-columns();
 
+}
+
+.font-primary {
+  font-family: 'Roboto', sans-serif;
+}
+
+.font-mono {
+  font-family: 'Roboto Mono', monospace;
+}
+
+
+.italic {
+  font-style: italic;
+}
+
+$sizes: 0.4rem 0.5rem 0.6rem 0.8rem 1rem 1.2rem 1.4rem 1.8rem 2rem;
+$sizenames: xxxs xxs xs sm md lg xl xxl xxxl;
+
+@for $i from 1 through length($sizes) {
+  .font-size-#{nth($sizenames, $i)} {
+    font-size: nth($sizes, $i);
+  }
+}
+
+$_opacity: 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9;
+$_opacitynames: 10 20 30 40 50 60 70 80 90;
+
+@for $i from 1 through length($_opacity) {
+  .opacity-#{nth($_opacitynames, $i)} {
+    opacity: nth($_opacity, $i);
+  }
+}
+
+$_weight: 300 500 700 900;
+
+@for $i from 1 through length($_weight) {
+  .font-weight-#{nth($_weight, $i)} {
+    font-weight: nth($_weight, $i);
+  }
 }

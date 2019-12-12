@@ -33,7 +33,8 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
   }
 
   redrawScreen(screen: ScreenElementScreen) {
-    this.screenElement = screen;
+    // this.screenElement = screen;
+    this.screen.update(screen, true);
     this.cd.detectChanges();
   }
 

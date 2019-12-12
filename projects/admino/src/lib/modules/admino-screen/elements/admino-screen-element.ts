@@ -1,5 +1,5 @@
+import { ScreenElementChange } from './../admino-screen.interfaces';
 import { AdminoAction, ActionEvent } from './../../../interfaces';
-import { AdminoApiService } from './../../../services/api.service';
 import { AdminoScreenComponent } from '../admino-screen.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ScreenElement } from '../admino-screen.interfaces';
@@ -18,6 +18,8 @@ export class AdminoScreenElement {
 
     public index: number;
     // public configChange: Subject<any> = new Subject();
+    // public updateEvent: Subject<any> = new Subject();
+    public valueChanges: Subject<any> = new Subject();
 
 
     handleAction(action: AdminoAction) {
@@ -40,28 +42,14 @@ export class AdminoScreenElement {
         }
     }
     focusEvent(el: HTMLInputElement) {
-        // if (this.form.useVirtualKeyboard) {
-        //     this.hideKeyboard(el);
-        // }
     }
     blurEvent(element: HTMLInputElement) {
-        element.removeAttribute('readonly');
+    }
+    setValue(value) {
+        this.control.setValue(value);
+    }
+    onChange(changes: { [id: string]: ScreenElementChange; }) {
     }
 
-    hideKeyboard(element: HTMLInputElement) {
-        element.setAttribute('readonly', 'readonly'); // Force keyboard to hide on input field.
-        // const tagName = element.tagName.toLowerCase();
-        // if (tagName === 'textarea') {
-        //     element.setAttribute('disabled', 'true'); // Force keyboard to hide on textarea field.
-        // }
-        // setTimeout(() => {
-        //     element.blur();  // actually close the keyboard
-        //     // Remove readonly attribute after keyboard is hidden.
-        //     element.removeAttribute('readonly');
-        //     element.removeAttribute('disabled');
-        // this.form.lastFocusedInput.next(this);
-
-        // }, 100);
-    }
 
 }
