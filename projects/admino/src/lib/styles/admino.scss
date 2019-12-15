@@ -164,6 +164,14 @@ button {
 
 }
 
+.pointer-events-all {
+  pointer-events: all;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
 .font-primary {
   font-family: 'Roboto', sans-serif;
 }

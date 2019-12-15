@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { ScreenElementScreen } from './modules/admino-screen/admino-screen.interfaces';
 import { FormGroup } from '@angular/forms';
 
@@ -41,7 +42,12 @@ export interface ActionEvent {
   form?: FormGroup;
   screenConfig?: ScreenElementScreen;
 }
+////////////
 
+export interface ActionSubscription {
+  actionEvent?: ActionEvent;
+  subscription?: Subscription;
+}
 ////////////
 export interface AdminoAction {
   type: 'backend' | 'frontend' | 'url';
@@ -59,6 +65,8 @@ export interface AdminoAction {
   includeSchema?: boolean;
   // isBlocking?: boolean;
 }
+
+
 
 export interface BackendRequest {
 
@@ -86,6 +94,7 @@ export interface BackendResponse {
   setQueryParams: { [id: string]: string; };
   setBottomButtons: AdminoButton[];
 
+  closePopup: boolean | string;
 
 
   setThemeColor: ThemeConfig;

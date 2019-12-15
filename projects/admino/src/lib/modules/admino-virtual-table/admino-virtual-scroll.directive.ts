@@ -118,9 +118,6 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     this.scrollListener = this.rdr.listen(this.$viewport, 'scroll', this.onScroll.bind(this));
     this.refresh();
     this.$viewport.scrollTop = 0;
-    // setTimeout((params) => {
-    // this.scrollToItem(0);
-    // }, 1000)
   }
   onScroll($event: any) {
     const scrollPos = this.$viewport.scrollTop;

@@ -131,25 +131,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   }
   ngOnInit() {
   }
-
-
-  update(value: TableValue) {
-    if (value.keys) {
-      this.dataSource.keys = value.keys;
-    }
-    this.dataSource.loadData().then((result: any) => {
-      const cursorPosPercent = value.cursorPosPercent;
-      if (cursorPosPercent !== undefined) {
-        const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.count - 1) * cursorPosPercent);
-        // console.log(this.dataSource.cursorAbsPos);
-        // console.log(cursorPos);
-        // console.log(Math.floor(this.dataSource.count * cursorPosPercent));
-        this.vsRef.scrollToItem(cursorPos);
-      }
-    });
-  }
-
-
   ngAfterViewInit() {
     // setTimeout((params) => {
     //   this.cd.detectChanges();
@@ -168,6 +149,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
           this.cd.detectChanges();
           this.vsRef.refresh();
         }
+
         this.vsRef.patchData(this.dataSource.rows);
         this.cd.detectChanges();
       }
@@ -179,8 +161,28 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     //   this.cd.detectChanges();
     //   this.vsRef.refresh();
     // }, 3000)
-
   }
+
+  update(value: TableValue) {
+    if (!value) {
+      return;
+    }
+    if (value.keys) {
+      this.dataSource.keys = value.keys;
+    }
+    if (value.index !== undefined) {
+      this.vsRef.clearData();
+      this.dataSource.index = value.index;
+    }
+    this.dataSource.loadData().then((result: any) => {
+      const cursorPosPercent = value.cursorPosPercent;
+      if (cursorPosPercent !== undefined) {
+        const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.count - 1) * cursorPosPercent);
+        this.vsRef.scrollToItem(cursorPos);
+      }
+    });
+  }
+
 
   sortClicked(column, sorter) {
     // const dir = e.direction === 'asc' ? 1 : -1;
@@ -188,16 +190,16 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (this.sortedColumn === column && sorter.direction === 1) {
       this.sortedColumn = null;
       sorter.direction = -1;
-      this.dataSource.selectedIndex = 1;
+      this.dataSource.index = 1;
     } else {
       this.sortedColumn = column;
       const found = this.dataSource.indexes.find((index) => {
         return index.keys[0] === this.sortedColumn.id;
       });
       if (found) {
-        this.dataSource.selectedIndex = (this.dataSource.indexes.indexOf(found) + 1) * sorter.direction;
+        this.dataSource.index = (this.dataSource.indexes.indexOf(found) + 1) * sorter.direction;
       } else {
-        this.dataSource.selectedIndex = 1;
+        this.dataSource.index = 1;
       }
     }
     this.vsRef.clearData();

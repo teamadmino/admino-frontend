@@ -1,28 +1,3 @@
-<!-- <div class="atable">
-    <div class="athead" #headerRef>
-        <span class="acell">Id</span>
-        <span class="acell">First </span>
-        <span class="acell">Last</span>
-        <span class="acell">Action</span>
-    </div>
-    <div class="vr-container atbody" #bodyRef (scroll)="handleScroll()">
-        <ng-template adminoVsFor [adminoVsForOf]="items" [adminoVsForTotalsize]="this.totalsize" let-item
-            let-position="__position__" (afterRender)="afterRender($event)">
-            <div class="arow" [style.marginTop.px]="position">
-                <span class="acell">1</span>
-                <span class="acell">Mark {{item.__id}}</span>
-                <span class="acell">Otto</span>
-
-                <span class="acell stickyEnd">
-                    <button tabindex="-1" type='button' mat-icon-button>
-                        <mat-icon class="material-icons-round">edit
-                        </mat-icon>
-                    </button>
-                </span>
-            </div>
-        </ng-template>
-    </div>
-</div> -->
 <div class="admino-virtual-table">
 
     <table class="table table-dark" adminoResizeObserver [debounceAdminoResize]="10" (adminoResize)="resize()"
@@ -58,8 +33,8 @@
                     <!-- <td>{{index+1}}</td> -->
                     <td *ngFor="let column of dataSource.displayedColumns; let i=index" [style.height.px]="itemSize"
                         [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px'}">
-                        <div class="cell-content">
-                            {{content[column.id]}}
+                        <div class="cell-content" [innerHtml]="content[column.id]">
+                            <!-- {{content[column.id]}} -->
                             <!-- {{content.__loaded__}} -->
                         </div>
                         <!-- viewI {{cacheIndex}} absI {{index}}  -->

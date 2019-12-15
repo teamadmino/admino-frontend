@@ -60,6 +60,7 @@ export class AdminoActionService {
     // const backendRequest: BackendRequest = {};
     return this.api.request(screen, screenValue, schema, this.currentQueryParams).pipe(map((response: BackendResponse) => {
       if (response.setScreen) {
+        this.setQueryParams({});
         this.redrawScreen.next(response.setScreen);
       }
       if (response.updateScreen) {

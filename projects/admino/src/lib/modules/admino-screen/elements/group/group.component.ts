@@ -1,3 +1,4 @@
+import { ActionEvent } from './../../../../interfaces';
 import { AdminoScreenComponent } from './../../admino-screen.component';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
@@ -23,9 +24,7 @@ export class GroupComponent extends AdminoScreenElement implements OnInit, After
   ngAfterViewInit() {
     // this.control.setValue(this.screen.form.value);
   }
-  actionEvent(e) {
-    console.log(e);
-  }
+
   onChange(changes: any) {
     this.screen.update(this.element);
   }

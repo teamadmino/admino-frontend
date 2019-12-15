@@ -1,17 +1,17 @@
 <div class="admino-screen " [ngClass]="prepareInnerClasses(_screenElement.innerClasses)" *ngIf="_screenElement">
-    <admino-card [nopadding]="true" [showBorder]="_screenElement.showBorder">
+    <admino-card [nopadding]="true" [opaque]="this.isPopup" [showBorder]="_screenElement.showBorder">
         <!-- [fillHeight]="_screenElement.fillHeight" -->
         <form [formGroup]="group" (submit)="onSubmit($event)">
             <!-- [ngClass]="{'fill-height': _screenElement.fillHeight}" -->
-            <h2 class="admino-screen-label" *ngIf="_screenElement.label">{{_screenElement.label}}</h2>
+            <h2 class="heading-primary font-weight-300" *ngIf="_screenElement.label">{{_screenElement.label}}</h2>
             <div class="row">
 
                 <ng-container *ngFor="let element of _screenElement.elements; let i=index;">
                     <div class="col-12" *ngIf="element.breakBefore">
                     </div>
                     <div class="col admino-form-col mt-3 " [ngClass]="this.prepareClasses(element)">
-                        <ng-container adminoScreenElement [element]="element" [parentGroup]="group"
-                            [screenComponent]='this' [index]="i">
+                        <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
+                            [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i">
                         </ng-container>
                     </div>
                 </ng-container>

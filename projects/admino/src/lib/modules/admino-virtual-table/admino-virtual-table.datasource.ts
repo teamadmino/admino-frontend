@@ -29,14 +29,14 @@ export class AdminoVirtualTableDataSource {
 
     public loadDataEvent = new Subject<any>();
 
-    currentRequests: { subscription: Subscription, shift: number, rejectPromise: () => void }[] = [];
+    currentRequests: { subscription: Subscription, shift: number, resolvePromise: () => void, rejectPromise: () => void }[] = [];
 
     columns: VirtualDataSourceColumn[] = [];
     displayedColumns = [];
     keyIds = [];
 
     indexes = [];
-    selectedIndex = 1;
+    index = 1;
 
     keys: any;
     count = 10;
@@ -68,14 +68,14 @@ export class AdminoVirtualTableDataSource {
 
         return new Promise((resolve, reject) => {
 
-            const requestObj = { subscription: null, shift, rejectPromise: reject };
+            const requestObj = { subscription: null, shift, resolvePromise: resolve, rejectPromise: reject };
 
             const state = {
                 keys: this.keys ? Object.assign({}, this.keys) : { '#position': 'first' },
                 cursor: this.cursor,
                 shift: calculatedShift,
                 count: this.count,
-                index: this.selectedIndex,
+                index: this.index,
                 before: this.count,
                 after: this.count,
                 cursorPosPercent: this.cursor / (this.count - 1),
@@ -94,6 +94,7 @@ export class AdminoVirtualTableDataSource {
                     const index = this.currentRequests.indexOf(requestObj);
                     for (let i = 0; i <= index; i++) {
                         const req = this.currentRequests[0];
+                        req.resolvePromise();
                         req.subscription.unsubscribe();
                         this.currentRequests.shift();
                     }

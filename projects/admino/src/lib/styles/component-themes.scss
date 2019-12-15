@@ -124,7 +124,6 @@
   }
 
 
-
   .admino-menu {
     .admino-menu-button {
       &::before {
@@ -141,14 +140,7 @@
   }
 
   /////////////////////////////////
-  .admino-screen {
-    .admino-screen-label {
-      text-shadow: 0px 0px 20px mat-color($primary, 600);
-      color: mat-color($primary, 400);
-      font-weight: 300;
-    }
 
-  }
 
   /////////////////////////////////////////////////
   /////////////////////////////////////////////////
@@ -215,6 +207,19 @@
   @for $i from 1 through length($_colors) {
     .highlight-#{nth($_colornames, $i)} {
       background-color: nth($_colors, $i) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
+    .text-glow-#{nth($_colornames, $i)} {
+      text-shadow: 0px 0px 10px nth($_colors, $i) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
+    .heading-#{nth($_colornames, $i)} {
+      text-shadow: 0px 0px 10px nth($_colors, $i) !important;
+      color: nth($_colors, $i) !important;
     }
   }
 

@@ -1,7 +1,7 @@
-<div class="admino-modal">
-    <div class="admino-modal-bg" (click)="close()"></div>
-    <div class="admino-modal-content-wrapper">
-        <div class="admino-modal-content" [ngClass]="{nopadding: config.nopadding}" [ngStyle]="{
+<div class="admino-modal" [ngClass]="getClasses()">
+    <div class="admino-modal-bg"></div>
+    <div class="admino-modal-content-wrapper" (click)="close()">
+        <div class="admino-modal-content" (click)="$event.stopPropagation()" [ngStyle]="{
             width:config.width ,
             height:config.height
         }">

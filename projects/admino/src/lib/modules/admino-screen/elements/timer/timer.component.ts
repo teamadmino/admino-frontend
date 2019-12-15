@@ -30,13 +30,8 @@ export class TimerComponent extends AdminoScreenElement implements OnInit, OnDes
   startTimeout() {
     this.clearTimeout();
     if (this.element.frequency > 0) {
-      const actionEvent: ActionEvent = {
-        action: this.element.action,
-        form: this.screenComponent.group
-      };
-
       this.timeoutHelper = setTimeout(() => {
-        this.screenComponent.as.handleAction(actionEvent).pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+        this.handleAction(this.element.action).then(() => {
           this.startTimeout();
         }, (params) => {
           this.startTimeout();

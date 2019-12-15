@@ -3,6 +3,11 @@ import { Injectable, Injector, ViewContainerRef, ComponentFactoryResolver, ViewR
 import { Portal, CdkPortalOutlet, ComponentPortal, PortalInjector, ComponentType } from '@angular/cdk/portal';
 import { Component } from '@angular/compiler/src/core';
 
+export interface AdminoModalRef {
+  modal: AdminoModalComponent;
+  component: any;
+}
+
 // {  providedIn: 'root'}
 @Injectable({ providedIn: 'root' })
 export class AdminoModalService {
@@ -19,12 +24,10 @@ export class AdminoModalService {
   constructor() {
     this.id = Math.random();
   }
-  open(componentType: any, config: AdminoModalConfig = {}): { modal: AdminoModalComponent, component: any } {
+  open(componentType: any, config: AdminoModalConfig = {}): AdminoModalRef {
     // console.log(this.componentResolverFactory);
     // console.log(this.viewContainerRef);
     // console.log(componentType);
-    console.log(config);
-
 
     const factory = this.componentResolverFactory.resolveComponentFactory(AdminoModalComponent);
     const component: ComponentRef<AdminoModalComponent> = factory.create(this.injector);

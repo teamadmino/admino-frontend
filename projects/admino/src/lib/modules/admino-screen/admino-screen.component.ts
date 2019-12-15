@@ -6,7 +6,7 @@ import { ScreenElementScreen, ScreenElement } from './admino-screen.interfaces';
 import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { isObject } from '../../utils/isobject';
 
 @Component({
@@ -16,26 +16,26 @@ import { isObject } from '../../utils/isobject';
 })
 export class AdminoScreenComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
-
-
-  _screenElement: ScreenElementScreen;
-
+  _screenElement: ScreenElementScreen = {};
   @Input() public set screenElement(element: ScreenElementScreen) {
     this._screenElement = element;
   }
-
   public get screenElement(): ScreenElementScreen {
     return this._screenElement;
   }
-
-  @Output() actionEvent: EventEmitter<ActionEvent> = new EventEmitter();
+  // @Output() actionEvent: EventEmitter<ActionEvent> = new EventEmitter();
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   public updateEvent: Subject<any> = new Subject();
-
-
-
   @Input() group: FormGroup = this.fb.group({});
 
+  @Input() rootScreenComponent: AdminoScreenComponent = this;
+
+  pauseValueChange = false;
+
+  public pauseEvent: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+
+  @Input() isPopup = false;
 
   constructor(public fb: FormBuilder, public api: AdminoApiService, public as: AdminoActionService, private cd: ChangeDetectorRef) { }
 
@@ -106,6 +106,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   //   }
   // }
 
+  handleAction(actionEvent) {
+    return this.as.handleAction(actionEvent);
+  }
 
   mergeConfig(target, source) {
     if (isObject(target) && isObject(source)) {
@@ -160,10 +163,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
 
   prepareClasses(element: ScreenElement, isRoot: boolean = false) {
-    if (element.type === 'timer') {
+    if (element.hidden || element.type === 'timer') {
       return 'd-none';
     }
-
     const arr = element.classes ? element.classes : isRoot ? [] : ['col-12'];
     if (element.fillHeight) {
       arr.push('fill-height-flex');

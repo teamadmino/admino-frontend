@@ -4,68 +4,91 @@
   height: 100%;
   display: inline-block;
   z-index: 1;
-  // overflow: hidden;
+}
 
-  .admino-modal-content-wrapper {
-    position: absolute;
+.admino-modal-content-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  pointer-events: all;
+
+  padding: 1rem;
+
+
+
+  .admino-modal-content {
+    // position: absolute;
+    max-width: 100%;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-    overflow-y: auto;
-    z-index: 3;
+    z-index: 1;
+    animation: transitionInContent 0.5s forwards;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    pointer-events: none;
-
-    .admino-modal-content {
-      position: absolute;
-      max-width: 100%;
-      width: 100%;
-      z-index: 1;
-      padding: 1rem;
-      animation: transitionInContent 0.5s forwards;
-      pointer-events: none;
-
-      .admino-modal-content-bg {
-        pointer-events: all;
-
-        height: 100%;
-        border-radius: 5px;
-        background: white;
-        padding: 1rem;
-
-      }
-
-      &.nopadding {
-        padding: 0px;
-
-        .admino-modal-content-bg {
-          padding: 0px;
-          background-color: transparent !important;
-          box-shadow: none !important;
-          border: none !important;
-        }
-
-      }
-
-
-
-
+    .vertical-top & {
+      margin-bottom: auto;
     }
-  }
 
-  .admino-modal-bg {
-    position: absolute;
-    width: 100%;
-    height: calc(100% + 65px);
-    margin-top: -65px;
-    background-color: rgba(0, 0, 0, 0.5);
-    animation: transitionIn 0.5s forwards;
-    pointer-events: all;
+    .vertical-center & {
+      margin-bottom: auto;
+      margin-top: auto;
+    }
+
+    .vertical-bottom & {
+      margin-top: auto;
+    }
+
+    .horizontal-left & {
+      margin-right: auto;
+    }
+
+    .horizontal-center & {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .horizontal-right & {
+      margin-left: auto;
+    }
+
+    .admino-modal-content-bg {
+
+      pointer-events: all;
+      height: 100%;
+      border-radius: 5px;
+      background: white;
+      // padding: 1rem;
+      background-color: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    // .nopadding & {
+    //   padding: 0px;
+    //   .admino-modal-content-bg {
+    //     padding: 0px;
+
+    //   }
+    // }
+
+
+
+
   }
+}
+
+.admino-modal-bg {
+  position: absolute;
+  width: 100%;
+  height: calc(100% + 65px);
+  margin-top: -65px;
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: transitionIn 0.5s forwards;
+  pointer-events: none;
+  // z-index: -1;
 }
 
 @keyframes transitionInContent {
@@ -86,6 +109,6 @@
   }
 
   100% {
-    opacity: 0.5;
+    opacity: 0.8;
   }
 }
