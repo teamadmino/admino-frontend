@@ -36,13 +36,24 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
   }
 
   redrawScreen(screen: ScreenElementScreen, reset = false) {
+    if (reset) {
+      this.clearPopups();
+    }
+    this.handlePopups(screen);
+    this.screen.update(screen, reset);
+    if (reset) {
+      this.animTrigger = !this.animTrigger;
+    }
+    this.cd.detectChanges();
+  }
+
+  handlePopups(screen) {
     if (screen.popups) {
       for (const popup of screen.popups) {
         const found = this.openPopups.find((pref) => {
           return pref.popup.id === popup.id;
         });
         if (found) {
-          console.log("FOUND ", popup.id)
           found.ref.modal.setData({
             popup,
             universalEditor: this
@@ -51,6 +62,7 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
             found.ref.modal.close();
           }
         } else {
+
           const ref = this.ms.open(AdminoUniversalEditorPopupComponent, {
             width: popup.width ? popup.width : undefined,
             height: popup.height,
@@ -69,50 +81,6 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
         }
       }
     }
-    if (reset) {
-      this.clearPopups();
-    }
-    this.screen.update(screen, reset);
-    if (reset) {
-      this.animTrigger = !this.animTrigger;
-    }
-    // this.screenElement = screen;
-    // if (screen.popups) {
-    //   // const config = {
-    //   //   data: {
-    //   //     screen,
-    //   //     universalEditor: this
-    //   //   }
-    //   // };
-    //   // if (isObject(screen.popup)) {
-    //   //   Object.assign(config, screen.popup);
-    //   // }
-
-    //   // const ref = this.ms.open(AdminoUniversalEditorPopupComponent, config);
-    //   // this.openPopups.push({ screenId: screen.id, ref });
-
-
-    //   // this.activeScreenId = this.openPopups.length;
-    //   // ref.modal.closeEvent.subscribe((ev) => {
-    //   //   this.openPopups.pop();
-    //   //   this.activeScreenId -= 1;
-    //   // });
-    //   // // ref.modal.setData({
-    //   // //   screen,
-    //   // //   universalEditor: this
-    //   // // });
-
-    // } else {
-    //   if (this. === 0) {
-    //     this.screen.update(screen, true);
-    //   } else {
-    //     this.openPopups[this.activeScreenId - 1].ref.modal.setData({
-    //       screen,
-    //       universalEditor: this
-    //     });
-    //   }
-    // }
-    this.cd.detectChanges();
   }
 
 

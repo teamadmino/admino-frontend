@@ -1,6 +1,6 @@
 <div class="admino-modal" [ngClass]="getClasses()">
     <div class="admino-modal-bg"></div>
-    <div class="admino-modal-content-wrapper" (click)="close()">
+    <div class="admino-modal-content-wrapper" (click)="closeByClick()">
         <div class="admino-modal-content" (click)="$event.stopPropagation()" [ngStyle]="{
             width:config.width ,
             height:config.height

@@ -1,6 +1,6 @@
 import { Subject, BehaviorSubject } from 'rxjs';
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { Component, OnInit, ViewChild, Injector, InjectionToken, ComponentFactoryResolver, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, InjectionToken, ComponentFactoryResolver, Output, EventEmitter, HostListener, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CdkPortalOutlet, PortalInjector, ComponentPortal } from '@angular/cdk/portal';
 export const MODAL_DATA = new InjectionToken<{}>('MODAL_DATA');
 export const MODAL_REF = new InjectionToken<{}>('MODAL_REF');
@@ -22,7 +22,7 @@ export interface AdminoModalConfig {
   templateUrl: './admino-modal.component.html',
   styleUrls: ['./admino-modal.component.scss']
 })
-export class AdminoModalComponent implements OnInit {
+export class AdminoModalComponent implements OnInit, OnDestroy {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutletRef: CdkPortalOutlet;
 
   component: any;
@@ -35,6 +35,9 @@ export class AdminoModalComponent implements OnInit {
     // height: 100 + '%',
     nopadding: true,
   };
+
+  timeoutHelper;
+  readyForClose = false;
 
   @Output() closeEvent: EventEmitter<any> = new EventEmitter();
 
@@ -61,6 +64,11 @@ export class AdminoModalComponent implements OnInit {
     this.componentInstance = componentPortal.attach(this.portalOutletRef);
     this.cd.markForCheck();
   }
+  closeByClick() {
+    if (this.readyForClose) {
+      this.closeEvent.next();
+    }
+  }
   close() {
     this.closeEvent.next();
   }
@@ -68,7 +76,9 @@ export class AdminoModalComponent implements OnInit {
     this.dataChange.next(newdata);
   }
   ngOnInit() {
-
+    this.timeoutHelper = setTimeout((params) => {
+      this.readyForClose = true;
+    }, 10);
     // // } else {
     // //   this.componentPortal = new ComponentPortal(this.content.component, null,
     // //     this.createInjector(this.cont));
@@ -87,5 +97,9 @@ export class AdminoModalComponent implements OnInit {
     }
     return arr;
   }
-
+  ngOnDestroy() {
+    if (this.timeoutHelper) {
+      clearTimeout(this.timeoutHelper);
+    }
+  }
 }
