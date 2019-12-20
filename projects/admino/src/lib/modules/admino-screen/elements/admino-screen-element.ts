@@ -18,6 +18,7 @@ export class AdminoScreenElement {
     public rootScreenComponent: AdminoScreenComponent;
 
     public index: number;
+    public controlPath: any;
     // public configChange: Subject<any> = new Subject();
     // public updateEvent: Subject<any> = new Subject();
     public valueChanges: Subject<any> = new Subject();
@@ -31,7 +32,8 @@ export class AdminoScreenElement {
             actionSub.actionEvent = {
                 action,
                 form: this.screenComponent.group,
-                screenConfig: this.screenComponent.screenElement
+                screenConfig: this.screenComponent.screenElement,
+                initiatedBy: this.controlPath
             };
             actionSub.subscription = this.screenComponent.handleAction(actionSub.actionEvent).subscribe((result) => {
                 this.activeActionSubscriptions.slice(this.activeActionSubscriptions.indexOf(actionSub), 1);

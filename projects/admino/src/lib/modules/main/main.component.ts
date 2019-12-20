@@ -39,6 +39,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   rendererListenerFn;
 
+  menu;
+  bottomButtons;
+
 
   constructor(public ts: AdminoThemeService, public site: AdminoSiteService, public renderer: Renderer2,
     public user: AdminoUserService,
@@ -62,6 +65,15 @@ export class MainComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.user.menu.pipe(takeUntil(this.ngUnsubscribe)).subscribe((menu) => {
+      this.menu = menu;
+      this.cd.markForCheck();
+    });
+
+    this.user.bottomButtons.pipe(takeUntil(this.ngUnsubscribe)).subscribe((buttons) => {
+      this.bottomButtons = buttons;
+      this.cd.markForCheck();
+    });
   }
   prepareSidebarState() {
     const state = this.site.isSideNavOpen.value ? 'opened' : 'closed';
@@ -119,7 +131,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
 
   updateMenus() {
-    this.traverseMenus(this.user.menu);
+    this.traverseMenus(this.user.menu.value);
   }
   traverseMenus(menus: AdminoMenuItem[], level = 0, activeRoute = true) {
     // menus.forEach((menu) => {

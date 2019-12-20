@@ -41,6 +41,7 @@ export interface ActionEvent {
   action: AdminoAction;
   form?: FormGroup;
   screenConfig?: ScreenElementScreen;
+  initiatedBy?: any;
 }
 ////////////
 

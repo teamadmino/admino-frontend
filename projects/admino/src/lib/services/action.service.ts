@@ -50,15 +50,17 @@ export class AdminoActionService {
         schema = actionEvent.screenConfig;
       }
 
-      return this.backendRequest(actionEvent.action.backendAction, schema, screenValue);
+      return this.backendRequest(actionEvent.action.backendAction, schema, screenValue, actionEvent.initiatedBy);
     } else if (actionEvent.action.type === 'frontend') {
+
       return this.handleFrontendAction(actionEvent.action);
+
     }
     return wrapIntoObservable(null);
   }
-  backendRequest(screen, schema = null, screenValue = null) {
+  backendRequest(screen, schema = null, screenValue = null, initiatedBy = null) {
     // const backendRequest: BackendRequest = {};
-    return this.api.request(screen, screenValue, schema, this.currentQueryParams).pipe(map((response: BackendResponse) => {
+    return this.api.request(screen, screenValue, schema, initiatedBy, this.currentQueryParams).pipe(map((response: BackendResponse) => {
       if (response.setScreen) {
         this.setQueryParams({});
         this.redrawScreen.next(response.setScreen);

@@ -18,8 +18,12 @@ export class AdminoUserService {
   homeScreen: AdminoMenuItem;
   requestedScreenName: string;
 
-  menu: AdminoMenuItem[] = [];
-  bottomButtons: AdminoButton[] = [];
+
+
+  menu: BehaviorSubject<AdminoMenuItem[]> = new BehaviorSubject([]);
+  bottomButtons: BehaviorSubject<AdminoButton[]> = new BehaviorSubject([]);
+
+
 
   constructor(private site: AdminoSiteService) {
   }
@@ -55,10 +59,11 @@ export class AdminoUserService {
   }
 
   setMenu(menu) {
-    this.menu = menu;
+    this.menu.next(menu);
   }
+
   setBottomButtons(buttons) {
-    this.bottomButtons = buttons;
+    this.bottomButtons.next(buttons);
   }
   setName(firstname, lastname) {
     this.firstname = firstname;

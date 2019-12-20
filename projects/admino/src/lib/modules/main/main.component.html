@@ -26,10 +26,10 @@
           </div>
         </div>
       </div>
-      <admino-menu [menus]="this.user.menu" (clickEvent)="this.menuClicked($event)"></admino-menu>
+      <admino-menu [menus]="this.menu" (clickEvent)="this.menuClicked($event)"></admino-menu>
       <div class="flex-grow-1"></div>
       <div class="text-center">
-        <div *ngFor="let bbutton of this.user.bottomButtons" class="d-block">
+        <div *ngFor="let bbutton of this.bottomButtons" class="d-block">
           <button (click)="this.bottomMenuClicked(bbutton)" class="  mb-3" mat-flat-button
             [color]="bbutton.color?bbutton.color:'primary'">
             <mat-icon class="" *ngIf="bbutton.icon"> {{bbutton.icon}}</mat-icon> {{bbutton.label}}

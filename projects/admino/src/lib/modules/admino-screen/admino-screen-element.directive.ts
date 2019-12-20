@@ -7,7 +7,7 @@ import {
   OnInit, OnDestroy, ComponentRef, DoCheck
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { cloneDeep, isEqual } from 'lodash';
 import { ScreenElementValidator, ScreenElement } from './admino-screen.interfaces';
 
@@ -60,11 +60,11 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef) {
-
   }
 
 
   ngOnInit() {
+
     this.activeElementConfig = cloneDeep(this.element);
 
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
@@ -107,9 +107,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     }
   }
 
-
-
-
   createComponent() {
     const factory = this.resolver.resolveComponentFactory(
       componentMapper[this.element.type]
@@ -124,11 +121,17 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     if (this.element.type === 'group') {
       this.createGroup();
       this.elementComponent.group = this.group;
+      this.elementComponent.controlPath = this.getControlPath(this.group)
+
     } else {
       this.createControl();
       this.elementComponent.group = this.parentGroup;
       this.elementComponent.control = this.control;
+      this.elementComponent.controlPath = this.getControlPath(this.control)
     }
+    console.log(this.elementComponent.controlPath);
+
+
   }
   destroyComponent() {
     this.removeControl();
@@ -228,32 +231,33 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     }
   }
 
-  removeAllConditionalFields() {
 
-    // this.field._conditionalfields.forEach((cfield) => {
-    //   this.form.removeControl(this.group, cfield.name);
-    //   const index = this.fields.indexOf(cfield);
-    //   if (index > -1) {
-    //     this.fields.splice(index, 1);
-    //   }
-    // });
-
+  getControlName(c: AbstractControl): string | null {
+    if (!c.parent) { return null; }
+    const formGroup = c.parent.controls;
+    return Object.keys(formGroup).find(name => c === formGroup[name]) || null;
   }
 
-  addMatchingConditionalFields(val) {
-    // if (!this.field._conditionalfields) { return };
+  // getControlPath(c: AbstractControl, path: any = {}): string | null {
+  //   path = this.getControlName(c) + path;
+  //   if (c.parent && this.getControlName(c.parent)) {
+  //     path = '.' + path;
+  //     return this.getControlPath(c.parent, path);
+  //   } else {
+  //     return path;
+  //   }
+  // }
 
-    // for (let i = 0; i < this.field._conditionalfields.length; i++) {
-    //   const cfield = this.field._conditionalfields[i];
-    //   const allConditionsMet = this.form.checkIfAllConditionsMatch(cfield, this.fields);
-    //   if (allConditionsMet) {
-    //     this.form.addControl(this.group, cfield);
-    //     this.fields.push(cfield);
-    //   }
+  getControlPath(c: AbstractControl, path: any = true): string | null {
+    path = { [this.getControlName(c)]: path };
 
-    // }
-    // this.form.sortFields(this.fields);
+    if (c.parent && this.getControlName(c.parent)) {
+      return this.getControlPath(c.parent, path);
+    } else {
+      return path;
+    }
   }
+
 
   ngOnDestroy() {
     if (this.elementComponent) {
