@@ -1,6 +1,7 @@
 import { menuItemAnimation } from './admino-menu-item.animations';
 import { AdminoMenuItem, AdminoMenuEvent } from './../../../../interfaces';
 import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from '@angular/core';
+import { AdminoMenuComponent } from '../admino-menu.component';
 
 @Component({
   selector: 'admino-menu-item',
@@ -10,6 +11,7 @@ import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from '@an
 })
 export class AdminoMenuItemComponent implements OnInit {
   @Input() menuItem: AdminoMenuItem;
+  @Input() rootComponent: AdminoMenuComponent;
   @Input() level = 0;
   @HostBinding('class') classes;
 
@@ -25,8 +27,6 @@ export class AdminoMenuItemComponent implements OnInit {
     this.classes = ('level' + this.level);
   }
 
-
-
   clicked(newWindow = false) {
     if (this.menuItem.children) {
       this.open = !this.open;
@@ -38,4 +38,5 @@ export class AdminoMenuItemComponent implements OnInit {
   childClicked(menuEvent: AdminoMenuEvent) {
     this.clickEvent.emit(menuEvent);
   }
+
 }

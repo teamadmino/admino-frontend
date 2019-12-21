@@ -121,16 +121,14 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     if (this.element.type === 'group') {
       this.createGroup();
       this.elementComponent.group = this.group;
-      this.elementComponent.controlPath = this.getControlPath(this.group)
+      this.elementComponent.controlPath = this.getControlPath(this.group);
 
     } else {
       this.createControl();
       this.elementComponent.group = this.parentGroup;
       this.elementComponent.control = this.control;
-      this.elementComponent.controlPath = this.getControlPath(this.control)
+      this.elementComponent.controlPath = this.getControlPath(this.control);
     }
-    console.log(this.elementComponent.controlPath);
-
 
   }
   destroyComponent() {

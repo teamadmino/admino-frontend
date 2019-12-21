@@ -66,6 +66,8 @@ export interface ScreenElementInput extends ScreenElement {
 }
 export interface ScreenElementButton extends ScreenElement {
     label?: string;
+    icon?: string;
+    color?: string;
     action: AdminoAction;
 }
 export interface ScreenElementImage extends ScreenElement {

@@ -21,4 +21,8 @@ export class AdminoMenuComponent implements OnInit {
     this.clickEvent.emit(menuEvent);
   }
 
+  trackByFn(index, item: AdminoMenuItem) {
+    return item.id;
+  }
+
 }

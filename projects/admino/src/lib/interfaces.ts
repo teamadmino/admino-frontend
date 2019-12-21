@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 
 
 export interface AdminoMenuItem {
+  id: string;
   label: string;
   action?: AdminoAction;
   icon?: string;

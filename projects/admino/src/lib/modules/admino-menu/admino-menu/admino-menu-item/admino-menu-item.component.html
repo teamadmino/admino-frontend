@@ -13,7 +13,7 @@
         open_in_new</mat-icon> -->
 </button>
 <div class="item-wrapper" [@menuItemAnimation]="open">
-    <admino-menu-item (clickEvent)="this.childClicked($event)" *ngFor="let menu of menuItem.children" [level]="level+1"
-        [menuItem]="menu">
+    <admino-menu-item [rootComponent]="rootComponent" (clickEvent)="this.childClicked($event)"
+        *ngFor="let menu of menuItem.children; trackBy:rootComponent.trackByFn" [level]="level+1" [menuItem]="menu">
     </admino-menu-item>
 </div>

@@ -10,7 +10,6 @@ import { AdminoSiteService } from './site.service';
 
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +21,7 @@ export class AdminoApiService {
   LOGIN = '/login';
   BROWSE = '/browse';
   BROWSER_INFO = '/browserinfo';
-  SCREEN = '/screen';
-
+  REQUEST = '/request';
 
   constructor(private http: HttpClient, private nav: AdminoNavService, private user: AdminoUserService, private site: AdminoSiteService) {
   }
@@ -102,7 +100,7 @@ export class AdminoApiService {
 
 
   request(screen: string, screenValue: any = null, schema: any = null, initiatedBy = null, queryParams: any = null) {
-    return this.http.post(this.BASE_URL + this.SCREEN + '/' + screen, { screen, schema, queryParams, screenValue, initiatedBy })
+    return this.http.post(this.BASE_URL + this.REQUEST + '/' + screen, { screen, schema, queryParams, screenValue, initiatedBy })
       .pipe(delay(0));
   }
 

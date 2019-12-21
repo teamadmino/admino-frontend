@@ -5,7 +5,7 @@
         "themeColor": "gold",
         "isDark": true
     },
-    "loginScreen": "LoginScreen",
+    "loginScreen": "_adminoLogin",
     "userConfigScreen": "UserConfigScreen",
     "translations": {}
 }
