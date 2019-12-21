@@ -49,8 +49,8 @@ export class AdminoActionService {
       if (actionEvent.action.includeSchema) {
         schema = actionEvent.screenConfig;
       }
-
-      return this.backendRequest(actionEvent.action.backendAction, schema, screenValue, actionEvent.initiatedBy);
+      const requestingScreen = actionEvent.screenConfig ? actionEvent.screenConfig.id : null;
+      return this.backendRequest(actionEvent.action.backendAction, requestingScreen, schema, screenValue, actionEvent.initiatedBy);
     } else if (actionEvent.action.type === 'frontend') {
 
       return this.handleFrontendAction(actionEvent.action);
@@ -58,35 +58,36 @@ export class AdminoActionService {
     }
     return wrapIntoObservable(null);
   }
-  backendRequest(screen, schema = null, screenValue = null, initiatedBy = null) {
-    // const backendRequest: BackendRequest = {};
-    return this.api.request(screen, screenValue, schema, initiatedBy, this.currentQueryParams).pipe(map((response: BackendResponse) => {
-      if (response.setScreen) {
-        this.setQueryParams({});
-        this.redrawScreen.next(response.setScreen);
-      }
-      if (response.updateScreen) {
-        this.updateScreen.next(response.updateScreen);
-      }
-      if (response.setSid) {
-        this.user.sid = response.setSid;
-      }
-      if (response.setMenu) {
-        this.user.setMenu(response.setMenu);
-      }
-      if (response.setBottomButtons) {
-        this.user.setBottomButtons(response.setBottomButtons);
-      }
-      if (response.setFirstName) {
-        this.user.firstname = response.setFirstName;
-      }
-      if (response.setLastname) {
-        this.user.lastname = response.setLastname;
-      }
-      if (response.setQueryParams) {
-        this.setQueryParams(response.setQueryParams);
-      }
-    }));
+  backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null) {
+
+    return this.api.request(screen, requestingScreen, screenValue, schema,
+      initiatedBy, this.currentQueryParams).pipe(map((response: BackendResponse) => {
+        if (response.setScreen) {
+          this.setQueryParams({});
+          this.redrawScreen.next(response.setScreen);
+        }
+        if (response.updateScreen) {
+          this.updateScreen.next(response.updateScreen);
+        }
+        if (response.setSid) {
+          this.user.sid = response.setSid;
+        }
+        if (response.setMenu) {
+          this.user.setMenu(response.setMenu);
+        }
+        if (response.setBottomButtons) {
+          this.user.setBottomButtons(response.setBottomButtons);
+        }
+        if (response.setFirstName) {
+          this.user.firstname = response.setFirstName;
+        }
+        if (response.setLastname) {
+          this.user.lastname = response.setLastname;
+        }
+        if (response.setQueryParams) {
+          this.setQueryParams(response.setQueryParams);
+        }
+      }));
   }
 
   handleFrontendAction(action: AdminoAction, form = null) {
@@ -112,6 +113,16 @@ export class AdminoActionService {
   setLastName(params) { }
 
 
+
+  // removeNull(value) {
+  //   for (const key of Object.keys(value)) {
+  //     let prop = value[key];
+  //     if (isObject(prop)) {
+  //       prop = this.removeNull(prop);
+  //     } else if (Array.isArray(prop)) {
+  //     }
+  //   }
+  // }
 
   filterScreenValue(filters: any, value: any, filtered = {}) {
     if (!filters) {

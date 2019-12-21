@@ -32,7 +32,7 @@ export class AdminoScreenElement {
             actionSub.actionEvent = {
                 action,
                 form: this.screenComponent.group,
-                screenConfig: this.screenComponent.screenElement,
+                screenConfig: this.rootScreenComponent.screenElement,
                 initiatedBy: this.controlPath
             };
             actionSub.subscription = this.screenComponent.handleAction(actionSub.actionEvent).subscribe((result) => {
