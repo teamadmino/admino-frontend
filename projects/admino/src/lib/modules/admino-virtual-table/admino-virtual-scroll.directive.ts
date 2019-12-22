@@ -116,10 +116,12 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     this.viewportSize = this.$viewport.getBoundingClientRect().height;
     this.cd.detectChanges();
     this.scrollListener = this.rdr.listen(this.$viewport, 'scroll', this.onScroll.bind(this));
-    this.refresh();
+    // this.refresh();
     this.$viewport.scrollTop = 0;
   }
+
   onScroll($event: any) {
+    // console.log('vsRef onScroll');
     const scrollPos = this.$viewport.scrollTop;
     if (Math.abs(scrollPos - this.prevScrollPos) > this.viewportSize) {
       this._onJump();
@@ -128,6 +130,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     }
     this.renderViewportItems();
   }
+
   ngOnDestroy() {
   }
 
@@ -238,6 +241,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
   }
 
   refresh() {
+    // console.log('vsref refresh start');
     this.clear();
     // const view = this.viewContainer.createEmbeddedView(this.template);
     // view.context.__position__ = 0;
@@ -279,6 +283,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
 
 
     this.$viewport.dispatchEvent(new Event('scroll'));
+
   }
 
 

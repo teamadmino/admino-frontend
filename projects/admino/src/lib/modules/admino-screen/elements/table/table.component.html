@@ -1,5 +1,8 @@
 <admino-virtual-table [dataSource]="this.dataSource" [tableButtons]="this.element.tableButtons"
     [rowButtons]="this.element.rowButtons" [indexes]="this.element.indexes" [columns]="this.element.columns"
-    (actionEvent)="handleAction($event)" (valueChange)="setValue($event)">
+    (actionEvent)="handleAction($event)" (valueChange)="setValue($event)"
+    [ngStyle]="{height: element.tableHeight?element.tableHeight+'px':'400px'}"
+    [itemSize]="element.tableRowHeight?element.tableRowHeight:51" [hideSideBorder]="element.hideSideBorder"
+    [hideBottomBorder]="element.hideBottomBorder">
 
 </admino-virtual-table>

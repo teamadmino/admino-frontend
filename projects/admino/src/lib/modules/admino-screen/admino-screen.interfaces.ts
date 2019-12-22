@@ -56,7 +56,7 @@ export interface ScreenElementTimer extends ScreenElement {
     action: AdminoAction;
     frequency: number;
     disabled: boolean;
-    forceRefresh: number;
+    _forceRefresh: number;
 }
 export interface ScreenElementInput extends ScreenElement {
     label?: string;
@@ -82,9 +82,15 @@ export interface ScreenElementTable extends ScreenElement {
     columns?: any[];
     indexes?: any[];
     refreshFrequency?: number;
-    forceRefresh?: boolean;
     tableButtons?: AdminoButton[];
     rowButtons?: AdminoButton[];
+
+    tableHeight?: number;
+    tableRowHeight?: number;
+    hideSideBorder?: boolean;
+    hideBottomBorder?: boolean;
+
+    _forceRefresh?: boolean;
 }
 
 

@@ -1,7 +1,8 @@
-<div class="admino-virtual-table">
+<div class="admino-virtual-table"
+    [ngClass]="{'hide-side-border':this.hideSideBorder, 'hide-bottom-border':this.hideBottomBorder }">
 
-    <table class="table table-dark" adminoResizeObserver [debounceAdminoResize]="10" (adminoResize)="resize()"
-        #tableRef>
+    <table class="table table-dark" #tableRef>
+        <!-- adminoResizeObserver [debounceAdminoResize]="10" (adminoResize)="resize()" -->
         <thead class="header-container" #headerRef>
             <tr class="header-row">
                 <!-- <th>Index</th> -->
@@ -20,7 +21,7 @@
                     asdss</th> -->
             </tr>
         </thead>
-        <tbody class="vr-container" #bodyRef (scroll)="handleScroll()">
+        <tbody class="vr-container" #bodyRef (scroll)="refresh()">
             <ng-template adminoVsFor [adminoVsForTotalsize]="this.totalsize" [itemSize]="itemSize" let-item
                 let-position="__position__" let-index="index" let-content="content" let-cacheIndex="cacheIndex"
                 (afterRender)="afterRender($event)">

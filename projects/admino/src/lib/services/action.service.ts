@@ -12,6 +12,7 @@ import { encodeParams, decodeParams } from '../utils/encodeparams';
 import { map } from 'rxjs/operators';
 import { wrapIntoObservable } from '../utils/wrap-into-observable';
 import { isObject } from '../utils/isobject';
+import { propExists } from '../utils/propExists';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,7 @@ export class AdminoActionService {
       // return wrapIntoObservable(null);
     } else if (actionEvent.action.type === 'backend') {
       let screenValue = actionEvent.form ? actionEvent.form.value : null;
+      screenValue = this.removeNull(screenValue);
       screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
 
       let schema = null;
@@ -114,15 +116,21 @@ export class AdminoActionService {
 
 
 
-  // removeNull(value) {
-  //   for (const key of Object.keys(value)) {
-  //     let prop = value[key];
-  //     if (isObject(prop)) {
-  //       prop = this.removeNull(prop);
-  //     } else if (Array.isArray(prop)) {
-  //     }
-  //   }
-  // }
+  removeNull(value) {
+    if (!propExists(value)) {
+      return value;
+    }
+    value = cloneDeep(value);
+    for (const key of Object.keys(value)) {
+      const prop = value[key];
+      if (isObject(prop)) {
+        value[key] = this.removeNull(prop);
+      } else if (prop === null) {
+        delete value[key];
+      }
+    }
+    return value;
+  }
 
   filterScreenValue(filters: any, value: any, filtered = {}) {
     if (!filters) {

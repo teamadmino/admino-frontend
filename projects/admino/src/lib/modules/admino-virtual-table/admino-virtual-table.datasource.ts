@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { DataSource } from '@angular/cdk/table';
 import { Observable, Subject, BehaviorSubject, of, Subscription } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
@@ -27,7 +28,7 @@ export class AdminoVirtualTableDataSource {
     public resultSubject = new BehaviorSubject<any[]>(null);
     public result$ = this.resultSubject.asObservable();
 
-    public loadDataEvent = new Subject<any>();
+    public loadDataStart = new Subject<any>();
 
     currentRequests: { subscription: Subscription, shift: number, resolvePromise: () => void, rejectPromise: () => void }[] = [];
 
@@ -36,17 +37,29 @@ export class AdminoVirtualTableDataSource {
     keyIds = [];
 
     indexes = [];
-    index = 1;
 
-    keys: any;
-    count = 10;
-    cursor = 0;
+    // keys: any;
+    // cursor = 0;
+    // index = 1;
+    // count = 10;
+    // cursorPos = 0;
     cursorAbsPos = 0;
-    cursorPos = 0;
+
     data: any = {};
-    totalsize = 1;
     viewpos = 0;
     rows: any = {};
+    totalsize = 1;
+
+    state: any = {
+        keys: { '#position': 'first' },
+        cursor: 0,
+        count: 10,
+        index: 1,
+        before: 10,
+        after: 10,
+        cursorPosPercent: 0,
+    };
+
 
     constructor(public config: AdminoVirtualTableDataSourceConfig) {
     }
@@ -69,23 +82,22 @@ export class AdminoVirtualTableDataSource {
         return new Promise((resolve, reject) => {
 
             const requestObj = { subscription: null, shift, resolvePromise: resolve, rejectPromise: reject };
+            // const state = {
+            //     keys: this.state.keys,
+            //     cursor: this.state.cursor,
+            //     count: this.state.count,
+            //     index: this.state.index,
+            //     before: this.state.count,
+            //     after: this.count,
+            //     cursorPosPercent: this.cursor / (this.count - 1),
+            // };
+            this.state.before = this.state.count;
+            this.state.after = this.state.after;
+            this.state.cursorPosPercent = this.state.cursor / (this.state.count - 1);
+            this.loadDataStart.next(this.state);
 
-            const state = {
-                keys: this.keys ? Object.assign({}, this.keys) : { '#position': 'first' },
-                cursor: this.cursor,
-                shift: calculatedShift,
-                count: this.count,
-                index: this.index,
-                before: this.count,
-                after: this.count,
-                cursorPosPercent: this.cursor / (this.count - 1),
-            };
-            delete state.keys.__index__;
-            delete state.keys.__loaded__;
-            this.loadDataEvent.next(state);
-
-            requestObj.subscription = this.config.listFunction(state.keys,
-                state.cursor, state.shift, state.count, state.index, state.before, state.after).pipe(
+            requestObj.subscription = this.config.listFunction(this.state.keys,
+                this.state.cursor, calculatedShift, this.state.count, this.state.index, this.state.before, this.state.after).pipe(
                     takeUntil(this.ngUnsubscribe),
                     catchError(() => of([])),
                     // finalize(() => {
@@ -118,7 +130,9 @@ export class AdminoVirtualTableDataSource {
     }
 
     setKeys(row) {
-        this.keys = row;
+        this.state.keys = cloneDeep(row);
+        delete this.state.keys.__index__;
+        delete this.state.keys.__loaded__;
     }
 
     updateData(data) {
@@ -133,7 +147,7 @@ export class AdminoVirtualTableDataSource {
         this.data = data;
         this.totalsize = totalsize;
         this.viewpos = viewpos - 1;
-        this.keys = data.cursor;
+        this.state.keys = data.cursor;
 
         this.rows = [];
 
@@ -163,12 +177,12 @@ export class AdminoVirtualTableDataSource {
         }
 
         // this.cursorAbsPos = this.viewpos + parseInt(data.cursorpos, 10);
-        this.cursorPos = parseInt(data.cursorpos, 10);
+        this.state.cursorPos = parseInt(data.cursorpos, 10);
         this.resultSubject.next(this.rows);
     }
 
     findRowByKeys(data): number {
-        if (!this.keys) {
+        if (!this.state.keys) {
             return 0;
         }
         let cursorPosition = 0;
@@ -176,8 +190,8 @@ export class AdminoVirtualTableDataSource {
             const row = data[i];
             cursorPosition = i;
             let match = true;
-            Object.keys(this.keys).forEach(key => {
-                if (row[key] !== this.keys[key]) {
+            Object.keys(this.state.keys).forEach(key => {
+                if (row[key] !== this.state.keys[key]) {
                     match = false;
                 }
             });

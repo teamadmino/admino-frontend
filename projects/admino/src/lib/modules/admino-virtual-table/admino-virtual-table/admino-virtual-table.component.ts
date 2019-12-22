@@ -25,6 +25,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   scrollBarWidth = 10;
   totalsize = 40000;
 
+  lastSetCursorPosPercent = 0.5;
+
+
   sortedColumn;
   @Input() dataSource: AdminoVirtualTableDataSource;
 
@@ -32,16 +35,8 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   _columns: any[];
   @Input() public set columns(v: any) {
     this._columns = v;
-    this.dataSource.columns = [];
-    this.dataSource.displayedColumns = [];
-    this.dataSource.keyIds = [];
-    this._columns.forEach((field: VirtualDataSourceInfoField) => {
-      const column = { label: field.description, length: field.length, id: field.id };
-      this.dataSource.columns.push(column);
-      this.dataSource.displayedColumns.push(column);
-      this.dataSource.keyIds.push(field.id);
-    });
-    this.calculateWidths();
+    this.updateColumns();
+
   }
   public get columns(): any {
     return this._columns;
@@ -49,16 +44,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   _indexes: any[];
   @Input() public set indexes(v: any) {
     this._indexes = v;
-    this.dataSource.indexes = v;
-    this._indexes.forEach((index) => {
-      const id = index.keys[0];
-      const found = this.dataSource.columns.find((column) => {
-        return column.id === id;
-      });
-      if (found) {
-        found.sortable = true;
-      }
-    });
+    this.updateIndexes();
   }
   public get indexes(): any {
     return this._indexes;
@@ -76,7 +62,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   prevEnd = 0;
   prevVisibleStart = 0;
   prevVisibleEnd = 0;
-  itemSize = 51;
+  @Input() itemSize = 51;
+  @Input() hideBottomBorder = false;
+  @Input() hideSideBorder = false;
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     // if (!this.focused && !this.forceFocus) {
@@ -91,10 +79,10 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       this.handleInteraction(-1);
     }
     if (event.keyCode === PAGE_DOWN) {
-      this.handleInteraction(this.dataSource.count);
+      this.handleInteraction(this.dataSource.state.count);
     }
     if (event.keyCode === PAGE_UP) {
-      this.handleInteraction(-(this.dataSource.count));
+      this.handleInteraction(-(this.dataSource.state.count));
     }
     // if (event.keyCode === ENTER) {
     //   if (this.isTableSelect) {
@@ -120,69 +108,114 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     // }
   }
   constructor(private cd: ChangeDetectorRef) {
-    // setTimeout((params) => {
-    // this.items.length = 5000;
-    // }, 1000);
-    // this.items.length = 900;
-    // setInterval(() => {
-    //   this.totalsize = Math.abs(Math.random() * 50000);
-    //   console.log('totalsizeChange');
-    // }, 5500)
+
   }
   ngOnInit() {
   }
-  ngAfterViewInit() {
-    // setTimeout((params) => {
-    //   this.cd.detectChanges();
-    //   this.refresh();
-    // });
-    this.calculateWidths();
+  afterRender(e) {
+    console.log('afterRender');
+    if (this.prevStart !== e.start || this.prevEnd !== e.end) {
+      const count = e.visibleEnd - e.visibleStart;
+      this.dataSource.state.count = count;
+      this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
+      this.dataSource.loadData();
+      this.cd.detectChanges();
+      this.refresh();
+    }
+    this.prevStart = e.start;
+    this.prevEnd = e.end;
 
-    this.dataSource.loadDataEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
-      this.valueChange.next(state);
+    this.prevVisibleStart = e.visibleStart;
+    this.prevVisibleEnd = e.visibleEnd;
+
+
+
+  }
+  ngAfterViewInit() {
+
+
+    this.dataSource.loadDataStart.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      // console.log('table value change');
+      // console.log(value);
+      this.valueChange.next(value);
     });
 
     this.dataSource.connect().pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) => {
       if (data) {
+        // console.log('browse response');
+        // console.log(data);
         if (this.totalsize !== this.dataSource.totalsize) {
           this.totalsize = this.dataSource.totalsize;
           this.cd.detectChanges();
           this.vsRef.refresh();
         }
-
         this.vsRef.patchData(this.dataSource.rows);
         this.cd.detectChanges();
-      }
-      // this.vsRef.onScroll(null);
-    });
 
-    // setInterval((params) => {
-    //   this.totalsize = Math.round(60000 * Math.random());
-    //   this.cd.detectChanges();
-    //   this.vsRef.refresh();
-    // }, 3000)
+
+        // console.log("count", this.dataSource.count)
+        if (this.lastSetCursorPosPercent != null) {
+          this.scrollToSelected(this.lastSetCursorPosPercent);
+          this.lastSetCursorPosPercent = null;
+          // console.log("SCROLL HAPPENDED")
+        }
+
+      }
+    });
+    this.calculateWidths();
+    this.vsRef.refresh();
+
+
   }
 
   update(value: TableValue) {
+    // console.log('table update');
     if (!value) {
       return;
     }
+    // console.log(value)
     if (value.keys) {
-      this.dataSource.keys = value.keys;
+      this.dataSource.state.keys = value.keys;
     }
     if (value.index !== undefined) {
       this.vsRef.clearData();
-      this.dataSource.index = value.index;
+      this.dataSource.state.index = value.index;
     }
-    this.dataSource.loadData().then((result: any) => {
-      const cursorPosPercent = value.cursorPosPercent;
-      if (cursorPosPercent !== undefined) {
-        const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.count - 1) * cursorPosPercent);
-        this.vsRef.scrollToItem(cursorPos);
+    if (value.cursorPosPercent !== undefined) {
+      this.lastSetCursorPosPercent = value.cursorPosPercent;
+    }
+    // console.log(this.dataSource.keys)
+    this.dataSource.loadData();
+  }
+
+  updateColumns() {
+    this.dataSource.columns = [];
+    this.dataSource.displayedColumns = [];
+    this.dataSource.keyIds = [];
+    this._columns.forEach((field: VirtualDataSourceInfoField) => {
+      const column = { label: field.description, length: field.length, id: field.id };
+      this.dataSource.columns.push(column);
+      this.dataSource.displayedColumns.push(column);
+      this.dataSource.keyIds.push(field.id);
+    });
+  }
+  updateIndexes() {
+    this.dataSource.indexes = this.indexes;
+    this._indexes.forEach((index) => {
+      const id = index.keys[0];
+      const found = this.dataSource.columns.find((column) => {
+        return column.id === id;
+      });
+      if (found) {
+        found.sortable = true;
       }
     });
   }
 
+  scrollToSelected(cursorPosPercent = 0.5) {
+    const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.state.count - 1) * cursorPosPercent);
+    this.vsRef.scrollToItem(cursorPos);
+  }
 
   sortClicked(column, sorter) {
     // const dir = e.direction === 'asc' ? 1 : -1;
@@ -190,25 +223,22 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (this.sortedColumn === column && sorter.direction === 1) {
       this.sortedColumn = null;
       sorter.direction = -1;
-      this.dataSource.index = 1;
+      this.dataSource.state.index = 1;
     } else {
       this.sortedColumn = column;
       const found = this.dataSource.indexes.find((index) => {
         return index.keys[0] === this.sortedColumn.id;
       });
       if (found) {
-        this.dataSource.index = (this.dataSource.indexes.indexOf(found) + 1) * sorter.direction;
+        this.dataSource.state.index = (this.dataSource.indexes.indexOf(found) + 1) * sorter.direction;
       } else {
-        this.dataSource.index = 1;
+        this.dataSource.state.index = 1;
       }
     }
     this.vsRef.clearData();
     // this.vsRef.refresh();
-    const cursorPosPercent = this.dataSource.cursor / (this.dataSource.count - 1);
-
     this.dataSource.loadData().then(() => {
-      const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.count - 1) * cursorPosPercent);
-      this.vsRef.scrollToItem(cursorPos);
+      this.scrollToSelected();
     });
   }
 
@@ -241,48 +271,11 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   handleLoadData(shift) {
     this.dataSource.loadData(shift);
   }
-  afterRender(e) {
-    if (this.prevStart !== e.start || this.prevEnd !== e.end) {
-      const count = e.visibleEnd - e.visibleStart;
-      this.dataSource.count = count;
-      // console.log(e.start, e.end);
-      // this.dataSource.cursorAbsPos -= shift;
-      // console.log('cursor ' + this.dataSource.cursor);
-      // console.log('cursorAbsPos ' + this.dataSource.cursorAbsPos);
 
-      // const shift = e.start - this.prevStart;
-      // this.dataSource.cursorPos += shift;
-      // console.log('shift ' + shift);
-      // console.log('cursorPos ' + this.dataSource.cursorPos);
-      // console.log(this.dataSource.cursorAbsPos);
-      // this.dataSource.cursor = this.dataSource.cursorAbsPos - e.visibleStart;
-      this.dataSource.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
-      this.dataSource.loadData();
-      // this.dataSource.loadData(e.visibleStart);
 
-      this.cd.detectChanges();
-      this.refresh();
-    }
-
-    this.prevStart = e.start;
-    this.prevEnd = e.end;
-
-    this.prevVisibleStart = e.visibleStart;
-    this.prevVisibleEnd = e.visibleEnd;
-    // console.log(this.headerRef.nativeElement.childNodes[0])
-    // for (let j = 0; j < this.columnWidths.length; j++) {
-    //   const cw = this.columnWidths[j];
-    //   this.headerRef.nativeElement.childNodes[0].childNodes[j].style.maxWidth = cw + 'px';
-    //   this.headerRef.nativeElement.childNodes[0].childNodes[j].style.width = cw + 'px';
-    // }
-
-  }
-  handleScroll() {
-    this.refresh();
-
-  }
 
   calculateWidths() {
+    // console.log('calculateWidths');
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
       return;
     }
@@ -305,51 +298,20 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       }
     }
     // this.columnWidths[this.dataSource.displayedColumns.length] = actionsWidth;
-
     // console.log(this.dataSource.displayedColumns);
   }
 
   refresh() {
-    // const trArr = (this.bodyRef.nativeElement as HTMLElement).children;
-    // this.headerRef.nativeElement.childNodes[0].style.width = trArr[0].scrollWidth + 'px';
-    // if (trArr && trArr[0]) {
-    //   this.columnWidths = new Array(trArr[0].children.length).fill(0);
-    //   for (let a = 0; a < trArr.length; a++) {
-    //     const columns = trArr[a].children;
-    //     for (let i = 0; i < columns.length; i++) {
-    //       const col = columns[i];
-    //       if (col.clientWidth > this.columnWidths[i]) {
-    //         this.columnWidths[i] = col.clientWidth;
-    //       }
-    //     }
-    //   }
-    // }
-
     this.headerRef.nativeElement.childNodes[0].style.marginLeft = - this.bodyRef.nativeElement.scrollLeft + 'px';
     this.scrollBarWidth = this.bodyRef.nativeElement.offsetWidth - this.bodyRef.nativeElement.clientWidth;
-
     // const availableWidth = this.tableRef.nativeElement.clientWidth - this.columnWidths[this.columnWidths.length - 1];
 
-    // for (let i = 0; i < this.dataSource.columns.length; i++) {
-
-    // }
-    const headers = this.headerRef.nativeElement.childNodes[0].childNodes[0].childNodes;
-    // let prevTh;
-    headers.forEach(th => {
-      if (th.classList && th.classList.contains('stickyEnd')) {
-        // th.style.marginRight = this.scrollBarWidth + 'px';
-        // th.style.right = this.scrollBarWidth + 'px';
-        // th.style.paddingRight = this.scrollBarWidth + 'px';
-        // prevTh.classList.add('sticky');
-      }
-      // prevTh = th;
-    });
   }
 
   setSelected(e, index, absIndex) {
     if (e.__loaded__) {
       this.dataSource.cursorAbsPos = absIndex;
-      this.dataSource.cursor = this.dataSource.cursorAbsPos - this.prevVisibleStart;
+      this.dataSource.state.cursor = this.dataSource.cursorAbsPos - this.prevVisibleStart;
       this.dataSource.setKeys(e);
     }
     this.dataSource.loadData();
@@ -363,8 +325,8 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   resize() {
     // this.afterRender();
     this.calculateWidths();
+    this.refresh();
     this.vsRef.refresh();
-    this.handleScroll();
   }
 
   ngOnDestroy() {

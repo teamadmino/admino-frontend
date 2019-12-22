@@ -86,7 +86,13 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         }
 
         // console.log(this.element);
-        const changes = deepCompare(this.activeElementConfig, this.element);
+        if (this.element.type === 'table') {
+          console.log(this.activeElementConfig)
+          console.log(this.element)
+          console.log("CHANGE")
+        }
+        const changes = deepCompare(this.activeElementConfig, this.element, ['value']);
+
         if (Object.keys(changes).length > 0) {
           this.elementComponent.onChange(changes);
         }
@@ -97,6 +103,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         }
 
         this.activeElementConfig = cloneDeep(this.element);
+        this.removeEventsFromConfig(this.activeElementConfig);
       }
     });
     if (!this.element.type) {
@@ -107,6 +114,13 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     }
   }
 
+  removeEventsFromConfig(config) {
+    for (const key of Object.keys(config)) {
+      if (key.startsWith('_') || key === 'value') {
+        delete config[key];
+      }
+    }
+  }
   createComponent() {
     const factory = this.resolver.resolveComponentFactory(
       componentMapper[this.element.type]
@@ -138,7 +152,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     }
   }
 
-  handleValueChange(changes) {
+  handleValueChange(value) {
+    // console.log('Handle value change ', this.activeElementConfig.id);
+    // this.activeElementConfig.value = value;
     // TODO group elements filterValue is not correct
     // console.log(this.activeElementConfig.changeAction)
     // needs to solve group
