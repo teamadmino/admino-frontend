@@ -58,6 +58,7 @@ export class AdminoVirtualTableDataSource {
         before: 10,
         after: 10,
         cursorPosPercent: 0,
+        totalsize: 0
     };
 
 
@@ -146,6 +147,7 @@ export class AdminoVirtualTableDataSource {
 
         this.data = data;
         this.totalsize = totalsize;
+        this.state.totalsize = this.totalsize;
         this.viewpos = viewpos - 1;
         this.state.keys = data.cursor;
 
