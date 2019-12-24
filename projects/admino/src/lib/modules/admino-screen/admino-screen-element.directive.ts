@@ -1,3 +1,5 @@
+import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
+import { CheckboxComponent } from './elements/checkbox/checkbox.component';
 import { TextComponent } from './elements/text/text.component';
 import { AdminoScreenElement } from './elements/admino-screen-element';
 
@@ -29,7 +31,8 @@ const componentMapper = {
   timer: TimerComponent,
   text: TextComponent,
   popup: PopupComponent,
-
+  checkbox: CheckboxComponent,
+  radiobutton: RadiobuttonComponent
 };
 
 @Directive({
@@ -57,6 +60,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   activeElementConfig: any = {};
 
+  valueChangeTimeout;
 
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef) {
@@ -69,14 +73,11 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       if (this.componentRef && this.element) {
-
-
         // Type change
         if (this.element.type !== this.activeElementConfig.type) {
           this.destroyComponent();
           this.createComponent();
         }
-
         // Value change
         const control = this.parentGroup.get(this.element.id);
         if (this.element.value && !isEqual(control.value, this.activeElementConfig.value)) {
@@ -86,11 +87,11 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         }
 
         // console.log(this.element);
-        if (this.element.type === 'table') {
-          console.log(this.activeElementConfig)
-          console.log(this.element)
-          console.log("CHANGE")
-        }
+        // if (this.element.type === 'table') {
+        //   console.log(this.activeElementConfig)
+        //   console.log(this.element)
+        //   console.log("CHANGE")
+        // }
         const changes = deepCompare(this.activeElementConfig, this.element, ['value']);
 
         if (Object.keys(changes).length > 0) {
@@ -158,17 +159,19 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // TODO group elements filterValue is not correct
     // console.log(this.activeElementConfig.changeAction)
     // needs to solve group
-    if (this.activeElementConfig.changeAction) {
-      if (this.activeElementConfig.changeAction.filterValue === undefined) {
-        const action = cloneDeep(this.activeElementConfig.changeAction);
-        action.filterValue = { [this.element.id]: true }
-        // console.log(action.filterValue)
-        this.elementComponent.handleAction(action);
-      } else {
-        this.elementComponent.handleAction(this.activeElementConfig.changeAction);
+    this.valueChangeTimeout = setTimeout(() => {
+      if (this.activeElementConfig.changeAction) {
+        if (this.activeElementConfig.changeAction.filterValue === undefined) {
+          const action = cloneDeep(this.activeElementConfig.changeAction);
+          action.filterValue = { [this.element.id]: true };
+          // console.log(action.filterValue)
+          this.elementComponent.handleAction(action);
+        } else {
+          this.elementComponent.handleAction(this.activeElementConfig.changeAction);
+        }
+        // console.log(changes);
       }
-      // console.log(changes);
-    }
+    });
   }
 
   createGroup() {
@@ -202,7 +205,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     this.addControlToParentGroup(control);
     this.valueChangeSub = this.control.valueChanges.subscribe((changes) => {
       this.handleValueChange(changes);
-      this.elementComponent.valueChanges.next(changes);
+      // this.elementComponent.valueChanges.next(changes);
     });
   }
 
@@ -276,6 +279,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.elementComponent) {
       this.elementComponent.clearSubscriptions();
+    }
+    if (this.valueChangeTimeout) {
+      clearTimeout(this.valueChangeTimeout);
     }
     this.destroyComponent();
     this.ngUnsubscribe.next();

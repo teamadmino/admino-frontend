@@ -21,7 +21,7 @@ export class AdminoScreenElement {
     public controlPath: any;
     // public configChange: Subject<any> = new Subject();
     // public updateEvent: Subject<any> = new Subject();
-    public valueChanges: Subject<any> = new Subject();
+    // public valueChanges: Subject<any> = new Subject();
 
     public activeActionSubscriptions: ActionSubscription[] = [];
 

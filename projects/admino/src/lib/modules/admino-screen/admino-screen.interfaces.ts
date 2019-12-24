@@ -64,6 +64,14 @@ export interface ScreenElementInput extends ScreenElement {
     suffix: string;
     readonly: boolean;
 }
+export interface ScreenElementRadiobutton extends ScreenElement {
+    label?: string;
+    inlineLabel?: boolean;
+    options?: { value: any, label: any }[];
+}
+export interface ScreenElementCheckbox extends ScreenElement {
+    label?: string;
+}
 export interface ScreenElementButton extends ScreenElement {
     label?: string;
     icon?: string;

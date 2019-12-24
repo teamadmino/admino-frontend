@@ -32,7 +32,6 @@ export class AdminoUniversalEditorPopupComponent implements OnInit {
       if (data) {
         const popup: ScreenPopup = data.popup;
         if (popup.setScreen) {
-          console.log(popup.setScreen);
           this.screen.update(popup.setScreen, true);
         }
         if (popup.updateScreen) {

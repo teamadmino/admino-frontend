@@ -13,6 +13,8 @@ import { GroupComponent } from './elements/group/group.component';
 import { TimerComponent } from './elements/timer/timer.component';
 import { TextComponent } from './elements/text/text.component';
 import { PopupComponent } from './elements/popup/popup.component';
+import { CheckboxComponent } from './elements/checkbox/checkbox.component';
+import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -22,7 +24,9 @@ import { PopupComponent } from './elements/popup/popup.component';
     GroupComponent,
     TimerComponent,
     TextComponent,
-    PopupComponent
+    PopupComponent,
+    CheckboxComponent,
+    RadiobuttonComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +45,9 @@ import { PopupComponent } from './elements/popup/popup.component';
     TableComponent,
     GroupComponent,
     TimerComponent,
-    TextComponent
+    TextComponent,
+    CheckboxComponent,
+    RadiobuttonComponent
   ]
 })
 export class AdminoScreenModule { }
