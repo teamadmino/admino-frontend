@@ -70,7 +70,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.activeElementConfig = cloneDeep(this.element);
-
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       if (this.componentRef && this.element) {
         // Type change
@@ -113,6 +112,18 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     } else {
       this.createComponent();
     }
+
+
+
+    this.rootScreenComponent.focusEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((elpath) => {
+      if (elpath && this.elementComponent) {
+        if (isEqual(elpath, this.elementComponent.controlPath)) {
+          this.focus();
+        }
+      }
+    });
+
+
   }
 
   removeEventsFromConfig(config) {
@@ -172,6 +183,13 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         // console.log(changes);
       }
     });
+  }
+
+
+  focus() {
+    if (this.elementComponent) {
+      this.elementComponent.focus();
+    }
   }
 
   createGroup() {

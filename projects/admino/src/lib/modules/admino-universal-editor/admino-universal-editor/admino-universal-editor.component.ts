@@ -106,6 +106,17 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
       }
     });
 
+
+    this.as.setFocus.subscribe((focusedEl: any) => {
+      // console.log(focusedEl);
+      if (this.screen) {
+        this.screen.focusElement(focusedEl);
+      }
+      // if (updatedScreen) {
+      //   this.redrawScreen(updatedScreen);
+      // }
+    });
+
   }
 
 

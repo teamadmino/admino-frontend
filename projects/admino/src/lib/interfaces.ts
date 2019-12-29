@@ -89,12 +89,16 @@ export interface BackendResponse {
   setScreen: any;
   updateScreen: any;
 
+  setCustomVars: any;
+  updateCustomVars: any;
+
   setSid: string;
   setFirstName: string;
   setLastname: string;
   setMenu: AdminoMenuItem[];
   setQueryParams: { [id: string]: string; };
   setBottomButtons: AdminoButton[];
+  setFocus: any;
 
   closePopup: boolean | string;
 

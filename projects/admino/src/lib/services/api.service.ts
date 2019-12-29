@@ -100,9 +100,9 @@ export class AdminoApiService {
 
 
   request(requestedScreen: string, requestingScreen: string,
-    screenValue: any = null, schema: any = null, initiatedBy = null, queryParams: any = null) {
+    screenValue: any = null, schema: any = null, initiatedBy = null, queryParams: any = null, customVars: any = null) {
     return this.http.post(this.BASE_URL + this.REQUEST + '/' + requestedScreen,
-      { screen: requestingScreen, schema, queryParams, screenValue, initiatedBy })
+      { screen: requestingScreen, schema, queryParams, screenValue, initiatedBy, customVars })
       .pipe(delay(0));
   }
 

@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 import { wrapIntoObservable } from '../utils/wrap-into-observable';
 import { isObject } from '../utils/isobject';
 import { propExists } from '../utils/propExists';
+import { deepMerge } from '../utils/deepmerge';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,13 @@ import { propExists } from '../utils/propExists';
 export class AdminoActionService {
   redrawScreen: BehaviorSubject<ScreenElementScreen> = new BehaviorSubject(null);
   updateScreen: BehaviorSubject<any> = new BehaviorSubject(null);
+  setFocus: BehaviorSubject<string> = new BehaviorSubject('');
 
   currentQueryParams = null;
-
   activeRequests: { sub: Subscription }[] = [];
+
+  customVars: any = {};
+
 
   constructor(private router: Router, private route: ActivatedRoute,
     private user: AdminoUserService, private api: AdminoApiService, private cs: ConfigService) { }
@@ -63,7 +67,7 @@ export class AdminoActionService {
   backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null) {
 
     return this.api.request(screen, requestingScreen, screenValue, schema,
-      initiatedBy, this.currentQueryParams).pipe(map((response: BackendResponse) => {
+      initiatedBy, this.currentQueryParams, this.customVars).pipe(map((response: BackendResponse) => {
         if (response.setScreen) {
           this.setQueryParams({});
           this.redrawScreen.next(response.setScreen);
@@ -86,8 +90,18 @@ export class AdminoActionService {
         if (response.setLastname) {
           this.user.lastname = response.setLastname;
         }
+        if (response.setCustomVars) {
+          this.customVars = response.setCustomVars;
+        }
+        if (response.updateCustomVars) {
+          deepMerge(this.customVars, response.updateCustomVars);
+        }
         if (response.setQueryParams) {
           this.setQueryParams(response.setQueryParams);
+        }
+        if (response.setFocus) {
+          this.setFocus.next(response.setFocus);
+          // this.user.sid = response.setSid;
         }
       }));
   }

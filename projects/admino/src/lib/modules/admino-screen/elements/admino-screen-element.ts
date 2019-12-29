@@ -7,7 +7,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export class AdminoScreenElement {
-    @ViewChild('inputRef', { static: true }) focusRef: ElementRef;
+    @ViewChild('focusRef', { static: true }) focusRef: any;
     public element: ScreenElement | any;
     // public fields: FieldConfig[];
     public parentGroup: FormGroup;
@@ -57,7 +57,11 @@ export class AdminoScreenElement {
 
     focus() {
         if (this.focusRef) {
-            this.focusRef.nativeElement.focus();
+            if (this.focusRef.nativeElement) {
+                this.focusRef.nativeElement.focus();
+            } else {
+                this.focusRef.focus();
+            }
         }
     }
     blur() {

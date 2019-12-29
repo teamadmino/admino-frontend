@@ -33,6 +33,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   pauseValueChange = false;
 
   public pauseEvent: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public focusEvent: BehaviorSubject<string> = new BehaviorSubject('');
 
 
   @Input() isPopup = false;
@@ -60,6 +61,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     // console.log(config);
     // deepMerge(this.config, config);
     if (replace) {
+      this.focusEvent.next(null);
       this.screenElement = element;
     } else {
       this.screenElement = this.mergeConfig(this.screenElement, element);
@@ -72,7 +74,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     this.cd.detectChanges();
     this.updateEvent.next();
   }
-
+  focusElement(el) {
+    this.focusEvent.next(el);
+  }
   // extractValue(elements: any[], val = {}) {
   //   for (const element of elements) {
   //     if (element && element.elements) {
