@@ -217,6 +217,24 @@
   }
 
   @for $i from 1 through length($_colors) {
+    .glow-#{nth($_colornames, $i)} {
+      box-shadow: 0px 0px 10px nth($_colors, $i) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
+    .borderglow-#{nth($_colornames, $i)} {
+      box-shadow: 0px 0px 1px 1px nth($_colors, $i) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
+    .cdk-focused.focusglow-#{nth($_colornames, $i)} {
+      box-shadow: 0px 0px 10px nth($_colors, $i) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
     .heading-#{nth($_colornames, $i)} {
       text-shadow: 0px 0px 10px nth($_colors, $i) !important;
       color: nth($_colors, $i) !important;

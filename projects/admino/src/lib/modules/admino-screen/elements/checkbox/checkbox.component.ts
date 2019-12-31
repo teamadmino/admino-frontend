@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 
 @Component({
@@ -7,8 +7,13 @@ import { AdminoScreenElement } from '../admino-screen-element';
   styleUrls: ['./checkbox.component.scss']
 })
 export class CheckboxComponent extends AdminoScreenElement implements OnInit {
+  @ViewChild('focusRef', { static: true }) focusRef: any;
 
   ngOnInit() {
   }
-
+  focusEvent() {
+    super.focusEvent();
+    console.log(this.focusRef)
+    this.focusRef.focus();
+  }
 }

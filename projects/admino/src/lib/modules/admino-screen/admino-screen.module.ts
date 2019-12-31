@@ -1,3 +1,4 @@
+import { AdminoFocusTrapModule } from './../../directives/admino-focus-trap/admino-focus-trap.module';
 import { AdminoVirtualTableModule } from './../admino-virtual-table/admino-virtual-table.module';
 import { AdminoCardModule } from './../admino-card/admino-card.module';
 import { MaterialModulesModule } from './../material-modules/material-modules.module';
@@ -34,7 +35,8 @@ import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.compone
     ReactiveFormsModule,
     MaterialModulesModule,
     AdminoCardModule,
-    AdminoVirtualTableModule
+    AdminoVirtualTableModule,
+    AdminoFocusTrapModule
   ],
   exports: [
     AdminoScreenComponent

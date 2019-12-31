@@ -143,6 +143,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     this.elementComponent.screenComponent = this.screenComponent;
     this.elementComponent.rootScreenComponent = this.rootScreenComponent;
     this.elementComponent.index = this.index;
+    this.elementComponent.init();
 
     if (this.element.type === 'group') {
       this.createGroup();
@@ -161,6 +162,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     this.removeControl();
     if (this.componentRef) {
       this.componentRef.destroy();
+    }
+    if (this.elementComponent) {
+      this.elementComponent.destroy();
     }
   }
 

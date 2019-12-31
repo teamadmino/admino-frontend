@@ -1,5 +1,5 @@
 import { ActionEvent } from './../../../../interfaces';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 
 @Component({
@@ -8,6 +8,7 @@ import { AdminoScreenElement } from '../admino-screen-element';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent extends AdminoScreenElement implements OnInit {
+  @ViewChild('focusRef', { static: true }) focusRef: any;
 
   ngOnInit() {
   }
@@ -21,5 +22,9 @@ export class ButtonComponent extends AdminoScreenElement implements OnInit {
     // this.form.formRef.onSubmit(undefined);
     // this.form.formRef.ngSubmit.emit();
 
+  }
+  focusEvent() {
+    super.focusEvent();
+    this.focusRef.focus();
   }
 }

@@ -3,6 +3,7 @@
     (actionEvent)="handleAction($event)" (valueChange)="setValue($event)"
     [ngStyle]="{height: element.tableHeight?element.tableHeight+'px':'400px'}"
     [itemSize]="element.tableRowHeight?element.tableRowHeight:51" [hideSideBorder]="element.hideSideBorder"
-    [hideBottomBorder]="element.hideBottomBorder" #focusRef>
+    [hideBottomBorder]="element.hideBottomBorder" #focusRef [ngClass]="{'borderglow-primary': this.isFocused}"
+    (click)="this.focus()">
 
 </admino-virtual-table>

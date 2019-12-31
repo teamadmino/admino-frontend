@@ -2,9 +2,8 @@
 <mat-form-field class="admino-input" [formGroup]="group">
     <mat-label>{{element.label}}</mat-label>
 
-    <input (focus)="this.focused=true;this.focusEvent(inputRef)" (blur)="this.focused=false; this.blurEvent(inputRef)"
-        matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.label" #inputRef #focusRef
-        [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null">
+    <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.label" #inputRef
+        #focusRef [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null">
 
     <!-- *ngIf="element.value && focused===false" -->
     <!-- <div class="print-helper">

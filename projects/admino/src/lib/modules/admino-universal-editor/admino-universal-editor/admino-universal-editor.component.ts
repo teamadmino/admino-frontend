@@ -111,6 +111,7 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
       // console.log(focusedEl);
       if (this.screen) {
         this.screen.focusElement(focusedEl);
+        console.log(focusedEl)
       }
       // if (updatedScreen) {
       //   this.redrawScreen(updatedScreen);

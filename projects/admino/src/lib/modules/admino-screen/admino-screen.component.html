@@ -1,4 +1,5 @@
-<div class="admino-screen " [ngClass]="prepareInnerClasses(_screenElement.innerClasses)" *ngIf="_screenElement">
+<div class="admino-screen " [ngClass]="prepareInnerClasses(_screenElement.innerClasses)" *ngIf="_screenElement"
+    adminoTrapFocus [adminoTrapFocus]="this.rootScreenComponent===this">
     <admino-card [nopadding]="true" [opaque]="this.isPopup" [showBorder]="_screenElement.showBorder">
         <!-- [fillHeight]="_screenElement.fillHeight" -->
         <form [formGroup]="group" (submit)="onSubmit($event)">

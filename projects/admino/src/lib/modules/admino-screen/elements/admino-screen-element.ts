@@ -7,7 +7,8 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export class AdminoScreenElement {
-    @ViewChild('focusRef', { static: true }) focusRef: any;
+    // @ViewChild('focusRef', { static: true }) focusRef: any;
+    @ViewChild('focusRef', { static: true, read: ElementRef }) focusElRef: ElementRef;
     public element: ScreenElement | any;
     // public fields: FieldConfig[];
     public parentGroup: FormGroup;
@@ -24,6 +25,21 @@ export class AdminoScreenElement {
     // public valueChanges: Subject<any> = new Subject();
 
     public activeActionSubscriptions: ActionSubscription[] = [];
+
+    isFocused = false;
+    boundFocusFunction;
+    boundBlurFunction;
+
+    init() {
+        if (this.focusElRef) {
+
+            this.boundFocusFunction = this.focusEvent.bind(this);
+            this.focusElRef.nativeElement.addEventListener('focus', this.boundFocusFunction, true);
+
+            this.boundBlurFunction = this.blurEvent.bind(this);
+            this.focusElRef.nativeElement.addEventListener('blur', this.boundBlurFunction, true);
+        }
+    }
 
     handleAction(action: AdminoAction) {
         return new Promise((resolve, reject) => {
@@ -56,28 +72,38 @@ export class AdminoScreenElement {
 
 
     focus() {
-        if (this.focusRef) {
-            if (this.focusRef.nativeElement) {
-                this.focusRef.nativeElement.focus();
-            } else {
-                this.focusRef.focus();
+        if (this.focusElRef) {
+            if (this.focusElRef.nativeElement) {
+                this.focusElRef.nativeElement.focus();
             }
         }
+        this.focusEvent();
     }
+
     blur() {
-        if (this.focusRef) {
-            this.focusRef.nativeElement.blur();
+        if (this.focusElRef) {
+            if (this.focusElRef.nativeElement) {
+                this.focusElRef.nativeElement.blur();
+            }
         }
+        this.blurEvent();
     }
-    focusEvent(el: HTMLInputElement) {
+    focusEvent() {
+        this.isFocused = true;
     }
-    blurEvent(element: HTMLInputElement) {
+    blurEvent() {
+        this.isFocused = false;
+
     }
     setValue(value) {
         this.control.setValue(value);
     }
     onChange(changes: { [id: string]: ScreenElementChange; }) {
     }
-
-
+    destroy() {
+        if (this.focusElRef) {
+            this.focusElRef.nativeElement.removeEventListener('focus', this.boundFocusFunction);
+            this.focusElRef.nativeElement.removeEventListener('blur', this.boundBlurFunction);
+        }
+    }
 }
