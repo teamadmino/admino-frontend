@@ -1,0 +1,101 @@
+:host {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  // height: 800px;
+  position: relative;
+  display: inline-block;
+
+}
+
+.grid-row-helper {
+  opacity: 0.3;
+
+  &:last-of-type {
+    opacity: 0;
+  }
+
+
+  grid-row: 1;
+  border-bottom: 1px dotted red;
+  height: calc(100% + 1em - 4px);
+  width: calc(100% + 1em - 4px);
+  margin-left: calc(-0.5em + 2px);
+  margin-top: calc(-0.5em + 2px);
+  // transform: translateX(1em);
+  z-index: 10 !important;
+
+}
+
+.grid-column-helper {
+  opacity: 0.3;
+
+  border-right: 1px dotted goldenrod;
+  // height: calc(100% + 1em);
+  height: calc(100% + 1em - 4px);
+  // transform: translateX(0.5em);
+
+  // width: calc(100% + 1em);
+  margin-right: calc(-0.5em + 2px);
+  margin-top: calc(-0.5em + 2px);
+  z-index: 10 !important;
+
+}
+
+.grid::ng-deep {
+  &>* {
+    z-index: 100;
+  }
+
+}
+
+.grid {
+  position: relative;
+
+
+
+  &.edit-mode {
+    border: 1px dotted greenyellow;
+    border-radius: 2px;
+    padding: 5px;
+  }
+
+  display: inline-grid;
+  // height: 100%;
+  width: 100%;
+
+  grid-gap: 1em;
+  //   grid-column-gap: 1em;
+  //   grid-row-gap: 1em;
+  align-items: start;
+  // grid-template-columns: auto !important;
+  // grid-template-rows: auto 1fr;
+  // grid-auto-rows: minmax(min-content, max-content);
+  // grid-auto-rows: auto;
+
+  // grid-auto-rows: minmax(30px, max-content);
+}
+
+// .displaygrid {
+//   height: 100%;
+//   width: 100%;
+//   opacity: 0.1;
+//   position: absolute !important;
+//   left: 0;
+//   top: 0;
+//   align-items: stretch !important;
+//   align-content: stretch !important;
+//   pointer-events: none;
+// }
+
+// .gridrow {
+//   flex-direction: row;
+//   height: 100%;
+//   width: 100%;
+//   display: flex;
+//   flex-wrap: wrap;
+//   align-items: flex-start;
+//   align-content: flex-start;
+//   //   margin-right: -15px;
+//   //   margin-left: -15px;
+// }

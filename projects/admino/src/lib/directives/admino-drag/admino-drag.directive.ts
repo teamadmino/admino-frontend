@@ -1,15 +1,15 @@
-import { Directive, Renderer2, HostListener, Output, EventEmitter } from '@angular/core';
+import { Directive, Renderer2, HostListener, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 @Directive({
   selector: '[adminoDrag]'
 })
-export class AdminoDragDirective {
+export class AdminoDragDirective implements OnDestroy {
 
   dragStartPosX = 0;
   dragStartPosY = 0;
   isDragging = false;
-  touchMoveListener;
-  touchEndListener;
+  dragMoveListener;
+  dragEndListener;
   dragData = { start: { x: 0, y: 0 }, delta: { x: 0, y: 0 } };
 
   @Output() adminoDragStart = new EventEmitter<any>();
@@ -17,45 +17,54 @@ export class AdminoDragDirective {
   @Output() adminoDragEnd = new EventEmitter<any>();
 
 
-  @HostListener('touchstart', ['$event'])
-  // @HostListener('mousedown', ['$event'])
+  // @HostListener('touchstart', ['$event'])
+  @HostListener('mousedown', ['$event'])
   onStart(evt) {
-    // evt.preventDefault();
-    this.adminoDragStart.next();
-    // evt.preventDefault();
-    if (evt.touches && evt.touches[0]) {
-      this.dragStartPosX = evt.clientX || evt.touches[0].clientX;
-      this.dragStartPosY = evt.clientY || evt.touches[0].clientY;
-      this.isDragging = true;
-      this.dragData.start.x = this.dragStartPosX;
-      this.dragData.start.y = this.dragStartPosY;
 
-      this.touchMoveListener = this.renderer.listen('document', 'touchmove', e => {
-        const mY = e.clientY || e.touches[0].clientY;
-        const mX = e.clientX || e.touches[0].clientX;
+    this.dragStartPosX = evt.clientX;
+    this.dragStartPosY = evt.clientY;
+    this.isDragging = true;
+    this.dragData.start.x = this.dragStartPosX;
+    this.dragData.start.y = this.dragStartPosY;
 
-        this.dragData.delta.y = mY - this.dragData.start.y;
-        this.dragData.delta.x = mX - this.dragData.start.x;
-        this.adminoDragMove.next(Object.assign({}, this.dragData));
-      });
+    this.adminoDragStart.next(Object.assign({}, this.dragData));
 
-      this.touchEndListener = this.renderer.listen('document', 'touchend', e => {
-        this.isDragging = false;
-        this.adminoDragEnd.next();
+    this.dragMoveListener = this.renderer.listen('document', 'mousemove', e => {
+      const mY = e.clientY;
+      const mX = e.clientX;
 
-        if (this.touchMoveListener) {
-          this.touchMoveListener();
-        }
-        if (this.touchEndListener) {
-          this.touchEndListener();
-        }
-      });
+      this.dragData.delta.y = mY - this.dragData.start.y;
+      this.dragData.delta.x = mX - this.dragData.start.x;
+      this.adminoDragMove.next(Object.assign({}, this.dragData));
+    });
+
+    this.dragEndListener = this.renderer.listen('document', 'mouseup', e => {
+      this.endDrag();
+    });
+  }
+
+  endDrag() {
+    this.isDragging = false;
+    this.adminoDragEnd.next();
+
+    if (this.dragMoveListener) {
+      this.dragMoveListener();
+    }
+    if (this.dragEndListener) {
+      this.dragEndListener();
     }
   }
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) {
+  }
 
-  touchStart(evt) {
 
+  ngOnDestroy() {
+    if (this.dragMoveListener) {
+      this.dragMoveListener();
+    }
+    if (this.dragEndListener) {
+      this.dragEndListener();
+    }
   }
 }

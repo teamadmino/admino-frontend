@@ -32,7 +32,7 @@ export interface ScreenElement {
     createAt?: number;
 
     classes?: string[];
-    col?: string[];
+    // col?: string[];
     innerClasses?: string[];
     validators?: ScreenElementValidator[];
     conditions?: Condition[];
@@ -43,6 +43,17 @@ export interface ScreenElement {
 
     disabled?: boolean;
     hidden?: boolean;
+
+    col?: any;
+    row?: any;
+    colSpan?: any;
+    rowSpan?: any;
+    grid_auto_rows?: any;
+    stretch?: boolean;
+
+    __hover?: boolean;
+    __dragging?: boolean;
+
 }
 
 export interface ScreenElementScreen extends ScreenElement {

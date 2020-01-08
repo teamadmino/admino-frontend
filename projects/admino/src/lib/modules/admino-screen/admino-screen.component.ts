@@ -1,9 +1,10 @@
+import { AdminoGridComponent } from './../admino-grid/admino-grid/admino-grid.component';
 import { cloneDeep } from 'lodash';
 import { takeUntil } from 'rxjs/operators';
 import { AdminoActionService } from './../../services/action.service';
 import { AdminoApiService } from './../../services/api.service';
 import { ScreenElementScreen, ScreenElement } from './admino-screen.interfaces';
-import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -37,6 +38,10 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
 
   @Input() isPopup = false;
+  @Input() editMode = false;
+
+  @ViewChild(AdminoGridComponent, { static: false }) adminoGrid: AdminoGridComponent;
+
 
   constructor(public fb: FormBuilder, public api: AdminoApiService, public as: AdminoActionService, private cd: ChangeDetectorRef) { }
 
@@ -54,7 +59,6 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(event) {
-    console.log(this.group.value);
   }
 
   update(element: ScreenElementScreen, replace: boolean = false) {
@@ -176,16 +180,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     }
     return arr;
   }
-  prepareInnerClasses() {
-    let arr = cloneDeep(this.screenElement.innerClasses);
-    if (!arr) {
-      arr = [];
-    }
-    if (this.screenElement.fillHeight) {
-      arr.push('fill-height');
-    }
-    return arr;
-  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

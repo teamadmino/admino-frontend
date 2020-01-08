@@ -147,7 +147,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   ngOnInit() {
   }
   afterRender(e) {
-    console.log('afterRender');
     if (this.prevStart !== e.start || this.prevEnd !== e.end) {
       const count = e.visibleEnd - e.visibleStart;
       this.dataSource.state.count = count;

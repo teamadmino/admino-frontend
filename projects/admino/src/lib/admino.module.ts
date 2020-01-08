@@ -1,3 +1,4 @@
+import { AdminoGridModule } from './modules/admino-grid/admino-grid.module';
 import { AdminoVirtualTableModule } from './modules/admino-virtual-table/admino-virtual-table.module';
 import { AdminoFocusTrapModule } from './directives/admino-focus-trap/admino-focus-trap.module';
 import { AdminoMenuModule } from './modules/admino-menu/admino-menu.module';
@@ -49,7 +50,8 @@ import { AdminoUniversalEditorModule } from './modules/admino-universal-editor/a
     AdminoUniversalEditorModule,
 
     AdminoFocusTrapModule,
-    AdminoVirtualTableModule
+    AdminoVirtualTableModule,
+    AdminoGridModule
   ],
 
   exports: [
@@ -64,7 +66,8 @@ import { AdminoUniversalEditorModule } from './modules/admino-universal-editor/a
     AdminoMenuModule,
     AdminoUniversalEditorModule,
     AdminoFocusTrapModule,
-    AdminoVirtualTableModule
+    AdminoVirtualTableModule,
+    AdminoGridModule
   ],
   // providers: [
   //   { provide: MAT_DATE_LOCALE, useValue: 'hu-HU' },

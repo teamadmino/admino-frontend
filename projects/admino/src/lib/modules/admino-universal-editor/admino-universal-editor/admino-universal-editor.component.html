@@ -2,7 +2,7 @@
     <div class="row mh-100" [@slotTransition]="animTrigger">
         <div class="screen-col col-12 pt-3 pb-3 routeAnimated">
             <!-- [ngClass]="this.prepareClasses()" -->
-            <admino-screen [screenElement]="screenElement">
+            <admino-screen [editMode]="this.editMode" [screenElement]="screenElement">
             </admino-screen>
         </div>
     </div>

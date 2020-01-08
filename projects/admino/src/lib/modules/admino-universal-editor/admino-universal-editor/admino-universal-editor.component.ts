@@ -5,7 +5,7 @@ import { AdminoApiService } from './../../../services/api.service';
 import { ScreenElementScreen, ScreenPopup } from './../../admino-screen/admino-screen.interfaces';
 import { ActionEvent } from './../../../interfaces';
 import { AdminoModalService, AdminoModalRef } from './../../admino-modal/admino-modal.service';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AdminoScreenComponent } from '../../admino-screen/admino-screen.component';
@@ -29,6 +29,11 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
   animTrigger = true;
 
   // activeScreenId = 0;
+  editMode = false;
+  @HostListener('dblclick', ['$event'])
+  dblclck(e: MouseEvent) {
+    this.editMode = !this.editMode;
+  }
 
   constructor(private route: ActivatedRoute, public as: AdminoActionService,
     private nav: AdminoNavService, private ms: AdminoModalService, private api: AdminoApiService, private cd: ChangeDetectorRef) {
