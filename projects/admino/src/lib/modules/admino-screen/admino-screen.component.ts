@@ -38,6 +38,8 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
 
   @Input() isPopup = false;
+  @Input() allOpenScreens: AdminoScreenComponent[] = [];
+  @Input() mainScreenComponent: AdminoScreenComponent = this;
   @Input() editMode = false;
 
   @ViewChild(AdminoGridComponent, { static: false }) adminoGrid: AdminoGridComponent;
@@ -121,7 +123,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  handleAction(actionEvent) {
+  handleAction(actionEvent: ActionEvent) {
+    actionEvent.openScreens = this.allOpenScreens;
+    actionEvent.screenConfig = this.mainScreenComponent.screenElement;
     return this.as.handleAction(actionEvent);
   }
 

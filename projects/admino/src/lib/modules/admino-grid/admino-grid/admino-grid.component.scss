@@ -6,6 +6,13 @@
   position: relative;
   display: inline-block;
 
+  .grid::ng-deep {
+    &>* {
+      z-index: 2;
+    }
+
+  }
+
 }
 
 .grid-row-helper {
@@ -23,7 +30,7 @@
   margin-left: calc(-0.5em + 2px);
   margin-top: calc(-0.5em + 2px);
   // transform: translateX(1em);
-  z-index: 10 !important;
+  z-index: 1 !important;
 
 }
 
@@ -38,16 +45,10 @@
   // width: calc(100% + 1em);
   margin-right: calc(-0.5em + 2px);
   margin-top: calc(-0.5em + 2px);
-  z-index: 10 !important;
+  z-index: 1 !important;
 
 }
 
-.grid::ng-deep {
-  &>* {
-    z-index: 100;
-  }
-
-}
 
 .grid {
   position: relative;

@@ -161,8 +161,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     this.prevVisibleStart = e.visibleStart;
     this.prevVisibleEnd = e.visibleEnd;
 
-
-
   }
   ngAfterViewInit() {
 

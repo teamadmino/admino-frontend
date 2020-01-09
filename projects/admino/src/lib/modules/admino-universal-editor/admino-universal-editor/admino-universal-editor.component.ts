@@ -57,7 +57,8 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
         if (found) {
           found.ref.modal.setData({
             popup,
-            universalEditor: this
+            universalEditor: this,
+            mainScreenComponent: this.screen
           });
           if (popup.destroy) {
             found.ref.modal.close();
@@ -71,7 +72,8 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
             verticalPosition: popup.verticalPosition,
             data: {
               popup,
-              universalEditor: this
+              universalEditor: this,
+              mainScreenComponent: this.screen
             }
           });
           const pref = { popup, ref };
@@ -82,8 +84,16 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
         }
       }
     }
+    this.getOpenScreens();
   }
 
+  getOpenScreens() {
+    const screens = [this.screen];
+    this.openPopups.forEach((popup) => {
+      screens.push(popup.ref.component.instance.screen);
+    });
+    return screens;
+  }
 
   clearPopups() {
     for (const popup of this.openPopups) {

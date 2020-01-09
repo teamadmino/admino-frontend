@@ -1,3 +1,4 @@
+import { AdminoScreenComponent } from './modules/admino-screen/admino-screen.component';
 import { Subscription } from 'rxjs';
 import { ScreenElementScreen } from './modules/admino-screen/admino-screen.interfaces';
 import { FormGroup } from '@angular/forms';
@@ -40,7 +41,10 @@ export interface AdminoConfig {
 ////////////
 export interface ActionEvent {
   action: AdminoAction;
-  form?: FormGroup;
+
+  // form?: FormGroup;
+
+  openScreens?: AdminoScreenComponent[];
   screenConfig?: ScreenElementScreen;
   initiatedBy?: any;
 }

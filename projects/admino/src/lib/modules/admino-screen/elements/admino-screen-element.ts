@@ -47,11 +47,11 @@ export class AdminoScreenElement {
             this.activeActionSubscriptions.push(actionSub);
             actionSub.actionEvent = {
                 action,
-                form: this.screenComponent.group,
-                screenConfig: this.rootScreenComponent.screenElement,
+                // form: this.screenComponent.group,
+                // screenConfig: this.rootScreenComponent.screenElement,
                 initiatedBy: this.controlPath
             };
-            actionSub.subscription = this.screenComponent.handleAction(actionSub.actionEvent).subscribe((result) => {
+            actionSub.subscription = this.rootScreenComponent.handleAction(actionSub.actionEvent).subscribe((result) => {
                 this.activeActionSubscriptions.slice(this.activeActionSubscriptions.indexOf(actionSub), 1);
                 resolve(result);
             }, (error) => {

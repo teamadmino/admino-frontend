@@ -47,14 +47,20 @@ export class AdminoActionService {
     if (typeof actionEvent.action === 'string') {
       // return wrapIntoObservable(null);
     } else if (actionEvent.action.type === 'backend') {
-      let screenValue = actionEvent.form ? actionEvent.form.value : null;
+
+      let screenValue: any = {};
+      // screenValue = actionEvent.openScreens ? cloneDeep(actionEvent.openScreens[0].group.value) : null;
+      if (actionEvent.openScreens) {
+        for (const scr of actionEvent.openScreens) {
+          screenValue[scr.screenElement.id ? scr.screenElement.id : 'ID_WAS_NOT_PROVIDED_' + Math.round(Math.random() * 1000).toString()] = scr.group.value;
+        }
+      }
       screenValue = this.removeNull(screenValue);
       screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
-
       let schema = null;
-      if (actionEvent.action.includeSchema) {
-        schema = actionEvent.screenConfig;
-      }
+      // if (actionEvent.action.includeSchema) {
+      // }
+      schema = actionEvent.screenConfig;
       const requestingScreen = actionEvent.screenConfig ? actionEvent.screenConfig.id : null;
       return this.backendRequest(actionEvent.action.backendAction, requestingScreen, schema, screenValue, actionEvent.initiatedBy);
     } else if (actionEvent.action.type === 'frontend') {

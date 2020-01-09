@@ -16,12 +16,12 @@ import { AdminoScreenComponent } from '../../admino-screen/admino-screen.compone
 })
 export class AdminoUniversalEditorPopupComponent implements OnInit {
   @ViewChild(AdminoScreenComponent, { static: true }) screen: AdminoScreenComponent;
-
-  unversialEditor: AdminoUniversalEditorComponent;
+  vami = 100;
+  universalEditor: AdminoUniversalEditorComponent;
+  mainScreenComponent: AdminoScreenComponent;
 
   constructor(@Inject(MODAL_DATA) public dataSubject: BehaviorSubject<any>,
     @Inject(MODAL_REF) public modalRef: AdminoModalComponent) {
-
 
     // console.log(dataSubject)
 
@@ -30,7 +30,16 @@ export class AdminoUniversalEditorPopupComponent implements OnInit {
   ngOnInit() {
     this.dataSubject.subscribe((data: any) => {
       if (data) {
+        console.log(data);
+        if (data.universalEditor) {
+          this.universalEditor = data.universalEditor;
+        }
+        if (data.mainScreenComponent) {
+          this.mainScreenComponent = data.mainScreenComponent;
+        }
+
         const popup: ScreenPopup = data.popup;
+
         if (popup.setScreen) {
           this.screen.update(popup.setScreen, true);
         }

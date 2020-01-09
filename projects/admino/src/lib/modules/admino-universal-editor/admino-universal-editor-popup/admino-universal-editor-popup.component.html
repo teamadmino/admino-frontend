@@ -2,7 +2,9 @@
     <div class="inner-wrappercontainer-fluid ">
         <div class="row pointer-events-none ">
             <div class=" col-12 mh-100 h-100  routeAnimated">
-                <admino-screen [isPopup]="true" class="pointer-events-all ">
+                <admino-screen [isPopup]="true" [mainScreenComponent]="mainScreenComponent"
+                    [allOpenScreens]="universalEditor?universalEditor.getOpenScreens():null"
+                    class="pointer-events-all ">
                 </admino-screen>
             </div>
         </div>
