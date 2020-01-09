@@ -14,6 +14,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
   @Input() displayGrid = true;
   gridAutoRows = '';
   @HostBinding('class.edit-mode') @Input() editMode = false;
+  @Input() allowEdit = false;
   @ContentChildren(AdminoGridItemComponent, { descendants: false }) gridItems: QueryList<AdminoGridItemComponent>;
   @ViewChild('gridRef', { static: true }) gridRef: ElementRef;
   @ViewChildren('rowsRef') rowsRef: QueryList<ElementRef>;

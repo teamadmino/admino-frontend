@@ -61,6 +61,8 @@ export interface ScreenElementScreen extends ScreenElement {
     elements?: ScreenElement[];
     popups?: ScreenPopup[];
     showBorder?: boolean;
+    allowEdit?: boolean;
+    editMode?: boolean;
 }
 
 export interface ScreenElementTimer extends ScreenElement {

@@ -29,11 +29,7 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
   animTrigger = true;
 
   // activeScreenId = 0;
-  editMode = false;
-  @HostListener('dblclick', ['$event'])
-  dblclck(e: MouseEvent) {
-    this.editMode = !this.editMode;
-  }
+
 
   constructor(private route: ActivatedRoute, public as: AdminoActionService,
     private nav: AdminoNavService, private ms: AdminoModalService, private api: AdminoApiService, private cd: ChangeDetectorRef) {

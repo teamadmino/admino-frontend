@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AdminoActionService } from './../../services/action.service';
 import { AdminoApiService } from './../../services/api.service';
 import { ScreenElementScreen, ScreenElement } from './admino-screen.interfaces';
-import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding, ViewChild, HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -42,6 +42,12 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
   @ViewChild(AdminoGridComponent, { static: false }) adminoGrid: AdminoGridComponent;
 
+  @HostListener('dblclick', ['$event'])
+  dblclck(e: MouseEvent) {
+    // if (this._screenElement.allowEdit) {
+    this.editMode = !this.editMode;
+    // }
+  }
 
   constructor(public fb: FormBuilder, public api: AdminoApiService, public as: AdminoActionService, private cd: ChangeDetectorRef) { }
 
@@ -76,6 +82,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     // const merged = deepMerge(origValues, values);
     // this.group.patchValue(merged);
     this.cd.detectChanges();
+    this.adminoGrid.refresh();
     this.updateEvent.next();
   }
   focusElement(el) {

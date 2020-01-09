@@ -6,7 +6,8 @@
         <form [formGroup]="group" (submit)="onSubmit($event)">
             <!-- [ngClass]="{'fill-height': _screenElement.fillHeight}" -->
             <!-- <h2 class="heading-primary font-weight-300" *ngIf="_screenElement.label">{{_screenElement.label}}</h2> -->
-            <admino-grid [editMode]="this.editMode">
+            <admino-grid [allowEdit]="_screenElement.allowEdit" [editMode]="editMode">
+
                 <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
                     [col]="element.col!==undefined?element.col:1" [row]="element.row!==undefined?element.row:i"
                     [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1" [stretch]="element.stretch"
