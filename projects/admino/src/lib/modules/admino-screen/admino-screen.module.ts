@@ -1,3 +1,4 @@
+import { AdminoModalModule } from './../admino-modal/admino-modal.module';
 import { AdminoDragModule } from './../../directives/admino-drag/admino-drag.module';
 import { AdminoGridModule } from './../admino-grid/admino-grid.module';
 import { AdminoFocusTrapModule } from './../../directives/admino-focus-trap/admino-focus-trap.module';
@@ -40,7 +41,8 @@ import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.compone
     AdminoVirtualTableModule,
     AdminoFocusTrapModule,
     AdminoGridModule,
-    AdminoDragModule
+    AdminoDragModule,
+    AdminoModalModule
   ],
   exports: [
     AdminoScreenComponent

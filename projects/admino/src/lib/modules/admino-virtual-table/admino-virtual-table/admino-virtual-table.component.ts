@@ -113,9 +113,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
 
   handleInteraction(shift) {
-    // this.dataSource.state.shift = shift;
+    this.dataSource.state.shift = shift;
     // this.dataSource.state.cursor = this.dataSource.state.cursor - shift;
-    // this.dataSource.loadData(shift);
+    this.dataSource.loadData(shift);
     // if (this.dataSource.cursorAbsPos + shift >= 0 && this.dataSource.cursorAbsPos + shift <= this.dataSource.totalsize) {
     //   this.dataSource.cursorAbsPos += shift;
     //   this.vsRef.scrollToItem(this.dataSource.cursorAbsPos);

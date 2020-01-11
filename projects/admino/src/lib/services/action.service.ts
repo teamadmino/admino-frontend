@@ -50,14 +50,18 @@ export class AdminoActionService {
 
       let screenValue: any = {};
       // screenValue = actionEvent.openScreens ? cloneDeep(actionEvent.openScreens[0].group.value) : null;
+      let a = 0;
       if (actionEvent.openScreens) {
         for (const scr of actionEvent.openScreens) {
-          screenValue[scr.screenElement.id ? scr.screenElement.id : 'ID_WAS_NOT_PROVIDED_' + Math.round(Math.random() * 1000).toString()] = scr.group.value;
+          const id = scr.screenElement.id ? scr.screenElement.id : 'ID_WAS_NOT_PROVIDED_' + a.toString();
+          screenValue[id] = this.addTypesToValueKeys(scr.group.value, scr.screenElement);
+          a++;
         }
       }
       screenValue = this.removeNull(screenValue);
       screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
       let schema = null;
+      console.log(screenValue);
       // if (actionEvent.action.includeSchema) {
       // }
       schema = actionEvent.screenConfig;
@@ -176,6 +180,26 @@ export class AdminoActionService {
       }
     }
     return filtered;
+  }
+  addTypesToValueKeys(value: any, schema: ScreenElementScreen, newScreenVal = {}) {
+
+    for (const key of Object.keys(value)) {
+      const found = schema.elements.find((el) => {
+        return el.id === key;
+      });
+      if (found) {
+        if (found.type === 'group') {
+          newScreenVal[key + ':' + found.type] = this.addTypesToValueKeys(value[key], found);
+        } else {
+          newScreenVal[key + ':' + found.type] = value[key];
+        }
+      } else {
+        console.log('NOT FOUND ELEMENT BY ID WHEN ADDING TYPES TO VALUEKEYS');
+      }
+
+    }
+
+    return newScreenVal;
   }
 
 }
