@@ -218,7 +218,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     }
     // console.log(this.dataSource.keys)
     this.dataSource.loadData().then((resp) => {
-      if (value.cursorpos) {
+      if (value.cursorpos !== undefined) {
         this.vsRef.scrollToItem(this.dataSource.viewpos);
       }
       // this.vsRef.refresh();

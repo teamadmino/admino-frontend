@@ -111,7 +111,7 @@ export class AdminoVirtualTableDataSource {
             this.loadDataStart.next(this.state);
 
             requestObj.subscription = this.config.listFunction(this.state.keys,
-                this.state.cursor, calculatedShift, this.state.count, this.state.index, this.state.before * 0, this.state.after * 0).pipe(
+                this.state.cursor, calculatedShift, this.state.count, this.state.index, this.state.before, this.state.after).pipe(
                     takeUntil(this.ngUnsubscribe),
                     catchError(() => of([])),
                     // finalize(() => {

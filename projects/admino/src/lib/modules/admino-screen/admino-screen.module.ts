@@ -19,6 +19,7 @@ import { TextComponent } from './elements/text/text.component';
 import { PopupComponent } from './elements/popup/popup.component';
 import { CheckboxComponent } from './elements/checkbox/checkbox.component';
 import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
+import { ChartComponent } from './elements/chart/chart.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -30,7 +31,8 @@ import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.compone
     TextComponent,
     PopupComponent,
     CheckboxComponent,
-    RadiobuttonComponent
+    RadiobuttonComponent,
+    ChartComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.compone
     TimerComponent,
     TextComponent,
     CheckboxComponent,
-    RadiobuttonComponent
+    RadiobuttonComponent,
+    ChartComponent
   ]
 })
 export class AdminoScreenModule { }

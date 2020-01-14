@@ -1,3 +1,4 @@
+import { ChartComponent } from './elements/chart/chart.component';
 import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
 import { CheckboxComponent } from './elements/checkbox/checkbox.component';
 import { TextComponent } from './elements/text/text.component';
@@ -32,7 +33,8 @@ const componentMapper = {
   text: TextComponent,
   popup: PopupComponent,
   checkbox: CheckboxComponent,
-  radiobutton: RadiobuttonComponent
+  radiobutton: RadiobuttonComponent,
+  chart: ChartComponent,
 };
 
 @Directive({
