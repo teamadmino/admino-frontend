@@ -21,6 +21,18 @@ export interface VirtualDataSourceColumn {
     sortable?: boolean;
     sticky?: boolean;
 }
+export interface VirtualDataSourceState {
+    keys: any;
+    cursor: number;
+    count: number;
+    index: number;
+    before: number;
+    after: number;
+    cursorPosPercent: number;
+    totalsize: number;
+    cursorpos: number;
+
+}
 
 export class AdminoVirtualTableDataSource {
     private ngUnsubscribe: Subject<null> = new Subject();
@@ -50,7 +62,7 @@ export class AdminoVirtualTableDataSource {
     rows: any = {};
     totalsize = 1;
 
-    state: any = {
+    state: VirtualDataSourceState = {
         keys: { '#position': 'first' },
         cursor: 0,
         count: 10,
@@ -58,7 +70,8 @@ export class AdminoVirtualTableDataSource {
         before: 10,
         after: 10,
         cursorPosPercent: 0,
-        totalsize: 0
+        totalsize: 0,
+        cursorpos: 0,
     };
 
 
@@ -98,7 +111,7 @@ export class AdminoVirtualTableDataSource {
             this.loadDataStart.next(this.state);
 
             requestObj.subscription = this.config.listFunction(this.state.keys,
-                this.state.cursor, calculatedShift, this.state.count, this.state.index, this.state.before, this.state.after).pipe(
+                this.state.cursor, calculatedShift, this.state.count, this.state.index, this.state.before * 0, this.state.after * 0).pipe(
                     takeUntil(this.ngUnsubscribe),
                     catchError(() => of([])),
                     // finalize(() => {
@@ -179,7 +192,7 @@ export class AdminoVirtualTableDataSource {
         }
 
         // this.cursorAbsPos = this.viewpos + parseInt(data.cursorpos, 10);
-        this.state.cursorPos = parseInt(data.cursorpos, 10);
+        this.state.cursorpos = parseInt(data.cursorpos, 10);
         this.resultSubject.next(this.rows);
     }
 

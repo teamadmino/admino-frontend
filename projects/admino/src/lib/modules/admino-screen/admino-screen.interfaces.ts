@@ -38,8 +38,6 @@ export interface ScreenElement {
     conditions?: Condition[];
     actions?: ScreenAction[];
 
-    breakBefore?: boolean;
-    fillHeight?: boolean;
 
     disabled?: boolean;
     hidden?: boolean;
@@ -60,9 +58,19 @@ export interface ScreenElementScreen extends ScreenElement {
     label?: string;
     elements?: ScreenElement[];
     popups?: ScreenPopup[];
+
     showBorder?: boolean;
     allowEdit?: boolean;
-    editMode?: boolean;
+
+    is_fluid_container?: boolean;
+
+    // popup settings
+    is_popup?: boolean;
+    width?: string;
+    height?: string;
+    verticalPosition?: string;
+    horizontalPosition?: string;
+    nopadding?: boolean;
 }
 
 export interface ScreenElementTimer extends ScreenElement {
@@ -119,6 +127,7 @@ export interface ScreenElementTable extends ScreenElement {
 export interface TableValue {
     keys?: any;
     index?: any;
+    cursorpos?: number;
     // Visible cursor position in percent 0-1;
     cursorPosPercent?: number;
 }

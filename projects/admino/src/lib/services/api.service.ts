@@ -83,7 +83,7 @@ export class AdminoApiService {
       dummySubject.next(response);
       dummySubject.complete();
       return response;
-      // }, 200);
+      // }, 1000);
     })).subscribe((params) => {
 
     }, (err) => {

@@ -72,7 +72,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     // }
     if (event.keyCode === DOWN_ARROW) {
       event.preventDefault();
-      this.handleInteraction(1);
+      this.handleInteraction(10);
     }
     if (event.keyCode === UP_ARROW) {
       event.preventDefault();
@@ -113,7 +113,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
 
   handleInteraction(shift) {
-    this.dataSource.state.shift = shift;
+    // this.dataSource.state.shift = shift;
     // this.dataSource.state.cursor = this.dataSource.state.cursor - shift;
     this.dataSource.loadData(shift);
     // if (this.dataSource.cursorAbsPos + shift >= 0 && this.dataSource.cursorAbsPos + shift <= this.dataSource.totalsize) {
@@ -146,6 +146,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
   ngOnInit() {
   }
+
   afterRender(e) {
     if (this.prevStart !== e.start || this.prevEnd !== e.end) {
       const count = e.visibleEnd - e.visibleStart;
@@ -160,11 +161,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
     this.prevVisibleStart = e.visibleStart;
     this.prevVisibleEnd = e.visibleEnd;
-
   }
+
   ngAfterViewInit() {
-
-
     this.dataSource.loadDataStart.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       // console.log('table value change');
       // console.log(value);
@@ -195,8 +194,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     });
     this.calculateWidths();
     this.vsRef.refresh();
-
-
   }
 
   update(value: TableValue) {
@@ -208,6 +205,10 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (value.keys) {
       this.dataSource.state.keys = value.keys;
     }
+    if (value.cursorpos !== undefined) {
+      this.dataSource.state.cursor = value.cursorpos;
+    }
+
     if (value.index !== undefined) {
       this.vsRef.clearData();
       this.dataSource.state.index = value.index;
@@ -216,7 +217,13 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       this.lastSetCursorPosPercent = value.cursorPosPercent;
     }
     // console.log(this.dataSource.keys)
-    this.dataSource.loadData();
+    this.dataSource.loadData().then((resp) => {
+      if (value.cursorpos) {
+        this.vsRef.scrollToItem(this.dataSource.viewpos);
+      }
+      // this.vsRef.refresh();
+
+    });
   }
 
   updateColumns() {

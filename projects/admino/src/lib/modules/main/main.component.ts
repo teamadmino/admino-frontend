@@ -102,10 +102,10 @@ export class MainComponent implements OnInit, OnDestroy {
       this.cd.detectChanges();
     });
     this.site.documentElement = document.documentElement;
-    this.rendererListenerFn = this.renderer.listen(this.scrollAreaRef.nativeElement, 'scroll', (evt) => {
-      this.site.refreshScroll(evt);
-      this.cd.markForCheck();
-    });
+    // this.rendererListenerFn = this.renderer.listen(this.scrollAreaRef.nativeElement, 'scroll', (evt) => {
+    //   this.site.refreshScroll(evt);
+    //   this.cd.markForCheck();
+    // });
   }
   // getState(outlet: RouterOutlet) {
   //   // const ret = outlet.activatedRoute.component
@@ -147,9 +147,9 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.rendererListenerFn) {
-      this.rendererListenerFn();
-    }
+    // if (this.rendererListenerFn) {
+    //   this.rendererListenerFn();
+    // }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
 

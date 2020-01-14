@@ -1,11 +1,44 @@
-.admino-screen {
-  position: relative;
-}
-
-admino-modal-container {
+.admino-screen-modals {
   position: absolute;
   overflow: hidden;
-  overflow-y: auto;
+  top: 0;
+  z-index: 100;
   width: 100%;
   height: 100%;
+
+  .admino-screen-modal {
+    position: absolute;
+    overflow: hidden;
+    overflow-y: auto;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    &::before {
+      opacity: 0.5;
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+    }
+
+  }
+}
+
+form {
+  height: 100%;
+}
+
+.scroll-area {
+  overflow: hidden;
+  overflow-y: auto;
+  // position: relative;
+  height: 100%;
+  width: 100%;
+  // background-color: rgba(210, 20, 100, 0.5);
+}
+
+.admino-screen {
+  position: relative;
 }

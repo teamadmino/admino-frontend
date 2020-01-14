@@ -666,11 +666,17 @@
       // background: linear-gradient(-20deg, $bgrad1, $bgrad) !important;
       // background: darken(mat-color($background, background), 2%) !important;
       background: linear-gradient(-20deg, $bgrad1, $bgrad) !important;
-
-
-
     }
+  }
 
+  ///////////////////////
+  .admino-screen {
+    .admino-screen-modal {
+      &::before {
+        background: mat-color($background, background) !important;
+        background: linear-gradient(-20deg, $bgrad1, $bgrad) !important;
+      }
+    }
   }
 
   ///////////////////////

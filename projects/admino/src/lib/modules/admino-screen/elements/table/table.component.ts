@@ -30,6 +30,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     if (this.element.value) {
       if (propExists(this.element.value.index)) {
         this.dataSource.state.index = this.element.value.index;
+        this.dataSource.state.cursorpos = this.element.value.cursorpos;
       }
       if (propExists(this.element.value.keys)) {
         this.dataSource.state.keys = this.element.value.keys;
@@ -53,6 +54,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
       this.table.indexes = changes.indexes.new;
     }
 
+
     if (changes.value) {
       // const newValue: TableValue = {};
       // for (const key of Object.keys(changes.value)) {
@@ -63,6 +65,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     if (changes.refreshFrequency) {
 
     }
+
     if (changes._forceRefresh) {
       this.table.dataSource.loadData();
     }

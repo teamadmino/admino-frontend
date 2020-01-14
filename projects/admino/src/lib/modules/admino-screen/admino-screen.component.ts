@@ -54,13 +54,6 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   constructor(public fb: FormBuilder, public api: AdminoApiService, public as: AdminoActionService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
-    // setTimeout((params) => {
-    //   this.config.sections[0].elements.push(
-    //     { type: 'button', id: 'btn2', label: 'something' }
-    //   );
-    //   this.config.sections.pop();
-    //   this.cd.detectChanges();
-    // }, 1500);
     this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       this.valueChange.next(value);
     });
@@ -90,38 +83,24 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   focusElement(el) {
     this.focusEvent.next(el);
   }
-  // extractValue(elements: any[], val = {}) {
-  //   for (const element of elements) {
-  //     if (element && element.elements) {
-  //       val[element.id] = this.extractValue(element.elements);
-  //     } else if (element.value) {
-  //       val[element.id] = element.value;
-  //     }
-  //   }
-  //   return val;
-  // }
+  getElementsOfType(type: 'main' | 'popup' | 'timer') {
+    if (!this.screenElement || !this.screenElement.elements) {
+      return [];
+    }
+    return this.screenElement.elements.filter((el: any) => {
 
-  // updateValue(values: any, group = this.group) {
-  //   for (const key of Object.keys(values)) {
-  //     const controlOrGroup = group.get(key);
-  //     const value = values[key];
-  //     if (controlOrGroup) {
-  //       if ((controlOrGroup as any).controls) {
-  //         // if FormGroup
-  //         this.updateValue(value, controlOrGroup as FormGroup);
-  //       } else {
-  //         let mergedValue = controlOrGroup.value;
-  //         if (isObject(value)) {
-  //           mergedValue = Object.assign(mergedValue ? mergedValue : {}, value);
-  //           mergedValue.__update__ = true;
-  //         } else {
-  //           mergedValue = value;
-  //         }
-  //         controlOrGroup.patchValue(mergedValue);
-  //       }
-  //     }
-  //   }
-  // }
+      if (type === 'main') {
+        return !el.is_popup && el.type !== 'timer';
+
+      } else if (type === 'popup') {
+        return el.type === 'group' && el.is_popup;
+      } else if (type === 'timer') {
+        return el.type === 'timer';
+      }
+
+    }) || [];
+  }
+
 
   handleAction(actionEvent: ActionEvent) {
     actionEvent.openScreens = this.allOpenScreens;
@@ -181,16 +160,6 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
 
 
-  prepareClasses(element: ScreenElement, isRoot: boolean = false) {
-    if (element.hidden || element.type === 'timer') {
-      return 'd-none';
-    }
-    const arr = element.classes ? element.classes : isRoot ? [] : ['col-12'];
-    if (element.fillHeight) {
-      arr.push('fill-height-flex');
-    }
-    return arr;
-  }
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
