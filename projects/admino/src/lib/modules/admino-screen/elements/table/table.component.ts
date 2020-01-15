@@ -53,6 +53,11 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     if (changes.indexes) {
       this.table.indexes = changes.indexes.new;
     }
+    if (changes.viewName) {
+      this.dataSource.config.listFunction =
+        (keys, cursor, shift, count, index, before, after) =>
+          this.screenComponent.api.list(changes.viewName.new, keys, cursor, shift, count, index, before, after);
+    }
 
 
     if (changes.value) {

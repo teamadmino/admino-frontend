@@ -128,6 +128,7 @@ export interface TableValue {
     keys?: any;
     index?: any;
     cursorpos?: number;
+    viewpos?: number;
     // Visible cursor position in percent 0-1;
     cursorPosPercent?: number;
 }

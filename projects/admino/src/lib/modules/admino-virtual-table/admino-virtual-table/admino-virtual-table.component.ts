@@ -63,6 +63,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   prevVisibleStart = 0;
   prevVisibleEnd = 0;
   @Input() itemSize = 51;
+  calculatedSize = 51;
   @Input() hideBottomBorder = false;
   @Input() hideSideBorder = false;
 
@@ -201,12 +202,15 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (!value) {
       return;
     }
-    // console.log(value)
+    console.log(value)
     if (value.keys) {
       this.dataSource.state.keys = value.keys;
     }
     if (value.cursorpos !== undefined) {
       this.dataSource.state.cursor = value.cursorpos;
+    }
+    if (value.viewpos !== undefined) {
+      this.dataSource.viewpos = value.viewpos;
     }
 
     if (value.index !== undefined) {
@@ -220,6 +224,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     this.dataSource.loadData().then((resp) => {
       if (value.cursorpos !== undefined) {
         this.vsRef.scrollToItem(this.dataSource.viewpos);
+      }
+      if (value.viewpos !== undefined) {
+        this.vsRef.scrollToItem(value.viewpos);
       }
       // this.vsRef.refresh();
 
@@ -332,6 +339,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
 
   resize() {
+    const availableH = this.bodyRef.nativeElement.clientHeight;
+    const count = Math.floor(availableH / this.itemSize);
+    this.calculatedSize = availableH / (count * this.itemSize) * this.itemSize;
     // this.afterRender();
     this.calculateWidths();
     this.refresh();
