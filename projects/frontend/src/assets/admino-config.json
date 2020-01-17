@@ -7,5 +7,6 @@
     },
     "loginScreen": "_adminoLogin",
     "userConfigScreen": "UserConfigScreen",
+    "editorEndpoint": "_editorEndpoint",
     "translations": {}
 }

@@ -639,8 +639,11 @@
         //   background-color: mat-color($background, background) !important;
         // }
         &.active {
+
           // background-color: transparent !important;
-          background-color: lighten(mat-color($background, card), 10%) !important;
+          td {
+            background-color: lighten(mat-color($background, card), 10%) !important;
+          }
 
           .mat-table-sticky {
             background-color: lighten(mat-color($background, card), 10%) !important;
@@ -688,6 +691,14 @@
 
   }
 
+
+  ///////////////////////
+
+  .admino-tooltip {
+    background: mat-color($background, background) !important;
+    box-shadow: 5px 5px 30px rgba(darken(mat-color($background, card), 20%), 0.3) !important;
+
+  }
 
 
 

@@ -35,8 +35,10 @@
                     <!-- <td>{{index+1}}</td> -->
                     <td *ngFor="let column of dataSource.displayedColumns; let i=index"
                         [style.height.px]="calculatedSize"
-                        [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px'}">
-                        <div class="cell-content" [innerHtml]="content[column.id]">
+                        [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px'}"
+                        [adminoTooltip]="content[column.id]">
+                        <div class="cell-content" [ngStyle]="{'text-align': column.align?column.align:'left'}"
+                            [innerHtml]="format(content[column.id],column.format)">
                             <!-- {{content[column.id]}} -->
                             <!-- {{content.__loaded__}} -->
                         </div>

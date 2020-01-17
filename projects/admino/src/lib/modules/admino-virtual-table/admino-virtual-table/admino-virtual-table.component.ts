@@ -1,12 +1,13 @@
 import { TableValue } from './../../admino-screen/admino-screen.interfaces';
 import { ActionEvent, AdminoButton, AdminoAction } from './../../../interfaces';
 import { takeUntil } from 'rxjs/operators';
-import { AdminoVirtualTableDataSource, VirtualDataSourceInfoField } from '../admino-virtual-table.datasource';
+import { AdminoVirtualTableDataSource, VirtualDataSourceInfoColumn } from '../admino-virtual-table.datasource';
 import { Component, OnInit, ChangeDetectorRef, ElementRef, AfterViewInit, ViewChild, Input, OnDestroy, HostListener, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoVirtualScrollDirective } from '../admino-virtual-scroll.directive';
-import { DOWN_ARROW, UP_ARROW, PAGE_DOWN, PAGE_UP, ENTER, SHIFT, CONTROL } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, UP_ARROW, PAGE_DOWN, PAGE_UP } from '@angular/cdk/keycodes';
 import { adminoVirtualTableAnimation } from './admino-virtual-table.animation';
+import { FormatService } from 'admino/src/lib/services/format.service';
 
 @Component({
   selector: 'admino-virtual-table',
@@ -108,7 +109,8 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     //   this.ctrlKey.next(true);
     // }
   }
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef,
+    public formatService: FormatService) {
 
   }
 
@@ -233,15 +235,17 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     });
   }
 
+
+
   updateColumns() {
     this.dataSource.columns = [];
     this.dataSource.displayedColumns = [];
     this.dataSource.keyIds = [];
-    this._columns.forEach((field: VirtualDataSourceInfoField) => {
-      const column = { label: field.description, length: field.length, id: field.id };
+    this._columns.forEach((col: VirtualDataSourceInfoColumn) => {
+      const column = { label: col.description, length: col.length, id: col.id, align: col.align, format: col.format };
       this.dataSource.columns.push(column);
       this.dataSource.displayedColumns.push(column);
-      this.dataSource.keyIds.push(field.id);
+      this.dataSource.keyIds.push(col.id);
     });
   }
   updateIndexes() {
@@ -295,13 +299,13 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
       return;
     }
-    const fullWidth = this.tableRef.nativeElement.clientWidth;
-    const trArr = (this.bodyRef.nativeElement as HTMLElement).children[0].children;
+    const fullWidth = this.bodyRef.nativeElement.clientWidth;
+    // const trArr = (this.bodyRef.nativeElement as HTMLElement).children[0].children;
     this.scrollBarWidth = this.bodyRef.nativeElement.offsetWidth - this.bodyRef.nativeElement.clientWidth;
 
     // const actionsWidth = trArr[trArr.length - 1].clientWidth;
     // const availableWidth = fullWidth - actionsWidth - this.scrollBarWidth;
-    const availableWidth = fullWidth - this.scrollBarWidth;
+    const availableWidth = fullWidth;
     let max = 0;
     this.dataSource.displayedColumns.forEach((col) => {
       max += col.length;
@@ -309,10 +313,12 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     for (let i = 0; i < this.dataSource.displayedColumns.length; i++) {
       const col = this.dataSource.displayedColumns[i];
       this.columnWidths[i] = Math.floor(availableWidth / max * col.length);
-      if (this.columnWidths[i] < 150) {
-        this.columnWidths[i] = 150;
+      if (this.columnWidths[i] < col.length * 10) {
+        this.columnWidths[i] = col.length * 10;
       }
     }
+    // console.log(availableWidth)
+    console.log(this.columnWidths)
     // this.columnWidths[this.dataSource.displayedColumns.length] = actionsWidth;
     // console.log(this.dataSource.displayedColumns);
   }
@@ -346,6 +352,10 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     this.calculateWidths();
     this.refresh();
     this.vsRef.refresh();
+  }
+
+  format(val, format) {
+    return this.formatService.format(val, format);
   }
 
   ngOnDestroy() {

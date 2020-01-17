@@ -1,3 +1,4 @@
+import { AdminoTooltipModule } from './../admino-tooltip/admino-tooltip.module';
 import { AdminoCardModule } from './../admino-card/admino-card.module';
 import { MaterialModulesModule } from './../material-modules/material-modules.module';
 import { NgModule } from '@angular/core';
@@ -18,9 +19,10 @@ import { AdminoVirtualTableSorterComponent } from './admino-virtual-table/admino
     MaterialModulesModule,
     AdminoResizeModule,
     AdminoCardModule,
-    AdminoFocusTrapModule
-
+    AdminoFocusTrapModule,
+    AdminoTooltipModule
   ],
+
   exports: [AdminoVirtualTableComponent, AdminoVirtualTableWrapperComponent]
 })
 export class AdminoVirtualTableModule { }

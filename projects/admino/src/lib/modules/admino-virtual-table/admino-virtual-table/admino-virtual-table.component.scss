@@ -124,9 +124,13 @@ td {
   // max-width: 200px;
   // width: 100%;
   // min-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  .cell-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+  }
+
   padding: 0;
   vertical-align: middle !important;
   padding-left: 0.7rem;

@@ -1,0 +1,22 @@
+:host {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  display: inline-block;
+  pointer-events: none;
+}
+
+admino-tooltip {
+  animation: appear 0.5s forwards;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

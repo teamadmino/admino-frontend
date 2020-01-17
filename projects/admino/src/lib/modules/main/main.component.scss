@@ -6,6 +6,10 @@ $anim: .3s ease-in-out;
   overflow: hidden;
   position: relative;
 
+  admino-tooltip-container {
+    z-index: 1003;
+  }
+
 }
 
 

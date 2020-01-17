@@ -1,3 +1,4 @@
+import { AdminoTooltipModule } from './modules/admino-tooltip/admino-tooltip.module';
 import { AdminoGridModule } from './modules/admino-grid/admino-grid.module';
 import { AdminoVirtualTableModule } from './modules/admino-virtual-table/admino-virtual-table.module';
 import { AdminoFocusTrapModule } from './directives/admino-focus-trap/admino-focus-trap.module';
@@ -6,7 +7,7 @@ import { AdminoCardModule } from './modules/admino-card/admino-card.module';
 import { AdminoModalModule } from './modules/admino-modal/admino-modal.module';
 import { AdminoResizeModule } from './directives/admino-resize/admino-resize.module';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { DisableDefaultKeyEventsDirective } from './directives/disable-default-key-events.directive';
 import { ThemeEmitterComponent } from './modules/main/theme-emitter/theme-emitter.component';
 import { AdminoResizeObserverDirective } from './directives/admino-resize/resize-observer.directive';
@@ -21,7 +22,10 @@ import { AdminoThemingModule } from './modules/admino-theming/admino-theming.mod
 import { AdminoMessagesComponent } from './modules/main/admino-messages/admino-messages.component';
 import { AdminoMessageComponent } from './modules/main/admino-messages/admino-message/admino-message.component';
 import { AdminoUniversalEditorModule } from './modules/admino-universal-editor/admino-universal-editor.module';
-
+import { FormatService } from './services/format.service';
+import { registerLocaleData } from '@angular/common';
+import localeHu from '@angular/common/locales/hu';
+registerLocaleData(localeHu, 'hu');
 
 
 @NgModule({
@@ -45,6 +49,8 @@ import { AdminoUniversalEditorModule } from './modules/admino-universal-editor/a
     AdminoResizeModule,
 
     AdminoModalModule,
+    AdminoTooltipModule,
+
     AdminoCardModule,
     AdminoMenuModule,
     AdminoUniversalEditorModule,
@@ -69,6 +75,12 @@ import { AdminoUniversalEditorModule } from './modules/admino-universal-editor/a
     AdminoVirtualTableModule,
     AdminoGridModule
   ],
+  providers: [
+    DecimalPipe,
+    CurrencyPipe,
+    DatePipe,
+    FormatService
+  ]
   // providers: [
   //   { provide: MAT_DATE_LOCALE, useValue: 'hu-HU' },
   // ],

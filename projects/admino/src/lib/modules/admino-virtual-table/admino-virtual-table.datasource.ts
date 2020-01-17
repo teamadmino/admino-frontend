@@ -5,9 +5,10 @@ import { takeUntil, catchError } from 'rxjs/operators';
 export interface AdminoVirtualTableDataSourceConfig {
     listFunction: (keys, cursor, shift, count, index, before, after) => Observable<any>;
 }
-export interface VirtualDataSourceInfoField {
+export interface VirtualDataSourceInfoColumn {
     id: string;
     format: string;
+    align: string;
     length: number;
     description: string;
 }
@@ -18,6 +19,10 @@ export interface VirtualDataSourceInfoField {
 export interface VirtualDataSourceColumn {
     label: string;
     id: string;
+    format: string;
+    align: string;
+    length: number;
+
     sortable?: boolean;
     sticky?: boolean;
 }
@@ -195,7 +200,17 @@ export class AdminoVirtualTableDataSource {
         this.state.cursorpos = parseInt(data.cursorpos, 10);
         this.resultSubject.next(this.rows);
     }
-
+    // applyFormat(data) {
+    //     for (const colId of Object.keys(data)) {
+    //         const col = this.columns.find((_col) => {
+    //             return _col.id === colId;
+    //         });
+    //         if (col && col.format !== undefined) {
+    //             data[colId] = this.config.formatFunction(data[colId], col.format);
+    //         }
+    //     }
+    //     return data;
+    // }
     findRowByKeys(data): number {
         if (!this.state.keys) {
             return 0;
