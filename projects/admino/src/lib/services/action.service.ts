@@ -58,13 +58,12 @@ export class AdminoActionService {
           a++;
         }
       }
-      screenValue = this.removeNull(screenValue);
+      // screenValue = this.removeNull(screenValue);
       screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
       let schema = null;
-      console.log(screenValue);
-      // if (actionEvent.action.includeSchema) {
-      // }
-      schema = actionEvent.screenConfig;
+      if (actionEvent.action.includeSchema) {
+        schema = actionEvent.screenConfig;
+      }
       const requestingScreen = actionEvent.screenConfig ? actionEvent.screenConfig.id : null;
       return this.backendRequest(actionEvent.action.backendAction, requestingScreen, schema, screenValue, actionEvent.initiatedBy);
     } else if (actionEvent.action.type === 'frontend') {
