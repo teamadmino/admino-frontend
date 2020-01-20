@@ -36,6 +36,7 @@ export interface VirtualDataSourceState {
     cursorPosPercent: number;
     totalsize: number;
     cursorpos: number;
+    shift: number;
 
 }
 
@@ -77,6 +78,7 @@ export class AdminoVirtualTableDataSource {
         cursorPosPercent: 0,
         totalsize: 0,
         cursorpos: 0,
+        shift: 0
     };
 
 

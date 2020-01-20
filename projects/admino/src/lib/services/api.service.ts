@@ -56,10 +56,10 @@ export class AdminoApiService {
   }
 
 
-  list(view: string, keys: any, cursor: number, shift: number, count: number, index: number, before: number = 0, after: number = 0) {
+  list(view: string, keys: any, cursorpos: number, shift: number, count: number, index: number, before: number = 0, after: number = 0) {
     const dummySubject = new Subject();
     const body = {
-      cursor: cursor.toString(),
+      cursor: cursorpos.toString(),
       count: count.toString(),
       keys,
       shift: shift.toString(),

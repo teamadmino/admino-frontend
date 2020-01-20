@@ -4,7 +4,6 @@ import { ScreenElementTimer, ScreenElementChange } from './../../admino-screen.i
 import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 import { Subject } from 'rxjs';
-import { ActionEvent } from 'admino';
 
 @Component({
   selector: 'admino-timer',

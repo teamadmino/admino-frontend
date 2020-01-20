@@ -5,7 +5,7 @@
         "themeColor": "gold",
         "isDark": true
     },
-    "loginScreen": "_adminoLogin",
+    "loginScreen": "_admino:system/login",
     "userConfigScreen": "UserConfigScreen",
     "editorEndpoint": "_editorEndpoint",
     "translations": {}

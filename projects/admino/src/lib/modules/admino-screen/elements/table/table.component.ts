@@ -22,8 +22,8 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     const conf = this.element as ScreenElementTable;
     this.dataSource = new AdminoVirtualTableDataSource(
       {
-        listFunction: (keys, cursor, shift, count, index, before, after) =>
-          this.screenComponent.api.list(conf.viewName, keys, cursor, shift, count, index, before, after),
+        listFunction: (keys, cursorpos, shift, count, index, before, after) =>
+          this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after),
       }
     );
 

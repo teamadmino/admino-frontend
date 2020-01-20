@@ -65,6 +65,8 @@ export interface AdminoAction {
   url?: string;
   target?: '_blank' | '_self';
 
+  // updateOn?: 'change' | 'blur' | 'submit'; // nincs implementálva
+
   //
   filterValue?: any;
   // excludeValues: boolean;

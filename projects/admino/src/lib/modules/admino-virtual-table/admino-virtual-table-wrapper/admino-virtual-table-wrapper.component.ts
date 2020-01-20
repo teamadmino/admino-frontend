@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AdminoVirtualTableDataSource } from 'admino';
+import { AdminoVirtualTableDataSource } from '../admino-virtual-table.datasource';
 
 @Component({
   selector: 'admino-virtual-table-wrapper',

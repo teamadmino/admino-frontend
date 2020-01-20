@@ -13,6 +13,7 @@ import { ThemeEmitterComponent } from './modules/main/theme-emitter/theme-emitte
 import { AdminoResizeObserverDirective } from './directives/admino-resize/resize-observer.directive';
 import { MaterialModulesModule } from './modules/material-modules/material-modules.module';
 
+import { ChartsModule } from 'ng2-charts';
 
 
 import { ToolbarComponent } from './modules/main/toolbar/toolbar.component';

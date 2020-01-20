@@ -18,9 +18,10 @@ export interface ScreenPopup {
 
 export interface ScreenElement {
     type?: 'input' | 'checkbox' | 'radiobutton' | 'select' | 'multi'
-    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'image' | 'text' | 'group' | 'table' | 'timer';
+    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'image' | 'text' | 'group' | 'table' | 'timer' | 'chart' | 'map' | 'dashboard';
     id?: string;
-    updateOn?: 'change' | 'blur' | 'submit';
+
+    // updateOn?: 'change' | 'blur' | 'submit';
 
     changeAction?: AdminoAction;
     blurAction?: AdminoAction;
@@ -129,6 +130,7 @@ export interface TableValue {
     index?: any;
     cursorpos?: number;
     viewpos?: number;
+    shift?: number;
     // Visible cursor position in percent 0-1;
     cursorPosPercent?: number;
 }

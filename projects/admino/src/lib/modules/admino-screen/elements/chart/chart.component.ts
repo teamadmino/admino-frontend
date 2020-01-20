@@ -1,3 +1,4 @@
+import { AdminoScreenComponent } from './../../admino-screen.component';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,9 +6,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss']
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent extends AdminoScreenComponent implements OnInit {
 
-  constructor() { }
 
   ngOnInit() {
   }

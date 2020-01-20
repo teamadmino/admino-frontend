@@ -203,7 +203,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       {}, {
       validators: this.bindValidations(this.element.validators || []),
       asyncValidators: this.getAsyncValidations(this.element.validators || []),
-      updateOn: this.element.updateOn
+      // updateOn: this.element.updateOn
     }
     );
     this.group = group;
@@ -223,7 +223,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       this.element.value, {
       validators: this.bindValidations(this.element.validators || []),
       asyncValidators: this.getAsyncValidations(this.element.validators || []),
-      updateOn: this.element.updateOn
+      // updateOn: this.element.updateOn
     });
     this.control = control;
     this.addControlToParentGroup(control);

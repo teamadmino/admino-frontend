@@ -154,7 +154,8 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (this.prevStart !== e.start || this.prevEnd !== e.end) {
       const count = e.visibleEnd - e.visibleStart;
       this.dataSource.state.count = count;
-      this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
+      // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
+      this.dataSource.state.cursorpos = -e.visibleStart + this.dataSource.cursorAbsPos;
       this.dataSource.loadData();
       this.cd.detectChanges();
       this.refresh();
@@ -204,12 +205,14 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (!value) {
       return;
     }
-    console.log(value)
-    if (value.keys) {
+    if (value.keys !== undefined) {
       this.dataSource.state.keys = value.keys;
     }
     if (value.cursorpos !== undefined) {
-      this.dataSource.state.cursor = value.cursorpos;
+      this.dataSource.state.cursorpos = value.cursorpos;
+    }
+    if (value.shift !== undefined) {
+      this.dataSource.state.shift = value.shift;
     }
     if (value.viewpos !== undefined) {
       this.dataSource.viewpos = value.viewpos;
@@ -219,6 +222,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       this.vsRef.clearData();
       this.dataSource.state.index = value.index;
     }
+
     if (value.cursorPosPercent !== undefined) {
       this.lastSetCursorPosPercent = value.cursorPosPercent;
     }
