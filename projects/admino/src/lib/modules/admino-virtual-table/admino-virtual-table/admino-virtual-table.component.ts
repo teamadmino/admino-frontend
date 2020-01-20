@@ -211,9 +211,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (value.cursorpos !== undefined) {
       this.dataSource.state.cursorpos = value.cursorpos;
     }
-    if (value.shift !== undefined) {
-      this.dataSource.state.shift = value.shift;
-    }
+    // if (value.shift !== undefined) {
+    //   this.dataSource.state.shift = value.shift;
+    // }
     if (value.viewpos !== undefined) {
       this.dataSource.viewpos = value.viewpos;
     }
@@ -226,8 +226,13 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     if (value.cursorPosPercent !== undefined) {
       this.lastSetCursorPosPercent = value.cursorPosPercent;
     }
+    let shift = 0;
+    if (value.shift !== undefined) {
+      shift = value.shift;
+      // this.dataSource.state.shift = value.shift;
+    }
     // console.log(this.dataSource.keys)
-    this.dataSource.loadData().then((resp) => {
+    this.dataSource.loadData(shift).then((resp) => {
       if (value.cursorpos !== undefined) {
         this.vsRef.scrollToItem(this.dataSource.viewpos);
       }
