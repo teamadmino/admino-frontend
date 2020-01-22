@@ -9,7 +9,7 @@ import { Component, OnInit, Input, ContentChildren, QueryList, AfterContentInit,
 })
 export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewInit, OnChanges {
 
-  colnum = 12;
+  @Input() colnum = 40;
   rownum = 0;
   @Input() displayGrid = true;
   gridAutoRows = '';

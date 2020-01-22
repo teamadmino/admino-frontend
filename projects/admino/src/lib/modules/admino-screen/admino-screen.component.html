@@ -2,7 +2,7 @@
 
     <div class="scroll-area">
         <div
-            [ngClass]="{'container-fluid': screenElement.is_fluid_container, 'container':!screenElement.is_fluid_container}">
+            [ngClass]="{'container-fluid': screenElement.isFluidContainer, 'container':!screenElement.isFluidContainer}">
             <div class="row">
                 <div class="col pt-3 pb-3 ">
                     <div class="border-color-accent">
@@ -10,7 +10,8 @@
                             [opaque]="screenElement.is_popup || editMode && this !==this.rootScreenComponent"
                             [showBorder]="_screenElement.showBorder">
                             <admino-grid [allowEdit]="_screenElement.allowEdit" [editMode]="editMode" adminoTrapFocus
-                                [adminoTrapFocus]="this.rootScreenComponent===this">
+                                [adminoTrapFocus]="this.rootScreenComponent===this"
+                                [colnum]="_screenElement.colNum!==undefined?_screenElement.colNum:12">
                                 <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
                                     [col]="element.col!==undefined?element.col:1"
                                     [row]="element.row!==undefined?element.row:i+1"

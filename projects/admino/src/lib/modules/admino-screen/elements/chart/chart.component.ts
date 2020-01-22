@@ -21,6 +21,7 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
   public chartType = 'line';
   public options: ChartOptions = {
     responsive: true,
+    animation: { duration: 0 },
     maintainAspectRatio: false,
   };
   public colors: Color[] = [];

@@ -63,7 +63,9 @@ export interface ScreenElementScreen extends ScreenElement {
     showBorder?: boolean;
     allowEdit?: boolean;
 
-    is_fluid_container?: boolean;
+    isFluidContainer?: boolean;
+
+    colNum?: number;
 
     // popup settings
     is_popup?: boolean;
