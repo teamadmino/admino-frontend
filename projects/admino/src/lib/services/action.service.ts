@@ -93,7 +93,7 @@ export class AdminoActionService {
         }
         if (response.setTheme) {
           const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;
-          const isDark = response.setTheme.isDark ? response.setTheme.isDark : this.ts.isDarkTheme;
+          const isDark = response.setTheme.isDark !== undefined ? response.setTheme.isDark : this.ts.isDarkTheme;
           this.ts.setTheme(color, isDark);
         }
         if (response.setBottomButtons) {

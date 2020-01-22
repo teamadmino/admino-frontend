@@ -6,6 +6,7 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenElementChange } from '../../admino-screen.interfaces';
 import { deepMerge } from '../../../../utils/deepmerge';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'admino-chart',
@@ -28,16 +29,17 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
   @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
 
   onChange(changes: { [id: string]: ScreenElementChange; }) {
-    this.labels = this.element.labels;
+    this.labels = cloneDeep(this.element.labels);
     this.legend = this.element.legend;
     this.legend = this.element.legend;
     this.chartType = this.element.chartType;
-    this.data = this.element.data;
+    this.data = cloneDeep(this.element.data);
     this.options = deepMerge(this.options, this.element.options);
     // this.options && this.options.
     this.directive.cd.detectChanges();
     this.setColors();
     this.chart.update();
+
   }
 
   ngOnInit() {
@@ -62,7 +64,7 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
       this.directive.chartThemeService.setColorschemesOptions(overrides);
       this.setColors();
     });
-    this.onChange(null);
+    this.onChange({});
   }
 
   setColors() {
