@@ -1,3 +1,4 @@
+import { AdminoThemeService } from './../../services/theme.service';
 import { ChartComponent } from './elements/chart/chart.component';
 import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
 import { CheckboxComponent } from './elements/checkbox/checkbox.component';
@@ -7,7 +8,7 @@ import { AdminoScreenElement } from './elements/admino-screen-element';
 import { AdminoScreenComponent } from './admino-screen.component';
 import {
   Directive, Input, ComponentFactoryResolver, ViewContainerRef,
-  OnInit, OnDestroy, ComponentRef, DoCheck
+  OnInit, OnDestroy, ComponentRef, DoCheck, ChangeDetectorRef
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -22,6 +23,7 @@ import { TimerComponent } from './elements/timer/timer.component';
 import { takeUntil, filter } from 'rxjs/operators';
 import { deepCompare } from '../../utils/deepcompare';
 import { PopupComponent } from './elements/popup/popup.component';
+import { ThemeService } from 'ng2-charts';
 
 
 const componentMapper = {
@@ -65,7 +67,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   valueChangeTimeout;
 
 
-  constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef) {
+  constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
+    public ts: AdminoThemeService,
+    public chartThemeService: ThemeService) {
   }
 
 
@@ -135,6 +139,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       }
     }
   }
+
   createComponent() {
     const factory = this.resolver.resolveComponentFactory(
       componentMapper[this.element.type]
@@ -145,6 +150,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     this.elementComponent.screenComponent = this.screenComponent;
     this.elementComponent.rootScreenComponent = this.rootScreenComponent;
     this.elementComponent.index = this.index;
+    this.elementComponent.directive = this;
     this.elementComponent.init();
 
     if (this.element.type === 'group') {

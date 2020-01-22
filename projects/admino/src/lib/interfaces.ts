@@ -109,6 +109,6 @@ export interface BackendResponse {
   closePopup: boolean | string;
 
 
-  setThemeColor: ThemeConfig;
+  setTheme: ThemeConfig;
 
 }

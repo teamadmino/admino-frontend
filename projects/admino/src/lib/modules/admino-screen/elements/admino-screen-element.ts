@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ScreenElement } from '../admino-screen.interfaces';
 import { ViewChild, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
+import { AdminoScreenElementDirective } from '../admino-screen-element.directive';
 
 export class AdminoScreenElement {
     // @ViewChild('focusRef', { static: true }) focusRef: any;
@@ -29,6 +30,8 @@ export class AdminoScreenElement {
     isFocused = false;
     boundFocusFunction;
     boundBlurFunction;
+    public ngUnsubscribe: Subject<null> = new Subject();
+    public directive: AdminoScreenElementDirective;
 
     init() {
         if (this.focusElRef) {
@@ -105,5 +108,7 @@ export class AdminoScreenElement {
             this.focusElRef.nativeElement.removeEventListener('focus', this.boundFocusFunction);
             this.focusElRef.nativeElement.removeEventListener('blur', this.boundBlurFunction);
         }
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

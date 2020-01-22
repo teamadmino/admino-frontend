@@ -19,12 +19,6 @@
       "dom"
     ],
     "paths": {
-      "admino-form": [
-        "projects/admino-form/src/public-api"
-      ],
-      "admino-form/*": [
-        "projects/admino-form/*"
-      ],
       "admino": [
         "projects/admino/src/public-api"
       ],

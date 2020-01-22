@@ -14,6 +14,7 @@ import { wrapIntoObservable } from '../utils/wrap-into-observable';
 import { isObject } from '../utils/isobject';
 import { propExists } from '../utils/propExists';
 import { deepMerge } from '../utils/deepmerge';
+import { AdminoThemeService } from './theme.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class AdminoActionService {
 
 
   constructor(private router: Router, private route: ActivatedRoute,
-    private user: AdminoUserService, private api: AdminoApiService, private cs: ConfigService) { }
+    private user: AdminoUserService, private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService) { }
 
   init() {
     this.backendRequest(this.cs.config.loginScreen).subscribe();
@@ -89,6 +90,11 @@ export class AdminoActionService {
         }
         if (response.setMenu) {
           this.user.setMenu(response.setMenu);
+        }
+        if (response.setTheme) {
+          const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;
+          const isDark = response.setTheme.isDark ? response.setTheme.isDark : this.ts.isDarkTheme;
+          this.ts.setTheme(color, isDark);
         }
         if (response.setBottomButtons) {
           this.user.setBottomButtons(response.setBottomButtons);

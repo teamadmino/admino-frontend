@@ -38,9 +38,9 @@ export class ThemeEmitterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ts.colors = this.ts.colors.map((col) => {
       const found = colors[col.toLowerCase()];
       if (found) {
-        return found;
+        return this.hexToRgb(found);
       } else {
-        return col;
+        return this.hexToRgb(col);
       }
     });
 
@@ -49,6 +49,11 @@ export class ThemeEmitterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ts.warnColor = getComputedStyle(this.warnElement.nativeElement).color;
     this.ts.bgColor = getComputedStyle(this.bgElement.nativeElement).color;
     this.ts.fgColor = getComputedStyle(this.fgElement.nativeElement).color;
+    this.ts.colorList.primary = this.ts.primaryColor;
+    this.ts.colorList.accent = this.ts.accentColor;
+    this.ts.colorList.warn = this.ts.warnColor;
+    this.ts.colorList.background = this.ts.bgColor;
+    this.ts.colorList.foreground = this.ts.fgColor;
 
     this.ts.primaryContrast = getComputedStyle(this.primaryContrastElement.nativeElement).color;
     this.ts.accentContrast = getComputedStyle(this.accentContrastElement.nativeElement).color;
@@ -64,6 +69,11 @@ export class ThemeEmitterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+  hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? 'rgb(' + parseInt(result[1], 16) + ',' + parseInt(result[2], 16) + ',' + parseInt(result[3], 16) + ')' : null;
+  }
+
 }
 
 

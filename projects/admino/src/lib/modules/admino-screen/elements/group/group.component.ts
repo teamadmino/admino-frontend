@@ -10,8 +10,7 @@ import { Subject } from 'rxjs';
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss']
 })
-export class GroupComponent extends AdminoScreenElement implements OnInit, AfterViewInit, OnDestroy {
-  private ngUnsubscribe: Subject<null> = new Subject();
+export class GroupComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
 
   @ViewChild(AdminoScreenComponent, { static: true }) screen: AdminoScreenComponent;
 
@@ -29,8 +28,5 @@ export class GroupComponent extends AdminoScreenElement implements OnInit, After
     this.screen.update(this.element);
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
+
 }

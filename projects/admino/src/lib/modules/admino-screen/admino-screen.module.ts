@@ -20,6 +20,7 @@ import { PopupComponent } from './elements/popup/popup.component';
 import { CheckboxComponent } from './elements/checkbox/checkbox.component';
 import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
 import { ChartComponent } from './elements/chart/chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -44,7 +45,9 @@ import { ChartComponent } from './elements/chart/chart.component';
     AdminoFocusTrapModule,
     AdminoGridModule,
     AdminoDragModule,
-    AdminoModalModule
+    AdminoModalModule,
+    ChartsModule
+
   ],
   exports: [
     AdminoScreenComponent

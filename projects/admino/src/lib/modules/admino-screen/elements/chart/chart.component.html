@@ -1,1 +1,3 @@
-<p>chart works!</p>
+<canvas baseChart [datasets]="this.data" [labels]="this.labels" [options]="options" [colors]="colors"
+    [legend]="this.legend" [chartType]="this.chartType" [plugins]="lineChartPlugins" (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)"></canvas>

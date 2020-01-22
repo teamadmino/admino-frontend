@@ -10,8 +10,7 @@ import { Subject } from 'rxjs';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss']
 })
-export class TimerComponent extends AdminoScreenElement implements OnInit, OnDestroy {
-  private ngUnsubscribe: Subject<null> = new Subject();
+export class TimerComponent extends AdminoScreenElement implements OnInit {
 
   timeoutHelper;
   ngOnInit() {
@@ -46,10 +45,5 @@ export class TimerComponent extends AdminoScreenElement implements OnInit, OnDes
     }
   }
 
-  ngOnDestroy() {
-    this.clearTimeout();
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
 
 }

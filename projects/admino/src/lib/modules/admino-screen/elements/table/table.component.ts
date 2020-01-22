@@ -12,8 +12,7 @@ import { propExists } from '../../../../utils/propExists';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent extends AdminoScreenElement implements OnInit, AfterViewInit, OnDestroy {
-  private ngUnsubscribe: Subject<null> = new Subject();
+export class TableComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   @ViewChild(AdminoVirtualTableComponent, { static: true }) table: AdminoVirtualTableComponent;
 
   dataSource: AdminoVirtualTableDataSource;
@@ -76,10 +75,4 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     }
   }
 
-
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
 }

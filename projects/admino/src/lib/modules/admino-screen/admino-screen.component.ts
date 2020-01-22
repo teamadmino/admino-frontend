@@ -1,3 +1,4 @@
+import { AdminoThemeService } from './../../services/theme.service';
 import { FormatService } from './../../services/format.service';
 import { AdminoGridComponent } from './../admino-grid/admino-grid/admino-grid.component';
 import { cloneDeep } from 'lodash';
@@ -54,7 +55,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
   constructor(public fb: FormBuilder, public api: AdminoApiService,
     public as: AdminoActionService,
-    private cd: ChangeDetectorRef) { }
+    private cd: ChangeDetectorRef, public ts: AdminoThemeService) { }
 
   ngOnInit() {
     this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
