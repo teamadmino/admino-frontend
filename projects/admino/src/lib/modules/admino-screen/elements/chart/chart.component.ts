@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ScreenElementChange } from '../../admino-screen.interfaces';
 import { deepMerge } from '../../../../utils/deepmerge';
 import { cloneDeep } from 'lodash';
+import { CHART_COLOR_SETTINGS } from './chartcolors';
 
 @Component({
   selector: 'admino-chart',
@@ -74,15 +75,36 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
     const colors = this.directive.ts.getColor(this.element.colors);
     this.colors = [];
 
+    let colsettings = CHART_COLOR_SETTINGS[this.chartType] ? CHART_COLOR_SETTINGS[this.chartType] : CHART_COLOR_SETTINGS['bar'];
+
+    if (this.element.visualizationSettings) {
+      colsettings = deepMerge(colsettings, this.element.visualizationSettings);
+    }
+
+
     for (const color of colors) {
       this.colors.push(
-        { // grey
-          backgroundColor: ts.rgba(color, 0.2),
-          borderColor: ts.rgba(color, 1),
-          pointBackgroundColor: ts.rgba(color, 1),
-          pointBorderColor: ts.rgba(color, 1),
-          pointHoverBackgroundColor: ts.rgba(color, 1),
-          pointHoverBorderColor: ts.rgba(color, 0.8)
+        {
+          backgroundColor: ts.rgba(color, colsettings.backgroundColor),
+          borderWidth: colsettings.borderWidth,
+          borderColor: ts.rgba(color, colsettings.borderColor),
+          borderCapStyle: ts.rgba(color, colsettings.borderCapStyle),
+          borderDash: colsettings.borderDash,
+          borderDashOffset: colsettings.borderDashOffset,
+          borderJoinStyle: ts.rgba(color, colsettings.borderJoinStyle),
+          pointBorderColor: ts.rgba(color, colsettings.pointBorderColor),
+          pointBackgroundColor: ts.rgba(color, colsettings.pointBackgroundColor),
+          pointBorderWidth: colsettings.pointBorderWidth,
+          pointRadius: colsettings.pointRadius,
+          pointHoverRadius: colsettings.pointHoverRadius,
+          pointHitRadius: colsettings.pointHitRadius,
+          pointHoverBackgroundColor: ts.rgba(color, colsettings.pointHoverBackgroundColor),
+          pointHoverBorderColor: ts.rgba(color, colsettings.pointHoverBorderColor),
+          pointHoverBorderWidth: colsettings.pointHoverBorderWidth,
+          pointStyle: colsettings.pointStyle,
+          hoverBackgroundColor: ts.rgba(color, colsettings.hoverBackgroundColor),
+          hoverBorderColor: ts.rgba(color, colsettings.hoverBorderColor),
+          hoverBorderWidth: colsettings.hoverBorderWidth,
         }
       );
     }

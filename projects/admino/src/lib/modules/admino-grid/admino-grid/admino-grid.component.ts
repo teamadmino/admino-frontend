@@ -1,6 +1,9 @@
 import { BehaviorSubject } from 'rxjs';
 import { AdminoGridItemComponent } from './../admino-grid-item/admino-grid-item.component';
-import { Component, OnInit, Input, ContentChildren, QueryList, AfterContentInit, ViewChildren, AfterViewInit, ViewChild, ElementRef, OnChanges, HostBinding, HostListener, enableProdMode } from '@angular/core';
+import {
+  Component, OnInit, Input, ContentChildren, QueryList, AfterContentInit, ViewChildren,
+  AfterViewInit, ViewChild, ElementRef, OnChanges, HostBinding, HostListener, enableProdMode
+} from '@angular/core';
 
 @Component({
   selector: 'admino-grid',

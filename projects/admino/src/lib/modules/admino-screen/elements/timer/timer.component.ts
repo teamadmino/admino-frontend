@@ -44,6 +44,4 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
       clearTimeout(this.timeoutHelper);
     }
   }
-
-
 }
