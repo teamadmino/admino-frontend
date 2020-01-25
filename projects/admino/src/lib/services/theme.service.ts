@@ -109,7 +109,13 @@ export class AdminoThemeService {
     if (isArray(id)) {
       const arr = [];
       id.forEach((colorId) => {
-        arr.push(this.getColorFromList(colorId));
+        if (isArray(colorId)) {
+          arr.push(this.getColor(colorId));
+        } else {
+          arr.push(this.getColorFromList(colorId));
+        }
+
+
       });
       return arr;
     } else {

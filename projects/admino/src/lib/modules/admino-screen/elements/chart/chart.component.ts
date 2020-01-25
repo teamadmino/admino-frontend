@@ -6,7 +6,7 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenElementChange } from '../../admino-screen.interfaces';
 import { deepMerge } from '../../../../utils/deepmerge';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isArray } from 'lodash';
 import { CHART_COLOR_SETTINGS } from './chartcolors';
 
 @Component({
@@ -85,25 +85,25 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
     for (const color of colors) {
       this.colors.push(
         {
-          backgroundColor: ts.rgba(color, colsettings.backgroundColor),
+          backgroundColor: this.preprocessColor(color, colsettings.backgroundColor),
           borderWidth: colsettings.borderWidth,
-          borderColor: ts.rgba(color, colsettings.borderColor),
-          borderCapStyle: ts.rgba(color, colsettings.borderCapStyle),
+          borderColor: this.preprocessColor(color, colsettings.borderColor),
+          borderCapStyle: colsettings.borderCapStyle,
           borderDash: colsettings.borderDash,
           borderDashOffset: colsettings.borderDashOffset,
-          borderJoinStyle: ts.rgba(color, colsettings.borderJoinStyle),
-          pointBorderColor: ts.rgba(color, colsettings.pointBorderColor),
-          pointBackgroundColor: ts.rgba(color, colsettings.pointBackgroundColor),
+          borderJoinStyle: colsettings.borderJoinStyle,
+          pointBorderColor: this.preprocessColor(color, colsettings.pointBorderColor),
+          pointBackgroundColor: this.preprocessColor(color, colsettings.pointBackgroundColor),
           pointBorderWidth: colsettings.pointBorderWidth,
           pointRadius: colsettings.pointRadius,
           pointHoverRadius: colsettings.pointHoverRadius,
           pointHitRadius: colsettings.pointHitRadius,
-          pointHoverBackgroundColor: ts.rgba(color, colsettings.pointHoverBackgroundColor),
-          pointHoverBorderColor: ts.rgba(color, colsettings.pointHoverBorderColor),
+          pointHoverBackgroundColor: this.preprocessColor(color, colsettings.pointHoverBackgroundColor),
+          pointHoverBorderColor: this.preprocessColor(color, colsettings.pointHoverBorderColor),
           pointHoverBorderWidth: colsettings.pointHoverBorderWidth,
           pointStyle: colsettings.pointStyle,
-          hoverBackgroundColor: ts.rgba(color, colsettings.hoverBackgroundColor),
-          hoverBorderColor: ts.rgba(color, colsettings.hoverBorderColor),
+          hoverBackgroundColor: this.preprocessColor(color, colsettings.hoverBackgroundColor),
+          hoverBorderColor: this.preprocessColor(color, colsettings.hoverBorderColor),
           hoverBorderWidth: colsettings.hoverBorderWidth,
         }
       );
@@ -111,6 +111,20 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
     this.directive.cd.detectChanges();
     this.chart.update();
   }
+
+  preprocessColor(color: string | string[], opacity) {
+    const ts = this.screenComponent.ts;
+    if (isArray(color)) {
+      const arr = [];
+      color.forEach((col) => {
+        arr.push(ts.rgba(col, opacity));
+      });
+      return arr;
+    } else {
+      return ts.rgba(color, opacity);
+    }
+  }
+
 
   // public randomize(): void {
   //   for (let i = 0; i < this.lineChartData.length; i++) {
@@ -124,11 +138,11 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
 
   // events
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
 
   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
 
 
