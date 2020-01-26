@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostBinding } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import { AdminoScreenElement } from '../admino-screen-element';
@@ -16,10 +16,13 @@ import { CHART_COLOR_SETTINGS } from './chartcolors';
 })
 export class ChartComponent extends AdminoScreenElement implements OnInit {
 
+  defaultHeight = '400px';
+  @HostBinding('style.height') height;
   public data: ChartDataSets[] = [{}];
   public labels: Label[] = [];
   public legend = true;
   public chartType = 'line';
+
   public options: ChartOptions = {
     responsive: true,
     animation: { duration: 0 },
@@ -33,7 +36,7 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
   onChange(changes: { [id: string]: ScreenElementChange; }) {
     this.labels = cloneDeep(this.element.labels);
     this.legend = this.element.legend;
-    this.legend = this.element.legend;
+    this.height = this.element.height !== undefined ? this.element.height : this.defaultHeight;
     this.chartType = this.element.chartType;
     this.data = cloneDeep(this.element.data);
     this.options = deepMerge(this.options, this.element.options);

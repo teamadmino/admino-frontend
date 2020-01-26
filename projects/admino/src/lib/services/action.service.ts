@@ -71,6 +71,8 @@ export class AdminoActionService {
 
       return this.handleFrontendAction(actionEvent.action);
 
+    } else if (actionEvent.action.type === 'url') {
+      this.handleUrlAction(actionEvent.action);
     }
     return wrapIntoObservable(null);
   }
@@ -127,6 +129,10 @@ export class AdminoActionService {
       this.redrawScreen.next(null);
       return this.backendRequest(this.cs.config.loginScreen);
     }
+  }
+
+  handleUrlAction(action: AdminoAction, form = null) {
+    window.open(action.url, action.target ? action.target : '_blank');
   }
 
 
