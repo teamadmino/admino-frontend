@@ -358,10 +358,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
 
   resize() {
-    // const availableH = this.bodyRef.nativeElement.clientHeight;
-    // const count = Math.floor(availableH / this.itemSize);
-    // this.calculatedSize = availableH / (count * this.itemSize) * this.itemSize;
-    this.calculatedSize = this.itemSize;
+    const availableH = this.bodyRef.nativeElement.clientHeight;
+    const count = Math.floor(availableH / this.itemSize);
+    this.calculatedSize = availableH / (count * this.itemSize) * this.itemSize;
     // this.afterRender();
     this.calculateWidths();
     this.refresh();

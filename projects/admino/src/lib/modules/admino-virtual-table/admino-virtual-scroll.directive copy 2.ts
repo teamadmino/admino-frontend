@@ -38,14 +38,14 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
   private numPages = 0;
   private pageHeight = 0;
   private jumpCoefficient = 0;
-  private combinedSizeOfItems = 0;
+  private virtualSize = 0;
   private viewportSize = 0;
   private cache: Map<any, EmbeddedViewRef<any>> = new Map<any, EmbeddedViewRef<any>>();
   private collectionCache = [];
   maxScrollSize = 0;
 
   prevTotalsize = 0;
-  @Input('adminoVsForTotalsize') numOfItems = 0;
+  @Input('adminoVsForTotalsize') totalsize = 0;
 
   // _totalsize;
   // @Input('adminoVsForTotalsize') set totalsize(val: number) {
@@ -106,7 +106,6 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
 
   ngAfterViewInit() {
     this.maxScrollSize = this.calcMaxBrowserScrollSize();
-    console.log('maxScrollSize', this.maxScrollSize);
     this.$viewport = this._element.nativeElement.parentElement;
     this.$viewport.style.position = 'relative';
     this.$scroller.style.position = 'absolute';
@@ -137,7 +136,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
 
   private _onJump() {
     const scrollPos = this.$viewport.scrollTop;
-    this.currPage = Math.floor(scrollPos * ((this.combinedSizeOfItems - this.viewportSize)
+    this.currPage = Math.floor(scrollPos * ((this.virtualSize - this.viewportSize)
       / (this.realScrollSize - this.viewportSize)) * (1 / this.pageHeight));
     this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
     this.prevScrollPos = scrollPos;
@@ -172,7 +171,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     let end = Math.ceil((y + (this.viewportSize * 2)) / this.itemSize);
 
     start = Math.max(0, start);
-    end = Math.min(this.combinedSizeOfItems / this.itemSize, end);
+    end = Math.min(this.virtualSize / this.itemSize, end);
 
     this.cache.forEach((v, i) => {
       if (i < start || i > end) {
@@ -257,19 +256,12 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     // this.itemSize = 51;
     this.viewportSize = this.$viewport.getBoundingClientRect().height;
     this.realScrollSize = this.maxScrollSize;
-    this.combinedSizeOfItems = this.numOfItems * this.itemSize;
+    this.virtualSize = this.totalsize * this.itemSize;
     this.pageHeight = this.realScrollSize / 100;
-    this.numPages = Math.ceil(this.combinedSizeOfItems / this.pageHeight);
-
-    const coff = (this.combinedSizeOfItems - this.realScrollSize) / (this.numPages - 1);
+    this.numPages = Math.ceil(this.virtualSize / this.pageHeight);
+    const coff = (this.virtualSize - this.realScrollSize) / (this.numPages - 1);
     this.jumpCoefficient = coff > 0 ? coff : 1;
-
-    this.realScrollSize = this.realScrollSize > this.combinedSizeOfItems ? this.combinedSizeOfItems : this.realScrollSize;
-
-    // if (this.realScrollSize > this.combinedSizeOfItems) {
-    // }
-
-
+    this.realScrollSize = this.realScrollSize > this.virtualSize ? this.virtualSize : this.realScrollSize;
     this.currPage = 1;
     this.currPageOffset = 0;
 
@@ -308,8 +300,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
 
     const size = div.getBoundingClientRect().top;
     document.body.removeChild(div);
-    // return Math.abs(size) / 2;
-    return size;
+    return Math.abs(size) / 2;
     // } else {
     //   return this.realScrollSize;
     // }
