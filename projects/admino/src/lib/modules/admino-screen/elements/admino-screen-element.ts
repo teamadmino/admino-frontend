@@ -103,7 +103,11 @@ export class AdminoScreenElement {
     }
     onChange(changes: { [id: string]: ScreenElementChange; }) {
     }
+    onDestroy() {
+    }
     destroy() {
+        this.onDestroy();
+        this.clearSubscriptions();
         if (this.focusElRef) {
             this.focusElRef.nativeElement.removeEventListener('focus', this.boundFocusFunction);
             this.focusElRef.nativeElement.removeEventListener('blur', this.boundBlurFunction);

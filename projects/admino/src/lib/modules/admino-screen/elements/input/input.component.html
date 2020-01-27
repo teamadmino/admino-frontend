@@ -3,7 +3,8 @@
     <mat-label>{{element.label}}</mat-label>
 
     <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.label" #inputRef
-        #focusRef [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null">
+        #focusRef [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null"
+        [type]="element.inputType?element.inputType:'text'">
 
     <!-- *ngIf="element.value && focused===false" -->
     <!-- <div class="print-helper">

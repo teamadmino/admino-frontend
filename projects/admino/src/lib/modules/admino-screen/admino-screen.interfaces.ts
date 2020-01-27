@@ -87,6 +87,7 @@ export interface ScreenElementInput extends ScreenElement {
     prefix: string;
     suffix: string;
     readonly: boolean;
+    inputType: string;
 }
 export interface ScreenElementRadiobutton extends ScreenElement {
     label?: string;
