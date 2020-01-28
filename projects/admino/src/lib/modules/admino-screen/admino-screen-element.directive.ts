@@ -65,6 +65,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   activeElementConfig: any = {};
 
   valueChangeTimeout;
+  valueChangeEvent: Subject<any> = new Subject();
 
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
@@ -183,6 +184,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // console.log(this.activeElementConfig.changeAction)
     // needs to solve group
     this.valueChangeTimeout = setTimeout(() => {
+      this.valueChangeEvent.next(value);
       if (this.activeElementConfig.changeAction) {
         if (this.activeElementConfig.changeAction.filterValue === undefined) {
           const action = cloneDeep(this.activeElementConfig.changeAction);

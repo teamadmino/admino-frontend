@@ -47,12 +47,14 @@ export interface ScreenElement {
     row?: any;
     colSpan?: any;
     rowSpan?: any;
-    grid_auto_rows?: any;
+    // grid_auto_rows?: any;
     stretch?: boolean;
 
     __hover?: boolean;
     __dragging?: boolean;
 
+    width?: string;
+    height?: string;
 }
 
 export interface ScreenElementScreen extends ScreenElement {
@@ -69,8 +71,6 @@ export interface ScreenElementScreen extends ScreenElement {
 
     // popup settings
     is_popup?: boolean;
-    width?: string;
-    height?: string;
     verticalPosition?: string;
     horizontalPosition?: string;
     nopadding?: boolean;
@@ -106,8 +106,8 @@ export interface ScreenElementButton extends ScreenElement {
 export interface ScreenElementImage extends ScreenElement {
     label?: string;
     src?: string; // "http://localhost/valami.jpg";
-    width: number;
-    height: number;
+    // width: number;
+    // height: number;
 }
 export interface ScreenElementTable extends ScreenElement {
     label?: string;
@@ -122,6 +122,7 @@ export interface ScreenElementTable extends ScreenElement {
     tableRowHeight?: number;
     hideSideBorder?: boolean;
     hideBottomBorder?: boolean;
+    keyChangeAction?: AdminoAction;
 
     _forceRefresh?: boolean;
 }

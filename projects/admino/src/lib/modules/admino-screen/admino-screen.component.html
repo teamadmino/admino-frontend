@@ -1,8 +1,7 @@
 <form [formGroup]="group" class="admino-screen " (submit)="onSubmit($event)" *ngIf="screenElement">
 
     <div class="scroll-area">
-        <div
-            [ngClass]="{'container-fluid': screenElement.isFluidContainer, 'container':!screenElement.isFluidContainer}">
+        <div [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}">
             <div class="row">
                 <div class="col pt-3 pb-3 ">
                     <div class="border-color-accent">

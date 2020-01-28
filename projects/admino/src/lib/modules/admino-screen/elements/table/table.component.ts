@@ -1,5 +1,6 @@
+import { isEqual, cloneDeep } from 'lodash';
 import { AdminoVirtualTableComponent } from './../../../admino-virtual-table/admino-virtual-table/admino-virtual-table.component';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, skip } from 'rxjs/operators';
 import { ScreenElementTable, ScreenElementChange, TableValue } from './../../admino-screen.interfaces';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
@@ -16,8 +17,19 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
   @ViewChild(AdminoVirtualTableComponent, { static: true }) table: AdminoVirtualTableComponent;
 
   dataSource: AdminoVirtualTableDataSource;
+  element: ScreenElementTable;
+  currVal;
 
   ngOnInit() {
+    this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((valChange) => {
+
+      if (this.currVal !== undefined && !isEqual(this.currVal.keys, valChange.keys)) {
+        if (this.element.keyChangeAction) {
+          this.handleAction(this.element.keyChangeAction);
+        }
+      }
+      this.currVal = cloneDeep(valChange);
+    });
     const conf = this.element as ScreenElementTable;
     this.dataSource = new AdminoVirtualTableDataSource(
       {

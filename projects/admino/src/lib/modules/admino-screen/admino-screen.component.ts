@@ -32,6 +32,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup = this.fb.group({});
 
   @Input() rootScreenComponent: AdminoScreenComponent = this;
+  @Input() parentScreenComponent: AdminoScreenComponent = this;
 
   pauseValueChange = false;
 
@@ -164,7 +165,18 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
 
 
+  isFluidContainer() {
 
+    if (this.screenElement.isFluidContainer !== undefined) {
+      return this.screenElement.isFluidContainer;
+    } else {
+
+      if (this.parentScreenComponent.screenElement.isFluidContainer !== undefined) {
+        return this.parentScreenComponent.screenElement.isFluidContainer;
+      }
+      return false;
+    }
+  }
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
