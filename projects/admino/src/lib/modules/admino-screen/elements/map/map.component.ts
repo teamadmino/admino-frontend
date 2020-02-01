@@ -3,8 +3,8 @@ import { AdminoScreenElement } from '../admino-screen-element';
 // import * as maptalks from 'maptalks';
 import * as maptalks from 'maptalks';
 // import * as mt from 'maptalks.three';
-import * as THREE from 'THREE';
-import { ThreeLayer } from 'maptalks.three';
+// import * as THREE from 'THREE';
+// import { ThreeLayer } from 'maptalks.three';
 // "typescript": "~3.4.3"
 
 
@@ -22,10 +22,10 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
     // console.log(threeLayer)
     // const light = new THREE.DirectionalLight(0xffffff);
     // console.log(light)
-    // this.map1();
-    this.map2();
+    this.map1();
+    // this.map2();
 
-    const threeLayer = new ThreeLayer('t');
+    // const threeLayer = new ThreeLayer('t');
     // console.log(mt)
     // threeLayer.prepareToDraw = (gl, scene, camera) => {
     //   var light = new THREE.DirectionalLight(0xffffff);
@@ -119,8 +119,8 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
 
 
     const rectangles = [];
-    const numX = 15;
-    const numY = 15;
+    const numX = 5;
+    const numY = 5;
     for (let x = 0; x < numX; x++) {
       for (let y = 0; y < numX; y++) {
         const x0 = x * (1 / numX);
