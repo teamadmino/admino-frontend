@@ -63,7 +63,8 @@
               "projects/frontend/src/assets"
             ],
             "styles": [
-              "projects/frontend/src/styles.scss"
+              "projects/frontend/src/styles.scss",
+              "node_modules/maptalks/dist/maptalks.css"
             ],
             "scripts": []
           },

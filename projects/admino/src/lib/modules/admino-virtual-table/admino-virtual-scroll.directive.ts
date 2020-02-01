@@ -97,6 +97,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
   }
 
   scrollToItem(index: number) {
+    console.log('scrollTo', index)
     const virtualPos = index * this.itemSize;
     const currPage = /*this.currPage*/  Math.floor(virtualPos / this.pageHeight);
     const currPageOffset = /*this.currPageOffset*/  Math.round(currPage * this.jumpCoefficient);
@@ -124,43 +125,100 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
   onScroll($event: any) {
     // console.log('vsRef onScroll');
     const scrollPos = this.$viewport.scrollTop;
-    if (Math.abs(scrollPos - this.prevScrollPos) > this.viewportSize) {
-      this._onJump();
-    } else {
-      this._onNearScroll();
-    }
+    // console.log(Math.abs(scrollPos - this.prevScrollPos), this.viewportSize)
+    // ha a változás a scrollTopban nagyobb mint a táblázat viewport látható magassága
+    // if (Math.abs(scrollPos - this.prevScrollPos) > this.viewportSize) {
+    //   this._onJump();
+    // } else {
+    //   this._onNearScroll();
+    // }
+    // this._onNearScroll();
+    this.handleScroll();
     this.renderViewportItems();
   }
 
   ngOnDestroy() {
   }
 
-  private _onJump() {
-    const scrollPos = this.$viewport.scrollTop;
-    this.currPage = Math.floor(scrollPos * ((this.combinedSizeOfItems - this.viewportSize)
-      / (this.realScrollSize - this.viewportSize)) * (1 / this.pageHeight));
-    this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
-    this.prevScrollPos = scrollPos;
-    this.clear();
-  }
-
-  private _onNearScroll() {
+  handleScroll() {
     const scrollPos = this.$viewport.scrollTop;
 
-    if (scrollPos + this.currPageOffset > (this.currPage + 1) * this.pageHeight) {
-      this.currPage++;
+    console.log('scrollPos', scrollPos);
+    console.log('prevScrollPos', this.prevScrollPos);
+    if (Math.abs(scrollPos - this.prevScrollPos) > this.viewportSize) {
+      // JUMP
+      console.log('JUMP');
+      this.currPage = Math.floor(scrollPos * ((this.combinedSizeOfItems - this.viewportSize)
+        / (this.realScrollSize - this.viewportSize)) * (1 / this.pageHeight));
       this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
-      this.$viewport.scrollTop = this.prevScrollPos = (scrollPos - this.jumpCoefficient);
-      this.clear();
-    } else if (scrollPos + this.currPageOffset < this.currPage * this.pageHeight) {
-      this.currPage--;
-      this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
-      this.$viewport.scrollTop = this.prevScrollPos = (scrollPos + this.jumpCoefficient);
-      this.clear();
-    } else {
+      // this.currPageOffset = this.currPage * this.jumpCoefficient;
+      console.log('currPage', this.currPage);
+      console.log('currPageOffset', this.currPageOffset);
       this.prevScrollPos = scrollPos;
+      this.clear();
+
+    } else {
+      // NEAR SCROLL
+      if (scrollPos + this.currPageOffset >= (this.currPage + 1) * this.pageHeight) {
+        // oldalváltás következőre
+        console.log('NEAR next');
+        this.currPage++;
+        this.currPageOffset = Math.ceil(this.currPage * this.jumpCoefficient);
+        // this.currPageOffset = this.currPage * this.jumpCoefficient;
+        this.$viewport.scrollTop = this.prevScrollPos = (scrollPos - this.jumpCoefficient);
+        this.clear();
+        console.log('currPage', this.currPage);
+        console.log('currPageOffset', this.currPageOffset);
+      } else if (scrollPos + this.currPageOffset < this.currPage * this.pageHeight) {
+        // oldalváltás előzőre
+        console.log(scrollPos + this.currPageOffset);
+        console.log('NEAR prev');
+        this.currPage--;
+        this.currPageOffset = Math.floor(this.currPage * this.jumpCoefficient);
+        this.$viewport.scrollTop = this.prevScrollPos = (scrollPos + this.jumpCoefficient);
+        this.clear();
+        console.log('currPage', this.currPage);
+        console.log('currPageOffset', this.currPageOffset);
+      } else {
+        // oldalon belül scroll
+        console.log('NEAR same');
+        this.prevScrollPos = scrollPos;
+      }
     }
+
+
   }
+
+  // private _onJump() {
+  //   const scrollPos = this.$viewport.scrollTop;
+  //   this.currPage = Math.floor(scrollPos * ((this.combinedSizeOfItems - this.viewportSize)
+  //     / (this.realScrollSize - this.viewportSize)) * (1 / this.pageHeight));
+
+  //   console.log('Jump currPage', this.currPage);
+  //   this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
+
+  //   console.log('Jump currPageOffset', this.currPageOffset);
+  //   this.prevScrollPos = scrollPos;
+
+  //   this.clear();
+  // }
+
+  // private _onNearScroll() {
+  //   const scrollPos = this.$viewport.scrollTop;
+  //   if (scrollPos + this.currPageOffset > (this.currPage + 1) * this.pageHeight) {
+  //     this.currPage++;
+  //     this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
+  //     this.$viewport.scrollTop = this.prevScrollPos = (scrollPos - this.jumpCoefficient);
+  //     this.clear();
+  //   } else if (scrollPos + this.currPageOffset < this.currPage * this.pageHeight) {
+  //     this.currPage--;
+  //     this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
+  //     this.$viewport.scrollTop = this.prevScrollPos = (scrollPos + this.jumpCoefficient);
+  //     this.clear();
+  //   } else {
+  //     this.prevScrollPos = scrollPos;
+  //   }
+  // }
   private clear() {
     this.cache.clear();
     this.viewContainer.clear();
@@ -168,6 +226,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
 
   private renderViewportItems() {
     const y = this.$viewport.scrollTop + this.currPageOffset;
+    console.log('névleges y', y);
     let start = Math.floor((y - this.viewportSize) / this.itemSize);
     let end = Math.ceil((y + (this.viewportSize * 2)) / this.itemSize);
 
@@ -242,6 +301,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
   }
 
   refresh() {
+    console.log('refresh __________');
     // console.log('vsref refresh start');
     this.clear();
     // const view = this.viewContainer.createEmbeddedView(this.template);
@@ -256,26 +316,41 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     // this.itemSize = parseFloat(rect.height) + ((parseFloat(rect.marginTop) + parseFloat(rect.marginBottom)));
     // this.itemSize = 51;
     this.viewportSize = this.$viewport.getBoundingClientRect().height;
-    this.realScrollSize = this.maxScrollSize;
+    console.log('maxScrollSize', this.maxScrollSize);
+    console.log('viewportSize', this.viewportSize);
+    console.log('numOfItems', this.numOfItems);
+    console.log('itemSize', this.itemSize);
     this.combinedSizeOfItems = this.numOfItems * this.itemSize;
-    this.pageHeight = this.realScrollSize / 100;
+    console.log('combinedSize', this.combinedSizeOfItems);
+
+    this.pageHeight = this.maxScrollSize / 100;
+    // this.pageHeight = this.maxScrollSize / (this.combinedSizeOfItems / this.maxScrollSize);
+    // this.pageHeight = this.pageHeight < this.itemSize * 2 ? this.itemSize * 2 : this.pageHeight;
+    console.log('pageHeight', this.pageHeight);
+
     this.numPages = Math.ceil(this.combinedSizeOfItems / this.pageHeight);
+    console.log('numOfPages', this.numPages);
 
-    const coff = (this.combinedSizeOfItems - this.realScrollSize) / (this.numPages - 1);
+    const coff = (this.combinedSizeOfItems - this.maxScrollSize) / (this.numPages - 1);
     this.jumpCoefficient = coff > 0 ? coff : 1;
+    console.log('jumpCoeff', this.jumpCoefficient);
 
-    this.realScrollSize = this.realScrollSize > this.combinedSizeOfItems ? this.combinedSizeOfItems : this.realScrollSize;
-
+    this.realScrollSize = this.maxScrollSize > this.combinedSizeOfItems ? this.combinedSizeOfItems : this.maxScrollSize;
+    console.log('realScrollSize', this.realScrollSize);
     // if (this.realScrollSize > this.combinedSizeOfItems) {
     // }
+    // console.log('Does it fit', this.numPages * this.jumpCoefficient);
 
-
-    this.currPage = 1;
+    this.currPage = 0;
     this.currPageOffset = 0;
 
     this.prevScrollPos = this.prevScrollPos >= 0 ? this.prevScrollPos : 0;
 
     this.$scroller.style.height = `${this.realScrollSize}px`;
+    console.log('scrollerHeight', this.realScrollSize);
+    this.$scroller.style.width = '10px';
+    this.$scroller.style.backgroundColor = 'red';
+
     // console.log("REALSCROLLSIZE " + this.realScrollSize)
     // console.log(this.realScrollSize);
     // // view.destroy();
@@ -310,6 +385,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     document.body.removeChild(div);
     // return Math.abs(size) / 2;
     return size;
+    // return 100000;
     // } else {
     //   return this.realScrollSize;
     // }

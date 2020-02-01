@@ -1,3 +1,4 @@
+import { MapComponent } from './elements/map/map.component';
 import { AdminoThemeService } from './../../services/theme.service';
 import { ChartComponent } from './elements/chart/chart.component';
 import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
@@ -37,6 +38,7 @@ const componentMapper = {
   checkbox: CheckboxComponent,
   radiobutton: RadiobuttonComponent,
   chart: ChartComponent,
+  map: MapComponent,
 };
 
 @Directive({

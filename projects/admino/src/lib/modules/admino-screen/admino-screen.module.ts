@@ -21,6 +21,7 @@ import { CheckboxComponent } from './elements/checkbox/checkbox.component';
 import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
 import { ChartComponent } from './elements/chart/chart.component';
 import { ChartsModule } from 'ng2-charts';
+import { MapComponent } from './elements/map/map.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -33,7 +34,8 @@ import { ChartsModule } from 'ng2-charts';
     PopupComponent,
     CheckboxComponent,
     RadiobuttonComponent,
-    ChartComponent
+    ChartComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +63,9 @@ import { ChartsModule } from 'ng2-charts';
     TextComponent,
     CheckboxComponent,
     RadiobuttonComponent,
-    ChartComponent
+    ChartComponent,
+    MapComponent
+
   ]
 })
 export class AdminoScreenModule { }

@@ -23,13 +23,12 @@
             </tr>
         </thead>
         <tbody class="vr-container" #bodyRef (scroll)="refresh()">
-            <ng-template adminoVsFor [adminoVsForTotalsize]="this.totalsize" [itemSize]="calculatedSize" let-item
+            <ng-template adminoVsFor [adminoVsForTotalsize]="this.totalsize" [itemSize]="itemSize" let-item
                 let-position="__position__" let-index="index" let-content="content" let-cacheIndex="cacheIndex"
                 (afterRender)="afterRender($event)">
                 <tr (click)="setSelected(content,cacheIndex, index)" class="vr-row" [style.top.px]="position"
-                    [style.height.px]="calculatedSize" [ngClass]="{active: index===dataSource.cursorAbsPos}"
-                    [@adminoTableRowAnimation]="content.__loaded__">
-                    <!-- -->
+                    [style.height.px]="calculatedSize" [ngClass]="{active: index===dataSource.cursorAbsPos}">
+                    <!-- [@adminoTableRowAnimation]="content.__loaded__"-->
                     <!-- [style.transform]="'translateY('+(-(cacheIndex*calculatedSize)+'px)'" -->
                     <!-- [style.top.px]="position" -->
                     <!-- <td>{{index+1}}</td> -->
@@ -58,7 +57,8 @@
 
     <div class="admino-virtual-table-footer">
         <div class="status flex-grow-1 mb-3">
-            {{prevVisibleStart+1}} - {{prevVisibleEnd}} / {{totalsize}}
+            {{ this.vsRef.currPage}}
+            <!--  {{prevVisibleStart+1}} - {{prevVisibleEnd}} / {{totalsize}} -->
         </div>
         <div class="actions">
             <button type="button" (click)="tableButtonClicked(tbutton)" mat-raised-button class="ml-3 mb-3"

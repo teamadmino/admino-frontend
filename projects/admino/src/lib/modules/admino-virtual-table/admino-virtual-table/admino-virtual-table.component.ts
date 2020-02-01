@@ -188,11 +188,11 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
 
 
         // console.log("count", this.dataSource.count)
-        if (this.lastSetCursorPosPercent != null) {
-          this.scrollToSelected(this.lastSetCursorPosPercent);
-          this.lastSetCursorPosPercent = null;
-          // console.log("SCROLL HAPPENDED")
-        }
+        // if (this.lastSetCursorPosPercent != null) {
+        //   this.scrollToSelected(this.lastSetCursorPosPercent);
+        //   this.lastSetCursorPosPercent = null;
+        //   // console.log("SCROLL HAPPENDED")
+        // }
 
       }
     });
@@ -274,10 +274,10 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     });
   }
 
-  scrollToSelected(cursorPosPercent = 0.5) {
-    const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.state.count - 1) * cursorPosPercent);
-    this.vsRef.scrollToItem(cursorPos);
-  }
+  // scrollToSelected(cursorPosPercent = 0.5) {
+  //   const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.state.count - 1) * cursorPosPercent);
+  //   this.vsRef.scrollToItem(cursorPos);
+  // }
 
   sortClicked(column, sorter) {
     // const dir = e.direction === 'asc' ? 1 : -1;
@@ -300,7 +300,9 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
     this.vsRef.clearData();
     // this.vsRef.refresh();
     this.dataSource.loadData().then(() => {
-      this.scrollToSelected();
+      // this.cd.detectChanges();
+      // this.vsRef.refresh();
+      // this.scrollToSelected();
     });
   }
 
@@ -331,7 +333,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       }
     }
     // console.log(availableWidth)
-    console.log(this.columnWidths)
     // this.columnWidths[this.dataSource.displayedColumns.length] = actionsWidth;
     // console.log(this.dataSource.displayedColumns);
   }
