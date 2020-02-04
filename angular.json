@@ -66,7 +66,11 @@
               "projects/frontend/src/styles.scss",
               "node_modules/maptalks/dist/maptalks.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/maptalks/dist/maptalks.min.js",
+              "node_modules/three/build/three.min.js",
+              "node_modules/maptalks.three/dist/maptalks.three.js"
+            ]
           },
           "configurations": {
             "production": {

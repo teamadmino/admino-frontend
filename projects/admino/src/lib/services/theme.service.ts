@@ -124,25 +124,34 @@ export class AdminoThemeService {
 
   }
   getColorFromList(id: string) {
+
     const split = id.split(':');
-    const color: string = this.colorList[split[0] !== undefined ? split[0] : 'red'];
+    // let color: string = this.colorList[split[0] !== undefined ? split[0] : 'red'];
+    let color: string = split[0];
     const opacity = parseFloat(split[1] !== undefined ? split[1] : '1');
     const shade = parseFloat(split[2] !== undefined ? split[2] : '0');
+    const mix = parseFloat(split[3] !== undefined ? split[3] : '0');
+
+    const colorsplit = color.split('>');
+    if (colorsplit.length > 1) {
+      const c1 = this.colorList[colorsplit[0]] !== undefined ? this.colorList[colorsplit[0]] : 'red';
+      const c2 = this.colorList[colorsplit[1]] !== undefined ? this.colorList[colorsplit[1]] : 'red';
+      color = this.psbc(mix, c1, c2);
+    } else {
+      color = this.colorList[color] !== undefined ? this.colorList[color] : 'red';
+    }
+
 
     let themeDarknessMultiplier = this.isDarkTheme ? 0.1 : -0.1;
     if (['primary', 'accent', 'warn', 'foreground', 'background'].indexOf(color) !== -1) {
       themeDarknessMultiplier = 0;
     }
-
-
     const needsConversion = color.startsWith('rgb') ? null : 'c';
-
     let col = this.psbc(shade * 0.8 + themeDarknessMultiplier, color, needsConversion);
     if (opacity !== 1) {
       col = this.rgba(col, opacity);
     }
 
-    // const col = this.psbc(0, this.colorList[split[0]], 'c');
 
     return col;
   }

@@ -1,14 +1,16 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
+import { ScreenElementChange } from '../../admino-screen.interfaces';
 // import * as maptalks from 'maptalks';
-import * as maptalks from 'maptalks';
+// import * as maptalks from 'maptalks';
+// import * as THREEJS from 'three';
 // import * as mt from 'maptalks.three';
-// import * as THREE from 'THREE';
 // import { ThreeLayer } from 'maptalks.three';
 // "typescript": "~3.4.3"
 
 
-// declare var THREE: any;
+declare var maptalks: any;
+declare var THREE: any;
 @Component({
   selector: 'admino-map',
   templateUrl: './map.component.html',
@@ -17,12 +19,174 @@ import * as maptalks from 'maptalks';
 export class MapComponent extends AdminoScreenElement implements OnInit {
   @ViewChild('mapRef', { static: true, read: ElementRef }) mapRef: ElementRef;
   map;
+  mapElements: { [id: string]: { mesh: any, type: string }; } = {};
+  threeLayer;
+  onChange(changes: { [id: string]: ScreenElementChange; }) {
+    console.log(changes);
+    if (changes.mapElements) {
+      this.drawElements(changes.mapElements.new);
+    }
+    this.threeLayer.renderScene();
+
+  }
+  drawElements(mapElements) {
+    for (const mapEl of mapElements) {
+      if (mapEl.type === 'polygon') {
+        if (this.mapElements[mapEl.id]) {
+          this.threeLayer.removeMesh(this.mapElements[mapEl.id].mesh);
+        }
+        this.mapElements[mapEl.id] = {
+          mesh: this.drawPolygon(mapEl.points,
+            this.directive.ts.getColor(mapEl.color),
+            mapEl.height, mapEl.altitude), type: mapEl.type
+        };
+        this.threeLayer.addMesh(this.mapElements[mapEl.id].mesh);
+      }
+    }
+  }
+
+  drawPolygon(points, color, height, altitude) {
+
+    const rectangle = new maptalks.Polygon([
+      points
+    ], {
+      symbol: {
+        lineColor: color,
+        lineWidth: 2,
+        polygonFill: color,
+        polygonOpacity: 0.6
+      },
+      properties: {
+        altitude: height
+      }
+    });
+
+
+    const material = new THREE.MeshPhongMaterial({
+      color, transparent: true,
+      //  blending: THREE.AdditiveBlending,
+      opacity: 0.9
+    });
+    // scene.add(bar);
+    const mesh = this.threeLayer.toExtrudePolygon(rectangle, {
+      height,
+      topColor: '#ff',
+      altitude
+    }, material);
+    // tooltip test
+    return mesh;
+  }
   ngOnInit() {
-    // var threeLayer = new maptalks.ThreeLayer('t');
-    // console.log(threeLayer)
-    // const light = new THREE.DirectionalLight(0xffffff);
+    this.map2();
+
+    // the ThreeLayer to draw buildings
+    this.threeLayer = new maptalks.ThreeLayer('t', {
+      forceRenderOnMoving: true,
+      forceRenderOnRotating: true
+      // animation: true
+    });
+    this.threeLayer.prepareToDraw = (gl, scene, camera) => {
+      const light = new THREE.DirectionalLight(0xffffff);
+      light.position.set(0, -50, 10).normalize();
+      scene.add(light);
+      const light2 = new THREE.AmbientLight(0xffffff);
+      scene.add(light2);
+      // addBars(scene);
+      this.threeLayer.config('animation', true);
+
+      // var highlightmaterial = new THREE.MeshBasicMaterial({ color: 'yellow', transparent: true });
+      // this.drawPolygon([[0, 0], [0, 1], [1, 1], [0, 0]], this.directive.ts.accentColor, 1000);
+      this.drawElements(this.element.mapElements);
+      // var bar = threeLayer.toBar([0.5, 0.5], {
+      //   height: 10000,
+      //   radius: 1000,
+      //   topColor: '#fff',
+      //   // radialSegments: 4
+      // }, material);
+
+
+      // const numX = 30;
+      // const numY = 30;
+      // for (let x = 0; x < numX; x++) {
+      //   for (let y = 0; y < numX; y++) {
+      //     const x0 = x * (1 / numX);
+      //     const y0 = y * (1 / numY);
+      //     const x1 = x0 + 1 / numX;
+      //     const y1 = y0 + 1 / numY;
+      //     const capacityFull = Math.random();
+      //     const altitude = capacityFull * 30000;
+      //     const col = this.directive.ts.psbc(capacityFull, this.directive.ts.accentColor, this.directive.ts.warnColor)
+      //     if (Math.random() > 0) {
+      //       var rectangle = new maptalks.Polygon([
+      //         [
+      //           [x0, y0],
+      //           [x1, y0],
+      //           [x1, y1],
+      //           [x0, y1],
+      //           [x0, y0],
+      //         ]
+      //       ], {
+      //         symbol: {
+      //           lineColor: col,
+      //           lineWidth: 2,
+      //           polygonFill: col,
+      //           polygonOpacity: 0.6
+      //         },
+      //         properties: {
+      //           altitude: altitude
+      //         }
+      //       });
+      //       // new maptalks.VectorLayer('vector2' + Math.random(), lines, {
+      //       //   enableAltitude: true, drawAltitude: {
+      //       //     polygonFill: col,
+      //       //     polygonOpacity: 0.6,
+      //       //     lineColor: col,
+      //       //     lineWidth: 2,
+      //       //   }
+      //       // }).addTo(this.map);
+
+      //       var material = new THREE.MeshPhongMaterial({
+      //         color: col, transparent: true,
+      //         //  blending: THREE.AdditiveBlending,
+      //         opacity: 0.9
+      //       });
+      //       // scene.add(bar);
+      //       var mesh = threeLayer.toExtrudePolygon(rectangle, {
+      //         height: altitude,
+      //         topColor: '#ff'
+      //       }, material);
+      //       // tooltip test
+      //       mesh.setToolTip("asdasd", {
+      //         showTimeout: 0,
+      //         eventsPropagation: true,
+      //         dx: 10
+      //       });
+      //       threeLayer.addMesh(mesh);
+      //     }
+      //   }
+      //   }
+    };
+
+    this.threeLayer.addTo(this.map);
+
+    // // tooltip test
+    // bar.setToolTip(d.height * 400, {
+    //   showTimeout: 0,
+    //   eventsPropagation: true,
+    //   dx: 10
+    // });
+
+
+    // //infowindow test
+    // bar.setInfoWindow({
+    //   content: 'hello world,height:' + d.height * 400,
+    //   title: 'message',
+    //   animationDuration: 0,
+    //   autoOpenOn: false
+    // });
+
+    // const light = new THREEJS.DirectionalLight(0xffffff);
     // console.log(light)
-    this.map1();
     // this.map2();
 
     // const threeLayer = new ThreeLayer('t');
@@ -83,7 +247,12 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
 
   }
 
-
+  unicodeToChar(text) {
+    return text.replace(/\u[\dA-Fa-f]{4}/g,
+      function (match) {
+        return String.fromCharCode(parseInt(match.replace(/\u/g, ''), 16));
+      });
+  }
 
 
   map1() {

@@ -349,7 +349,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
     this.$scroller.style.height = `${this.realScrollSize}px`;
     console.log('scrollerHeight', this.realScrollSize);
     this.$scroller.style.width = '10px';
-    this.$scroller.style.backgroundColor = 'red';
+    // this.$scroller.style.backgroundColor = 'red';
 
     // console.log("REALSCROLLSIZE " + this.realScrollSize)
     // console.log(this.realScrollSize);

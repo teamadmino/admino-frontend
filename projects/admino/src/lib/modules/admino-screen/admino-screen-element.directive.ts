@@ -80,9 +80,11 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
     this.activeElementConfig = cloneDeep(this.element);
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+
       if (this.componentRef && this.element) {
+
         // Type change
-        if (this.element.type !== this.activeElementConfig.type) {
+        if (this.element.type !== undefined && this.element.type !== this.activeElementConfig.type) {
           this.destroyComponent();
           this.createComponent();
         }

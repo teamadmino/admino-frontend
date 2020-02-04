@@ -3,12 +3,13 @@ import { isObject } from './isobject';
 
 export function deepCompare(target, newObj, excludedKeys: string[] = [], diff = {}) {
     // target = cloneDeep(target);
+
     if (isObject(newObj)) {
         // if (isObject(target)) {
         if (target === null || target === undefined) {
             target = {};
         }
-        for (const key in newObj) {
+        for (const key of Object.keys(newObj)) {
             if (isObject(newObj[key]) && excludedKeys.indexOf(key) === -1) {
                 const subDiff = deepCompare(target[key], newObj[key], excludedKeys);
                 // console.log(key);

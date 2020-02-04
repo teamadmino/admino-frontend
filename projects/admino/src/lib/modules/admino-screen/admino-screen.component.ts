@@ -75,6 +75,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
       this.screenElement = element;
     } else {
       this.screenElement = this.mergeConfig(this.screenElement, element);
+      console.log('mergeconfig', this.screenElement)
     }
     // const values = this.extractValue(this.screenElement.elements);
     // this.updateValue(values);
@@ -123,9 +124,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
           if (key.split('__')[1] === 'replace') {
             target[key.split('__')[0]] = source[key];
           } else if (source[key][0] && source[key][0].id !== undefined) {
-            target[key] = source[key];
-          } else {
             target[key] = this.mergeArrays(target[key], source[key]);
+          } else {
+            target[key] = source[key];
           }
         } else {
           Object.assign(target, { [key]: source[key] });
@@ -166,7 +167,6 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
 
   isFluidContainer() {
-
     if (this.screenElement.isFluidContainer !== undefined) {
       return this.screenElement.isFluidContainer;
     } else {
