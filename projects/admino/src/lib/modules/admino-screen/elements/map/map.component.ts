@@ -230,9 +230,9 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
       ]);
     this.map = new maptalks.Map(this.mapRef.nativeElement, {
       center: [0.5, 0.5],
-      zoom: 11,
+      zoom: 10,
       fog: false,
-      pitch: 45,
+      pitch: 60,
       dragPitch: true,
       bearing: -40,
       //allow map to drag rotating, true by default

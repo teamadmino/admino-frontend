@@ -41,40 +41,59 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
     this.data = cloneDeep(this.element.data);
     this.options = deepMerge(this.options, this.element.options);
     // this.options && this.options.
-    this.directive.cd.detectChanges();
     this.setColors();
+
+    this.directive.cd.detectChanges();
     this.chart.update();
 
   }
 
   ngOnInit() {
     this.directive.ts.themeUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => {
-      let overrides: ChartOptions;
-      overrides = {
-        legend: {
-          labels: { fontColor: this.directive.ts.fgColor }
-        },
-        scales: {
-          xAxes: [{
-            ticks: { fontColor: this.directive.ts.fgColor },
-            gridLines: { color: this.directive.ts.rgba(this.directive.ts.fgColor, 0.1) }
-          }],
-          yAxes: [{
-            ticks: { fontColor: this.directive.ts.fgColor },
-            gridLines: { color: this.directive.ts.rgba(this.directive.ts.fgColor, 0.1) }
-          }]
-        }
-      };
 
-      this.directive.chartThemeService.setColorschemesOptions(overrides);
+
       this.setColors();
     });
     this.onChange({});
   }
 
   setColors() {
-    const ts = this.screenComponent.ts;
 
+    const ts = this.directive.ts;
+
+    let overrides: ChartOptions;
+    overrides = {
+      legend: {
+        labels: { fontColor: ts.fgColor }
+      },
+      scales: {
+        xAxes: [{
+          scaleLabel: { fontColor: ts.fgColor },
+          ticks: { fontColor: ts.fgColor },
+          gridLines: {
+            color: ts.rgba(ts.fgColor, 0.1), zeroLineColor: ts.rgba(ts.fgColor, 0.1)
+          },
+        }],
+        yAxes: [{
+          scaleLabel: { fontColor: ts.fgColor },
+          ticks: { fontColor: ts.fgColor },
+          gridLines: {
+            color: ts.rgba(ts.fgColor, 0.1), zeroLineColor: ts.rgba(ts.fgColor, 0.1)
+          },
+
+        }]
+      }
+    };
+    if (this.chartType === 'radar' || this.chartType === 'polarArea') {
+      overrides.scale = {
+        gridLines: {
+          color: ts.rgba(ts.fgColor, 0.1),
+          zeroLineColor: ts.rgba(ts.fgColor, 0.1),
+        },
+        angleLines: { color: ts.rgba(ts.fgColor, 0.1) }
+      }
+    }
+    this.directive.chartThemeService.setColorschemesOptions(overrides);
     const colors = this.directive.ts.getColor(this.element.colors);
     this.colors = [];
 
