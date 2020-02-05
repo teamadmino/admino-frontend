@@ -12,7 +12,8 @@
     "server": "F: && cd /Work/Dev/Admino2/analytics/server/frontend_server/ && java -jar server.jar",
     "testserver": "E: && cd /NewWork/Dev/Admino3/analytics/server/test/ && java -jar server.jar",
     "demo": "E: && cd /NewWork/Dev/Admino3/analytics/server/demo_sample1/ && java -jar server.jar",
-    "server-notebook": "C: && cd /Work/admino2/server/ && java -jar server.jar"
+    "server-notebook": "C: && cd /Work/admino2/server/ && java -jar server.jar",
+    "demo-notebook": "C: && cd /Work/admino_presentation/demo_sample1/ && java -jar server.jar"
   },
   "private": true,
   "dependencies": {
