@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, HostBinding } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, BaseChartDirective, Label } from 'ng2-charts';
+import { Color, BaseChartDirective, Label, ThemeService } from 'ng2-charts';
 import { AdminoScreenElement } from '../admino-screen-element';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { takeUntil } from 'rxjs/operators';
@@ -91,7 +91,7 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
           zeroLineColor: ts.rgba(ts.fgColor, 0.1),
         },
         angleLines: { color: ts.rgba(ts.fgColor, 0.1) }
-      }
+      };
     }
     this.directive.chartThemeService.setColorschemesOptions(overrides);
     const colors = this.directive.ts.getColor(this.element.colors);

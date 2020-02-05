@@ -64,6 +64,7 @@ export interface ScreenElementScreen extends ScreenElement {
 
     showBorder?: boolean;
     allowEdit?: boolean;
+    editMode?: boolean;
 
     isFluidContainer?: boolean;
 

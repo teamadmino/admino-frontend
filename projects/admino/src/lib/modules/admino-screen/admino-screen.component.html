@@ -5,6 +5,13 @@
             <div class="row">
                 <div class="col pt-3 pb-3 ">
                     <div class="border-color-accent">
+
+                        <!-- <ng-container *ngFor="let element of getElementsOfType('main'); let i=index;"
+                            adminoScreenElement [rootScreenComponent]="
+                            this.rootScreenComponent" [element]="element" [parentGroup]="group"
+                            [screenComponent]='this' [index]="i">
+                        </ng-container> -->
+
                         <admino-card [nopadding]="true"
                             [opaque]="screenElement.is_popup || editMode && this !==this.rootScreenComponent"
                             [showBorder]="_screenElement.showBorder">

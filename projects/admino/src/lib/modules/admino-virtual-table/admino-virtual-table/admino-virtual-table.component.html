@@ -8,7 +8,7 @@
             <tr class="header-row">
                 <!-- <th>Index</th> -->
                 <th *ngFor="let column of dataSource.columns, let i=index"
-                    [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px'}"
+                    [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px','text-align': column.align?column.align:'left'}"
                     scope="col">
                     <admino-admino-virtual-table-sorter [enabled]="column.sortable"
                         [active]="column===this.sortedColumn?true:false"

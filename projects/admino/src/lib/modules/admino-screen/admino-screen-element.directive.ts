@@ -42,7 +42,8 @@ const componentMapper = {
 };
 
 @Directive({
-  selector: '[adminoScreenElement]'
+  selector: '[adminoScreenElement]',
+  // providers: [ThemeService]
 })
 export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();

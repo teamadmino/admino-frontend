@@ -75,8 +75,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
       this.screenElement = element;
     } else {
       this.screenElement = this.mergeConfig(this.screenElement, element);
-      console.log('mergeconfig', this.screenElement)
+      console.log('mergeconfig', this.screenElement);
     }
+    // this.editMode = this.screenElement.editMode;
     // const values = this.extractValue(this.screenElement.elements);
     // this.updateValue(values);
     // const origValues = this.group.value;

@@ -160,11 +160,12 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
 
 
   getStyle() {
-    return {
+    const style = {
       // 'grid-template-columns': `repeat(${this.colnum},minmax(auto,1fr))`,
       'grid-template-columns': `repeat(${this.colnum},1fr)`,
       'grid-template-rows': this.gridAutoRows,
     };
+    return style;
   }
 
 }

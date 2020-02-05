@@ -70,9 +70,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
 
       this.inited = true;
       this.gridComponent.activeItem.subscribe((activeItem) => {
-
         if (this.gridComponent.activeItem.value === this) {
-
           this.isActive = true;
           this.isOtherActive = false;
         } else if (this.gridComponent.activeItem.value !== null) {
@@ -109,13 +107,13 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     // const ratio = 100 / (this.colnum / this.col);
     if (this.colSpan) {
       if (this.colSpan === 'auto') {
-        s += `grid-column: ${(this.col)} / auto;`;
+        s += `grid-column: ${(this.col)} / auto; `;
       } else {
-        s += `grid-column:  ${(this.col)} / span ${(this.colSpan)};`;
+        s += `grid-column:  ${(this.col)} / span ${(this.colSpan)}; `;
       }
     }
     if (this.row) {
-      s += `grid-row: ${(this.row)} / span ${(this.rowSpan)};`;
+      s += `grid-row: ${(this.row)} / span ${(this.rowSpan)}; `;
     }
     // s += `grid-row: span ${(1)};`;
 
@@ -123,7 +121,6 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
       s += 'align-self: stretch;';
       // s += 'grid-row: fr1;';
     }
-
     return s;
   }
 
