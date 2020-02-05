@@ -13,7 +13,7 @@
     "testserver": "E: && cd /NewWork/Dev/Admino3/analytics/server/test/ && java -jar server.jar",
     "demo": "E: && cd /NewWork/Dev/Admino3/analytics/server/demo_sample1/ && java -jar server.jar",
     "server-notebook": "C: && cd /Work/admino2/server/ && java -jar server.jar",
-    "demo-notebook": "C: && cd /Work/admino_presentation/demo_sample1/ && java -jar server.jar"
+    "demo-notebook": "C: && cd /Work/admino_presentation/demo_sample1/ && java -Xmx4000m -Xms4000m -jar server.jar"
   },
   "private": true,
   "dependencies": {
