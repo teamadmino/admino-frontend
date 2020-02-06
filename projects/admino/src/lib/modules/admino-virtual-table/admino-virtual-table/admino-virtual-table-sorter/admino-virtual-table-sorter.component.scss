@@ -1,5 +1,5 @@
 :host {
-  display: flex;
+  display: inline-block;
   align-items: center;
   cursor: pointer;
 }
@@ -19,6 +19,6 @@ mat-icon {
 
 .sorticon {
   margin-left: 5px;
-  display: flex;
+  display: inline-block;
   align-items: center;
 }
