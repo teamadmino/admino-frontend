@@ -109,7 +109,7 @@ export interface BackendResponse {
   setBottomButtons: AdminoButton[];
   setFocus: any;
 
-  downloadFile: { url: string, type: string };
+  startAction: AdminoAction[];
 
   closePopup: boolean | string;
 

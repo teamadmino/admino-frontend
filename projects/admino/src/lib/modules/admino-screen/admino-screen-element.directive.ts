@@ -1,3 +1,4 @@
+import { DateComponent } from './elements/date/date.component';
 import { TextareaComponent } from './elements/textarea/textarea.component';
 import { NewTableComponent } from './elements/new-table/new-table.component';
 import { MapComponent } from './elements/map/map.component';
@@ -43,6 +44,7 @@ const componentMapper = {
   chart: ChartComponent,
   map: MapComponent,
   newtable: NewTableComponent,
+  date: DateComponent,
 };
 
 @Directive({

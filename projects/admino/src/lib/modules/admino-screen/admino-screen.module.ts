@@ -25,6 +25,7 @@ import { ChartsModule } from 'ng2-charts';
 import { MapComponent } from './elements/map/map.component';
 import { NewTableComponent } from './elements/new-table/new-table.component';
 import { TextareaComponent } from './elements/textarea/textarea.component';
+import { DateComponent } from './elements/date/date.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -40,7 +41,8 @@ import { TextareaComponent } from './elements/textarea/textarea.component';
     ChartComponent,
     MapComponent,
     NewTableComponent,
-    TextareaComponent
+    TextareaComponent,
+    DateComponent
   ],
   imports: [
     CommonModule,
@@ -72,7 +74,9 @@ import { TextareaComponent } from './elements/textarea/textarea.component';
     ChartComponent,
     MapComponent,
     NewTableComponent,
-    TextareaComponent
+    TextareaComponent,
+    DateComponent
+
 
 
   ]

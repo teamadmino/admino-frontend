@@ -122,12 +122,15 @@ export class AdminoActionService {
           this.setFocus.next(response.setFocus);
           // this.user.sid = response.setSid;
         }
-        if (response.downloadFile) {
-          this.api.downloadFile(response.downloadFile.url).subscribe((data) => {
-            const blob = new Blob([data], { type: response.downloadFile.type });
-            const url = window.URL.createObjectURL(blob);
-            window.open(url);
-          });
+        if (response.startAction) {
+          for (const action of response.startAction) {
+            this.handleAction({ action });
+          }
+          // this.api.downloadFile(response.downloadFile.url).subscribe((data) => {
+          //   const blob = new Blob([data], { type: response.downloadFile.type });
+          //   const url = window.URL.createObjectURL(blob);
+          //   window.open(url);
+          // });
         }
       }));
   }

@@ -1,7 +1,8 @@
+import { AdminoUniversalEditorComponent } from './../admino-universal-editor/admino-universal-editor/admino-universal-editor.component';
 import { AdminoActionService } from './../../services/action.service';
 import { ConfigService } from './../../services/config.service';
 import { AdminoUserService } from './../../services/user.service';
-import { AdminoMenuItem, AdminoButton } from './../../interfaces';
+import { AdminoMenuItem, AdminoButton, ActionEvent } from './../../interfaces';
 import {
   Component, OnInit, ViewChild, Renderer2, ChangeDetectorRef,
   ChangeDetectionStrategy, Inject, Input, OnDestroy
@@ -34,6 +35,7 @@ export class MainComponent implements OnInit, OnDestroy {
   private mobileQueryListener: () => void;
 
   @ViewChild('scrollAreaRef', { static: false }) scrollAreaRef;
+  @ViewChild(AdminoUniversalEditorComponent, { static: false }) universalEditor: AdminoUniversalEditorComponent;
 
   @Input() configPath: string;
 
@@ -125,8 +127,15 @@ export class MainComponent implements OnInit, OnDestroy {
     // this.nav.navigate(menuEvent.menuItem.action);
     this.as.handleAction({ action: { type: 'backend', backendAction: menuEvent.menuItem.action } }).subscribe();
   }
+
   bottomMenuClicked(button: AdminoButton) {
-    this.as.handleAction({ action: button.action }).subscribe();
+    const actionEvent: ActionEvent = {
+      action: button.action,
+      initiatedBy: { devButton: button.label }
+    }
+    actionEvent.openScreens = this.universalEditor.screen.allOpenScreens;
+    actionEvent.screenConfig = this.universalEditor.screen.mainScreenComponent.screenElement;
+    this.as.handleAction(actionEvent).subscribe();
   }
 
 
