@@ -156,6 +156,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
       this.dataSource.state.count = count;
       // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
       this.dataSource.state.cursorpos = -e.visibleStart + this.dataSource.cursorAbsPos;
+      console.log(this.dataSource.state.cursorpos)
       this.dataSource.loadData();
       this.cd.detectChanges();
       this.refresh();
@@ -374,7 +375,6 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   }
 
   ngOnDestroy() {
-
     if (this.dataSource) {
       this.dataSource.disconnect();
     }

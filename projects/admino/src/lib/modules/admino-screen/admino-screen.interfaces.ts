@@ -80,7 +80,6 @@ export interface ScreenElementScreen extends ScreenElement {
 export interface ScreenElementTimer extends ScreenElement {
     action: AdminoAction;
     frequency: number;
-    disabled: boolean;
     _forceRefresh: number;
 }
 export interface ScreenElementInput extends ScreenElement {
@@ -90,6 +89,19 @@ export interface ScreenElementInput extends ScreenElement {
     readonly: boolean;
     inputType: string;
 }
+export interface ScreenElementTextarea extends ScreenElement {
+    label?: string;
+    maxlength: boolean;
+    readonly: boolean;
+    rows: number;
+}
+export interface ScreenElementText extends ScreenElement {
+    align: string;
+    size: number;
+    color: string;
+    weight: string;
+}
+
 export interface ScreenElementRadiobutton extends ScreenElement {
     label?: string;
     inlineLabel?: boolean;
@@ -106,7 +118,7 @@ export interface ScreenElementButton extends ScreenElement {
 }
 export interface ScreenElementImage extends ScreenElement {
     label?: string;
-    src?: string; // "http://localhost/valami.jpg";
+    src?: string;
     // width: number;
     // height: number;
 }

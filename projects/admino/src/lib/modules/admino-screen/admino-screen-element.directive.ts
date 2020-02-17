@@ -1,3 +1,5 @@
+import { TextareaComponent } from './elements/textarea/textarea.component';
+import { NewTableComponent } from './elements/new-table/new-table.component';
 import { MapComponent } from './elements/map/map.component';
 import { AdminoThemeService } from './../../services/theme.service';
 import { ChartComponent } from './elements/chart/chart.component';
@@ -29,6 +31,7 @@ import { ThemeService } from 'ng2-charts';
 
 const componentMapper = {
   input: InputComponent,
+  textarea: TextareaComponent,
   button: ButtonComponent,
   table: TableComponent,
   group: GroupComponent,
@@ -39,6 +42,7 @@ const componentMapper = {
   radiobutton: RadiobuttonComponent,
   chart: ChartComponent,
   map: MapComponent,
+  newtable: NewTableComponent,
 };
 
 @Directive({

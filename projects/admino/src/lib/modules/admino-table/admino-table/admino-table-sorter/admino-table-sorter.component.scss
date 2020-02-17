@@ -1,0 +1,24 @@
+:host {
+  display: inline-block;
+  align-items: center;
+  cursor: pointer;
+}
+
+mat-icon {
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+  user-select: none;
+
+}
+
+
+.flip {
+  transform: rotate(180deg);
+}
+
+.sorticon {
+  margin-left: 5px;
+  display: inline-block;
+  align-items: center;
+}

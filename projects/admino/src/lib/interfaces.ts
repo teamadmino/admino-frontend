@@ -56,7 +56,7 @@ export interface ActionSubscription {
 }
 ////////////
 export interface AdminoAction {
-  type: 'backend' | 'frontend' | 'url';
+  type: 'backend' | 'frontend' | 'url' | 'download';
   // backend
   backendAction?: any;
   // frontend
@@ -64,6 +64,9 @@ export interface AdminoAction {
   // url config
   url?: string;
   target?: '_blank' | '_self';
+  // download config
+  downloadId?: string;
+  filename?: string;
 
   // updateOn?: 'change' | 'blur' | 'submit'; // nincs implementálva
 
@@ -105,6 +108,8 @@ export interface BackendResponse {
   setQueryParams: { [id: string]: string; };
   setBottomButtons: AdminoButton[];
   setFocus: any;
+
+  downloadFile: { url: string, type: string };
 
   closePopup: boolean | string;
 

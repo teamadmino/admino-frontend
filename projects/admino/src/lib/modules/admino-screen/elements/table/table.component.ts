@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { propExists } from '../../../../utils/propExists';
 
 @Component({
-  selector: 'admino-table',
+  selector: 'admino-screen-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })

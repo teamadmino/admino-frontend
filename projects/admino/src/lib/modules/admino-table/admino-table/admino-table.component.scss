@@ -1,0 +1,118 @@
+// table {
+//   height: 500px;
+//   max-height: 500px;
+//   border: 2px solid red;
+//   width: 100%;
+//   position: relative;
+//   overflow: hidden;
+
+//   tbody {
+//     height: 300px;
+//     border: 2px solid blue;
+//     overflow: hidden;
+//     position: relative;
+
+//     tr {
+//       border: 2px solid green;
+//       height: 50px;
+//     }
+//   }
+
+// }
+.mainwrapper {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  max-height: 500px;
+  position: relative;
+  border: 1px solid red;
+
+  .aheader {
+    height: 51px;
+    min-height: 51px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    .ahcell {
+      display: inline-block;
+      padding-right: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .awrapper {
+    flex: 1;
+    position: relative;
+    height: calc(100% - 51px);
+
+
+
+    .scroller {
+
+      background: green;
+      width: 10px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      z-index: 10;
+      overflow: hidden;
+      overflow-y: auto;
+
+    }
+
+    .atable {
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      // overflow: hidden;
+      overflow-x: auto;
+      overflow-y: auto;
+      box-sizing: content-box;
+      // padding-right: 10px;
+      /* So the width will be 100% + 17px */
+
+      // &::-webkit-scrollbar-track {
+      //   background-color: transparent;
+      // }
+
+      // &::-webkit-scrollbar {
+      //   width: 0px;
+      //   height: 0px;
+      //   background-color: transparent;
+      //   z-index: 2;
+      // }
+
+      // &::-webkit-scrollbar-thumb {
+      //   background-color: transparent;
+      // }
+
+      .abody {
+        width: 100%;
+        min-height: 1px;
+        position: relative;
+
+        .arow {
+          display: inline-block;
+          // border: 1px solid grey;
+          box-shadow: inset 0px 0px 1px 1px green;
+          position: absolute;
+          // left: 0;
+          min-width: 100%;
+
+          .acell {
+            display: inline-block;
+            padding-right: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+      }
+
+    }
+  }
+}

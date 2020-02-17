@@ -15,6 +15,7 @@ import { isObject } from '../utils/isobject';
 import { propExists } from '../utils/propExists';
 import { deepMerge } from '../utils/deepmerge';
 import { AdminoThemeService } from './theme.service';
+import { HttpResponse, HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class AdminoActionService {
 
 
   constructor(private router: Router, private route: ActivatedRoute,
-    private user: AdminoUserService, private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService) { }
+    private user: AdminoUserService, private http: HttpClient,
+    private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService) { }
 
   init() {
     this.backendRequest(this.cs.config.loginScreen).subscribe();
@@ -119,6 +121,13 @@ export class AdminoActionService {
         if (response.setFocus) {
           this.setFocus.next(response.setFocus);
           // this.user.sid = response.setSid;
+        }
+        if (response.downloadFile) {
+          this.api.downloadFile(response.downloadFile.url).subscribe((data) => {
+            const blob = new Blob([data], { type: response.downloadFile.type });
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+          });
         }
       }));
   }

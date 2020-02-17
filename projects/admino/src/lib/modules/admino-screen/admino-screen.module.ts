@@ -1,3 +1,4 @@
+import { AdminoTableModule } from './../admino-table/admino-table.module';
 import { AdminoModalModule } from './../admino-modal/admino-modal.module';
 import { AdminoDragModule } from './../../directives/admino-drag/admino-drag.module';
 import { AdminoGridModule } from './../admino-grid/admino-grid.module';
@@ -22,6 +23,8 @@ import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.compone
 import { ChartComponent } from './elements/chart/chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { MapComponent } from './elements/map/map.component';
+import { NewTableComponent } from './elements/new-table/new-table.component';
+import { TextareaComponent } from './elements/textarea/textarea.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -35,7 +38,9 @@ import { MapComponent } from './elements/map/map.component';
     CheckboxComponent,
     RadiobuttonComponent,
     ChartComponent,
-    MapComponent
+    MapComponent,
+    NewTableComponent,
+    TextareaComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +53,7 @@ import { MapComponent } from './elements/map/map.component';
     AdminoGridModule,
     AdminoDragModule,
     AdminoModalModule,
+    AdminoTableModule,
     ChartsModule
 
   ],
@@ -64,7 +70,10 @@ import { MapComponent } from './elements/map/map.component';
     CheckboxComponent,
     RadiobuttonComponent,
     ChartComponent,
-    MapComponent
+    MapComponent,
+    NewTableComponent,
+    TextareaComponent
+
 
   ]
 })

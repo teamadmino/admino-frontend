@@ -1,0 +1,69 @@
+<!-- <table>
+    <tbody>
+        <tr *ngFor="let vrow of vrows">
+            <td>{{vrow}}</td>
+            <td>asd</td>
+            <td>asd</td>
+            <td>asd</td>
+        </tr>
+    </tbody>
+</table> -->
+<div class="mainwrapper">
+    <div class="aheader">
+        <div class="ahcell" *ngFor="let column of dataSource.columns, let i=index"
+            [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px','text-align': column.align?column.align:'left'}">
+            <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
+                (click)="column.sortable?sortClicked(column, sorter):null;" #sorter>
+                {{column.label}}
+            </admino-admino-table-sorter>
+
+        </div>
+
+    </div>
+
+    <div class="awrapper">
+        <div class="scroller " (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
+            <div class="scrollercontent" #scrollerContentRef></div>
+        </div>
+        <div class="atable" (scroll)="scrollEvent()" #tableRef>
+            <div class="abody" #bodyRef>
+                <div class="fakecontent" #fakeContentRef></div>
+                <div class="arow" [ngStyle]="{height: roundedRowHeight+'px', top:vrow.pos+'px'}"
+                    *ngFor="let vrow of vrows">
+                    <!-- <div class="acell">{{vrow.virtualId}}</div> -->
+                    <!-- <div class="acell">{{vrow.absoluteId|number}}
+                    {{vrow.data && vrow.data && vrow.data.bufferindex}}
+                    {{vrow.data && vrow.data.data && vrow.data.data.city}}
+                </div>
+            [adminoTooltip]="vrow.data && vrow.data.data && vrow.data.data[column.id]"
+            -->
+                    <div class="acell" *ngFor="let column of dataSource.displayedColumns; let i=index"
+                        [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px','text-align': column.align?column.align:'left'}"
+                        [innerHtml]="format(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format)">
+                    </div>
+
+                    <!-- <div class="acell">{{vrow.pos+'px'}}</div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--
+<p>{{this.rowStart}} - {{this.rowEnd}}</p>
+<p>rowCount:{{this.rowCount}}</p>
+<p>spage:{{this.spage}}</p>
+<p> scrollPosCoeff:{{this.scrollPosCoeff}}</p>
+<p> scrollPosCoeffNormal:{{this.scrollPosCoeffNormal}}</p>
+<p>scrollTop:{{this.scrollPos }}</p>
+<p>maxScrollPos:{{this.maxScrollPos | number}}</p>
+<p>lpage:{{this.lpage | number}}</p>
+<p>lpageSize:{{this.lpageSize | number}}</p>
+<p>lastPage:{{this.lastPage | number}}</p>
+<p>totalsize:{{this.totalsize | number}}</p>
+<p>adjustedTotalsize:{{this.adjustedTotalsize | number}}</p>
+<p>rowCountOnLastPage:{{this.rowCountOnLastPage | number}}</p>
+<p>rowheight:{{this.rowHeight | number}}</p>
+<p>rounded:{{this.roundedRowHeight | number}}</p>
+<p>count:{{this.viewportSize/this.roundedRowHeight | number}}</p>
+<p>viewportheight:{{this.viewportSize | number}}</p> -->

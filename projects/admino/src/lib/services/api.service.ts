@@ -54,7 +54,10 @@ export class AdminoApiService {
       return menu;
     }
   }
-
+  downloadFile(url: string): Observable<any> {
+    return this.http.get(url,
+      { responseType: 'blob' });
+  }
 
   list(view: string, keys: any, cursorpos: number, shift: number, count: number, index: number, before: number = 0, after: number = 0) {
     const dummySubject = new Subject();
