@@ -97,7 +97,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         }
         // Value change
         const control = this.parentGroup.get(this.element.id);
-        if (this.element.value && !isEqual(control.value, this.activeElementConfig.value)) {
+        if (this.element.value !== undefined && !isEqual(this.element.value, this.activeElementConfig.value)) {
           if (control) {
             control.setValue(this.element.value, { emitEvent: false });
           }

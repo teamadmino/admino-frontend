@@ -13,5 +13,11 @@ export class TextareaComponent extends AdminoScreenElement implements OnInit {
 
   ngOnInit() {
   }
-
+  onChange(changes: any) {
+    // FIX, because textarea didnt update automatically;
+    // if (changes.value) {
+    //   this.directive.control.setValue(changes.value.new);
+    // }
+    this.directive.cd.detectChanges();
+  }
 }

@@ -75,8 +75,26 @@ export class AdminoActionService {
 
     } else if (actionEvent.action.type === 'url') {
       this.handleUrlAction(actionEvent.action);
+    } else if (actionEvent.action.type === 'download') {
+      this.api.downloadFile(actionEvent.action.downloadId).subscribe((data) => {
+        this.saveFile(data, actionEvent.action.fileName);
+        // const blob = new Blob([data], { type: actionEvent.action.fileType });
+        // const url = window.URL.createObjectURL(blob);
+        // window.open(url);
+      });
     }
     return wrapIntoObservable(null);
+  }
+  saveFile(data, fileName, fileType = '') {
+    const a: any = document.createElement('a');
+    document.body.appendChild(a);
+    a.style = 'display: none';
+    const blob = new Blob([data], { type: 'octet/stream' });
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
   backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null) {
 

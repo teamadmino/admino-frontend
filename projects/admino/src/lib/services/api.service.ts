@@ -20,6 +20,7 @@ export class AdminoApiService {
   BASE_URL = 'http://localhost:4080';
   LOGIN = '/login';
   BROWSE = '/browse';
+  DOWNLOAD = '/download';
   BROWSER_INFO = '/browserinfo';
   REQUEST = '/request';
 
@@ -54,9 +55,9 @@ export class AdminoApiService {
       return menu;
     }
   }
-  downloadFile(url: string): Observable<any> {
-    return this.http.get(url,
-      { responseType: 'blob' });
+  downloadFile(downloadid: string): Observable<any> {
+    return this.http.post(this.BASE_URL + this.DOWNLOAD,
+      { downloadid }, { responseType: 'blob' });
   }
 
   list(view: string, keys: any, cursorpos: number, shift: number, count: number, index: number, before: number = 0, after: number = 0) {

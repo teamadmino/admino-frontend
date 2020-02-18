@@ -66,7 +66,9 @@ export interface AdminoAction {
   target?: '_blank' | '_self';
   // download config
   downloadId?: string;
-  filename?: string;
+  fileName?: string;
+  fileType?: string;
+  fileAction?: string; // open or download
 
   // updateOn?: 'change' | 'blur' | 'submit'; // nincs implementálva
 
