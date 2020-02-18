@@ -81,7 +81,6 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     if (changes.refreshFrequency) {
 
     }
-
     if (changes._forceRefresh) {
       this.table.dataSource.loadData();
     }

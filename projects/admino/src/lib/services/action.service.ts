@@ -77,7 +77,11 @@ export class AdminoActionService {
       this.handleUrlAction(actionEvent.action);
     } else if (actionEvent.action.type === 'download') {
       this.api.downloadFile(actionEvent.action.downloadId).subscribe((data) => {
-        this.saveFile(data, actionEvent.action.fileName);
+        if (actionEvent.action.fileAction === 'open') {
+          this.openFile(data, actionEvent.action.fileName, actionEvent.action.fileType);
+        } else {
+          this.saveFile(data, actionEvent.action.fileName, actionEvent.action.fileType);
+        }
         // const blob = new Blob([data], { type: actionEvent.action.fileType });
         // const url = window.URL.createObjectURL(blob);
         // window.open(url);
@@ -85,11 +89,16 @@ export class AdminoActionService {
     }
     return wrapIntoObservable(null);
   }
+  openFile(data, fileName, fileType = '') {
+    const file = new Blob([data], { type: fileType });
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
+  }
   saveFile(data, fileName, fileType = '') {
     const a: any = document.createElement('a');
     document.body.appendChild(a);
     a.style = 'display: none';
-    const blob = new Blob([data], { type: 'octet/stream' });
+    const blob = new Blob([data], { type: fileType });
     const url = window.URL.createObjectURL(blob);
     a.href = url;
     a.download = fileName;

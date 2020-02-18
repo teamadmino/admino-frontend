@@ -49,13 +49,14 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
 
     }
     // this.table.updateSize();
-    this.table.dataSource.loadData();
     // .then((params) => {
     //   this.table.updateSize();
     //   this.table.updateRows();
     // });
     // this.table.updateDataSource();
-
+    // this.table.dataSource.loadData().then((params) => {
+    //   this.table.scrollEvent();
+    // });
     if (changes._forceRefresh) {
       this.table.dataSource.loadData().then((params) => {
         this.table.updateSize();
