@@ -5,21 +5,29 @@
   width: 100%;
   height: 100%;
 
-  .scanner {
-    border-radius: 20px;
+  .admino-scanner {
+    border-radius: 5px;
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 100%;
     height: 300px;
     width: 400px;
-    border: 1px solid red;
+    border: 2px solid red;
 
     zxing-scanner {
       z-index: 10;
     }
 
     .preloader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    admino-success-animation {
+      z-index: 15;
       position: absolute;
       left: 50%;
       top: 50%;

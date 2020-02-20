@@ -1,9 +1,9 @@
 <div class="wrapper">
-
-    <div class="scanner">
+    <div class="admino-scanner">
         <div class="preloader">
             <mat-spinner *ngIf="showPreloader" [diameter]="30"></mat-spinner>
         </div>
+        <admino-success-animation *ngIf="successfullScan"></admino-success-animation>
         <zxing-scanner [formats]="allowedFormats" (camerasFound)="camerasFoundHandler($event)"
             (camerasNotFound)="camerasNotFoundHandler($event)" (scanSuccess)="scanSuccessHandler($event)"
             (scanError)="scanErrorHandler($event)" (scanFailure)="scanFailureHandler($event)"
@@ -14,11 +14,10 @@
         <!-- <h3 mat-subheader>Scanned Codes</h3> -->
         <mat-list-item *ngFor="let code of this.control.value">
             <!-- <mat-icon mat-list-icon>folder</mat-icon> -->
-            <h4 mat-line> {{code}} </h4>
+            <h4 mat-line> {{code.code}} <span class="opacity-30"> - {{code.date | date:'shortTime'}} </span></h4>
             <button mat-icon-button (click)="removeCode(code)">
                 <mat-icon>delete</mat-icon>
             </button>
-            <!-- <p mat-line> {{folder.updated | date}} </p> -->
             <mat-divider></mat-divider>
         </mat-list-item>
     </mat-list>

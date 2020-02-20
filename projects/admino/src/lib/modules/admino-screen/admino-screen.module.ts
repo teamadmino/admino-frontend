@@ -28,6 +28,7 @@ import { TextareaComponent } from './elements/textarea/textarea.component';
 import { DateComponent } from './elements/date/date.component';
 import { ScannerComponent } from './elements/scanner/scanner.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { SuccessAnimationComponent } from './elements/scanner/success-animation/success-animation.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -45,7 +46,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     NewTableComponent,
     TextareaComponent,
     DateComponent,
-    ScannerComponent
+    ScannerComponent,
+    SuccessAnimationComponent
   ],
   imports: [
     CommonModule,

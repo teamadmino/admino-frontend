@@ -60,7 +60,8 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
         this.mapElements[mapEl.id] = {
           element: imageLayer, type: mapEl.type
         };
-        this.map.addLayer(this.mapElements[mapEl.id].element);
+        // this.map.addLayer(this.mapElements[mapEl.id].element);
+        this.mapElements[mapEl.id].element.addTo(this.map).bringToBack();
         // imageLayer.addTo(this.map);
 
       }

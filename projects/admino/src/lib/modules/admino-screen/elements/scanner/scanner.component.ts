@@ -12,6 +12,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   @ViewChild('scanner', { static: false }) scanner: ZXingScannerComponent;
 
   showPreloader = true;
+  successfullScan = false;
   allowedFormats = [
     // BarcodeFormat.CODABAR,
     // BarcodeFormat.ITF,
@@ -19,14 +20,15 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     // BarcodeFormat.EAN_8,
     // BarcodeFormat.CODE_39,
     // BarcodeFormat.CODE_93,
-    BarcodeFormat.CODE_128,
-    // BarcodeFormat.UPC_A,
-    // BarcodeFormat.UPC_E,
-    // BarcodeFormat.UPC_EAN_EXTENSION,
+    // BarcodeFormat.CODE_128,
+    BarcodeFormat.UPC_A,
+    BarcodeFormat.UPC_E,
+    BarcodeFormat.UPC_EAN_EXTENSION,
   ];
-
+  timeoutHelper;
   ngOnInit() {
     // this.scanner.
+
   }
   camerasFoundHandler(e) {
     this.showPreloader = false;
@@ -40,11 +42,24 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     if (!val) {
       val = [];
     }
-    if (val.indexOf(e) < 0) {
-      console.log(val);
-      val.push(e);
+
+    const found = val.find((code) => {
+      return code.code === e;
+    })
+
+    if (!found) {
+      val.push({ code: e, date: new Date() });
       this.control.setValue(val);
+      this.successfullScan = false;
       this.directive.cd.detectChanges();
+      this.successfullScan = true;
+      this.directive.cd.detectChanges();
+      if (this.timeoutHelper) {
+        clearTimeout(this.timeoutHelper);
+      }
+      this.timeoutHelper = setTimeout((params) => {
+        this.successfullScan = false;
+      }, 2000);
     }
     // console.log(e);
   }
@@ -63,8 +78,18 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     if (!val) {
       val = [];
     }
-    val.splice(val.indexOf(code), 1);
-    this.control.setValue(val);
+    const found = val.find((c) => {
+      return c.code === code.code;
+    })
+    if (found) {
+      val.splice(val.indexOf(found), 1);
+      this.control.setValue(val);
+    }
     this.directive.cd.detectChanges();
+  }
+  onDestroy() {
+    if (this.timeoutHelper) {
+      clearTimeout(this.timeoutHelper);
+    }
   }
 }
