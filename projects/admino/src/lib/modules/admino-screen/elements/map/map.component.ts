@@ -19,34 +19,55 @@ declare var THREE: any;
 export class MapComponent extends AdminoScreenElement implements OnInit {
   @ViewChild('mapRef', { static: true, read: ElementRef }) mapRef: ElementRef;
   map;
-  mapElements: { [id: string]: { mesh: any, type: string }; } = {};
+  mapElements: { [id: string]: { element: any, type: string }; } = {};
   threeLayer;
   onChange(changes: { [id: string]: ScreenElementChange; }) {
-    console.log(changes);
     if (changes.mapElements) {
       this.drawElements(changes.mapElements.new);
     }
     this.threeLayer.renderScene();
-
   }
+
   drawElements(mapElements) {
     for (const mapEl of mapElements) {
       if (mapEl.type === 'polygon') {
         if (this.mapElements[mapEl.id]) {
-          this.threeLayer.removeMesh(this.mapElements[mapEl.id].mesh);
+          this.threeLayer.removeMesh(this.mapElements[mapEl.id].element);
         }
         this.mapElements[mapEl.id] = {
-          mesh: this.drawPolygon(mapEl.points,
+          element: this.drawPolygon(mapEl.points,
             this.directive.ts.getColor(mapEl.color),
-            mapEl.height, mapEl.altitude), type: mapEl.type
+            mapEl.height, mapEl.altitude, mapEl.opacity), type: mapEl.type
         };
-        this.threeLayer.addMesh(this.mapElements[mapEl.id].mesh);
+        this.threeLayer.addMesh(this.mapElements[mapEl.id].element);
+      } else if (mapEl.type === 'imageLayer') {
+        if (this.mapElements[mapEl.id]) {
+          this.map.removeLayer(this.mapElements[mapEl.id].element);
+          // this.threeLayer.removeMesh(this.mapElements[mapEl.id].mesh);
+        }
+        const posX = 0;
+        const posY = 0;
+        const imgW = 1;
+        const imgH = 1;
+        const imageLayer = new maptalks.ImageLayer('images',
+          [
+            {
+              url: mapEl.url,
+              extent: mapEl.extent,
+              opacity: mapEl.opacity !== undefined ? mapEl.opacity : 1
+            },
+          ]);
+        this.mapElements[mapEl.id] = {
+          element: imageLayer, type: mapEl.type
+        };
+        this.map.addLayer(this.mapElements[mapEl.id].element);
+        // imageLayer.addTo(this.map);
+
       }
     }
   }
 
-  drawPolygon(points, color, height, altitude) {
-
+  drawPolygon(points, color, height, altitude, opacity = 0.9) {
     const rectangle = new maptalks.Polygon([
       points
     ], {
@@ -60,12 +81,10 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
         altitude: height
       }
     });
-
-
     const material = new THREE.MeshPhongMaterial({
       color, transparent: true,
       //  blending: THREE.AdditiveBlending,
-      opacity: 0.9
+      opacity
     });
     // scene.add(bar);
     const mesh = this.threeLayer.toExtrudePolygon(rectangle, {
@@ -216,18 +235,7 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
   }
 
   map2() {
-    const posX = 0;
-    const posY = 0;
-    const imgW = 1;
-    const imgH = 1;
-    var imageLayer = new maptalks.ImageLayer('images',
-      [
-        {
-          url: './assets/map2.png',
-          extent: [posX, posY, 1, 1],
-          opacity: 1
-        },
-      ]);
+
     this.map = new maptalks.Map(this.mapRef.nativeElement, {
       center: [0.5, 0.5],
       zoom: 10,
@@ -242,9 +250,8 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
       zoomControl: true, // add zoom control
       scaleControl: true, // add scale control
       // overviewControl: true, // add overview control
-      baseLayer: imageLayer,
+      // baseLayer: imageLayer,
     });
-
   }
 
   unicodeToChar(text) {

@@ -26,6 +26,8 @@ import { MapComponent } from './elements/map/map.component';
 import { NewTableComponent } from './elements/new-table/new-table.component';
 import { TextareaComponent } from './elements/textarea/textarea.component';
 import { DateComponent } from './elements/date/date.component';
+import { ScannerComponent } from './elements/scanner/scanner.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -42,7 +44,8 @@ import { DateComponent } from './elements/date/date.component';
     MapComponent,
     NewTableComponent,
     TextareaComponent,
-    DateComponent
+    DateComponent,
+    ScannerComponent
   ],
   imports: [
     CommonModule,
@@ -56,8 +59,8 @@ import { DateComponent } from './elements/date/date.component';
     AdminoDragModule,
     AdminoModalModule,
     AdminoTableModule,
-    ChartsModule
-
+    ChartsModule,
+    ZXingScannerModule
   ],
   exports: [
     AdminoScreenComponent
@@ -75,7 +78,8 @@ import { DateComponent } from './elements/date/date.component';
     MapComponent,
     NewTableComponent,
     TextareaComponent,
-    DateComponent
+    DateComponent,
+    ScannerComponent
 
 
 

@@ -305,12 +305,15 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollerRef.nativeElement.style.width = this.scrollBarWidth + 'px';
     this.calculateWidths();
   }
+
+
   updateRows() {
     this.scrollPosCoeff = Math.floor(this.scrollPos / this.roundedRowHeight);
     // this.scrollPosCoeff = this.scrollPosCoeff >= this.adjustedTotalsize - this.lpage * this.lpageSize ? this.adjustedTotalsize - this.lpage * this.lpageSize - 1 : this.scrollPosCoeff;
     this.spage = Math.floor(this.scrollPosCoeff / (this.rowCount));
     this.scrollPosCoeffNormal = this.scrollPosCoeff - this.spage * (this.rowCount);
 
+    // console.log("debug", this.scrollPosCoeff, this.lpage);
     this.rowStart = this.scrollPosCoeff + this.lpage * this.lpageSize - this.lpageCoeff;
     this.rowEnd = this.rowStart + this.rowCount - 1;
     for (const vrow of this.vrows) {

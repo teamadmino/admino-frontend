@@ -30,6 +30,7 @@
     "@angular/pwa": "^0.803.14",
     "@angular/router": "^8.2.12",
     "@angular/service-worker": "^8.2.12",
+    "@zxing/ngx-scanner": "^3.0.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",

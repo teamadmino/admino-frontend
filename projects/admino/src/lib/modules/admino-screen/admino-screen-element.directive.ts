@@ -1,3 +1,4 @@
+import { ScannerComponent } from './elements/scanner/scanner.component';
 import { DateComponent } from './elements/date/date.component';
 import { TextareaComponent } from './elements/textarea/textarea.component';
 import { NewTableComponent } from './elements/new-table/new-table.component';
@@ -45,6 +46,7 @@ const componentMapper = {
   map: MapComponent,
   newtable: NewTableComponent,
   date: DateComponent,
+  scanner: ScannerComponent,
 };
 
 @Directive({
