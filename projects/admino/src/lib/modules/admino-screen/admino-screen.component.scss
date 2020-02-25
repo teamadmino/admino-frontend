@@ -13,6 +13,40 @@
     top: 0;
     width: 100%;
     height: 100%;
+    display: flex;
+    // align-items: center;
+    // align-content: center;
+    // justify-content: center;
+
+    .admino-screen-modal-content {
+      max-width: 100%;
+
+      &.vertical-top {
+        margin-bottom: auto;
+      }
+
+      &.vertical-center {
+        margin-bottom: auto;
+        margin-top: auto;
+      }
+
+      &.vertical-bottom {
+        margin-top: auto;
+      }
+
+      &.horizontal-left {
+        margin-right: auto;
+      }
+
+      &.horizontal-center {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      &.horizontal-right {
+        margin-left: auto;
+      }
+    }
 
     &::before {
       opacity: 0.5;

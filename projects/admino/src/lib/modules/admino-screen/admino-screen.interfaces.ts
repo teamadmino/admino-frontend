@@ -18,7 +18,8 @@ export interface ScreenPopup {
 
 export interface ScreenElement {
     type?: 'input' | 'checkbox' | 'radiobutton' | 'select' | 'multi'
-    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'image' | 'text' | 'group' | 'table' | 'timer' | 'chart' | 'map' | 'dashboard';
+    | 'date' | 'button' | 'divider' | 'textarea' | 'tableselect' | 'image' | 'text' | 'group' | 'table' | 'timer' | 'chart' | 'map' | 'dashboard'
+    | 'chartjs';
     id?: string;
 
     // updateOn?: 'change' | 'blur' | 'submit';
@@ -55,6 +56,7 @@ export interface ScreenElement {
 
     width?: string;
     height?: string;
+    colorPaths?: string[];
 }
 
 export interface ScreenElementScreen extends ScreenElement {
@@ -67,14 +69,14 @@ export interface ScreenElementScreen extends ScreenElement {
     editMode?: boolean;
 
     isFluidContainer?: boolean;
-
     colNum?: number;
 
     // popup settings
-    is_popup?: boolean;
+    isPopup?: boolean;
     verticalPosition?: string;
     horizontalPosition?: string;
     nopadding?: boolean;
+    allowClose?: boolean;
 }
 
 export interface ScreenElementTimer extends ScreenElement {

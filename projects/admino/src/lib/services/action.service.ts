@@ -62,6 +62,8 @@ export class AdminoActionService {
         }
       }
       // screenValue = this.removeNull(screenValue);
+      console.log(screenValue)
+
       screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
       let schema = null;
       if (actionEvent.action.includeSchema) {

@@ -23,6 +23,7 @@ export class AdminoApiService {
   DOWNLOAD = '/download';
   BROWSER_INFO = '/browserinfo';
   REQUEST = '/request';
+  PING = '/ping';
 
   constructor(private http: HttpClient, private nav: AdminoNavService, private user: AdminoUserService, private site: AdminoSiteService) {
   }

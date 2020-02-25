@@ -96,7 +96,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatBadgeModule,
     MatTreeModule,
     MatButtonToggleModule,
-    MatChipsModule,
 
 
     MatMomentDateModule,
@@ -130,7 +129,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatTabsModule,
     MatExpansionModule,
     MatButtonToggleModule,
-    MatChipsModule,
     MatIconModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,

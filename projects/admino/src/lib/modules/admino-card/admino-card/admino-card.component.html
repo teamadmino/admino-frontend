@@ -1,6 +1,6 @@
 <mat-card
-    [ngClass]="{'hide-bg': !showBorder, opaque:opaque,'d-flex flex-column': fillHeight,'nopadding': nopadding && !showBorder}"
-    class="admino-card  " [ngStyle]="{'height': fillHeight?'100%':''}">
+    [ngClass]="{'hide-bg': !showBorder, opaque:opaque,'d-flex flex-column': height==='100%','nopadding': nopadding && !showBorder}"
+    class="admino-card  " [ngStyle]="{'height': height}">
     <!-- <div class="print-div d-flex flex-column h-100"
         [ngStyle]="{'flex': fillHeight?1:null, 'height': fillHeight?'100%':''}" #printRef> -->
 
@@ -9,7 +9,7 @@
     </mat-card-title> -->
     <!-- <mat-card-subtitle *ngIf="subtitle">{{subtitle}}</mat-card-subtitle> -->
 
-    <mat-card-content class='mb-0' [ngClass]="{'nopadding': nopadding}" [ngStyle]="{'height': fillHeight?'100%':''}">
+    <mat-card-content class='mb-0' [ngClass]="{'nopadding': nopadding}" [ngStyle]="{'height': height}">
         <ng-content #content></ng-content>
     </mat-card-content>
 

@@ -17,7 +17,6 @@ import { TableComponent } from './elements/table/table.component';
 import { GroupComponent } from './elements/group/group.component';
 import { TimerComponent } from './elements/timer/timer.component';
 import { TextComponent } from './elements/text/text.component';
-import { PopupComponent } from './elements/popup/popup.component';
 import { CheckboxComponent } from './elements/checkbox/checkbox.component';
 import { RadiobuttonComponent } from './elements/radiobutton/radiobutton.component';
 import { ChartComponent } from './elements/chart/chart.component';
@@ -29,6 +28,9 @@ import { DateComponent } from './elements/date/date.component';
 import { ScannerComponent } from './elements/scanner/scanner.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { SuccessAnimationComponent } from './elements/scanner/success-animation/success-animation.component';
+import { ChartjsComponent } from './elements/chartjs/chartjs.component';
+import { ColorpickerComponent } from './elements/colorpicker/colorpicker.component';
+import { TabsComponent } from './elements/tabs/tabs.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -38,7 +40,6 @@ import { SuccessAnimationComponent } from './elements/scanner/success-animation/
     GroupComponent,
     TimerComponent,
     TextComponent,
-    PopupComponent,
     CheckboxComponent,
     RadiobuttonComponent,
     ChartComponent,
@@ -47,7 +48,10 @@ import { SuccessAnimationComponent } from './elements/scanner/success-animation/
     TextareaComponent,
     DateComponent,
     ScannerComponent,
-    SuccessAnimationComponent
+    SuccessAnimationComponent,
+    ChartjsComponent,
+    ColorpickerComponent,
+    TabsComponent
   ],
   imports: [
     CommonModule,
@@ -81,7 +85,10 @@ import { SuccessAnimationComponent } from './elements/scanner/success-animation/
     NewTableComponent,
     TextareaComponent,
     DateComponent,
-    ScannerComponent
+    ScannerComponent,
+    ChartjsComponent,
+    ColorpickerComponent,
+    TabsComponent
 
 
 

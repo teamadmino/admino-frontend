@@ -97,10 +97,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     return this.screenElement.elements.filter((el: any) => {
 
       if (type === 'main') {
-        return !el.is_popup && el.type !== 'timer';
-
+        return !el.isPopup && el.type !== 'timer';
       } else if (type === 'popup') {
-        return el.type === 'group' && el.is_popup;
+        return el.type === 'group' && el.isPopup;
       } else if (type === 'timer') {
         return el.type === 'timer';
       }
@@ -124,7 +123,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
         } else if (Array.isArray(source[key])) {
           if (key.split('__')[1] === 'replace') {
             target[key.split('__')[0]] = source[key];
-          } else if (source[key][0] && source[key][0].id !== undefined) {
+          } else if ((source[key][0] && source[key][0].id !== undefined) || key === 'elements') {
             target[key] = this.mergeArrays(target[key], source[key]);
           } else {
             target[key] = source[key];
@@ -165,8 +164,22 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     return target;
   }
 
-
-
+  getPopupClasses(el) {
+    const arr = [];
+    if (el.verticalPosition) {
+      arr.push('vertical-' + el.verticalPosition);
+    }
+    if (el.horizontalPosition) {
+      arr.push('horizontal-' + el.horizontalPosition);
+    }
+    return arr;
+  }
+  closePopup(e: ScreenElementScreen) {
+    if (e.allowClose) {
+      this.screenElement.elements.splice(this.screenElement.elements.indexOf(e), 1);
+      this.update(this.screenElement);
+    }
+  }
   isFluidContainer() {
     if (this.screenElement.isFluidContainer !== undefined) {
       return this.screenElement.isFluidContainer;

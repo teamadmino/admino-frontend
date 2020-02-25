@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, InjectionToken, Injector, ViewChild, OnDestroy } from '@angular/core';
-import { ComponentPortal, PortalInjector, CdkPortalOutlet } from '@angular/cdk/portal';
-import { Subject, Observable } from 'rxjs';
+import { Component, OnInit, Input, InjectionToken, Injector, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
 export const CONTAINER_DATA = new InjectionToken<{}>('CONTAINER_DATA');
 
 @Component({
@@ -17,7 +16,7 @@ export class AdminoCardComponent implements OnInit, OnDestroy {
   @Input() subtitle = '';
   @Input() showBorder = false;
   @Input() data: any = {};
-  @Input() fillHeight = false;
+  @Input() height = '';
   @Input() printingEnabled = true;
   @Input() opaque = false;
 

@@ -7,6 +7,7 @@ import { ThemeConfig } from '../interfaces';
 import * as pSBC from '../modules/admino-theming/utils/color-manipulator';
 
 import { isArray } from 'lodash';
+import { isObject } from 'util';
 // const pSBC = require('../modules/admino-theming/utils/color-manipulator');
 
 @Injectable({
@@ -124,7 +125,9 @@ export class AdminoThemeService {
 
   }
   getColorFromList(id: string) {
-
+    if (id.startsWith('rgb') || id.startsWith('#')) {
+      return id;
+    }
     const split = id.split(':');
     // let color: string = this.colorList[split[0] !== undefined ? split[0] : 'red'];
     let color: string = split[0];
@@ -151,9 +154,48 @@ export class AdminoThemeService {
     if (opacity !== 1) {
       col = this.rgba(col, opacity);
     }
-
-
     return col;
   }
+
+
+
+
+
+
+  processColorPaths(element, paths) {
+    for (const path of paths) {
+      this.traverseByPaths(element, path.split('.'));
+    }
+  }
+
+  traverseByPaths(obj, paths) {
+    paths = paths.slice(0);
+    const currentPath = paths.shift();
+    const p = obj[currentPath];
+    const lastPath = paths.length === 0;
+    if (p === undefined) {
+      return;
+    }
+    if (isArray(p)) {
+      for (let i = 0; i < p.length; i++) {
+        const e = p[i];
+        if (lastPath) {
+          p[i] = this.getColor(p);
+        } else {
+          this.traverseByPaths(e, paths);
+        }
+      }
+    } else if (isObject(p)) {
+      if (lastPath) {
+        obj[currentPath] = this.getColor(p);
+      } else {
+        this.traverseByPaths(p, paths);
+      }
+    } else {
+      obj[currentPath] = this.getColor(p);
+    }
+
+  }
+
 
 }

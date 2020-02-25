@@ -1,0 +1,26 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Color picker
+
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+                Type your name and age
+            </mat-panel-description> -->
+        </mat-expansion-panel-header>
+
+        <div class="cp">
+            <div class="colors">
+                <div class="color" *ngFor="let color of colors">
+                    <div class="circle" [ngStyle]="{backgroundColor: color.color}">
+
+                    </div>
+                    <!-- {{color.id}} -->
+                </div>
+            </div>
+        </div>
+
+    </mat-expansion-panel>
+
+</mat-accordion>

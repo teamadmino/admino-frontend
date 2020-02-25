@@ -1,3 +1,5 @@
+import { ColorpickerComponent } from './elements/colorpicker/colorpicker.component';
+import { ChartjsComponent } from './elements/chartjs/chartjs.component';
 import { ScannerComponent } from './elements/scanner/scanner.component';
 import { DateComponent } from './elements/date/date.component';
 import { TextareaComponent } from './elements/textarea/textarea.component';
@@ -13,7 +15,7 @@ import { AdminoScreenElement } from './elements/admino-screen-element';
 import { AdminoScreenComponent } from './admino-screen.component';
 import {
   Directive, Input, ComponentFactoryResolver, ViewContainerRef,
-  OnInit, OnDestroy, ComponentRef, DoCheck, ChangeDetectorRef
+  OnInit, OnDestroy, ComponentRef, DoCheck, ChangeDetectorRef, HostBinding
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -27,8 +29,8 @@ import { TableComponent } from './elements/table/table.component';
 import { TimerComponent } from './elements/timer/timer.component';
 import { takeUntil, filter } from 'rxjs/operators';
 import { deepCompare } from '../../utils/deepcompare';
-import { PopupComponent } from './elements/popup/popup.component';
 import { ThemeService } from 'ng2-charts';
+import { TabsComponent } from './elements/tabs/tabs.component';
 
 
 const componentMapper = {
@@ -39,7 +41,6 @@ const componentMapper = {
   group: GroupComponent,
   timer: TimerComponent,
   text: TextComponent,
-  popup: PopupComponent,
   checkbox: CheckboxComponent,
   radiobutton: RadiobuttonComponent,
   chart: ChartComponent,
@@ -47,6 +48,9 @@ const componentMapper = {
   newtable: NewTableComponent,
   date: DateComponent,
   scanner: ScannerComponent,
+  chartjs: ChartjsComponent,
+  colorpicker: ColorpickerComponent,
+  tabs: TabsComponent,
 };
 
 @Directive({
@@ -92,6 +96,10 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
       if (this.componentRef && this.element) {
 
+        if (this.element.colorPaths) {
+          this.ts.processColorPaths(this.element, this.element.colorPaths);
+        }
+
         // Type change
         if (this.element.type !== undefined && this.element.type !== this.activeElementConfig.type) {
           this.destroyComponent();
@@ -115,6 +123,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
         if (Object.keys(changes).length > 0) {
           this.elementComponent.onChange(changes);
+          this.elementComponent.change(changes);
         }
 
         // Destroy
@@ -124,6 +133,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
         this.activeElementConfig = cloneDeep(this.element);
         this.removeEventsFromConfig(this.activeElementConfig);
+
       }
     });
     if (!this.element.type) {

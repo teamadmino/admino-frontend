@@ -3,7 +3,7 @@ import { AdminoAction, ActionEvent, ActionSubscription } from './../../../interf
 import { AdminoScreenComponent } from '../admino-screen.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ScreenElement } from '../admino-screen.interfaces';
-import { ViewChild, ElementRef } from '@angular/core';
+import { ViewChild, ElementRef, HostBinding } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoScreenElementDirective } from '../admino-screen-element.directive';
 
@@ -32,6 +32,7 @@ export class AdminoScreenElement {
     boundBlurFunction;
     public ngUnsubscribe: Subject<null> = new Subject();
     public directive: AdminoScreenElementDirective;
+    @HostBinding('style.height') height = '';
 
     init() {
         if (this.focusElRef) {
@@ -42,6 +43,7 @@ export class AdminoScreenElement {
             this.boundBlurFunction = this.blurEvent.bind(this);
             this.focusElRef.nativeElement.addEventListener('blur', this.boundBlurFunction, true);
         }
+        this.change(null);
     }
 
     handleAction(action: AdminoAction) {
@@ -102,6 +104,9 @@ export class AdminoScreenElement {
         this.control.setValue(value);
     }
     onChange(changes: { [id: string]: ScreenElementChange; }) {
+    }
+    change(changes: { [id: string]: ScreenElementChange; }) {
+        this.height = this.element.height;
     }
     onDestroy() {
     }

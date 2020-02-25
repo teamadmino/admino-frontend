@@ -1,0 +1,22 @@
+.cp {
+  height: 300px;
+  overflow: hidden;
+  overflow-y: auto;
+
+
+  .colors {
+
+    padding: 5px;
+
+    .color {
+      display: inline-block;
+      margin: 5px;
+
+      .circle {
+        border-radius: 50%;
+        height: 38px;
+        width: 38px;
+      }
+    }
+  }
+}

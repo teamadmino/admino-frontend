@@ -1,10 +1,11 @@
 <form [formGroup]="group" class="admino-screen " (submit)="onSubmit($event)" *ngIf="screenElement">
 
     <div class="scroll-area">
-        <div [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}">
-            <div class="row">
-                <div class="col pt-3 pb-3 ">
-                    <div class="border-color-accent">
+        <div [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
+            [ngStyle]="{height: screenElement.height}">
+            <div class="row" [ngStyle]="{height: screenElement.height}">
+                <div class="col pt-3 pb-3 " [ngStyle]="{height: screenElement.height}">
+                    <div class="border-color-accent" [ngStyle]="{height: screenElement.height}">
 
                         <!-- <ng-container *ngFor="let element of getElementsOfType('main'); let i=index;"
                             adminoScreenElement [rootScreenComponent]="
@@ -12,12 +13,15 @@
                             [screenComponent]='this' [index]="i">
                         </ng-container> -->
 
-                        <admino-card [nopadding]="true"
-                            [opaque]="screenElement.is_popup || editMode && this !==this.rootScreenComponent"
-                            [showBorder]="_screenElement.showBorder">
+                        <admino-card [nopadding]="screenElement.isPopup?false:true"
+                            [opaque]="screenElement.isPopup || editMode && this !==this.rootScreenComponent"
+                            [showBorder]="_screenElement.showBorder" [height]="screenElement.height"
+                            [ngStyle]="{height: screenElement.height}">
+
                             <admino-grid [allowEdit]="_screenElement.allowEdit" [editMode]="editMode" adminoTrapFocus
                                 [adminoTrapFocus]="this.rootScreenComponent===this"
-                                [colnum]="_screenElement.colNum!==undefined?_screenElement.colNum:12">
+                                [colnum]="_screenElement.colNum!==undefined?_screenElement.colNum:12"
+                                [ngStyle]="{height: screenElement.height}" [height]="screenElement.height">
                                 <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
                                     [col]="element.col!==undefined?element.col:1"
                                     [row]="element.row!==undefined?element.row:i+1"
@@ -29,6 +33,7 @@
                                     </ng-container>
                                 </admino-grid-item>
                             </admino-grid>
+
                         </admino-card>
                     </div>
                 </div>
@@ -38,12 +43,14 @@
 
     <div class="admino-screen-modals" *ngIf="getElementsOfType('popup').length>0">
         <div class="admino-screen-modal" [ngStyle]="{'z-index':i}"
-            *ngFor="let element of getElementsOfType('popup'); let i=index;">
-            <div class="admino-screen-modal-content">
+            *ngFor="let element of getElementsOfType('popup'); let i=index;" (click)="closePopup(element)">
+            <div class="admino-screen-modal-content" [ngClass]="this.getPopupClasses(element)"
+                [ngStyle]="{width: element.width, height:element.height}" (click)="$event.stopPropagation()">
                 <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent" [element]="element"
                     [parentGroup]="group" [screenComponent]='this' [index]="i">
                 </ng-container>
             </div>
+
         </div>
     </div>
     <div class="timers d-none">

@@ -23,11 +23,11 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
   ngOnInit() {
     this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((valChange) => {
 
-      // if (this.currVal !== undefined && !isEqual(this.currVal.keys, valChange.keys)) {
-      if (this.element.keyChangeAction) {
-        this.handleAction(this.element.keyChangeAction);
+      if (this.currVal !== undefined && !isEqual(this.currVal.keys, valChange.keys)) {
+        if (this.element.keyChangeAction) {
+          this.handleAction(this.element.keyChangeAction);
+        }
       }
-      // }
       this.currVal = cloneDeep(valChange);
     });
     const conf = this.element as ScreenElementTable;
