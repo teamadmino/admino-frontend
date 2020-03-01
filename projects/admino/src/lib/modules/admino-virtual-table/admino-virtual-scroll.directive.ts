@@ -32,7 +32,7 @@ export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, D
 
   @Input() itemSize = 0;
   private realScrollSize = 0;
-  private currPage = 0;
+  public currPage = 0;
   private currPageOffset = 0;
   private prevScrollPos = 0;
   private numPages = 0;

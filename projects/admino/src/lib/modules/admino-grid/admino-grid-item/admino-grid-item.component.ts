@@ -25,6 +25,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
 
   @Input() colnum = 12;
   @Input() stretch = true;
+  @HostBinding('class.hidden') @Input() hidden = false;
 
   prevOffsetLeft;
   prevOffsetTop;
@@ -114,6 +115,11 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     }
     if (this.row) {
       s += `grid-row: ${(this.row)} / span ${(this.rowSpan)}; `;
+    }
+    if (this.row === 1 || this.editMode) {
+      s += 'margin-top: 0em;';
+    } else {
+      s += 'margin-top: 1em;';
     }
     // s += `grid-row: span ${(1)};`;
 

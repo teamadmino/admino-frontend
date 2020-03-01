@@ -57,14 +57,16 @@ export class AdminoActionService {
       if (actionEvent.openScreens) {
         for (const scr of actionEvent.openScreens) {
           const id = scr.screenElement.id ? scr.screenElement.id : 'ID_WAS_NOT_PROVIDED_' + a.toString();
-          screenValue[id] = this.addTypesToValueKeys(scr.group.value, scr.screenElement);
+          // console.log(JSON.stringify(scr.group.value))
+          screenValue[id] = JSON.parse(JSON.stringify(this.addTypesToValueKeys(scr.group.value, scr.screenElement)));
           a++;
         }
       }
       // screenValue = this.removeNull(screenValue);
-      console.log(screenValue)
 
-      screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
+      // screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
+      // console.log(screenValue)
+
       let schema = null;
       if (actionEvent.action.includeSchema) {
         schema = actionEvent.screenConfig;
@@ -209,7 +211,7 @@ export class AdminoActionService {
   }
 
   filterScreenValue(filters: any, value: any, filtered = {}) {
-    if (!filters) {
+    if (!filters || Object.keys(filters).length === 0) {
       return value;
     }
     for (const key of Object.keys(filters)) {
@@ -243,6 +245,7 @@ export class AdminoActionService {
         if (found.type === 'group') {
           newScreenVal[key + ':' + found.type] = this.addTypesToValueKeys(value[key], found);
         } else {
+
           newScreenVal[key + ':' + found.type] = value[key];
         }
       } else {

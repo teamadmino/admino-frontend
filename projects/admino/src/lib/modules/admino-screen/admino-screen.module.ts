@@ -89,9 +89,6 @@ import { TabsComponent } from './elements/tabs/tabs.component';
     ChartjsComponent,
     ColorpickerComponent,
     TabsComponent
-
-
-
   ]
 })
 export class AdminoScreenModule { }

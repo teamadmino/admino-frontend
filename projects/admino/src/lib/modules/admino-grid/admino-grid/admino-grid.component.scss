@@ -59,12 +59,13 @@
   position: relative;
   display: inline-grid;
   width: 100%;
-  grid-gap: 1em;
 
   &.edit-mode {
     border: 1px dotted greenyellow;
     border-radius: 2px;
     padding: 5px;
+    grid-gap: 1em;
+
   }
 
   //   grid-column-gap: 1em;

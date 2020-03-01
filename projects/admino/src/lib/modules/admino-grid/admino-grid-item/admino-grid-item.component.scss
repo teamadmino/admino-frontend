@@ -2,6 +2,15 @@
 
 :host {
 
+  &.hidden {
+    display: none;
+    pointer-events: none;
+
+    .edit-mode & {
+      display: block;
+    }
+  }
+
 
   position: relative;
 

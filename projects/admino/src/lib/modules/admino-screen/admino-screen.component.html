@@ -26,7 +26,7 @@
                                     [col]="element.col!==undefined?element.col:1"
                                     [row]="element.row!==undefined?element.row:i+1"
                                     [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1"
-                                    [stretch]="element.stretch"
+                                    [stretch]="element.stretch" [hidden]="this.element.hidden"
                                     *ngFor="let element of getElementsOfType('main'); let i=index;">
                                     <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
                                         [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i">
@@ -43,6 +43,7 @@
 
     <div class="admino-screen-modals" *ngIf="getElementsOfType('popup').length>0">
         <div class="admino-screen-modal" [ngStyle]="{'z-index':i}"
+            [ngClass]="{hidden: element.hidden && !this.editMode}"
             *ngFor="let element of getElementsOfType('popup'); let i=index;" (click)="closePopup(element)">
             <div class="admino-screen-modal-content" [ngClass]="this.getPopupClasses(element)"
                 [ngStyle]="{width: element.width, height:element.height}" (click)="$event.stopPropagation()">

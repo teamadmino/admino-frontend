@@ -39,6 +39,7 @@ const componentMapper = {
   button: ButtonComponent,
   table: TableComponent,
   group: GroupComponent,
+  popup: GroupComponent,
   timer: TimerComponent,
   text: TextComponent,
   checkbox: CheckboxComponent,
@@ -120,7 +121,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         //   console.log("CHANGE")
         // }
         const changes = deepCompare(this.activeElementConfig, this.element, ['value']);
-
+        // console.log(this.element.id, changes)
         if (Object.keys(changes).length > 0) {
           this.elementComponent.onChange(changes);
           this.elementComponent.change(changes);
@@ -132,8 +133,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         }
 
         this.activeElementConfig = cloneDeep(this.element);
+        this.removeEventsFromConfig(this.element);
         this.removeEventsFromConfig(this.activeElementConfig);
-
       }
     });
     if (!this.element.type) {
@@ -212,7 +213,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         if (this.activeElementConfig.changeAction.filterValue === undefined) {
           const action = cloneDeep(this.activeElementConfig.changeAction);
           action.filterValue = { [this.element.id]: true };
-          // console.log(action.filterValue)
           this.elementComponent.handleAction(action);
         } else {
           this.elementComponent.handleAction(this.activeElementConfig.changeAction);
