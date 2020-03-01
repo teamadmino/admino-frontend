@@ -1,5 +1,5 @@
 {
-    "server": "https://192.168.0.105:4080",
+    "server": "http://192.168.0.105:4080",
     "company": "CompanyName",
     "theme": {
         "themeColor": "gold",

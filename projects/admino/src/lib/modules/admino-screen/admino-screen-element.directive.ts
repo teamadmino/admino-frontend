@@ -133,7 +133,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         }
 
         this.activeElementConfig = cloneDeep(this.element);
-        this.removeEventsFromConfig(this.element);
+        // this.removeEventsFromConfig(this.element);
         this.removeEventsFromConfig(this.activeElementConfig);
       }
     });
@@ -208,6 +208,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // console.log(this.activeElementConfig.changeAction)
     // needs to solve group
     this.valueChangeTimeout = setTimeout(() => {
+      this.element.value = value;
+      this.activeElementConfig.value = value;
       this.valueChangeEvent.next(value);
       if (this.activeElementConfig.changeAction) {
         if (this.activeElementConfig.changeAction.filterValue === undefined) {
