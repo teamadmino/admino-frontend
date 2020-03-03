@@ -29,7 +29,7 @@ export class AdminoActionService {
   customVars: any = {};
 
   activeScreenId = '';
-  pingFrequency = new BehaviorSubject(1000);
+  pingFrequency = new BehaviorSubject(0);
 
 
   constructor(private router: Router, private route: ActivatedRoute,
@@ -178,7 +178,7 @@ export class AdminoActionService {
   handleFrontendAction(action: AdminoAction, form = null) {
     if (action.frontendAction === 'logout') {
       this.user.logout();
-      this.redrawScreen.next(null);
+      this.redrawScreen.next({});
       return this.backendRequest(this.cs.config.loginScreen);
     }
   }

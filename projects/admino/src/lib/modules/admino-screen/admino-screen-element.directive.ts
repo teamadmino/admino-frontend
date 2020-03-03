@@ -15,7 +15,7 @@ import { AdminoScreenElement } from './elements/admino-screen-element';
 import { AdminoScreenComponent } from './admino-screen.component';
 import {
   Directive, Input, ComponentFactoryResolver, ViewContainerRef,
-  OnInit, OnDestroy, ComponentRef, DoCheck, ChangeDetectorRef, HostBinding
+  OnInit, OnDestroy, ComponentRef, DoCheck, ChangeDetectorRef, HostBinding, ElementRef
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -31,6 +31,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 import { deepCompare } from '../../utils/deepcompare';
 import { ThemeService } from 'ng2-charts';
 import { TabsComponent } from './elements/tabs/tabs.component';
+import { ImageComponent } from './elements/image/image.component';
 
 
 const componentMapper = {
@@ -52,6 +53,7 @@ const componentMapper = {
   chartjs: ChartjsComponent,
   colorpicker: ColorpickerComponent,
   tabs: TabsComponent,
+  image: ImageComponent,
 };
 
 @Directive({
@@ -86,7 +88,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
     public ts: AdminoThemeService,
-    public chartThemeService: ThemeService) {
+    public chartThemeService: ThemeService, public el: ElementRef) {
   }
 
 

@@ -61,6 +61,7 @@ export interface AdminoAction {
   backendAction?: any;
   // frontend
   frontendAction?: 'logout' | 'print';
+  logoutScreen?: string;
   // url config
   url?: string;
   target?: '_blank' | '_self';

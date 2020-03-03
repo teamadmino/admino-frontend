@@ -259,6 +259,13 @@
   }
 
   @for $i from 1 through length($_colors) {
+
+    *:focus.focusinnerglow-#{nth($_colornames, $i)} {
+      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%), inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
     .heading-#{nth($_colornames, $i)} {
       text-shadow: 0px 0px 10px nth($_colors, $i) !important;
       color: nth($_colors, $i) !important;

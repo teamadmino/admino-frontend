@@ -31,6 +31,7 @@ import { SuccessAnimationComponent } from './elements/scanner/success-animation/
 import { ChartjsComponent } from './elements/chartjs/chartjs.component';
 import { ColorpickerComponent } from './elements/colorpicker/colorpicker.component';
 import { TabsComponent } from './elements/tabs/tabs.component';
+import { ImageComponent } from './elements/image/image.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -51,7 +52,8 @@ import { TabsComponent } from './elements/tabs/tabs.component';
     SuccessAnimationComponent,
     ChartjsComponent,
     ColorpickerComponent,
-    TabsComponent
+    TabsComponent,
+    ImageComponent
   ],
   imports: [
     CommonModule,
@@ -88,7 +90,8 @@ import { TabsComponent } from './elements/tabs/tabs.component';
     ScannerComponent,
     ChartjsComponent,
     ColorpickerComponent,
-    TabsComponent
+    TabsComponent,
+    ImageComponent
   ]
 })
 export class AdminoScreenModule { }
