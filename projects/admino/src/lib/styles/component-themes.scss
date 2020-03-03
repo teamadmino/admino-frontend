@@ -235,8 +235,26 @@
   }
 
   @for $i from 1 through length($_colors) {
+    .cdk-focused.focusborder-#{nth($_colornames, $i)} {
+      border: 1px solid nth($_colors, $i) !important;
+    }
+  }
+
+
+  @for $i from 1 through length($_colors) {
     .cdk-focused.focusglow-#{nth($_colornames, $i)} {
       box-shadow: 0px 0px 10px nth($_colors, $i) !important;
+    }
+  }
+
+  @for $i from 1 through length($_colors) {
+    .cdk-focused.focusinnerglow-#{nth($_colornames, $i)} {
+      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%), inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
+      text-shadow: 0px 0px 5px lighten(nth($_colors, $i), 50%) !important;
+      background-color: lighten(nth($_colors, $i), 20%) !important;
+      // transform: scale(1.05) !important;
+      // transform-origin: 50% 50%;
+      // outline: 1px solid mat-color($foreground, base) !important;
     }
   }
 
@@ -615,6 +633,11 @@
       }
 
       tr {
+
+        &.secondrow {
+          background-color: darken(mat-color($background, background), 1%) !important;
+        }
+
         &.selected {
           // border-left: 15px solid mat-color($accent);
           position: relative;
@@ -628,6 +651,8 @@
 
 
           background-color: lighten(mat-color($background, card), 8%) !important;
+
+
 
           .mat-table-sticky {
             background-color: lighten(mat-color($background, card), 8%) !important;

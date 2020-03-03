@@ -2,7 +2,8 @@
   <button [ngStyle]="{'width': this.element.width!==undefined?this.element.width:'',
 'height': this.element.height!==undefined?this.element.height:''}" [type]="'button'"
     (click)="handleAction(this.element.action)" mat-flat-button #focusRef
-    [color]="element.color?element.color:'primary'" [ngClass]="['focusglow-'+(element.color?element.color:'primary')]">
+    [color]="element.color?element.color:'primary'"
+    [ngClass]="['focusinnerglow-'+(element.color?element.color:'primary')]">
     <mat-icon class="" *ngIf="element.icon"> {{element.icon}}</mat-icon> {{element.label}}
   </button>
 </div>

@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AdminoMenuEvent } from '../../interfaces';
 import { slotTransition } from './main.animation';
 import { AdminoApiService } from '../../services/api.service';
+import { AdminoPingService } from '../../services/ping.service';
 
 @Component({
   selector: 'admino-main',
@@ -45,10 +46,14 @@ export class MainComponent implements OnInit, OnDestroy {
   bottomButtons;
 
 
-  constructor(public ts: AdminoThemeService, public site: AdminoSiteService, public renderer: Renderer2,
+  constructor(public ts: AdminoThemeService,
+    public site: AdminoSiteService,
+    public ping: AdminoPingService,
+    public renderer: Renderer2,
     public user: AdminoUserService,
     public nav: AdminoNavService, private api: AdminoApiService,
-    private media: MediaMatcher, private route: ActivatedRoute, public as: AdminoActionService, public cs: ConfigService, private cd: ChangeDetectorRef, @Inject(DOCUMENT) document
+    private media: MediaMatcher, private route: ActivatedRoute,
+    public as: AdminoActionService, public cs: ConfigService, private cd: ChangeDetectorRef, @Inject(DOCUMENT) document
   ) {
 
   }
@@ -64,6 +69,7 @@ export class MainComponent implements OnInit, OnDestroy {
         this.init();
         this.as.init();
         this.user.init();
+        this.ping.init();
       }
     });
 

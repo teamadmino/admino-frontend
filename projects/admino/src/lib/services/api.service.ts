@@ -112,6 +112,11 @@ export class AdminoApiService {
   }
 
 
+  ping(screenName) {
+    return this.http.post(this.BASE_URL + this.PING, { screenName });
+  }
+
+
   stringifyObject(obj: any) {
     const json = JSON.stringify(obj);
     const withStrings = JSON.parse(json, (key, val) => (

@@ -1,9 +1,7 @@
 import { slotTransition } from './../../main/main.animation';
 import { AdminoActionService } from './../../../services/action.service';
-import { AdminoNavService } from './../../../services/nav.service';
 import { AdminoApiService } from './../../../services/api.service';
 import { ScreenElementScreen, ScreenPopup } from './../../admino-screen/admino-screen.interfaces';
-import { ActionEvent } from './../../../interfaces';
 import { AdminoModalService, AdminoModalRef } from './../../admino-modal/admino-modal.service';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -32,7 +30,7 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
 
 
   constructor(private route: ActivatedRoute, public as: AdminoActionService,
-    private nav: AdminoNavService, private ms: AdminoModalService, private api: AdminoApiService, private cd: ChangeDetectorRef) {
+    private ms: AdminoModalService, private api: AdminoApiService, private cd: ChangeDetectorRef) {
 
   }
 

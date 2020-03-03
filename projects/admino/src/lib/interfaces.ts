@@ -110,6 +110,7 @@ export interface BackendResponse {
   setQueryParams: { [id: string]: string; };
   setBottomButtons: AdminoButton[];
   setFocus: any;
+  setPing: number;
 
   startAction: AdminoAction[];
 

@@ -37,7 +37,7 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
         this.mapElements[mapEl.id] = {
           element: this.drawPolygon(mapEl.points,
             this.directive.ts.getColor(mapEl.color),
-            mapEl.height, mapEl.altitude, mapEl.opacity), type: mapEl.type
+            mapEl.height, mapEl.altitude, mapEl.opacity, mapEl.wireframe), type: mapEl.type
         };
         this.threeLayer.addMesh(this.mapElements[mapEl.id].element);
       } else if (mapEl.type === 'imageLayer') {
@@ -68,7 +68,7 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
     }
   }
 
-  drawPolygon(points, color, height, altitude, opacity = 0.9) {
+  drawPolygon(points, color, height, altitude, opacity = 0.9, wireframe = false) {
     const rectangle = new maptalks.Polygon([
       points
     ], {
@@ -76,7 +76,7 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
         lineColor: color,
         lineWidth: 2,
         polygonFill: color,
-        polygonOpacity: 0.6
+        polygonOpacity: opacity
       },
       properties: {
         altitude: height
@@ -85,7 +85,8 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
     const material = new THREE.MeshPhongMaterial({
       color, transparent: true,
       //  blending: THREE.AdditiveBlending,
-      opacity
+      opacity,
+      // wireframe: true
     });
     // scene.add(bar);
     const mesh = this.threeLayer.toExtrudePolygon(rectangle, {

@@ -24,11 +24,12 @@ export class AdminoActionService {
   redrawScreen: BehaviorSubject<ScreenElementScreen> = new BehaviorSubject(null);
   updateScreen: BehaviorSubject<any> = new BehaviorSubject(null);
   setFocus: BehaviorSubject<string> = new BehaviorSubject('');
-
   currentQueryParams = null;
   activeRequests: { sub: Subscription }[] = [];
-
   customVars: any = {};
+
+  activeScreenId = '';
+  pingFrequency = new BehaviorSubject(1000);
 
 
   constructor(private router: Router, private route: ActivatedRoute,
@@ -40,6 +41,7 @@ export class AdminoActionService {
     this.route.queryParams.subscribe(params => {
       this.currentQueryParams = decodeParams(params);
     });
+
   }
 
   handleAction(actionEvent: ActionEvent): Observable<any> {
@@ -110,60 +112,67 @@ export class AdminoActionService {
     window.URL.revokeObjectURL(url);
   }
   backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null) {
-
     return this.api.request(screen, requestingScreen, screenValue, schema,
       initiatedBy, this.currentQueryParams, this.customVars).pipe(map((response: BackendResponse) => {
-        if (response.setScreen) {
-          this.setQueryParams({});
-          this.redrawScreen.next(response.setScreen);
-        }
-        if (response.updateScreen) {
-          this.updateScreen.next(response.updateScreen);
-        }
-        if (response.setSid) {
-          this.user.sid = response.setSid;
-        }
-        if (response.setMenu) {
-          this.user.setMenu(response.setMenu);
-        }
-        if (response.setTheme) {
-          const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;
-          const isDark = response.setTheme.isDark !== undefined ? response.setTheme.isDark : this.ts.isDarkTheme;
-          this.ts.setTheme(color, isDark);
-        }
-        if (response.setBottomButtons) {
-          this.user.setBottomButtons(response.setBottomButtons);
-        }
-        if (response.setFirstName) {
-          this.user.firstname = response.setFirstName;
-        }
-        if (response.setLastname) {
-          this.user.lastname = response.setLastname;
-        }
-        if (response.setCustomVars) {
-          this.customVars = response.setCustomVars;
-        }
-        if (response.updateCustomVars) {
-          deepMerge(this.customVars, response.updateCustomVars);
-        }
-        if (response.setQueryParams) {
-          this.setQueryParams(response.setQueryParams);
-        }
-        if (response.setFocus) {
-          this.setFocus.next(response.setFocus);
-          // this.user.sid = response.setSid;
-        }
-        if (response.startAction) {
-          for (const action of response.startAction) {
-            this.handleAction({ action });
-          }
-          // this.api.downloadFile(response.downloadFile.url).subscribe((data) => {
-          //   const blob = new Blob([data], { type: response.downloadFile.type });
-          //   const url = window.URL.createObjectURL(blob);
-          //   window.open(url);
-          // });
-        }
+        this.handleResponse(response);
       }));
+  }
+
+  handleResponse(response: BackendResponse) {
+    if (response.setScreen) {
+      this.activeScreenId = response.setScreen.id;
+      this.setQueryParams({});
+      this.redrawScreen.next(response.setScreen);
+    }
+    if (response.updateScreen) {
+      this.updateScreen.next(response.updateScreen);
+    }
+    if (response.setSid) {
+      this.user.sid = response.setSid;
+    }
+    if (response.setMenu) {
+      this.user.setMenu(response.setMenu);
+    }
+    if (response.setTheme) {
+      const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;
+      const isDark = response.setTheme.isDark !== undefined ? response.setTheme.isDark : this.ts.isDarkTheme;
+      this.ts.setTheme(color, isDark);
+    }
+    if (response.setBottomButtons) {
+      this.user.setBottomButtons(response.setBottomButtons);
+    }
+    if (response.setFirstName) {
+      this.user.firstname = response.setFirstName;
+    }
+    if (response.setLastname) {
+      this.user.lastname = response.setLastname;
+    }
+    if (response.setCustomVars) {
+      this.customVars = response.setCustomVars;
+    }
+    if (response.updateCustomVars) {
+      deepMerge(this.customVars, response.updateCustomVars);
+    }
+    if (response.setQueryParams) {
+      this.setQueryParams(response.setQueryParams);
+    }
+    if (response.setFocus) {
+      this.setFocus.next(response.setFocus);
+      // this.user.sid = response.setSid;
+    }
+    if (response.setPing !== undefined) {
+      this.pingFrequency.next(response.setPing);
+    }
+    if (response.startAction) {
+      for (const action of response.startAction) {
+        this.handleAction({ action });
+      }
+      // this.api.downloadFile(response.downloadFile.url).subscribe((data) => {
+      //   const blob = new Blob([data], { type: response.downloadFile.type });
+      //   const url = window.URL.createObjectURL(blob);
+      //   window.open(url);
+      // });
+    }
   }
 
   handleFrontendAction(action: AdminoAction, form = null) {
