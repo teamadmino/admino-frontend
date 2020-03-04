@@ -179,7 +179,8 @@ export class AdminoActionService {
     if (action.frontendAction === 'logout') {
       this.user.logout();
       this.redrawScreen.next({});
-      return this.backendRequest(this.cs.config.loginScreen);
+      const logoutScreen = action.logoutScreen !== undefined ? action.logoutScreen : this.cs.config.loginScreen;
+      return this.backendRequest(logoutScreen);
     }
   }
 

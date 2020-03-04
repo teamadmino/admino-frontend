@@ -1,5 +1,7 @@
-<div class="image focusinnerglow-accent" (click)="handleAction(this.element.action)" [ngStyle]="{width: this.imgWidth, 
+<!-- <div class="image focusinnerglow-accent" (click)="handleAction(this.element.action)" [ngStyle]="{width: this.imgWidth, 
     height:this.imgHeight, 'background-image':'url('+this.element.src+')'}" tabindex="0"
     [ngClass]="{'clickable': this.element.action!==undefined}" #imageRef #focusRef>
 
-</div>
+</div> -->
+
+<img [src]="this.element.src" alt="">
