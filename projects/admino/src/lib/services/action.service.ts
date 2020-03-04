@@ -76,7 +76,6 @@ export class AdminoActionService {
       const requestingScreen = actionEvent.screenConfig ? actionEvent.screenConfig.id : null;
       return this.backendRequest(actionEvent.action.backendAction, requestingScreen, schema, screenValue, actionEvent.initiatedBy);
     } else if (actionEvent.action.type === 'frontend') {
-
       return this.handleFrontendAction(actionEvent.action);
 
     } else if (actionEvent.action.type === 'url') {
@@ -165,7 +164,7 @@ export class AdminoActionService {
     }
     if (response.startAction) {
       for (const action of response.startAction) {
-        this.handleAction({ action });
+        this.handleAction({ action }).subscribe();
       }
       // this.api.downloadFile(response.downloadFile.url).subscribe((data) => {
       //   const blob = new Blob([data], { type: response.downloadFile.type });
@@ -181,6 +180,8 @@ export class AdminoActionService {
       this.redrawScreen.next({});
       const logoutScreen = action.logoutScreen !== undefined ? action.logoutScreen : this.cs.config.loginScreen;
       return this.backendRequest(logoutScreen);
+    } else {
+      return wrapIntoObservable(null);
     }
   }
 
