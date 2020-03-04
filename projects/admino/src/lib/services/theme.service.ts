@@ -125,7 +125,7 @@ export class AdminoThemeService {
 
   }
   getColorFromList(id: string) {
-    if (id.startsWith('rgb') || id.startsWith('#')) {
+    if (id === undefined || id.startsWith('rgb') || id.startsWith('#')) {
       return id;
     }
     const split = id.split(':');

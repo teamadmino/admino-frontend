@@ -14,6 +14,15 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @Input() rowSpan: any = 1;
   @Input() row: any = 1;
   @Input() col: any = 1;
+  @Input() align = 'left';
+  @Input() height = null;
+  @Input() borderWidth = '0px';
+  @Input() borderColor = 'red';
+  @Input() borderRadius = '5px';
+  @Input() borderStyle = 'solid';
+  @Input() padding = '0px';
+
+
   @Input() gridComponent: AdminoGridComponent;
   @HostBinding('class.edit-mode') @Input() editMode = false;
   @HostBinding('class.border-color-primary') bcolor = true;
@@ -105,6 +114,8 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   // }
   getStyle() {
     let s = '';
+    s += 'text-align:' + this.align + ';';
+
     // const ratio = 100 / (this.colnum / this.col);
     if (this.colSpan) {
       if (this.colSpan === 'auto') {

@@ -12,7 +12,7 @@ export class TextComponent extends AdminoScreenElement implements OnInit {
   @HostBinding('style.color') color = '';
   @HostBinding('style.font-size') size = '';
   @HostBinding('style.text-align') align = '';
-  @HostBinding('style.weight') weight = '300';
+  @HostBinding('style.font-weight') weight = '600';
 
   ngOnInit() {
     this.onChange(null);

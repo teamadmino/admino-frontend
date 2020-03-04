@@ -99,6 +99,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
       if (this.componentRef && this.element) {
 
+
         if (this.element.colorPaths) {
           this.ts.processColorPaths(this.element, this.element.colorPaths);
         }

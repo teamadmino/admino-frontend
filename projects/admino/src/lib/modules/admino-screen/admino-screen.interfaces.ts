@@ -43,6 +43,12 @@ export interface ScreenElement {
 
     disabled?: boolean;
     hidden?: boolean;
+    align?: string;
+    borderWidth?: string;
+    borderColor?: string;
+    borderRadius?: string;
+    borderStyle?: string;
+    padding?: string;
 
     col?: any;
     row?: any;

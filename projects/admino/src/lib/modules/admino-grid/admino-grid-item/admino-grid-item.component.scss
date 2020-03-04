@@ -11,8 +11,8 @@
     }
   }
 
-
   position: relative;
+
 
   //   position: relative;
   width: 100%;
@@ -31,7 +31,11 @@
   // }
 
 
-
+  .content {
+    // border: 1px dotted greenyellow;
+    // border-radius: 2px;
+    // padding: 5px;
+  }
 
   .edit-mode & {
     border: 1px dotted blue;

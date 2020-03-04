@@ -26,7 +26,11 @@
                                     [col]="element.col!==undefined?element.col:1"
                                     [row]="element.row!==undefined?element.row:i+1"
                                     [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1"
-                                    [stretch]="element.stretch" [hidden]="this.element.hidden"
+                                    [stretch]="element.stretch" [hidden]="element.hidden" [height]="element.height"
+                                    [borderRadius]="element.borderRadius" [borderWidth]="element.borderWidth"
+                                    [borderColor]="this.ts.getColor(element.borderColor)"
+                                    [borderStyle]="element.borderStyle" [padding]="element.padding"
+                                    [align]="element.align"
                                     *ngFor="let element of getElementsOfType('main'); let i=index;">
                                     <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
                                         [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i">

@@ -20,4 +20,14 @@
         </button>
     </div>
 </div>
-<ng-content></ng-content>
+<div class="content" [ngStyle]="{
+    height: height,
+    borderColor:borderColor,
+    borderRadius:borderRadius,
+    borderStyle:borderStyle,
+    borderWidth:borderWidth,
+    padding:padding,
+    align:align
+}">
+    <ng-content></ng-content>
+</div>
