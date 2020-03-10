@@ -107,7 +107,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
       return code.code === e;
     });
     if (!found) {
-      const code = { code: e, date: new Date(), synced: false };
+      const code = { code: e, date: new Date(), synced: true };
       val.push(code);
       this.control.setValue(val);
       this.successfullScan = false;
@@ -123,9 +123,9 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
         this.successfullScan = false;
       }, 2000);
 
-      setTimeout((params) => {
-        this.updateSync(code, true);
-      }, Math.random() * 2000)
+      // setTimeout((params) => {
+      //   this.updateSync(code, true);
+      // }, Math.random() * 2000)
 
       this.selectedId = 0;
       this.codesRef.nativeElement.scrollTop = 0;
