@@ -1,3 +1,4 @@
+import { MaterialModulesModule } from './../material-modules/material-modules.module';
 import { AdminoScreenModule } from './../admino-screen/admino-screen.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,7 +11,8 @@ import { AdminoUniversalEditorPopupComponent } from './admino-universal-editor-p
   declarations: [AdminoUniversalEditorComponent, AdminoUniversalEditorPopupComponent],
   imports: [
     CommonModule,
-    AdminoScreenModule
+    AdminoScreenModule,
+    MaterialModulesModule
   ],
   exports: [AdminoUniversalEditorComponent],
   entryComponents: [AdminoUniversalEditorPopupComponent]

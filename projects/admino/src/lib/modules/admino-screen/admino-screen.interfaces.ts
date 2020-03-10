@@ -1,3 +1,4 @@
+import { style } from '@angular/animations';
 import { AdminoAction, AdminoButton } from '../../interfaces';
 
 export interface ScreenElementChange {
@@ -49,13 +50,13 @@ export interface ScreenElement {
     borderRadius?: string;
     borderStyle?: string;
     padding?: string;
+    style?: any;
 
     col?: any;
     row?: any;
     colSpan?: any;
     rowSpan?: any;
     // grid_auto_rows?: any;
-    stretch?: boolean;
 
     __hover?: boolean;
     __dragging?: boolean;
@@ -76,7 +77,6 @@ export interface ScreenElementScreen extends ScreenElement {
 
     isFluidContainer?: boolean;
     colNum?: number;
-
     // popup settings
     isPopup?: boolean;
     verticalPosition?: string;
@@ -96,6 +96,18 @@ export interface ScreenElementInput extends ScreenElement {
     suffix: string;
     readonly: boolean;
     inputType: string;
+}
+export interface ScreenElementSelect extends ScreenElement {
+    label?: string;
+    options: { label: string, value: string };
+    disableOptionCentering: boolean;
+    multiple: boolean;
+}
+export interface ScreenElementSlider extends ScreenElement {
+    label?: string;
+    options: { label: string, value: string };
+    disableOptionCentering: boolean;
+    multiple: boolean;
 }
 export interface ScreenElementTextarea extends ScreenElement {
     label?: string;

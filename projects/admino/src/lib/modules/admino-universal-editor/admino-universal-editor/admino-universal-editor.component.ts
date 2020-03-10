@@ -120,7 +120,6 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
       // console.log(focusedEl);
       if (this.screen) {
         this.screen.focusElement(focusedEl);
-        console.log(focusedEl)
       }
       // if (updatedScreen) {
       //   this.redrawScreen(updatedScreen);
@@ -129,18 +128,6 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
 
   }
 
-
-  // actionEvent(actionEvent: ActionEvent) {
-  //   this.as.handleAction(actionEvent).subscribe();
-  // }
-
-  prepareClasses() {
-    const baseClasses = ['col-12', 'mh-100', 'routeAnimated'];
-    if (this.screenElement && this.screenElement.classes) {
-      baseClasses.concat(this.screenElement.classes);
-    }
-    return baseClasses;
-  }
 
   ngOnDestroy() {
 

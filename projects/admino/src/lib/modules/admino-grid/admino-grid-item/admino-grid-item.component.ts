@@ -16,11 +16,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @Input() col: any = 1;
   @Input() align = 'left';
   @Input() height = null;
-  @Input() borderWidth = '0px';
-  @Input() borderColor = 'red';
-  @Input() borderRadius = '5px';
-  @Input() borderStyle = 'solid';
-  @Input() padding = '0px';
+  @Input() style = {};
 
 
   @Input() gridComponent: AdminoGridComponent;
@@ -33,7 +29,6 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @ViewChild('dragRef', { static: false, read: ElementRef }) dragElRef: ElementRef;
 
   @Input() colnum = 12;
-  @Input() stretch = true;
   @HostBinding('class.hidden') @Input() hidden = false;
 
   prevOffsetLeft;
@@ -61,11 +56,17 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     return this.sanitizer.bypassSecurityTrustStyle(this.getStyle());
   }
   @HostListener('mouseenter', ['$event']) mouseEnter(e) {
+    if (!this.editMode) {
+      return;
+    }
     this.isMouseOver = true;
     this.setActive();
 
   }
   @HostListener('mouseleave', ['$event']) mouseLeave(e) {
+    if (!this.editMode) {
+      return;
+    }
     this.isMouseOver = false;
     this.removeActive();
   }
@@ -134,7 +135,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     }
     // s += `grid-row: span ${(1)};`;
 
-    if (this.stretch || this.rowSpan > 1) {
+    if (this.rowSpan > 1) {
       s += 'align-self: stretch;';
       // s += 'grid-row: fr1;';
     }
@@ -194,6 +195,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   }
 
   @HostListener('drag', ['$event']) dragMoveEvent(e) {
+
     e.stopPropagation();
     if (this.prevDragFunc) {
       this.prevDragFunc();
@@ -223,6 +225,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   // dragEnd(dragEvent) {
   // }
   @HostListener('dragend', ['$event']) dragEndEvent(e) {
+
     this.dragging = false;
     // this.dragRef.endDrag();
     this.removeActive();
@@ -232,6 +235,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
 
 
   resizeStart(dragEvent) {
+
     this.setActive();
     this.resizing = true;
     this.prevColSpan = this.colSpan;

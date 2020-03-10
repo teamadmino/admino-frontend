@@ -108,6 +108,7 @@ export class AdminoScreenElement {
     change(changes: { [id: string]: ScreenElementChange; }) {
         this.height = this.element.height;
     }
+
     onDestroy() {
     }
     destroy() {

@@ -25,11 +25,8 @@
                                 <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
                                     [col]="element.col!==undefined?element.col:1"
                                     [row]="element.row!==undefined?element.row:i+1"
-                                    [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1"
-                                    [stretch]="element.stretch" [hidden]="element.hidden" [height]="element.height"
-                                    [borderRadius]="element.borderRadius" [borderWidth]="element.borderWidth"
-                                    [borderColor]="this.ts.getColor(element.borderColor)"
-                                    [borderStyle]="element.borderStyle" [padding]="element.padding"
+                                    [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1" [hidden]="element.hidden"
+                                    [height]="element.height" [style]="element.style?element.style:{}"
                                     [align]="element.align"
                                     *ngFor="let element of getElementsOfType('main'); let i=index;">
                                     <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
@@ -55,9 +52,9 @@
                     [parentGroup]="group" [screenComponent]='this' [index]="i">
                 </ng-container>
             </div>
-
         </div>
     </div>
+
     <div class="timers d-none">
         <div class="timer" *ngFor="let element of getElementsOfType('timer'); let i=index;">
             <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent" [element]="element"

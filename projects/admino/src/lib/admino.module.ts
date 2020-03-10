@@ -43,8 +43,6 @@ registerLocaleData(localeHu, 'hu');
   imports: [
     CommonModule,
 
-    MaterialModulesModule,
-
     AdminoPrintModule,
     AdminoThemingModule,
     AdminoResizeModule,
@@ -58,7 +56,9 @@ registerLocaleData(localeHu, 'hu');
 
     AdminoFocusTrapModule,
     AdminoVirtualTableModule,
-    AdminoGridModule
+    AdminoGridModule,
+    MaterialModulesModule
+
   ],
 
   exports: [

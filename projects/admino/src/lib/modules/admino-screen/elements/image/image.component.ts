@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 
 @Component({
@@ -9,8 +9,11 @@ import { AdminoScreenElement } from '../admino-screen-element';
 export class ImageComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   @ViewChild('imageRef', { static: true, read: ElementRef }) imageRef: ElementRef;
   loadedImage;
-  imgWidth = 0;
-  imgHeight = 0;
+  imgWidth = '0px';
+  imgHeight = '0px';
+  @HostListener('window:resize') resize() {
+    this.recalculate();
+  }
   ngOnInit() {
     this.imgWidth = this.element.width;
     this.imgHeight = this.element.height;
@@ -25,6 +28,21 @@ export class ImageComponent extends AdminoScreenElement implements OnInit, After
     this.loadedImage.src = this.element.src;
   }
 
+  recalculate() {
+    const maxW = this.imageRef.nativeElement.parentNode.parentNode.clientWidth;
+    this.imgWidth = this.element.width !== undefined ? this.element.width : this.loadedImage.width + 'px';
+    this.directive.cd.detectChanges();
+    let w = this.imageRef.nativeElement.clientWidth;
+    let h = this.loadedImage.height;
+    h = this.loadedImage.height * (w / this.loadedImage.width);
+    this.imgHeight = h + 'px';
+    this.directive.cd.detectChanges();
+    // if (this.element.height !== undefined) {
+    //   this.imgHeight = this.element.height;
+    // } else {
+    //   // this.imgHeight = this.element.height * (maxW / this.loadedImage.width);
+    // }
+  }
   loadImage() {
     if (this.loadedImage) {
       this.loadedImage.onload = null;
@@ -32,24 +50,7 @@ export class ImageComponent extends AdminoScreenElement implements OnInit, After
     }
     this.loadedImage = new Image();
     this.loadedImage.onload = (img) => {
-      // _img.src = this.src;
-      const maxW = this.imageRef.nativeElement.parentNode.parentNode.clientWidth;
-      let w = this.loadedImage.width;
-      let h = this.loadedImage.height;
-      if (w > maxW) {
-        w = maxW;
-        h = this.loadedImage.height * (maxW / this.loadedImage.width);
-      }
-
-      this.imgWidth = this.element.width !== undefined ? this.element.width : w + 'px';
-      if (this.element.height !== undefined) {
-        this.imgHeight = this.element.height;
-      } else {
-        // this.imgHeight = this.element.height * (maxW / this.loadedImage.width);
-      }
-      this.directive.cd.detectChanges();
-
-      // console.log(this.imageRef.nativeElement.clientWidth);
+      this.recalculate();
     };
   }
 

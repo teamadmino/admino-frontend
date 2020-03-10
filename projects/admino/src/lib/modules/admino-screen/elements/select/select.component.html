@@ -1,0 +1,9 @@
+<mat-form-field [formGroup]="group">
+    <mat-label>{{element.label}}</mat-label>
+    <mat-select #focusRef [multiple]="element.multiple" [disableOptionCentering]="element.disableOptionCentering"
+        [formControlName]="element.id" [disabled]="element.disabled">
+        <mat-option *ngFor="let option of element.options" [value]="option.value">
+            {{option.label}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

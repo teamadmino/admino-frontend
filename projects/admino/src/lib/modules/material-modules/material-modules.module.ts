@@ -71,7 +71,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatFormFieldModule,
     MatRadioModule,
     MatSelectModule,
-    MatSliderModule,
     MatSlideToggleModule,
     MatMenuModule,
     MatSidenavModule,
@@ -96,7 +95,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatBadgeModule,
     MatTreeModule,
     MatButtonToggleModule,
-
+    MatSliderModule,
 
     MatMomentDateModule,
     A11yModule,
@@ -117,7 +116,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatFormFieldModule,
     MatRadioModule,
     MatSelectModule,
-    MatSliderModule,
     MatSlideToggleModule,
     MatMenuModule,
     MatSidenavModule,
@@ -142,6 +140,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatTreeModule,
     MatButtonToggleModule,
     MatChipsModule,
+    MatSliderModule,
 
     MatMomentDateModule,
     A11yModule,

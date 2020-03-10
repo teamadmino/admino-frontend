@@ -88,12 +88,14 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
 
 
   drop(e) {
+
     console.log('dropped');
     e.preventDefault();
     const data = e.dataTransfer.getData('text');
     console.log(data);
   }
   allowDrop(e) {
+
     e.preventDefault();
   }
   refresh() {

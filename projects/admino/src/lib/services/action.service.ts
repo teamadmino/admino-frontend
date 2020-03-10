@@ -179,6 +179,8 @@ export class AdminoActionService {
       this.user.logout();
       this.redrawScreen.next({});
       const logoutScreen = action.logoutScreen !== undefined ? action.logoutScreen : this.cs.config.loginScreen;
+      this.activeScreenId = '';
+      this.pingFrequency.next(0);
       return this.backendRequest(logoutScreen);
     } else {
       return wrapIntoObservable(null);

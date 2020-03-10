@@ -1,3 +1,4 @@
+import { SliderComponent } from './elements/slider/slider.component';
 import { ColorpickerComponent } from './elements/colorpicker/colorpicker.component';
 import { ChartjsComponent } from './elements/chartjs/chartjs.component';
 import { ScannerComponent } from './elements/scanner/scanner.component';
@@ -27,11 +28,12 @@ import { ButtonComponent } from './elements/button/button.component';
 import { GroupComponent } from './elements/group/group.component';
 import { TableComponent } from './elements/table/table.component';
 import { TimerComponent } from './elements/timer/timer.component';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, skip } from 'rxjs/operators';
 import { deepCompare } from '../../utils/deepcompare';
 import { ThemeService } from 'ng2-charts';
 import { TabsComponent } from './elements/tabs/tabs.component';
 import { ImageComponent } from './elements/image/image.component';
+import { SelectComponent } from './elements/select/select.component';
 
 
 const componentMapper = {
@@ -54,6 +56,8 @@ const componentMapper = {
   colorpicker: ColorpickerComponent,
   tabs: TabsComponent,
   image: ImageComponent,
+  select: SelectComponent,
+  slider: SliderComponent,
 };
 
 @Directive({
@@ -70,6 +74,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   control: FormControl;
   group: FormGroup;
   valueChangeSub: Subscription;
+  themeChangeSub: Subscription;
 
 
   @Input() screenComponent: AdminoScreenComponent;
@@ -85,6 +90,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   valueChangeTimeout;
   valueChangeEvent: Subject<any> = new Subject();
 
+  typeChange = false;
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
     public ts: AdminoThemeService,
@@ -95,14 +101,24 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.activeElementConfig = cloneDeep(this.element);
+
+    // this.ts.themeChanged((params) => {
+
+    // })
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
 
       if (this.componentRef && this.element) {
 
+        // Destroy
+        if (this.element.destroy) {
+          this.destroyComponent();
+          return;
+        }
 
         if (this.element.colorPaths) {
           this.ts.processColorPaths(this.element, this.element.colorPaths);
         }
+
 
         // Type change
         if (this.element.type !== undefined && this.element.type !== this.activeElementConfig.type) {
@@ -117,27 +133,31 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
           }
         }
 
-        // console.log(this.element);
-        // if (this.element.type === 'table') {
-        //   console.log(this.activeElementConfig)
-        //   console.log(this.element)
-        //   console.log("CHANGE")
-        // }
         const changes = deepCompare(this.activeElementConfig, this.element, ['value']);
-        // console.log(this.element.id, changes)
+
+        if (this.themeChangeSub) {
+          this.themeChangeSub.unsubscribe();
+        }
+        this.themeChangeSub = this.ts.themeChanged.subscribe((params) => {
+          if (this.element.colorPaths) {
+            // this.activeElementConfig = cloneDeep(this.element);
+            // this.ts.processColorPaths(this.activeElementConfig, this.element.colorPaths);
+            // this.elementComponent.element = this.activeElementConfig;
+            // console.log("THEMESU")
+            // console.log(this.activeElementConfig)
+            // this.cd.detectChanges();
+          }
+        });
+
+        this.activeElementConfig = cloneDeep(this.element);
+
+
         if (Object.keys(changes).length > 0) {
           this.elementComponent.onChange(changes);
           this.elementComponent.change(changes);
         }
-
-        // Destroy
-        if (this.element.destroy) {
-          this.destroyComponent();
-        }
-
-        this.activeElementConfig = cloneDeep(this.element);
-        // this.removeEventsFromConfig(this.element);
         this.removeEventsFromConfig(this.activeElementConfig);
+        // this.removeEventsFromConfig(this.element);
       }
     });
     if (!this.element.type) {
@@ -146,7 +166,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     } else {
       this.createComponent();
     }
-
 
 
     this.rootScreenComponent.focusEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((elpath) => {
@@ -195,6 +214,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   }
   destroyComponent() {
+    if (this.themeChangeSub) {
+      this.themeChangeSub.unsubscribe();
+    }
     this.removeControl();
     if (this.componentRef) {
       this.componentRef.destroy();
