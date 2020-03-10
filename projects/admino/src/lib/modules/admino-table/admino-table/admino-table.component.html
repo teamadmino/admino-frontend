@@ -22,7 +22,7 @@
     </div>
 
     <div class="awrapper">
-        <div class="scroller " (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
+        <div class="scroller" (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
             <div class="scrollercontent" #scrollerContentRef></div>
         </div>
         <div class="atable" (scroll)="scrollEvent()" #tableRef>
@@ -49,21 +49,24 @@
 
     </div>
 </div>
-<!--
+
 <p>{{this.rowStart}} - {{this.rowEnd}}</p>
-<p>rowCount:{{this.rowCount}}</p>
-<p>spage:{{this.spage}}</p>
-<p> scrollPosCoeff:{{this.scrollPosCoeff}}</p>
-<p> scrollPosCoeffNormal:{{this.scrollPosCoeffNormal}}</p>
+<p>totalsize:{{this.totalsize | number}}</p>
+<p>visibleRowCount:{{this.visibleRowCount}}</p>
+<p class="color-accent"> scrollPosCoeff:{{this.scrollPosCoeff}}</p>
+<p class="color-accent">smallPage:{{this.smallPage}}</p>
+<p class="color-accent"> scrollPosCoeffNormal:{{this.scrollPosCoeffNormal}}</p>
 <p>scrollTop:{{this.scrollPos }}</p>
 <p>maxScrollPos:{{this.maxScrollPos | number}}</p>
-<p>lpage:{{this.lpage | number}}</p>
-<p>lpageSize:{{this.lpageSize | number}}</p>
-<p>lastPage:{{this.lastPage | number}}</p>
-<p>totalsize:{{this.totalsize | number}}</p>
+<p>fakeScrollerHeight:{{this.fakeScrollerHeight | number}}</p>
+
+<p class="color-primary">largePage:{{this.largePage | number}}</p>
+<p class="color-primary">largePageSize:{{this.largePageSize | number}}</p>
+<p class="color-primary">lastPage:{{this.lastLargePage | number}}</p>
 <p>adjustedTotalsize:{{this.adjustedTotalsize | number}}</p>
-<p>rowCountOnLastPage:{{this.rowCountOnLastPage | number}}</p>
-<p>rowheight:{{this.rowHeight | number}}</p>
-<p>rounded:{{this.roundedRowHeight | number}}</p>
-<p>count:{{this.viewportSize/this.roundedRowHeight | number}}</p>
-<p>viewportheight:{{this.viewportSize | number}}</p> -->
+<p>rowCountOnLastLargePage:{{this.rowCountOnLastLargePage | number}}</p>
+
+<p>rowHeight:{{this.rowHeight | number}}</p>
+<p>roundedRowHeight:{{this.roundedRowHeight | number}}</p>
+<p>numOfRowSlots:{{this.viewportSize/this.roundedRowHeight | number}}</p>
+<p>viewportHeight:{{this.viewportSize | number}}</p>

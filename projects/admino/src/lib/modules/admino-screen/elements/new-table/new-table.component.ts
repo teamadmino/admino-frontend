@@ -25,6 +25,7 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
 
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
+
     if (changes.columns) {
       this.table.columns = changes.columns.new;
     }
@@ -54,14 +55,16 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
     //   this.table.updateRows();
     // });
     // this.table.updateDataSource();
+
     this.table.dataSource.loadData().then((params) => {
       this.table.scrollEvent();
     });
+
+    // console.log("ONCHANGE ONCHANGE")
     if (changes._forceRefresh) {
       this.table.dataSource.loadData().then((params) => {
         this.table.updateSize();
         this.table.updateRows();
-        console.log("forcerefresh")
       });
     }
   }
