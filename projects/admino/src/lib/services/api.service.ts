@@ -84,11 +84,11 @@ export class AdminoApiService {
       //   row.text = this.dummyBaseData[parseInt(row.id, 10)].text;
       // });
 
-      setTimeout((params) => {
-        dummySubject.next(response);
-        dummySubject.complete();
-        return response;
-      }, 1000);
+      // setTimeout((params) => {
+      dummySubject.next(response);
+      dummySubject.complete();
+      return response;
+      // }, 1000);
     })).subscribe((params) => {
 
     }, (err) => {
