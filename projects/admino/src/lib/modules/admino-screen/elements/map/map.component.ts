@@ -25,6 +25,19 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
     if (changes.mapElements) {
       this.drawElements(changes.mapElements.new);
     }
+    console.log(changes);
+    if (changes.pitch) {
+      this.map.setPitch(changes.pitch.new);
+    }
+    if (changes.bearing) {
+      this.map.setBearing(changes.bearing.new);
+    }
+    if (changes.zoom) {
+      this.map.setZoom(changes.zoom.new);
+    }
+    if (changes.center) {
+      this.map.setCenter(changes.center.new);
+    }
     this.threeLayer.renderScene();
   }
 
@@ -239,12 +252,14 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
   map2() {
 
     this.map = new maptalks.Map(this.mapRef.nativeElement, {
-      center: [0.5, 0.5],
-      zoom: 10,
+      center: this.element.center !== undefined ? this.element.center : [0.5, 0.5],
+      zoom: this.element.zoom !== undefined ? this.element.zoom : 10,
+      pitch: this.element.pitch !== undefined ? this.element.pitch : 60,
+      bearing: this.element.bearing !== undefined ? this.element.bearing : -40,
+
       fog: false,
-      pitch: 60,
+
       dragPitch: true,
-      bearing: -40,
       //allow map to drag rotating, true by default
       dragRotate: true,
       //enable map to drag pitching and rotating at the same time, false by default

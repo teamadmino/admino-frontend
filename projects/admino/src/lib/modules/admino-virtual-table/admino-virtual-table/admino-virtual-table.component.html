@@ -39,7 +39,10 @@
                         <!-- [adminoTooltip]="content[column.id]" -->
                         <div class="cell-content" [ngStyle]="{'text-align': column.align?column.align:'left'}"
                             [innerHtml]="format(content[column.id],column.format)">
-                            <!-- {{content[column.id]}} -->
+                            <!-- [innerHtml]="format(content[column.id],column.format)" -->
+                            <!-- {{column.id}} -->
+
+
                             <!-- {{content.__loaded__}} -->
                         </div>
                         <!-- viewI {{cacheIndex}} absI {{index}}  -->

@@ -76,9 +76,9 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     // this.resetCameraTimeout();
     this.cameraEnabled = true;
     this.scanEnabled = true;
-    setTimeout((params) => {
-      this.scanSuccessHandler(Math.floor(Math.random() * 1000000000));
-    }, 500 + 2000 * Math.random())
+    // setTimeout((params) => {
+    //   this.scanSuccessHandler(Math.floor(Math.random() * 1000000000));
+    // }, 500 + 2000 * Math.random())
   }
   // resetCameraTimeout() {
   //   if (this.cameraTimeout) {

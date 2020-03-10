@@ -24,7 +24,7 @@ export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterView
   @ViewChild(AdminoVirtualScrollDirective, { static: true }) vsRef: AdminoVirtualScrollDirective;
   columnWidths = [];
   scrollBarWidth = 10;
-  totalsize = 1;
+  totalsize = 1000;
 
   lastSetCursorPosPercent = 0.5;
 

@@ -30,6 +30,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
       }
       this.currVal = cloneDeep(valChange);
     });
+
     const conf = this.element as ScreenElementTable;
     this.dataSource = new AdminoVirtualTableDataSource(
       {
@@ -37,6 +38,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
           this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after),
       }
     );
+
 
     if (this.element.value) {
       if (propExists(this.element.value.index)) {
@@ -58,6 +60,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
 
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
+
     if (changes.columns) {
       this.table.columns = changes.columns.new;
     }
@@ -81,6 +84,8 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     if (changes.refreshFrequency) {
 
     }
+    console.log(changes)
+
     if (changes._forceRefresh) {
       this.table.dataSource.loadData();
     }
