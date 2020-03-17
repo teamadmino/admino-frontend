@@ -6,7 +6,7 @@ import { AdminoApiService } from './api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AdminoAction, ActionEvent } from '../interfaces';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, Subject } from 'rxjs';
 import { ScreenElementScreen } from '../modules/admino-screen/admino-screen.interfaces';
 import { encodeParams, decodeParams } from '../utils/encodeparams';
 import { map } from 'rxjs/operators';
@@ -23,6 +23,9 @@ import { HttpResponse, HttpClient } from '@angular/common/http';
 export class AdminoActionService {
   redrawScreen: BehaviorSubject<ScreenElementScreen> = new BehaviorSubject(null);
   updateScreen: BehaviorSubject<any> = new BehaviorSubject(null);
+  snackbarEvent: Subject<any> = new Subject();
+
+
   setFocus: BehaviorSubject<string> = new BehaviorSubject('');
   currentQueryParams = null;
   activeRequests: { sub: Subscription }[] = [];
@@ -161,6 +164,10 @@ export class AdminoActionService {
     }
     if (response.setPing !== undefined) {
       this.pingFrequency.next(response.setPing);
+    }
+    if (response.setSnackbars) {
+      this.snackbarEvent.next(response.setSnackbars);
+      // this.setQueryParams(response.setQueryParams);
     }
     if (response.startAction) {
       for (const action of response.startAction) {

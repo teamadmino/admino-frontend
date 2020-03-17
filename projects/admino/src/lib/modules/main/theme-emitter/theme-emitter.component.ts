@@ -49,15 +49,20 @@ export class ThemeEmitterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ts.warnColor = getComputedStyle(this.warnElement.nativeElement).color;
     this.ts.bgColor = getComputedStyle(this.bgElement.nativeElement).color;
     this.ts.fgColor = getComputedStyle(this.fgElement.nativeElement).color;
+    this.ts.primaryContrast = getComputedStyle(this.primaryContrastElement.nativeElement).color;
+    this.ts.accentContrast = getComputedStyle(this.accentContrastElement.nativeElement).color;
+    this.ts.warnContrast = getComputedStyle(this.warnContrastElement.nativeElement).color;
+
+
     this.ts.colorList.primary = this.ts.primaryColor;
     this.ts.colorList.accent = this.ts.accentColor;
     this.ts.colorList.warn = this.ts.warnColor;
     this.ts.colorList.background = this.ts.bgColor;
     this.ts.colorList.foreground = this.ts.fgColor;
+    this.ts.colorList.primaryContrast = this.ts.primaryContrast;
+    this.ts.colorList.accentContrast = this.ts.accentContrast;
+    this.ts.colorList.warnContrast = this.ts.warnContrast;
 
-    this.ts.primaryContrast = getComputedStyle(this.primaryContrastElement.nativeElement).color;
-    this.ts.accentContrast = getComputedStyle(this.accentContrastElement.nativeElement).color;
-    this.ts.warnContrast = getComputedStyle(this.warnContrastElement.nativeElement).color;
 
     this.ts.themeUpdated.next();
 

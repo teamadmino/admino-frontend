@@ -19,19 +19,35 @@ export class AdminoTableBuffer {
         }
     }
     get(index) {
-        return this.container[index % this.maxBufferSize];
+        const bufferdata = this.container[index % this.maxBufferSize];
+        if (bufferdata) {
+            if (bufferdata.index !== index) {
+                if (bufferdata.data) {
+                    delete bufferdata.data;
+                    bufferdata.index = index;
+                }
+            }
+            // // console.log(bufferdata.index, index);
+        }
+        return bufferdata;
     }
     clear(startIndex, endIndex) {
-        console.log('clear', startIndex, endIndex)
         const start = startIndex <= endIndex ? startIndex : endIndex;
         const end = startIndex <= endIndex ? endIndex : startIndex;
         for (let index = start; index <= end; index++) {
             const bufferdata = this.container[index % this.maxBufferSize];
             if (bufferdata) {
-                delete bufferdata.data;
-                // for (const key of Object.keys(bufferdata)) {
-                //     delete bufferdata[key];
+                // bufferdata.index = index;
+                // if (bufferdata.data) {
+                //     // for (const key of Object.keys(bufferdata.data)) {
+                //     delete bufferdata.data;
+                //     // }
                 // }
+                console.log("delete,", bufferdata.data)
+                for (const key of Object.keys(bufferdata)) {
+                    delete bufferdata[key];
+                }
+                // delete bufferdata.data;
             }
         }
     }

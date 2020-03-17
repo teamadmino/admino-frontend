@@ -11,6 +11,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { isObject } from '../../utils/isobject';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'admino-screen',
@@ -54,16 +55,31 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     }
   }
 
+  // @HostBinding('style')
+  // get myStyle(): SafeStyle {
+  //   return this.sanitizer.bypassSecurityTrustStyle(this.getStyle());
+  // }
+
   constructor(public fb: FormBuilder, public api: AdminoApiService,
     public as: AdminoActionService,
-    private cd: ChangeDetectorRef, public ts: AdminoThemeService) { }
+    private cd: ChangeDetectorRef, public ts: AdminoThemeService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       this.valueChange.next(value);
     });
   }
-
+  // getStyle() {
+  //   if (this.screenElement && this.screenElement.style) {
+  //     let s = '';
+  //     for (const prop of Object.keys(this.screenElement.style)) {
+  //       s += prop + ':' + this.screenElement.style[prop] + '; ';
+  //     }
+  //     console.log(s)
+  //     return s;
+  //   }
+  //   return '';
+  // }
   onSubmit(event) {
   }
 

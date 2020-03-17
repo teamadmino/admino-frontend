@@ -103,7 +103,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     this.activeElementConfig = cloneDeep(this.element);
 
     // this.ts.themeChanged((params) => {
-
     // })
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
 
@@ -114,6 +113,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
           this.destroyComponent();
           return;
         }
+
 
         if (this.element.colorPaths) {
           this.ts.processColorPaths(this.element, this.element.colorPaths);
@@ -160,6 +160,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         // this.removeEventsFromConfig(this.element);
       }
     });
+
     if (!this.element.type) {
       console.warn('Couldnt update or create element with id ' + this.element.id +
         ': Element id does not exist or new element is missing type');
@@ -181,7 +182,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   removeEventsFromConfig(config) {
     for (const key of Object.keys(config)) {
-      if (key.startsWith('_') || key === 'value') {
+      if (key.startsWith('_') || key === 'value' || key === 'forceRefresh') {
         delete config[key];
       }
     }

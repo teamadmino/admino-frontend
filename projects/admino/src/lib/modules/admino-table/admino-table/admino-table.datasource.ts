@@ -7,8 +7,10 @@ export interface AdminoTableDataSourceConfig {
 }
 export interface VirtualDataSourceInfoColumn {
     id: string;
+    source: string;
     format: string;
     align: string;
+    style: any;
     length: number;
     description: string;
 }
@@ -119,7 +121,8 @@ export class AdminoTableDataSource {
             this.loadDataStart.next(this.state);
 
             requestObj.subscription = this.config.listFunction(this.state.keys,
-                this.state.cursorpos, calculatedShift, Math.max(this.state.count, 1), this.state.index, this.state.before, this.state.after).pipe(
+                isNaN(this.state.cursorpos) ? 0 : this.state.cursorpos, calculatedShift,
+                Math.max(this.state.count, 1), this.state.index, this.state.before, this.state.after).pipe(
                     takeUntil(this.ngUnsubscribe),
                     catchError(() => of([])),
                     // finalize(() => {
@@ -136,7 +139,6 @@ export class AdminoTableDataSource {
 
                     resolve(data);
                 }, (err) => {
-
                     reject();
                 });
             this.currentRequests.push(requestObj);

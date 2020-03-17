@@ -2,10 +2,10 @@
 
     <div class="scroll-area">
         <div [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
-            [ngStyle]="{height: screenElement.height}">
-            <div class="row" [ngStyle]="{height: screenElement.height}">
-                <div class="col pt-3 pb-3 " [ngStyle]="{height: screenElement.height}">
-                    <div class="border-color-accent" [ngStyle]="{height: screenElement.height}">
+            [ngStyle]="screenElement.style">
+            <div class="row">
+                <div class="col pt-3 pb-3">
+                    <div class="border-color-accent">
 
                         <!-- <ng-container *ngFor="let element of getElementsOfType('main'); let i=index;"
                             adminoScreenElement [rootScreenComponent]="

@@ -1,0 +1,19 @@
+<div class="snackbar highlight-background sh-dark-xs" [@openClose]="isOpen ? 'open' : 'closed'"
+    [ngStyle]="{ borderColor:this.ts.getColor('foreground:0.1')}">
+    <div class="closebtn">
+        <button mat-icon-button (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <admino-screen #screenRef>
+    </admino-screen>
+    <div class="snackbar-timer" [ngClass]="{'d-none': !this.snackbarData.timeout}"
+        [ngStyle]="{ backgroundColor:this.ts.getColor('foreground:0.1')}">
+        <div class="line" [ngClass]="{transition: this.transition}"
+            [ngStyle]="{transition:'width '+ this.snackbarData.timeout+'ms linear', backgroundColor:this.ts.getColor('foreground:0.3')}">
+        </div>
+    </div>
+</div>
+
+<!-- <ng-container adminoScreenElement [element]="snackbarData.screen">
+</ng-container> -->

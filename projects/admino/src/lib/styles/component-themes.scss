@@ -195,8 +195,8 @@
     color: mat-color($background, background);
   }
 
-  $_colors: mat-color($primary) mat-color($accent) mat-color($warn) mat-color($background, background) mat-color($foreground, base);
-  $_colornames: primary accent warn background foreground;
+  $_colors: mat-color($primary) mat-color($accent) mat-color($warn) mat-color($background, background) mat-color($foreground, base) mat-color($accent, default-contrast);
+  $_colornames: primary accent warn background foreground accent-contrast;
 
   @for $i from 1 through length($_colors) {
     .color-#{nth($_colornames, $i)} {
@@ -430,11 +430,9 @@
     background-color: $foreground-color;
   }
 
-
-  .primary-contrast {
-    color: mat-color($primary, default-contrast);
-  }
-
+  // .primary-contrast {
+  //   color: mat-color($primary, default-contrast);
+  // }
 
 
   // .gold-dark-theme {

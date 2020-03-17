@@ -56,6 +56,19 @@ export class MainComponent implements OnInit, OnDestroy {
     public as: AdminoActionService, public cs: ConfigService, private cd: ChangeDetectorRef, @Inject(DOCUMENT) document
   ) {
 
+
+    // var connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+    // var type = connection.effectiveType;
+    // console.log(connection)
+    // function updateConnectionStatus() {
+    //   console.log("Connection type changed from " + type + " to " + connection.effectiveType);
+    //   type = connection.effectiveType;
+    // }
+
+    // connection.addEventListener('change', updateConnectionStatus);
+
+
+
   }
 
   ngOnInit() {

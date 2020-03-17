@@ -37,6 +37,7 @@
                 </div>
             [adminoTooltip]="vrow.data && vrow.data.data && vrow.data.data[column.id]"
             -->
+
                     <div class="acell" *ngFor="let column of dataSource.displayedColumns; let i=index"
                         [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px','text-align': column.align?column.align:'left'}"
                         [innerHtml]="format(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format)">
@@ -50,23 +51,93 @@
     </div>
 </div>
 
-<p>{{this.rowStart}} - {{this.rowEnd}}</p>
-<p>totalsize:{{this.totalsize | number}}</p>
-<p>visibleRowCount:{{this.visibleRowCount}}</p>
-<p class="color-accent"> scrollPosCoeff:{{this.scrollPosCoeff}}</p>
-<p class="color-accent">smallPage:{{this.smallPage}}</p>
-<p class="color-accent"> scrollPosCoeffNormal:{{this.scrollPosCoeffNormal}}</p>
-<p>scrollTop:{{this.scrollPos }}</p>
-<p>maxScrollPos:{{this.maxScrollPos | number}}</p>
-<p>fakeScrollerHeight:{{this.fakeScrollerHeight | number}}</p>
+<table>
+    <tr>
+        <td>rowStart - rowEnd</td>
+        <td>{{this.rowStart}} - {{this.rowEnd}}</td>
+    </tr>
+    <tr>
+        <td> totalsize</td>
+        <td> {{this.totalsize | number}}</td>
+    </tr>
+    <tr>
+        <td>visibleRowCount </td>
+        <td>{{this.visibleRowCount}} </td>
+    </tr>
+    <tr>
+        <td class="color-accent">scrollPosCoeff </td>
+        <td>{{this.scrollPosCoeff}} </td>
+    </tr>
+    <tr>
+        <td class="color-accent">smallPage </td>
+        <td>{{this.smallPage}} </td>
+    </tr>
+    <tr>
+        <td class="color-accent">scrollPosCoeffNormal </td>
+        <td>{{this.scrollPosCoeffNormal}} </td>
+    </tr>
+    <tr>
+        <td>scrollTop </td>
+        <td>{{this.scrollPos}} </td>
+    </tr>
+    <tr>
+        <td>maxScrollPos </td>
+        <td>{{this.maxScrollPos | number}} </td>
+    </tr>
+    <tr>
+        <td> fakeScrollerHeight</td>
+        <td>{{this.fakeScrollerHeight | number}}</td>
+    </tr>
+    <tr>
+        <td>largePage </td>
+        <td>{{this.largePage | number}} </td>
+    </tr>
+    <tr>
+        <td>largePageSize</td>
+        <td>{{this.largePageSize}} </td>
+    </tr>
+    <tr>
+        <td>lastLargePage</td>
+        <td>{{this.lastLargePage}} </td>
+    </tr>
+    <tr>
+        <td>adjustedTotalsize</td>
+        <td>{{this.adjustedTotalsize }} </td>
+    </tr>
+    <tr>
+        <td>rowCountOnLastLargePage</td>
+        <td>{{this.rowCountOnLastLargePage | number}} </td>
+    </tr>
+    <tr>
+        <td>rowHeight</td>
+        <td>{{this.rowHeight | number}} </td>
+    </tr>
+    <tr>
+        <td>roundedRowHeight</td>
+        <td>{{this.roundedRowHeight | number}}</td>
+    </tr>
+    <tr>
+        <td>numOfRowSlots</td>
+        <td>{{this.viewportSize/this.roundedRowHeight | number}} </td>
+    </tr>
+    <tr>
+        <td>viewportHeight</td>
+        <td>{{this.viewportSize | number}}</td>
+    </tr>
+</table>
 
+
+<!-- <p>scrollTop:{{this.scrollPos }}</p>
+<p>maxScrollPos:{{this.maxScrollPos | number}}</p>
+<p>fakeScrollerHeight:{{this.fakeScrollerHeight | number}}</p> -->
+<!-- 
 <p class="color-primary">largePage:{{this.largePage | number}}</p>
 <p class="color-primary">largePageSize:{{this.largePageSize | number}}</p>
-<p class="color-primary">lastPage:{{this.lastLargePage | number}}</p>
-<p>adjustedTotalsize:{{this.adjustedTotalsize | number}}</p>
+<p class="color-primary">lastPage:{{this.lastLargePage | number}}</p> -->
+<!-- <p>adjustedTotalsize:{{this.adjustedTotalsize | number}}</p>
 <p>rowCountOnLastLargePage:{{this.rowCountOnLastLargePage | number}}</p>
-
-<p>rowHeight:{{this.rowHeight | number}}</p>
+<p>rowHeight:{{this.rowHeight | number}}</p> -->
+<!-- 
 <p>roundedRowHeight:{{this.roundedRowHeight | number}}</p>
 <p>numOfRowSlots:{{this.viewportSize/this.roundedRowHeight | number}}</p>
-<p>viewportHeight:{{this.viewportSize | number}}</p>
+<p>viewportHeight:{{this.viewportSize | number}}</p> -->

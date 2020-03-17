@@ -1,0 +1,62 @@
+:host {
+  position: relative;
+  display: block;
+  max-width: 400px;
+  pointer-events: all;
+}
+
+.closebtn {
+  position: absolute;
+  top: -8px;
+  right: -5px;
+  pointer-events: all;
+  z-index: 100;
+
+  ::ng-deep .mat-icon {
+    height: 18px !important;
+    width: 18px !important;
+    font-size: 18px !important;
+  }
+}
+
+.snackbar {
+  transition: opacity 0.5s, height 0.5s ease-in;
+  overflow: hidden;
+  border-radius: 5px;
+  position: relative;
+  border: 1px solid red;
+  margin-bottom: 10px;
+
+  ::ng-deep.scroll-area {
+    overflow: hidden;
+  }
+
+
+  .snackbar-timer {
+    height: 3px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: greenyellow;
+    pointer-events: none;
+
+    .line {
+      height: 3px;
+      width: 100%;
+      background-color: red;
+      transition: width 10s linear;
+      z-index: 10;
+
+      &.transition {
+        width: 0%;
+      }
+    }
+
+  }
+
+  &.fadeOut {
+    opacity: 0;
+    height: 0px;
+    // transform: scale(0.01);
+  }
+}

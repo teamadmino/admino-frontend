@@ -22,6 +22,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() dataSource: AdminoTableDataSource;
   _columns: any[];
   @Input() public set columns(v: any) {
+    console.log("columns")
     this._columns = v;
     this.updateColumns();
   }
@@ -73,7 +74,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   scrollBarWidth = 0;
   largePageCoeff = 0;
   //
-  totalsize = 100000;
+  totalsize = -1;
   adjustedTotalsize = 0;
 
   scrollPercent = 1;
@@ -82,16 +83,16 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   rowStart = 0;
   rowEnd = 0;
-  prevRowStart = null;
-  prevRowEnd = null;
+  prevRowStart = 0;
+  prevRowEnd = 0;
 
   asd = 1;
 
   @HostListener('mouseup', ['$event'])
   onMouseup(event: MouseEvent) {
-    this.manualScroll = true;
+    this.manualScroll = false;
   }
-  constructor(private cd: ChangeDetectorRef, public formatService: FormatService) { }
+  constructor(public cd: ChangeDetectorRef, public formatService: FormatService) { }
 
   ngOnInit() {
     this.browserMaxSize = this.calcMaxBrowserScrollSize();
@@ -103,14 +104,12 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // setInterval(() => {
     //   this.gotoPos(this.asd);
     //   this.asd += 100000;
-    // }, 100);
+    // }, 1000);
     // this.gotoPos(9007199254740991);
   }
   ngAfterViewInit() {
     this.dataSource.connect().pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) => {
       if (data) {
-
-
         // console.log('browse response');
         // console.log(data);
         if (this.totalsize !== this.dataSource.totalsize) {
@@ -139,6 +138,8 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateSize();
     this.updateRows();
     this.pageChange();
+    this.prevRowStart = this.rowStart;
+    this.prevRowEnd = this.rowEnd;
 
   }
   gotoPos(absoluteId = 0) {
@@ -182,20 +183,23 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     this.scrollPos = this.tableRef.nativeElement.scrollTop;
-    console.log(this.largePage, this.lastLargePage)
-    console.log((this.rowCountOnLastLargePage + 1) * this.roundedRowHeight - 1)
+    // console.log(this.largePage, this.lastLargePage)
+    // console.log((this.rowCountOnLastLargePage + 1) * this.roundedRowHeight - 1)
     if (this.largePage === this.lastLargePage && this.scrollPos >= (this.rowCountOnLastLargePage + 1) * this.roundedRowHeight - 1) {
       this.scrollPos = this.tableRef.nativeElement.scrollTop = (this.rowCountOnLastLargePage + 1) * this.roundedRowHeight - 1;
     }
 
     // && this.adjustedTotalsize > (this.lpage + 1) * this.lpageSize
+    console.log(this.scrollPos, this.maxScrollPos)
     if (this.scrollPos >= this.maxScrollPos && this.largePage < this.lastLargePage) {
       this.largePage++;
       this.pageChange();
+      console.log("pageChange up")
       this.scrollPos = this.tableRef.nativeElement.scrollTop = this.roundedRowHeight;
     } else if (this.scrollPos <= 0 && this.largePage > 0) {
       this.largePage--;
       this.pageChange();
+      console.log("pageChange down")
       this.scrollPos = this.tableRef.nativeElement.scrollTop = this.maxScrollPos - this.roundedRowHeight;
     }
 
@@ -223,14 +227,15 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   updateDataSource() {
 
     if (this.prevRowStart !== this.rowStart || this.prevRowEnd !== this.rowEnd) {
-
-
-      if (this.prevRowStart < this.rowStart) {
-        this.dataSource.buffer.clear(this.prevRowStart, this.rowStart - 1);
-      } else {
-        this.dataSource.buffer.clear(this.rowEnd + 1, this.prevRowEnd);
+      // if (this.prevRowEnd < this.rowEnd) {
+      //   this.dataSource.buffer.clear(this.prevRowEnd + 1, this.rowEnd);
+      // }
+      // if (this.prevRowStart > this.rowStart) {
+      //   this.dataSource.buffer.clear(this.prevRowStart - 1, this.rowStart);
+      // }
+      for (const vrow of this.vrows) {
+        vrow.data = this.dataSource.buffer.get(vrow.absoluteId);
       }
-
       const count = this.visibleRowCount;
       this.dataSource.state.count = count;
       // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
@@ -247,13 +252,20 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   pageChange() {
     this.largePageCoeff = this.largePage - 1 >= 0 ? 1 : 0;
 
-    if (this.largePage === 0) {
-      this.maxScrollPos = this.largePageSize * this.roundedRowHeight;
-    } else {
-      this.maxScrollPos = (this.largePageSize + 1) * this.roundedRowHeight;
-    }
+    this.maxScrollPos = Math.floor(this.largePageSize * this.roundedRowHeight);
+    // if (this.largePage === 0) {
+    // } else {
+    //   this.maxScrollPos = Math.floor((this.largePageSize + 1) * this.roundedRowHeight);
+    // }
     this.fakeScrollerHeight = this.maxScrollPos + (this.visibleRowCount - 1) * this.roundedRowHeight;
     this.fakeContentRef.nativeElement.style.height = this.fakeScrollerHeight + 'px';
+
+
+    if (this.largePage > this.lastLargePage) {
+      this.largePage = this.lastLargePage;
+      this.scrollPos = this.tableRef.nativeElement.scrollTop = (this.rowCountOnLastLargePage) * this.roundedRowHeight - 1;
+    }
+
     // console.log("pageChange")
     // console.log("scrollersize", this.lastPage, this.lpage)
     // if (this.lastPage === this.lpage) {
@@ -265,7 +277,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // } else {
 
     // }
-    this.cd.markForCheck();
+    // this.cd.markForCheck();
   }
   updateSize() {
     this.scrollBarWidth = this.getScrollbarWidth();
@@ -278,16 +290,19 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.visibleRowCount = this.visibleRowCount > this.totalsize ? this.totalsize : this.visibleRowCount;
 
     this.largePageSize = Math.floor((this.browserMaxSize * 0.5) / this.roundedRowHeight);
+    this.largePageSize = 150;
     this.adjustedTotalsize = this.totalsize - (this.visibleRowCount - 1);
-    // this.lpageSize = 20;
+    this.lastLargePage = Math.floor(this.adjustedTotalsize / this.largePageSize);
+    this.rowCountOnLastLargePage = this.adjustedTotalsize % this.largePageSize;
+    this.largePageSize = this.adjustedTotalsize > this.largePageSize ? this.largePageSize : this.adjustedTotalsize;
     // this.dataSource.buffer.maxBufferSize = this.lpageSize;
     // this.dataSource.buffer.maxBufferSize = 100;
-    this.largePageSize = this.adjustedTotalsize > this.largePageSize ? this.largePageSize : this.adjustedTotalsize;
     // this.lastPage = this.lpageSize - 1 > 0 ? Math.floor(this.totalsize / (this.lpageSize - 1)) : 0;
-    this.lastLargePage = Math.floor(this.adjustedTotalsize / this.largePageSize);
+    console.log("lastLargePage", this.adjustedTotalsize, this.largePageSize)
 
     // this.rowCountOnLastPage = this.lpageSize >= this.adjustedTotalsize ? this.adjustedTotalsize : this.adjustedTotalsize % this.lpageSize;
-    this.rowCountOnLastLargePage = this.adjustedTotalsize % this.largePageSize;
+
+    //if totalsize changes and table was already scrolled 
 
 
     // this.vrows = Array.from(Array(this.rowNum).keys());
@@ -296,7 +311,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     for (let i = 0; i < this.visibleRowCount; i++) {
       this.vrows[i] = { virtualId: i, absoluteId: i, pos: 0 };
     }
-    this.maxScrollPos = this.largePageSize * this.roundedRowHeight;
+    this.maxScrollPos = Math.floor(this.largePageSize * this.roundedRowHeight);
     // this.fakeContentRef.nativeElement.style.height = this.maxScrollPos + (this.rowCount - 1) * this.roundedRowHeight + 'px';
     this.scrollerContentRef.nativeElement.style.height = (this.largePageSize * this.roundedRowHeight) + (this.visibleRowCount - 1) * this.roundedRowHeight + 'px';
     // this.tableRef.nativeElement.clientHeight * 5 + 'px';
@@ -331,14 +346,17 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // && possibleAbsId <= this.totalsize - 1
     if (vrow.virtualId < this.scrollPosCoeffNormal) {
       // console.log('jump', vrow.virtualId)
-      vrow.pos = vrow.virtualId * this.roundedRowHeight
-        + (this.visibleRowCount * this.roundedRowHeight) + this.smallPage * this.roundedRowHeight * (this.visibleRowCount);
       vrow.absoluteId = possibleAbsId;
+      if (vrow.absoluteId < this.totalsize) {
+        vrow.pos = vrow.virtualId * this.roundedRowHeight
+          + (this.visibleRowCount * this.roundedRowHeight) + this.smallPage * this.roundedRowHeight * (this.visibleRowCount);
+      }
     } else {
-      vrow.pos = vrow.virtualId * this.roundedRowHeight + this.smallPage * this.roundedRowHeight * (this.visibleRowCount);
       vrow.absoluteId = vrow.virtualId + (this.smallPage * (this.visibleRowCount))
         + this.largePage * (this.largePageSize - 1) + this.largePageCoeff * (this.largePage - 1);
-
+      if (vrow.absoluteId < this.totalsize) {
+        vrow.pos = vrow.virtualId * this.roundedRowHeight + this.smallPage * this.roundedRowHeight * (this.visibleRowCount);
+      }
     }
   }
 

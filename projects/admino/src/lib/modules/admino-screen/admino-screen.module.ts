@@ -57,7 +57,7 @@ import { SliderComponent } from './elements/slider/slider.component';
     TabsComponent,
     ImageComponent,
     SelectComponent,
-    SliderComponent
+    SliderComponent,
   ],
   imports: [
     CommonModule,
@@ -75,7 +75,8 @@ import { SliderComponent } from './elements/slider/slider.component';
     ZXingScannerModule
   ],
   exports: [
-    AdminoScreenComponent
+    AdminoScreenComponent,
+    AdminoScreenElementDirective
   ],
   entryComponents: [
     ButtonComponent,
@@ -98,8 +99,6 @@ import { SliderComponent } from './elements/slider/slider.component';
     ImageComponent,
     SelectComponent,
     SliderComponent
-
-
   ]
 })
 export class AdminoScreenModule { }

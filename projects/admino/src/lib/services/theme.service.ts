@@ -146,7 +146,7 @@ export class AdminoThemeService {
 
 
     let themeDarknessMultiplier = this.isDarkTheme ? 0.1 : -0.1;
-    if (['primary', 'accent', 'warn', 'foreground', 'background'].indexOf(color) !== -1) {
+    if (['primary', 'accent', 'warn', 'foreground', 'background', 'primaryContrast', 'accentContrast', 'warnContrast'].indexOf(color) !== -1) {
       themeDarknessMultiplier = 0;
     }
     const needsConversion = color.startsWith('rgb') ? null : 'c';

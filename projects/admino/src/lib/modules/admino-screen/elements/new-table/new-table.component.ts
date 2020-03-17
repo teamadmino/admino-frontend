@@ -25,8 +25,10 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
 
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
-
+    let reinitNeeded = false;
     if (changes.columns) {
+      console.log("columnschange")
+      reinitNeeded = true;
       this.table.columns = changes.columns.new;
     }
     if (changes.indexes) {
@@ -37,7 +39,10 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
         (keys, cursor, shift, count, index, before, after) =>
           this.screenComponent.api.list(changes.viewName.new, keys, cursor, shift, count, index, before, after);
     }
-
+    if (changes.rowHeight) {
+      reinitNeeded = true;
+      this.table.rowHeight = changes.rowHeight.new;
+    }
 
     // if (changes.value) {
     //   // const newValue: TableValue = {};
@@ -56,15 +61,28 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
     // });
     // this.table.updateDataSource();
 
-    this.table.dataSource.loadData().then((params) => {
-      this.table.scrollEvent();
-    });
+    // this.table.dataSource.loadData().then((params) => {
+    //   this.table.scrollEvent();
+    // });
 
     // console.log("ONCHANGE ONCHANGE")
-    if (changes._forceRefresh) {
+    if (reinitNeeded) {
+      this.table.updateSize();
+      this.table.scrollEvent();
+      this.table.pageChange();
+
+    }
+    if (changes._forceRefresh || changes.forceRefresh) {
       this.table.dataSource.loadData().then((params) => {
         this.table.updateSize();
-        this.table.updateRows();
+        // this.table.updateRows();
+        this.table.prevRowStart = -1;
+        this.table.prevRowEnd = -1;
+        this.table.scrollEvent();
+        this.table.pageChange();
+
+        console.log("forceRefres")
+        console.log(this.table.dataSource.buffer.container)
       });
     }
   }

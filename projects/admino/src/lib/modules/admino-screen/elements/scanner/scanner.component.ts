@@ -190,6 +190,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     this.directive.cd.detectChanges();
   }
   onDestroy() {
+    // this.scanner.reset
     if (this.timeoutHelper) {
       clearTimeout(this.timeoutHelper);
     };

@@ -1,3 +1,4 @@
+import { AdminoScreenElement } from './modules/admino-screen/elements/admino-screen-element';
 import { AdminoScreenComponent } from './modules/admino-screen/admino-screen.component';
 import { Subscription } from 'rxjs';
 import { ScreenElementScreen } from './modules/admino-screen/admino-screen.interfaces';
@@ -47,6 +48,13 @@ export interface ActionEvent {
   openScreens?: AdminoScreenComponent[];
   screenConfig?: ScreenElementScreen;
   initiatedBy?: any;
+}
+
+////////////
+export interface AdminoSnackbar {
+  timeout?: number;
+  style?: any;
+  screen?: ScreenElementScreen;
 }
 ////////////
 
@@ -112,7 +120,7 @@ export interface BackendResponse {
   setBottomButtons: AdminoButton[];
   setFocus: any;
   setPing: number;
-
+  setSnackbars: AdminoSnackbar[];
   startAction: AdminoAction[];
 
   closePopup: boolean | string;

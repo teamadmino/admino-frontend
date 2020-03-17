@@ -1,3 +1,4 @@
+import { AdminoSnackbarModule } from './modules/admino-snackbar/admino-snackbar.module';
 import { AdminoTooltipModule } from './modules/admino-tooltip/admino-tooltip.module';
 import { AdminoGridModule } from './modules/admino-grid/admino-grid.module';
 import { AdminoVirtualTableModule } from './modules/admino-virtual-table/admino-virtual-table.module';
@@ -53,7 +54,7 @@ registerLocaleData(localeHu, 'hu');
     AdminoCardModule,
     AdminoMenuModule,
     AdminoUniversalEditorModule,
-
+    AdminoSnackbarModule,
     AdminoFocusTrapModule,
     AdminoVirtualTableModule,
     AdminoGridModule,
@@ -74,7 +75,9 @@ registerLocaleData(localeHu, 'hu');
     AdminoUniversalEditorModule,
     AdminoFocusTrapModule,
     AdminoVirtualTableModule,
-    AdminoGridModule
+    AdminoGridModule,
+    AdminoSnackbarModule
+
   ],
   providers: [
     DecimalPipe,
