@@ -35,6 +35,17 @@
     // border: 1px dotted greenyellow;
     // border-radius: 2px;
     // padding: 5px;
+    margin-top: 1em;
+
+    &.firstrow {
+      margin-top: 0em;
+    }
+
+    &.inline {
+      display: inline-block;
+      margin-top: 0em;
+    }
+
   }
 
   .edit-mode & {

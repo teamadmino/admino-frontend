@@ -3,6 +3,9 @@ import { AdminoScreenElement } from '../admino-screen-element';
 import { AdminoTableDataSource } from '../../../admino-table/admino-table/admino-table.datasource';
 import { ScreenElementTable, ScreenElementChange } from '../../admino-screen.interfaces';
 import { AdminoTableComponent } from '../../../admino-table/admino-table/admino-table.component';
+import { takeUntil } from 'rxjs/operators';
+import { isEqual } from 'lodash';
+import { propExists } from '../../../../utils/propExists';
 
 @Component({
   selector: 'admino-new-table',
@@ -15,6 +18,18 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
 
   ngOnInit() {
 
+    this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((newVal) => {
+      // console.log(this.element.value !== undefined && !isEqual(this.element.value.keys, newVal.keys))
+      // console.log(this.element.value !== undefined && this.element.value.keys, newVal.keys)
+      if (this.element.value !== undefined && !isEqual(this.element.value.keys, newVal.keys)) {
+        const keyChangeAction = this.getAction('keyChange');
+        if (keyChangeAction) {
+          this.handleAction(keyChangeAction);
+        }
+      }
+    });
+
+
     const conf = this.element as ScreenElementTable;
     this.dataSource = new AdminoTableDataSource(
       {
@@ -22,12 +37,22 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
           this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after),
       }
     );
-
+  }
+  handleCellClick(e) {
+    const cellClickAction = this.getAction('cellClick');
+    if (cellClickAction) {
+      this.handleAction(cellClickAction);
+    }
+  }
+  handleHeaderCellClick(e) {
+    const headerClickAction = this.getAction('headerCellClick');
+    if (headerClickAction) {
+      this.handleAction(headerClickAction);
+    }
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
     let reinitNeeded = false;
     if (changes.columns) {
-      console.log("columnschange")
       reinitNeeded = true;
       this.table.columns = changes.columns.new;
     }
@@ -41,7 +66,37 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
     }
     if (changes.rowHeight) {
       reinitNeeded = true;
-      this.table.rowHeight = changes.rowHeight.new;
+    }
+
+
+    if (this.element.value && this.element.value.shift) {
+      delete this.element.value.shift;
+      delete this.directive.element.value.shift;
+    }
+    // console.log(this.element.value)
+    // console.log(changes.value.new)
+    if (propExists(changes.value)) {
+
+      this.dataSource.state = Object.assign(this.dataSource.state, this.element.value);
+      this.dataSource.setKeys(this.element.value.keys);
+      // console.log("stateMerge", changes.value)
+      // if (this.element.value.cursor !== undefined) {
+      //   this.table.dataSource.loadData().then((params) => {
+      //   });
+      // }
+
+      // if (propExists(this.element.value.index)) {
+      //   this.dataSource.state.index = this.element.value.index;
+      //   this.dataSource.state.cursorpos = this.element.value.cursorpos;
+      // }
+      // if (propExists(this.element.value.keys)) {
+      //   this.dataSource.state.keys = this.element.value.keys;
+      // }
+      // if (propExists(this.element.value.cursorPosPercent)) {
+      //   this.table.lastSetCursorPosPercent = this.element.value.cursorPosPercent;
+      // }
+      // this.table.update(this.element.value);
+
     }
 
     // if (changes.value) {
@@ -51,9 +106,7 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
     //   // }
     //   this.table.update(changes.value.new);
     // }
-    if (changes.refreshFrequency) {
 
-    }
     // this.table.updateSize();
     // .then((params) => {
     //   this.table.updateSize();
@@ -65,24 +118,33 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
     //   this.table.scrollEvent();
     // });
 
-    // console.log("ONCHANGE ONCHANGE")
     if (reinitNeeded) {
       this.table.updateSize();
       this.table.scrollEvent();
       this.table.pageChange();
-
     }
-    if (changes._forceRefresh || changes.forceRefresh) {
-      this.table.dataSource.loadData().then((params) => {
-        this.table.updateSize();
-        // this.table.updateRows();
-        this.table.prevRowStart = -1;
-        this.table.prevRowEnd = -1;
-        this.table.scrollEvent();
-        this.table.pageChange();
 
-        console.log("forceRefres")
-        console.log(this.table.dataSource.buffer.container)
+    if (changes.value || changes._forceRefresh || changes.forceRefresh) {
+      const shift = (propExists(changes.value) && propExists(changes.value.new) && changes.value.new.shift !== undefined) ? changes.value.new.shift : 0;
+      // console.log("shift", shift)
+      // console.log(this.dataSource.state)
+      this.table.dataSource.loadData(shift).then((params) => {
+
+        // if (shift !== 0) {
+        // }
+        this.table.gotoPos(this.dataSource.viewpos);
+
+
+        // this.table.prevRowStart = -1;
+        // this.table.prevRowEnd = -1;
+
+        // if (propExists(changes.value) && propExists(changes.value.new) && isEqual(changes.value.new.keys, changes.value.old.keys) === false) {
+        //   console.log("GOTOPOS", changes.value.new.keys, changes.value.old.keys)
+        // } else {
+        //   this.table.updateSize();
+        //   this.table.scrollEvent();
+        //   this.table.pageChange();
+        // }
       });
     }
   }

@@ -1,8 +1,9 @@
-import { AdminoTableDataSource, VirtualDataSourceInfoColumn } from './admino-table.datasource';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
+import { AdminoTableDataSource, VirtualDataSourceInfoColumn, DataSourceState } from './admino-table.datasource';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormatService } from 'admino/src/lib/services/format.service';
+import { adminoTableAnimation } from './admino-table.animation';
 
 export interface VirtualRow {
   virtualId: number;
@@ -14,15 +15,19 @@ export interface VirtualRow {
 @Component({
   selector: 'admino-table',
   templateUrl: './admino-table.component.html',
-  styleUrls: ['./admino-table.component.scss']
+  styleUrls: ['./admino-table.component.scss'],
+  animations: [adminoTableAnimation]
+
 })
 export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
+  @Output() valueChange: EventEmitter<any> = new EventEmitter();
+  @Output() cellClick: EventEmitter<any> = new EventEmitter();
+  @Output() headerCellClick: EventEmitter<any> = new EventEmitter();
 
   @Input() dataSource: AdminoTableDataSource;
   _columns: any[];
   @Input() public set columns(v: any) {
-    console.log("columns")
     this._columns = v;
     this.updateColumns();
   }
@@ -37,7 +42,15 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public get indexes(): any {
     return this._indexes;
   }
-
+  _autoRefresh = 0;
+  @Input() public set autoRefresh(v: any) {
+    this._autoRefresh = v;
+    this.dataSource.autoRefresh = this.autoRefresh;
+    this.dataSource.setAutoRefresh();
+  }
+  public get autoRefresh(): any {
+    return this._autoRefresh;
+  }
 
 
 
@@ -52,8 +65,11 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   vrows: VirtualRow[] = [];
-  rowHeight = 50;
+
+  @Input() headerHeight = 50;
+  @Input() rowHeight = 50;
   roundedRowHeight = 50;
+
   viewportSize = 0;
   browserMaxSize = 0;
 
@@ -62,6 +78,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   largePageSize = 30000;
   lastLargePage = 0;
   rowCountOnLastLargePage = 0;
+  notfittingRowHeight = 0;
   // smallPagination
   smallPage = 0;
   visibleRowCount = 10;
@@ -83,10 +100,18 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   rowStart = 0;
   rowEnd = 0;
-  prevRowStart = 0;
-  prevRowEnd = 0;
+  prevRowStart = -1;
+  prevRowEnd = -1;
 
-  asd = 1;
+  asd = 100;
+  timeoutHelper;
+
+  @HostListener('window:resize', ['$event'])
+  resize(event: MouseEvent) {
+    this.updateSize();
+    this.scrollEvent();
+  }
+
 
   @HostListener('mouseup', ['$event'])
   onMouseup(event: MouseEvent) {
@@ -96,18 +121,27 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.browserMaxSize = this.calcMaxBrowserScrollSize();
-    this.reinit();
     // this.gotoPos(900719000);
     // this.gotoPos(9007199254740991);
     // this.gotoPos(9007199254740991);
+    // setTimeout((params) => {
+    //   this.gotoPos(1);
+
+    // }, 100)
 
     // setInterval(() => {
     //   this.gotoPos(this.asd);
-    //   this.asd += 100000;
+    //   // this.asd += 10000;
     // }, 1000);
     // this.gotoPos(9007199254740991);
   }
   ngAfterViewInit() {
+
+    this.dataSource.loadDataStart.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      this.valueChange.next(value);
+    });
+
+
     this.dataSource.connect().pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) => {
       if (data) {
         // console.log('browse response');
@@ -116,6 +150,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.totalsize = this.dataSource.totalsize;
           this.updateSize();
           this.pageChange();
+          this.calculateWidths();
         }
         this.updateRows();
         for (const vrow of this.vrows) {
@@ -123,6 +158,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         // this.vsRef.patchData(this.dataSource.rows);
         this.cd.detectChanges();
+
         // console.log("count", this.dataSource.count)
         // if (this.lastSetCursorPosPercent != null) {
         //   this.scrollToSelected(this.lastSetCursorPosPercent);
@@ -131,33 +167,66 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // }
 
       }
+      this.valueChange.next(this.dataSource.state);
     });
-    this.dataSource.loadData();
+    this.timeoutHelper = setTimeout((params) => {
+      this.reinit();
+      this.updateDataSource(true);
+
+    });
+
   }
   reinit() {
     this.updateSize();
     this.updateRows();
     this.pageChange();
+
     this.prevRowStart = this.rowStart;
     this.prevRowEnd = this.rowEnd;
 
   }
+  // update(state: DataSourceState) {
+
+  //   this.dataSource.state = Object.assign(this.dataSource.state, state);
+  //   this.dataSource.state.shift = 0;
+  //   // console.log("state", this.dataSource.state);
+  //   const shift = state.shift !== undefined ? state.shift : 0;
+  //   this.dataSource.loadData(shift).then(() => {
+  //     this.gotoPos(this.dataSource.viewpos);
+
+  //   });
+  // }
+  setSelectedHeader(columnIndex) {
+    this.dataSource.state.selectedHeaderColumnIndex = columnIndex;
+    this.headerCellClick.next();
+  }
+  setSelected(vrow: VirtualRow, columnIndex, rowIndex) {
+    if (vrow.data && vrow.data.data) {
+      this.dataSource.cursorAbsPos = vrow.absoluteId;
+      this.dataSource.setKeys(vrow.data.data);
+    }
+    this.dataSource.state.cursorpos = vrow.absoluteId - this.rowStart;
+    // this.dataSource.state.cursor = vrow.absoluteId - this.rowStart;
+    this.dataSource.state.selectedColumnIndex = columnIndex;
+    this.cellClick.next();
+    this.updateDataSource(true);
+    // this.dataSource.loadData();
+    // console.log(vrow.data)
+  }
   gotoPos(absoluteId = 0) {
+    let lastRowFix = 0;
     if (absoluteId >= this.adjustedTotalsize) {
       absoluteId = this.adjustedTotalsize;
+      lastRowFix = this.notfittingRowHeight;
     }
+
     const targetPage = this.largePageSize > 0 ? Math.floor(absoluteId / this.largePageSize) : 0;
     this.largePage = targetPage;
     this.pageChange();
-    // console.log("targetPage", targetPage);
-    // absoluteId = absoluteId - this.lpage;
 
-    // const remainder = absoluteId > this.lpageSize && (this.lpageSize - 1) > 0 ? absoluteId % (this.lpageSize - 1) : absoluteId;
     const remainder = this.largePageSize > 0 ? absoluteId % (this.largePageSize) : 0;
-    this.tableRef.nativeElement.scrollTop = (remainder + this.largePageCoeff) * this.roundedRowHeight;
-    // console.log(this.tableRef.nativeElement.scrollTop);
+    this.tableRef.nativeElement.scrollTop = (remainder + this.largePageCoeff) * this.roundedRowHeight + lastRowFix;
     this.updateRows();
-    // console.log(targetPage);
   }
   scrollbarMouseDown() {
     this.manualScroll = true;
@@ -166,11 +235,13 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.manualScroll) {
       const target = (this.scrollerRef.nativeElement.scrollTop /
         (this.scrollerRef.nativeElement.scrollHeight - this.scrollerRef.nativeElement.clientHeight))
-        * this.adjustedTotalsize;
+        * (this.adjustedTotalsize);
+      console.log(target)
       this.gotoPos(target);
     }
   }
   scrollEvent() {
+    console.log("scrololEvent")
     // console.log(asd === asd + 10000);
     // console.log(9007199254740991 * 9007199254740991);
 
@@ -185,12 +256,13 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollPos = this.tableRef.nativeElement.scrollTop;
     // console.log(this.largePage, this.lastLargePage)
     // console.log((this.rowCountOnLastLargePage + 1) * this.roundedRowHeight - 1)
-    if (this.largePage === this.lastLargePage && this.scrollPos >= (this.rowCountOnLastLargePage + 1) * this.roundedRowHeight - 1) {
-      this.scrollPos = this.tableRef.nativeElement.scrollTop = (this.rowCountOnLastLargePage + 1) * this.roundedRowHeight - 1;
+    const scrollmax = (this.rowCountOnLastLargePage + 1) * this.roundedRowHeight + this.notfittingRowHeight - 1;
+    if (this.largePage === this.lastLargePage && this.scrollPos >= scrollmax) {
+      this.scrollPos = this.tableRef.nativeElement.scrollTop = scrollmax;
     }
 
     // && this.adjustedTotalsize > (this.lpage + 1) * this.lpageSize
-    console.log(this.scrollPos, this.maxScrollPos)
+    // console.log(this.scrollPos, this.maxScrollPos)
     if (this.scrollPos >= this.maxScrollPos && this.largePage < this.lastLargePage) {
       this.largePage++;
       this.pageChange();
@@ -224,9 +296,9 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.prevScrollPos = this.scrollPos;
   }
 
-  updateDataSource() {
+  updateDataSource(force = false) {
+    if (force || this.prevRowStart !== this.rowStart || this.prevRowEnd !== this.rowEnd) {
 
-    if (this.prevRowStart !== this.rowStart || this.prevRowEnd !== this.rowEnd) {
       // if (this.prevRowEnd < this.rowEnd) {
       //   this.dataSource.buffer.clear(this.prevRowEnd + 1, this.rowEnd);
       // }
@@ -236,17 +308,20 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       for (const vrow of this.vrows) {
         vrow.data = this.dataSource.buffer.get(vrow.absoluteId);
       }
-      const count = this.visibleRowCount;
+      const count = this.visibleRowCount - 2;
+      console.log("count", count)
+      //  (this.visibleRowCount - 1) > this.totalsize ? this.totalsize : this.visibleRowCount - 1;
       this.dataSource.state.count = count;
       // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
       // console.log(this.dataSource.buffer.container);
       // console.log(this.dataSource.buffer.container);
-      this.dataSource.state.cursorpos = -this.rowStart;
+      this.dataSource.state.cursorpos = -(this.rowStart - this.dataSource.cursorAbsPos);
       this.dataSource.loadData();
       this.cd.detectChanges();
     }
     this.prevRowStart = this.rowStart;
     this.prevRowEnd = this.rowEnd;
+
   }
 
   pageChange() {
@@ -280,14 +355,25 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.cd.markForCheck();
   }
   updateSize() {
+
+    this.calculateWidths();
+    this.cd.detectChanges();
     this.scrollBarWidth = this.getScrollbarWidth();
     // this.tableRef.nativeElement.style.paddingRight = this.scrollBarWidth + 'px';
     this.viewportSize = this.tableRef.nativeElement.clientHeight;
     const count = Math.floor(this.viewportSize / this.rowHeight);
-    this.roundedRowHeight = this.viewportSize / (count * this.rowHeight) * this.rowHeight;
+    // this.roundedRowHeight = Math.ceil(this.viewportSize / (count * this.rowHeight) * this.rowHeight);
+    this.roundedRowHeight = this.rowHeight;
 
     this.visibleRowCount = Math.ceil(this.viewportSize / this.roundedRowHeight) + 1;
+    if (this.totalsize === -1) {
+      this.totalsize = this.visibleRowCount;
+      // console.log("totatlsiz", this.tableRef.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight)
+    }
     this.visibleRowCount = this.visibleRowCount > this.totalsize ? this.totalsize : this.visibleRowCount;
+
+
+    this.notfittingRowHeight = (Math.ceil(this.viewportSize / this.roundedRowHeight) * this.roundedRowHeight) - this.viewportSize;
 
     this.largePageSize = Math.floor((this.browserMaxSize * 0.5) / this.roundedRowHeight);
     this.largePageSize = 150;
@@ -298,28 +384,44 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.dataSource.buffer.maxBufferSize = this.lpageSize;
     // this.dataSource.buffer.maxBufferSize = 100;
     // this.lastPage = this.lpageSize - 1 > 0 ? Math.floor(this.totalsize / (this.lpageSize - 1)) : 0;
-    console.log("lastLargePage", this.adjustedTotalsize, this.largePageSize)
-
     // this.rowCountOnLastPage = this.lpageSize >= this.adjustedTotalsize ? this.adjustedTotalsize : this.adjustedTotalsize % this.lpageSize;
 
     //if totalsize changes and table was already scrolled 
 
 
-    // this.vrows = Array.from(Array(this.rowNum).keys());
+    // this.vrows = []
+    // for (let i = 0; i < this.visibleRowCount; i++) {
+    //   this.vrows.push({ virtualId: this.vrows.length, absoluteId: this.vrows.length, pos: 0 });
+    // }
 
-    this.vrows = [];
-    for (let i = 0; i < this.visibleRowCount; i++) {
-      this.vrows[i] = { virtualId: i, absoluteId: i, pos: 0 };
+
+    const rowDifference = Math.abs(this.visibleRowCount - this.vrows.length);
+    if (this.vrows.length < this.visibleRowCount) {
+      for (let i = 0; i < rowDifference; i++) {
+        // this.vrows[i] = { virtualId: i, absoluteId: i, pos: 0 };
+        this.vrows.push({ virtualId: this.vrows.length, absoluteId: this.vrows.length, pos: 0 });
+      }
+    } else if (this.vrows.length > this.visibleRowCount) {
+      for (let i = 0; i < rowDifference; i++) {
+        this.vrows.pop();
+      }
     }
+    this.vrows.forEach((vrow) => {
+      vrow.pos = 0;
+    });
+
+
     this.maxScrollPos = Math.floor(this.largePageSize * this.roundedRowHeight);
     // this.fakeContentRef.nativeElement.style.height = this.maxScrollPos + (this.rowCount - 1) * this.roundedRowHeight + 'px';
     this.scrollerContentRef.nativeElement.style.height = (this.largePageSize * this.roundedRowHeight) + (this.visibleRowCount - 1) * this.roundedRowHeight + 'px';
     // this.tableRef.nativeElement.clientHeight * 5 + 'px';
-    this.fakeContentRef.nativeElement.style.width = 1 + 'px';
-    this.fakeContentRef.nativeElement.style.background = 'red';
+    // this.fakeContentRef.nativeElement.style.width = 1 + 'px';
+    // this.fakeContentRef.nativeElement.style.background = 'red';
 
     this.scrollerRef.nativeElement.style.width = this.scrollBarWidth + 'px';
-    this.calculateWidths();
+
+    // this.cd.detectChanges();
+    // this.calculateWidths();
   }
 
 
@@ -331,7 +433,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollPosCoeffNormal = this.scrollPosCoeff - this.smallPage * (this.visibleRowCount);
 
     // console.log("debug", this.scrollPosCoeff, this.lpage);
-    this.rowStart = this.scrollPosCoeff + this.largePage * this.largePageSize - this.largePageCoeff;
+    this.rowStart = this.scrollPosCoeff + (this.largePage * this.largePageSize) - this.largePageCoeff;
     this.rowEnd = this.rowStart + this.visibleRowCount - 1;
     for (const vrow of this.vrows) {
       this.updateRow(vrow);
@@ -361,14 +463,14 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   calculateWidths() {
-    // console.log('calculateWidths');
+    console.log('calculateWidths');
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
       return;
     }
     const fullWidth = this.bodyRef.nativeElement.clientWidth;
     // const trArr = (this.bodyRef.nativeElement as HTMLElement).children[0].children;
     this.scrollBarWidth = this.bodyRef.nativeElement.offsetWidth - this.bodyRef.nativeElement.clientWidth;
-
+    // console.log(fullWidth)
     // const actionsWidth = trArr[trArr.length - 1].clientWidth;
     // const availableWidth = fullWidth - actionsWidth - this.scrollBarWidth;
     const availableWidth = fullWidth;
@@ -383,6 +485,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columnWidths[i] = col.length * 10;
       }
     }
+    // this.cd.detectChanges();
     // this.columnWidths[this.dataSource.displayedColumns.length] = actionsWidth;
     // console.log(this.dataSource.displayedColumns);
   }
@@ -432,12 +535,17 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.displayedColumns = [];
     this.dataSource.keyIds = [];
     this._columns.forEach((col: VirtualDataSourceInfoColumn) => {
-      const column = { label: col.description, length: col.length, id: col.id, align: col.align, format: col.format };
+      const column = {
+        label: col.description, length: col.length, id: col.id, style: col.style, containerStyle: col.containerStyle,
+        headerStyle: col.headerStyle, headerContainerStyle: col.headerContainerStyle,
+        align: col.align, format: col.format
+      };
       this.dataSource.columns.push(column);
       this.dataSource.displayedColumns.push(column);
       this.dataSource.keyIds.push(col.id);
     });
   }
+
   updateIndexes() {
     this.dataSource.indexes = this.indexes;
     this._indexes.forEach((index) => {
@@ -450,9 +558,11 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
+
   format(val, format) {
     return this.formatService.format(val, format);
   }
+
   sortClicked(column, sorter) {
     // const dir = e.direction === 'asc' ? 1 : -1;
     sorter.direction = sorter.direction * -1;
@@ -471,18 +581,40 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource.state.index = 1;
       }
     }
+    this.updateDataSource(true);
     // this.vsRef.refresh();
-    this.dataSource.loadData().then(() => {
-      // this.cd.detectChanges();
-      // this.vsRef.refresh();
-      // this.scrollToSelected();
-    });
+    // this.dataSource.loadData().then(() => {
+    //   // this.cd.detectChanges();
+    //   // this.vsRef.refresh();
+    //   // this.scrollToSelected();
+    // });
   }
 
+  getHeaderContainerStyle(column, i) {
+    return Object.assign({
+      width: this.columnWidths[i] + 'px',
+      'max-width': this.columnWidths[i] + 'px',
+      'min-width': this.columnWidths[i] + 'px',
+      'text-align': column.align ? column.align : 'left'
+    }, column.headerContainerStyle);
+  }
 
+  getContainerStyle(column, i) {
+    return Object.assign(
+      {
+        width: this.columnWidths[i] + 'px',
+        'max-width': this.columnWidths[i] + 'px',
+        'min-width': this.columnWidths[i] + 'px',
+        'text-align': column.align ? column.align : 'left'
+      },
+      column.containerStyle);
+  }
   ngOnDestroy() {
     if (this.dataSource) {
       this.dataSource.disconnect();
+    }
+    if (this.timeoutHelper) {
+      clearTimeout(this.timeoutHelper)
     }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

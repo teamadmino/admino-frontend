@@ -8,15 +8,18 @@
         </tr>
     </tbody>
 </table> -->
-<div class="mainwrapper">
-    <div class="aheader">
-        <div class="ahcell" *ngFor="let column of dataSource.columns, let i=index"
-            [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px','text-align': column.align?column.align:'left'}">
-            <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
-                (click)="column.sortable?sortClicked(column, sorter):null;" #sorter>
-                {{column.label}}
-            </admino-admino-table-sorter>
+<div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="10" (adminoResize)="resize()">
+    <div class="aheader" [ngStyle]="{height: headerHeight+'px'}">
+        <div class="ahcell" (click)="setSelectedHeader(i)" *ngFor="let column of dataSource.columns, let i=index"
+            [ngStyle]="getHeaderContainerStyle(column,i)">
+            <div class="cell-content" [ngStyle]="column.headerStyle">
 
+                <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
+                    (click)="column.sortable?sortClicked(column, sorter):null;" #sorter>
+                    {{column.label}}
+                </admino-admino-table-sorter>
+
+            </div>
         </div>
 
     </div>
@@ -28,8 +31,10 @@
         <div class="atable" (scroll)="scrollEvent()" #tableRef>
             <div class="abody" #bodyRef>
                 <div class="fakecontent" #fakeContentRef></div>
-                <div class="arow" [ngStyle]="{height: roundedRowHeight+'px', top:vrow.pos+'px'}"
-                    *ngFor="let vrow of vrows">
+                <div class="arow" [ngClass]="{rowselected: vrow.absoluteId===this.dataSource.cursorAbsPos}"
+                    [ngStyle]="{height: roundedRowHeight+'px', top:vrow.pos+'px'}"
+                    *ngFor="let vrow of vrows; let rowIndex=index;"
+                    [@adminoTableRowAnimation]="vrow.data && vrow.data.data !==undefined">
                     <!-- <div class="acell">{{vrow.virtualId}}</div> -->
                     <!-- <div class="acell">{{vrow.absoluteId|number}}
                     {{vrow.data && vrow.data && vrow.data.bufferindex}}
@@ -38,9 +43,14 @@
             [adminoTooltip]="vrow.data && vrow.data.data && vrow.data.data[column.id]"
             -->
 
-                    <div class="acell" *ngFor="let column of dataSource.displayedColumns; let i=index"
-                        [ngStyle]="{width: columnWidths[i]+'px','max-width': columnWidths[i]+'px','min-width': columnWidths[i]+'px','text-align': column.align?column.align:'left'}"
-                        [innerHtml]="format(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format)">
+                    <div (click)="setSelected(vrow,i,rowIndex)" class="acell"
+                        *ngFor="let column of dataSource.displayedColumns; let i=index"
+                        [ngClass]="{columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos && i===this.dataSource.state.selectedColumnIndex, first:i===0, last:i===dataSource.displayedColumns.length-1}"
+                        [ngStyle]="getContainerStyle(column, i)">
+                        <div class="cell-content" [ngStyle]="column.style"
+                            [innerHtml]="format(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format)">
+
+                        </div>
                     </div>
 
                     <!-- <div class="acell">{{vrow.pos+'px'}}</div> -->
@@ -50,8 +60,12 @@
 
     </div>
 </div>
-
+<!-- 
 <table>
+    <tr>
+        <td>not fitting rowheight</td>
+        <td>{{this.notfittingRowHeight}}</td>
+    </tr>
     <tr>
         <td>rowStart - rowEnd</td>
         <td>{{this.rowStart}} - {{this.rowEnd}}</td>
@@ -125,7 +139,7 @@
         <td>{{this.viewportSize | number}}</td>
     </tr>
 </table>
-
+ -->
 
 <!-- <p>scrollTop:{{this.scrollPos }}</p>
 <p>maxScrollPos:{{this.maxScrollPos | number}}</p>

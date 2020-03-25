@@ -72,6 +72,7 @@ export interface ScreenElementScreen extends ScreenElement {
     popups?: ScreenPopup[];
 
     showBorder?: boolean;
+    inline?: boolean;
     allowEdit?: boolean;
     editMode?: boolean;
 

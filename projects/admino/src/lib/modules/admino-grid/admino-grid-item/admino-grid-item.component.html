@@ -20,6 +20,6 @@
         </button>
     </div>
 </div>
-<div class="content" [ngStyle]="this.style">
+<div class="content" [ngClass]="{inline:inline,firstrow: this.row===1}" [ngStyle]="this.style">
     <ng-content></ng-content>
 </div>

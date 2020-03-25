@@ -27,6 +27,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
 
   activeItem: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  @HostBinding('class.inline') @Input() inline = false;
 
 
   @HostListener('mousemove', ['$event'])
@@ -109,6 +110,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
       const itemsPerRows = [];
 
       for (const gridItem of arr) {
+        gridItem.inline = this.inline;
         gridItem.colnum = this.colnum;
         gridItem.gridComponent = this;
         gridItem.editMode = this.editMode;

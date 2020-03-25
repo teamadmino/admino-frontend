@@ -46,6 +46,20 @@ export class AdminoScreenElement {
         this.change(null);
     }
 
+    getAction(trigger: string) {
+        if (this.element.actions) {
+            const found = this.element.actions.find((action) => {
+                return action.trigger === trigger;
+            });
+            if (found) {
+                return found;
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
     handleAction(action: AdminoAction) {
         return new Promise((resolve, reject) => {
             const actionSub: ActionSubscription = {};

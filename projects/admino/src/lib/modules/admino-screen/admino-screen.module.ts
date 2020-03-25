@@ -34,6 +34,7 @@ import { TabsComponent } from './elements/tabs/tabs.component';
 import { ImageComponent } from './elements/image/image.component';
 import { SelectComponent } from './elements/select/select.component';
 import { SliderComponent } from './elements/slider/slider.component';
+import { ToggleComponent } from './elements/toggle/toggle.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -58,6 +59,7 @@ import { SliderComponent } from './elements/slider/slider.component';
     ImageComponent,
     SelectComponent,
     SliderComponent,
+    ToggleComponent,
   ],
   imports: [
     CommonModule,
@@ -98,7 +100,9 @@ import { SliderComponent } from './elements/slider/slider.component';
     TabsComponent,
     ImageComponent,
     SelectComponent,
-    SliderComponent
+    SliderComponent,
+    ToggleComponent,
+
   ]
 })
 export class AdminoScreenModule { }

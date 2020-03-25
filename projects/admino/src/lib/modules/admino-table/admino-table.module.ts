@@ -1,3 +1,4 @@
+import { AdminoResizeModule } from './../../directives/admino-resize/admino-resize.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminoTableComponent } from './admino-table/admino-table.component';
@@ -12,7 +13,9 @@ import { MaterialModulesModule } from '../material-modules/material-modules.modu
   imports: [
     CommonModule,
     MaterialModulesModule,
-    AdminoTooltipModule
+    AdminoTooltipModule,
+    AdminoResizeModule
+
   ],
   exports: [
     AdminoTableComponent

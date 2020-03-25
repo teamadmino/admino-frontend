@@ -1,2 +1,5 @@
-<admino-table [dataSource]="this.dataSource" [indexes]="this.element.indexes" [columns]="this.element.columns">
+<admino-table (valueChange)="setValue($event)" [dataSource]="this.dataSource" [indexes]="this.element.indexes"
+    [columns]="this.element.columns" [autoRefresh]="this.element.autoRefresh" [rowHeight]="element.rowHeight"
+    [headerHeight]="element.headerHeight" (cellClick)="handleCellClick($event)"
+    (headerCellClick)="handleHeaderCellClick($event)">
 </admino-table>

@@ -15,9 +15,9 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @Input() row: any = 1;
   @Input() col: any = 1;
   @Input() align = 'left';
-  @Input() height = null;
   @Input() style = {};
-
+  @Input() containerStyle = {};
+  inline = false;
 
   @Input() gridComponent: AdminoGridComponent;
   @HostBinding('class.edit-mode') @Input() editMode = false;
@@ -128,20 +128,26 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     if (this.row) {
       s += `grid-row: ${(this.row)} / span ${(this.rowSpan)}; `;
     }
-    if (this.row === 1 || this.editMode) {
-      s += 'margin-top: 0em;';
-    } else {
-      s += 'margin-top: 1em;';
-    }
+    // if (this.row === 1 || this.editMode) {
+    //   s += 'margin-top: 0em;';
+    // } else {
+    //   s += 'margin-top: 1em;';
+    // }
     // s += `grid-row: span ${(1)};`;
 
     if (this.rowSpan > 1) {
       s += 'align-self: stretch;';
       // s += 'grid-row: fr1;';
     }
+    s += this.convert(this.containerStyle);
     return s;
   }
 
+  convert(style) {
+    return Object.entries(style).reduce((styleString, [propName, propValue]) => {
+      return `${styleString}${propName}:${propValue};`;
+    }, '');
+  }
 
 
 

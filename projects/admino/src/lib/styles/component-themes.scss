@@ -800,4 +800,48 @@
   }
 
 
+
+
+
+
+  ////////////////////////////
+
+  .admino-table {
+    // background-color: mat-color($background, background) !important;
+
+    border-color: mat-color($foreground, divider) !important;
+
+    .scroller {
+      background-color: mat-color($background, background) !important;
+
+    }
+
+    .aheader {
+      border-color: mat-color($foreground, divider) !important;
+
+      .ahcell {
+        border-color: mat-color($foreground, divider) !important;
+
+      }
+    }
+
+    .arow {
+      &.rowselected {
+        background-color: lighten(mat-color($background, card), 8%) !important;
+
+      }
+
+      .acell {
+        border-color: mat-color($foreground, divider) !important;
+
+        &.columnselected {
+          box-shadow: inset 0px 0px 1px 1px mat-color($foreground, disabled) !important;
+
+        }
+      }
+    }
+
+
+
+  }
 }

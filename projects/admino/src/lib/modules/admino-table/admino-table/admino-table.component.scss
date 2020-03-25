@@ -22,8 +22,8 @@
 .mainwrapper {
   display: flex;
   flex-direction: column;
-  height: 500px;
-  max-height: 500px;
+  height: 100%;
+  max-height: 100%;
   position: relative;
   border: 1px solid red;
 
@@ -32,14 +32,36 @@
     min-height: 51px;
     width: 100%;
     display: flex;
-    align-items: center;
+    // align-items: center;
+    border-bottom: 1px solid red;
 
     .ahcell {
-      display: inline-block;
-      padding-right: 10px;
+      position: relative;
+      max-width: 100%;
+      min-width: 1px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: flex;
+      border-left: 1px solid red;
+
+      &.first {
+        border-left-width: 0;
+      }
+
+      &.last {
+        border-right: 1px solid red;
+      }
+
+      .cell-content {
+        align-self: center;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
     }
   }
 
@@ -52,7 +74,7 @@
 
     .scroller {
 
-      background: green;
+      // background: green;
       width: 10px;
       height: 100%;
       position: absolute;
@@ -64,13 +86,14 @@
     }
 
     .atable {
-      display: inline-block;
+      // display: inline-block;
       height: 100%;
-      width: calc(100% - 7px);
+      width: 100%;
+      // width: calc(100% - 7px);
       // overflow: hidden;
       overflow-x: auto;
       overflow-y: auto;
-      box-sizing: content-box;
+      // box-sizing: content-box;
       // padding-right: 10px;
       /* So the width will be 100% + 17px */
 
@@ -88,31 +111,61 @@
       // &::-webkit-scrollbar-thumb {
       //   background-color: transparent;
       // }
+      .fakecontent {
+        position: absolute;
+        width: 1px;
+        pointer-events: none;
+      }
 
       .abody {
         width: 100%;
         min-height: 1px;
         position: relative;
+        // border: 1px solid blueviolet;
 
         .arow {
           display: flex;
           // border: 1px solid grey;
-          box-shadow: inset 0px 0px 1px 1px green;
+          // box-shadow: inset 0px 0px 1px 1px green;
           position: absolute;
           // left: 0;
           min-width: 100%;
 
+          &.rowselected {}
+
           .acell {
             height: 100%;
+            box-sizing: border-box;
+
             border-left: 1px solid red;
+            border-bottom: 1px solid red;
             position: relative;
-            display: inline-block;
-            padding-right: 10px;
             max-width: 100%;
             min-width: 1px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            display: flex;
+
+            &.first {
+              border-left-width: 0;
+            }
+
+            &.last {
+              border-right: 1px solid red;
+            }
+
+            .cell-content {
+              align-self: center;
+              display: inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              padding-left: 10px;
+              padding-right: 10px;
+            }
+
+            &.columnselected {}
           }
         }
 

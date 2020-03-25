@@ -1,43 +1,41 @@
 <form [formGroup]="group" class="admino-screen " (submit)="onSubmit($event)" *ngIf="screenElement">
 
     <div class="scroll-area">
-        <div [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
-            [ngStyle]="screenElement.style">
-            <div class="row">
-                <div class="col pt-3 pb-3">
-                    <div class="border-color-accent">
+        <div class="screen-container"
+            [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
+            [ngStyle]="screenElement.groupStyle">
+            <div class="border-color-accent">
 
-                        <!-- <ng-container *ngFor="let element of getElementsOfType('main'); let i=index;"
+                <!-- <ng-container *ngFor="let element of getElementsOfType('main'); let i=index;"
                             adminoScreenElement [rootScreenComponent]="
                             this.rootScreenComponent" [element]="element" [parentGroup]="group"
                             [screenComponent]='this' [index]="i">
                         </ng-container> -->
 
-                        <admino-card [nopadding]="screenElement.isPopup?false:true"
-                            [opaque]="screenElement.isPopup || editMode && this !==this.rootScreenComponent"
-                            [showBorder]="_screenElement.showBorder" [height]="screenElement.height"
-                            [ngStyle]="{height: screenElement.height}">
+                <admino-card [nopadding]="screenElement.isPopup?false:true"
+                    [opaque]="screenElement.isPopup || editMode && this !==this.rootScreenComponent"
+                    [showBorder]="screenElement.showBorder" [height]="screenElement.height"
+                    [ngStyle]="{height: screenElement.height}">
 
-                            <admino-grid [allowEdit]="_screenElement.allowEdit" [editMode]="editMode" adminoTrapFocus
-                                [adminoTrapFocus]="this.rootScreenComponent===this"
-                                [colnum]="_screenElement.colNum!==undefined?_screenElement.colNum:12"
-                                [ngStyle]="{height: screenElement.height}" [height]="screenElement.height">
-                                <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
-                                    [col]="element.col!==undefined?element.col:1"
-                                    [row]="element.row!==undefined?element.row:i+1"
-                                    [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1" [hidden]="element.hidden"
-                                    [height]="element.height" [style]="element.style?element.style:{}"
-                                    [align]="element.align"
-                                    *ngFor="let element of getElementsOfType('main'); let i=index;">
-                                    <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
-                                        [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i">
-                                    </ng-container>
-                                </admino-grid-item>
-                            </admino-grid>
+                    <admino-grid [allowEdit]="_screenElement.allowEdit" [editMode]="editMode" adminoTrapFocus
+                        [adminoTrapFocus]="this.rootScreenComponent===this"
+                        [colnum]="_screenElement.colNum!==undefined?_screenElement.colNum:12"
+                        [ngStyle]="{height: screenElement.height}" [height]="screenElement.height"
+                        [inline]="screenElement.inline">
+                        <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
+                            [col]="element.col!==undefined?element.col:1"
+                            [row]="element.row!==undefined?element.row:i+1"
+                            [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1" [hidden]="element.hidden"
+                            [style]="element.style?element.style:{}" [align]="element.align"
+                            [containerStyle]="element.containerStyle?element.containerStyle:{}"
+                            *ngFor="let element of getElementsOfType('main'); let i=index;">
+                            <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
+                                [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i">
+                            </ng-container>
+                        </admino-grid-item>
+                    </admino-grid>
 
-                        </admino-card>
-                    </div>
-                </div>
+                </admino-card>
             </div>
         </div>
     </div>

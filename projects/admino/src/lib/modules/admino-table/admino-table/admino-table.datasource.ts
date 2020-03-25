@@ -11,6 +11,11 @@ export interface VirtualDataSourceInfoColumn {
     format: string;
     align: string;
     style: any;
+    containerStyle: any,
+
+    headerStyle: any;
+    headerContainerStyle: any;
+
     length: number;
     description: string;
 }
@@ -24,11 +29,13 @@ export interface VirtualDataSourceColumn {
     format: string;
     align: string;
     length: number;
+    style: any;
+    headerStyle: any;
 
     sortable?: boolean;
     sticky?: boolean;
 }
-export interface VirtualDataSourceState {
+export interface DataSourceState {
     keys: any;
     cursor: number;
     count: number;
@@ -38,8 +45,8 @@ export interface VirtualDataSourceState {
     cursorPosPercent: number;
     totalsize: number;
     cursorpos: number;
-    shift: number;
-
+    selectedColumnIndex: number;
+    selectedHeaderColumnIndex: number;
 }
 
 export class AdminoTableDataSource {
@@ -70,21 +77,27 @@ export class AdminoTableDataSource {
     rows: any = {};
     totalsize = 1;
 
-    state: VirtualDataSourceState = {
+    keyAbsolutePosition;
+
+    state: DataSourceState = {
         keys: { '#position': 'first' },
         cursor: 0,
-        count: 10,
+        count: 1,
         index: 1,
         before: 10,
         after: 10,
         cursorPosPercent: 0,
         totalsize: 0,
         cursorpos: 0,
-        shift: 0
+        selectedColumnIndex: 0,
+        selectedHeaderColumnIndex: 0
     };
 
     buffer = new AdminoTableBuffer();
 
+
+    refreshTimeout;
+    autoRefresh = 0;
     constructor(public config: AdminoTableDataSourceConfig) {
     }
     connect(): Observable<any[]> {
@@ -97,6 +110,19 @@ export class AdminoTableDataSource {
         this.ngUnsubscribe.complete();
     }
 
+    setAutoRefresh() {
+        if (this.refreshTimeout) {
+            clearTimeout(this.refreshTimeout);
+        }
+        if (this.autoRefresh) {
+            this.refreshTimeout = setTimeout(() => {
+                this.loadData();
+                if (this.autoRefresh) {
+                    this.setAutoRefresh();
+                }
+            }, this.autoRefresh);
+        }
+    }
 
     loadData(shift: number = 0) {
 
@@ -115,8 +141,8 @@ export class AdminoTableDataSource {
             //     after: this.count,
             //     cursorPosPercent: this.cursor / (this.count - 1),
             // };
-            this.state.before = this.state.count;
-            this.state.after = this.state.after;
+            // this.state.before = this.state.before;
+            // this.state.after = this.state.after;
             this.state.cursorPosPercent = this.state.cursor / (this.state.count - 1);
             this.loadDataStart.next(this.state);
 
@@ -153,10 +179,8 @@ export class AdminoTableDataSource {
         return calculatedShift;
     }
 
-    setKeys(row) {
-        this.state.keys = cloneDeep(row);
-        delete this.state.keys.__index__;
-        delete this.state.keys.__loaded__;
+    setKeys(rowData) {
+        this.state.keys = cloneDeep(rowData);
     }
 
     updateData(data) {
@@ -180,29 +204,25 @@ export class AdminoTableDataSource {
             this.cursorAbsPos = this.viewpos + cursorpos;
         }
 
-        // for (let i = 0; i < this.data.before.length; i++) {
-        //     const d = this.data.before[i];
-        //     d.__index__ = this.viewpos - this.data.before.length + i;
-        //     d.__loaded__ = true;
-        //     this.rows[d.__index__] = d;
-        //     this.buffer.set(d.__index__, d);
-        // }
+        for (let i = 0; i < this.data.before.length; i++) {
+            const d = this.data.before[i];
+            const index = this.viewpos - this.data.before.length + i;
+            this.rows[index] = d;
+            this.buffer.set(index, d);
+        }
 
         for (let i = 0; i < this.data.data.length; i++) {
             const d = this.data.data[i];
-            d.__index__ = this.viewpos + i;
-            d.__loaded__ = true;
-            this.rows[d.__index__] = d;
-            this.buffer.set(d.__index__, d);
+            this.rows[this.viewpos + i] = d;
+            this.buffer.set(this.viewpos + i, d);
         }
 
-        // for (let i = 0; i < this.data.after.length; i++) {
-        //     const d = this.data.after[i];
-        //     d.__index__ = this.viewpos + this.data.data.length + i;
-        //     d.__loaded__ = true;
-        //     this.rows[d.__index__] = d;
-        //     this.buffer.set(d.__index__, d);
-        // }
+        for (let i = 0; i < this.data.after.length; i++) {
+            const d = this.data.after[i];
+            const index = this.viewpos + this.data.data.length + i;
+            this.rows[index] = d;
+            this.buffer.set(index, d);
+        }
         // console.log(this.buffer.container);
         // this.cursorAbsPos = this.viewpos + parseInt(data.cursorpos, 10);
         this.state.cursorpos = parseInt(data.cursorpos, 10);

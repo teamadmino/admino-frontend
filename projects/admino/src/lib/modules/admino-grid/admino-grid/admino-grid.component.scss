@@ -13,6 +13,11 @@
 
   }
 
+  &.inline {
+    .grid {
+      display: block !important;
+    }
+  }
 }
 
 .testdiv {
@@ -59,6 +64,8 @@
   position: relative;
   display: inline-grid;
   width: 100%;
+
+
 
   &.edit-mode {
     border: 1px dotted greenyellow;

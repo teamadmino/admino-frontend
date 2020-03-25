@@ -1,3 +1,4 @@
+import { ToggleComponent } from './elements/toggle/toggle.component';
 import { SliderComponent } from './elements/slider/slider.component';
 import { ColorpickerComponent } from './elements/colorpicker/colorpicker.component';
 import { ChartjsComponent } from './elements/chartjs/chartjs.component';
@@ -58,6 +59,7 @@ const componentMapper = {
   image: ImageComponent,
   select: SelectComponent,
   slider: SliderComponent,
+  toggle: ToggleComponent,
 };
 
 @Directive({
@@ -106,6 +108,10 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // })
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
 
+      // if (this.element.id === 'uszips') {
+      //   console.log("value", this.element);
+      //   // console.log(this.activeElementConfig.value && cloneDeep(this.activeElementConfig.value));
+      // }
       if (this.componentRef && this.element) {
 
         // Destroy
@@ -133,7 +139,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
           }
         }
 
-        const changes = deepCompare(this.activeElementConfig, this.element, ['value']);
+        const changes = cloneDeep(deepCompare(this.activeElementConfig, this.element, ['value']));
 
         if (this.themeChangeSub) {
           this.themeChangeSub.unsubscribe();
@@ -153,6 +159,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
 
         if (Object.keys(changes).length > 0) {
+          // if (this.element.id === 'uszips') {
+          //   console.log("ONCHANGE")
+          // }
           this.elementComponent.onChange(changes);
           this.elementComponent.change(changes);
         }
@@ -182,7 +191,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   removeEventsFromConfig(config) {
     for (const key of Object.keys(config)) {
-      if (key.startsWith('_') || key === 'value' || key === 'forceRefresh') {
+      // || key === 'value' 
+      if (key.startsWith('_') || key === 'forceRefresh') {
         delete config[key];
       }
     }
@@ -234,9 +244,9 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // console.log(this.activeElementConfig.changeAction)
     // needs to solve group
     this.valueChangeTimeout = setTimeout(() => {
-      this.element.value = value;
-      this.activeElementConfig.value = value;
       this.valueChangeEvent.next(value);
+      this.element.value = cloneDeep(value);
+      this.activeElementConfig.value = cloneDeep(value);
       if (this.activeElementConfig.changeAction) {
         if (this.activeElementConfig.changeAction.filterValue === undefined) {
           const action = cloneDeep(this.activeElementConfig.changeAction);

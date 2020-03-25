@@ -5,7 +5,8 @@
         "themeColor": "gold",
         "isDark": true
     },
-    "loginScreen": "_admino:system/fbzlogin",
+    "loginScreen1": "_admino:system/login",
+    "loginScreen": "_test:t1/test1",
     "userConfigScreen": "UserConfigScreen",
     "editorEndpoint": "_editorEndpoint",
     "translations": {}
