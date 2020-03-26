@@ -61,7 +61,7 @@ export class AdminoApiService {
       { downloadid }, { responseType: 'blob' });
   }
 
-  list(view: string, keys: any, cursorpos: number, shift: number, count: number, index: number, before: number = 0, after: number = 0) {
+  list(view: string, keys: any, cursorpos: number, shift: number, count: number, index: number, before: number = 0, after: number = 0, customVars: any = {}) {
     const dummySubject = new Subject();
     const body = {
       cursor: cursorpos.toString(),
@@ -72,17 +72,64 @@ export class AdminoApiService {
       table: view,
       before: before.toString(),
       after: after.toString(),
+      customVars
     };
     // this.http.post(this.BASE_URL + '/v2ping',
     //   JSON.stringify({ test: 'áÁíÍóÓöÖőŐúÚüÜűŰéÉ' })).pipe(map((response: any) => { })).subscribe();
     this.http.post(this.BASE_URL + this.BROWSE, body).pipe(map((response: any) => {
       // response.data.splice(Math.floor(Math.random() * response.data.length), 0, { id: Math.random().toString() });
 
+      // response.predefinedStyles = [
+      //   { background: 'yellow' },
+      //   { opacity: 1 },
+      // ];
+      // // response.colorPaths = [
+      // //   'predefinedStyles.background',
+      // //   'data.oszlop1def.style.background',
+      // // ];
+      // const fun = (row) => {
+      //   row.oszlop1def = {
+      //     predefinedStyleId: 0,
+      //     predefinedContainerStyleId: 1,
+      //     style: {
+      //       // border: '2px solid yellow'
+      //     },
+      //     containerStyle: {
+      //       background: "rgba(255,255,0,0.1)"
+      //     },
+      //   };
+
+      //   row.oszlop2def = {
+      //     predefinedStyleId: 0,
+      //     style: {
+      //       border: '2px solid lightgreen'
+      //     },
+
+      //     bar: {
+      //       display: 'block', // csak akkor jelenik meg ha ez meg van határozva
+      //       width: Math.random() * 100 + '%',
+      //       height: "50%",
+      //       top: "25%",
+      //       "border-bottom-left-radius": "30px",
+      //       'background-color': 'green',
+      //       opacity: 0.5,
+      //       right: 0,
+      //       "transition-duration": "0.25s"
+      //     }
+      //   };
+      // }
+
       // response.data.forEach(row => {
-      //   row.symbol = this.dummyBaseData[parseInt(row.id, 10)].symbol;
-      //   row.name = this.dummyBaseData[parseInt(row.id, 10)].name;
-      //   row.text = this.dummyBaseData[parseInt(row.id, 10)].text;
+      //   fun(row);
       // });
+      // response.after.forEach(row => {
+      //   fun(row);
+      // });
+      // response.before.forEach(row => {
+      //   fun(row);
+      // });
+
+
 
       // setTimeout((params) => {
       dummySubject.next(response);

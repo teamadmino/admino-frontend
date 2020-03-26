@@ -16,6 +16,8 @@ export interface VirtualDataSourceInfoColumn {
     headerStyle: any;
     headerContainerStyle: any;
 
+    extraCellDefinitions: any;
+
     length: number;
     description: string;
 }
@@ -76,6 +78,7 @@ export class AdminoTableDataSource {
     viewpos = 0;
     rows: any = {};
     totalsize = 1;
+    predefinedStyles = [];
 
     keyAbsolutePosition;
 
@@ -105,6 +108,9 @@ export class AdminoTableDataSource {
     }
 
     disconnect(): void {
+        if (this.refreshTimeout) {
+            clearTimeout(this.refreshTimeout);
+        }
         this.resultSubject.complete();
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
@@ -184,6 +190,7 @@ export class AdminoTableDataSource {
     }
 
     updateData(data) {
+        console.log(JSON.stringify(data))
         if (!data || !data.data) {
             return;
         }
@@ -192,11 +199,13 @@ export class AdminoTableDataSource {
         const viewpos = parseInt(data.viewpos, 10);
         const cursorpos = parseInt(data.cursorpos, 10);
 
+
         this.data = data;
         this.totalsize = totalsize;
         this.state.totalsize = this.totalsize;
         this.viewpos = viewpos - 1;
         this.state.keys = data.cursor;
+        this.predefinedStyles = data.predefinedStyles;
 
         this.rows = [];
 

@@ -147,6 +147,16 @@
             text-overflow: ellipsis;
             display: flex;
 
+            .bar {
+              display: none;
+              position: absolute;
+              top: 0;
+              height: 100%;
+              width: 100%;
+              background: red;
+              transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            }
+
             &.first {
               border-left-width: 0;
             }
@@ -156,6 +166,7 @@
             }
 
             .cell-content {
+              z-index: 1;
               align-self: center;
               display: inline-block;
               white-space: nowrap;

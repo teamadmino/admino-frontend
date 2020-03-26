@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { AdminoTableDataSource, VirtualDataSourceInfoColumn, DataSourceState } from './admino-table.datasource';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
@@ -537,7 +538,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this._columns.forEach((col: VirtualDataSourceInfoColumn) => {
       const column = {
         label: col.description, length: col.length, id: col.id, style: col.style, containerStyle: col.containerStyle,
-        headerStyle: col.headerStyle, headerContainerStyle: col.headerContainerStyle,
+        headerStyle: col.headerStyle, headerContainerStyle: col.headerContainerStyle, extraCellDefinitions: col.extraCellDefinitions,
         align: col.align, format: col.format
       };
       this.dataSource.columns.push(column);
@@ -598,16 +599,54 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       'text-align': column.align ? column.align : 'left'
     }, column.headerContainerStyle);
   }
+  getHeaderStyle(column, i) {
+    return column.headerStyle;
+  }
 
-  getContainerStyle(column, i) {
-    return Object.assign(
+
+  getContainerStyle(column, data, i) {
+    const containerStyle = Object.assign(
       {
         width: this.columnWidths[i] + 'px',
         'max-width': this.columnWidths[i] + 'px',
-        'min-width': this.columnWidths[i] + 'px',
-        'text-align': column.align ? column.align : 'left'
+        'min-width': this.columnWidths[i] + 'px'
       },
       column.containerStyle);
+
+    const extra = data && data[column.extraCellDefinitions];
+    const extraStyle = extra && extra.containerStyle;
+    const extraPredefinedStyle = extra && extra.predefinedContainerStyleId && this.dataSource.predefinedStyles
+      && this.dataSource.predefinedStyles[extra.predefinedContainerStyleId];
+
+    if (extraStyle) {
+      Object.assign(containerStyle, extraStyle);
+    }
+    if (extraPredefinedStyle) {
+      Object.assign(containerStyle, extraPredefinedStyle);
+    }
+
+    return containerStyle;
+
+  }
+  getStyle(column, data, i) {
+    const style = column.style ? cloneDeep(column.style) : {};
+    const extra = data && data[column.extraCellDefinitions];
+    const extraStyle = extra && extra.style;
+    const extraPredefinedStyle = extra && extra.predefinedStyleId && this.dataSource.predefinedStyles
+      && this.dataSource.predefinedStyles[extra.predefinedStyleId];
+
+    if (extraStyle) {
+      Object.assign(style, extraStyle);
+    }
+    if (extraPredefinedStyle) {
+      Object.assign(style, extraPredefinedStyle);
+    }
+    return style;
+  }
+  getBarStyle(column, data, i) {
+    const extra = data && data[column.extraCellDefinitions];
+    const barStyle = extra && extra.bar;
+    return barStyle;
   }
   ngOnDestroy() {
     if (this.dataSource) {

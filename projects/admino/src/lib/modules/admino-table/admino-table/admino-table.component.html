@@ -12,7 +12,7 @@
     <div class="aheader" [ngStyle]="{height: headerHeight+'px'}">
         <div class="ahcell" (click)="setSelectedHeader(i)" *ngFor="let column of dataSource.columns, let i=index"
             [ngStyle]="getHeaderContainerStyle(column,i)">
-            <div class="cell-content" [ngStyle]="column.headerStyle">
+            <div class="cell-content" [ngStyle]="getHeaderStyle(column,i)">
 
                 <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
                     (click)="column.sortable?sortClicked(column, sorter):null;" #sorter>
@@ -46,11 +46,12 @@
                     <div (click)="setSelected(vrow,i,rowIndex)" class="acell"
                         *ngFor="let column of dataSource.displayedColumns; let i=index"
                         [ngClass]="{columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos && i===this.dataSource.state.selectedColumnIndex, first:i===0, last:i===dataSource.displayedColumns.length-1}"
-                        [ngStyle]="getContainerStyle(column, i)">
-                        <div class="cell-content" [ngStyle]="column.style"
+                        [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data, i)">
+                        <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)"
                             [innerHtml]="format(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format)">
 
                         </div>
+                        <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)"></div>
                     </div>
 
                     <!-- <div class="acell">{{vrow.pos+'px'}}</div> -->
