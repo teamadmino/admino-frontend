@@ -190,7 +190,6 @@ export class AdminoTableDataSource {
     }
 
     updateData(data) {
-        console.log(JSON.stringify(data))
         if (!data || !data.data) {
             return;
         }

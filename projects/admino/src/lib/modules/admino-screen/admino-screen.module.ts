@@ -35,6 +35,9 @@ import { ImageComponent } from './elements/image/image.component';
 import { SelectComponent } from './elements/select/select.component';
 import { SliderComponent } from './elements/slider/slider.component';
 import { ToggleComponent } from './elements/toggle/toggle.component';
+import { CodeComponent } from './elements/code/code.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { IframeComponent } from './elements/iframe/iframe.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -60,6 +63,8 @@ import { ToggleComponent } from './elements/toggle/toggle.component';
     SelectComponent,
     SliderComponent,
     ToggleComponent,
+    CodeComponent,
+    IframeComponent,
   ],
   imports: [
     CommonModule,
@@ -74,7 +79,8 @@ import { ToggleComponent } from './elements/toggle/toggle.component';
     AdminoModalModule,
     AdminoTableModule,
     ChartsModule,
-    ZXingScannerModule
+    ZXingScannerModule,
+    MonacoEditorModule
   ],
   exports: [
     AdminoScreenComponent,
@@ -102,6 +108,8 @@ import { ToggleComponent } from './elements/toggle/toggle.component';
     SelectComponent,
     SliderComponent,
     ToggleComponent,
+    CodeComponent,
+    IframeComponent,
 
   ]
 })

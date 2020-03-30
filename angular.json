@@ -60,7 +60,12 @@
             "aot": false,
             "assets": [
               "projects/frontend/src/favicon.ico",
-              "projects/frontend/src/assets"
+              "projects/frontend/src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-monaco-editor/assets/monaco",
+                "output": "./assets/monaco/"
+              }
             ],
             "styles": [
               "projects/frontend/src/styles.scss",

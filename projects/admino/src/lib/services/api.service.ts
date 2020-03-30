@@ -82,6 +82,7 @@ export class AdminoApiService {
       // response.predefinedStyles = [
       //   { background: 'yellow' },
       //   { opacity: 1 },
+      //   { opacity: 0.2 },
       // ];
       // // response.colorPaths = [
       // //   'predefinedStyles.background',
@@ -95,6 +96,7 @@ export class AdminoApiService {
       //       // border: '2px solid yellow'
       //     },
       //     containerStyle: {
+      //       // 'border-color': 'red',
       //       background: "rgba(255,255,0,0.1)"
       //     },
       //   };
@@ -105,6 +107,7 @@ export class AdminoApiService {
       //       border: '2px solid lightgreen'
       //     },
 
+      //     predefinedBarStyleId: 2,
       //     bar: {
       //       display: 'block', // csak akkor jelenik meg ha ez meg van határozva
       //       width: Math.random() * 100 + '%',
@@ -117,7 +120,7 @@ export class AdminoApiService {
       //       "transition-duration": "0.25s"
       //     }
       //   };
-      // }
+      // };
 
       // response.data.forEach(row => {
       //   fun(row);

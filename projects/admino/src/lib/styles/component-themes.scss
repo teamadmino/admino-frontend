@@ -806,7 +806,7 @@
 
   ////////////////////////////
 
-  .admino-table {
+  .admino-table.mainwrapper {
     // background-color: mat-color($background, background) !important;
 
     border-color: mat-color($foreground, divider) !important;
@@ -825,18 +825,25 @@
       }
     }
 
-    .arow {
-      &.rowselected {
-        background-color: lighten(mat-color($background, card), 8%) !important;
+    .awrapper {
 
-      }
+      .abody {
 
-      .acell {
-        border-color: mat-color($foreground, divider) !important;
+        .arow {
+          &.rowselected {
+            background-color: lighten(mat-color($background, card), 8%) !important;
+            box-shadow: inset 0px 0px 1px 1px rgba(mat-color($foreground, disabled), 0.3) !important;
 
-        &.columnselected {
-          box-shadow: inset 0px 0px 1px 1px mat-color($foreground, disabled) !important;
+          }
 
+          .acell {
+            border-color: mat-color($foreground, divider);
+
+            &.columnselected {
+              box-shadow: inset 0px 0px 1px 1px mat-color($foreground, disabled) !important;
+
+            }
+          }
         }
       }
     }

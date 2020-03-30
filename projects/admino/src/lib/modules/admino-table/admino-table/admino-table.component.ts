@@ -377,7 +377,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.notfittingRowHeight = (Math.ceil(this.viewportSize / this.roundedRowHeight) * this.roundedRowHeight) - this.viewportSize;
 
     this.largePageSize = Math.floor((this.browserMaxSize * 0.5) / this.roundedRowHeight);
-    this.largePageSize = 150;
+    this.largePageSize = 15000;
     this.adjustedTotalsize = this.totalsize - (this.visibleRowCount - 1);
     this.lastLargePage = Math.floor(this.adjustedTotalsize / this.largePageSize);
     this.rowCountOnLastLargePage = this.adjustedTotalsize % this.largePageSize;
@@ -615,7 +615,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const extra = data && data[column.extraCellDefinitions];
     const extraStyle = extra && extra.containerStyle;
-    const extraPredefinedStyle = extra && extra.predefinedContainerStyleId && this.dataSource.predefinedStyles
+    const extraPredefinedStyle = extra && extra.predefinedContainerStyleId !== undefined && this.dataSource.predefinedStyles !== undefined
       && this.dataSource.predefinedStyles[extra.predefinedContainerStyleId];
 
     if (extraStyle) {
@@ -632,7 +632,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const style = column.style ? cloneDeep(column.style) : {};
     const extra = data && data[column.extraCellDefinitions];
     const extraStyle = extra && extra.style;
-    const extraPredefinedStyle = extra && extra.predefinedStyleId && this.dataSource.predefinedStyles
+    const extraPredefinedStyle = extra && extra.predefinedStyleId !== undefined && this.dataSource.predefinedStyles !== undefined
       && this.dataSource.predefinedStyles[extra.predefinedStyleId];
 
     if (extraStyle) {
@@ -644,9 +644,21 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return style;
   }
   getBarStyle(column, data, i) {
+    const style = {};
     const extra = data && data[column.extraCellDefinitions];
     const barStyle = extra && extra.bar;
-    return barStyle;
+
+    const extraPredefinedBarStyle = extra && extra.predefinedBarStyleId !== undefined && this.dataSource.predefinedStyles !== undefined
+      && this.dataSource.predefinedStyles[extra.predefinedBarStyleId];
+
+    if (barStyle) {
+      Object.assign(style, barStyle);
+    }
+    if (extraPredefinedBarStyle) {
+      Object.assign(style, extraPredefinedBarStyle);
+    }
+
+    return style;
   }
   ngOnDestroy() {
     if (this.dataSource) {

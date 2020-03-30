@@ -1,3 +1,5 @@
+import { IframeComponent } from './elements/iframe/iframe.component';
+import { CodeComponent } from './elements/code/code.component';
 import { ToggleComponent } from './elements/toggle/toggle.component';
 import { SliderComponent } from './elements/slider/slider.component';
 import { ColorpickerComponent } from './elements/colorpicker/colorpicker.component';
@@ -35,6 +37,7 @@ import { ThemeService } from 'ng2-charts';
 import { TabsComponent } from './elements/tabs/tabs.component';
 import { ImageComponent } from './elements/image/image.component';
 import { SelectComponent } from './elements/select/select.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 const componentMapper = {
@@ -60,6 +63,8 @@ const componentMapper = {
   select: SelectComponent,
   slider: SliderComponent,
   toggle: ToggleComponent,
+  code: CodeComponent,
+  iframe: IframeComponent,
 };
 
 @Directive({
@@ -96,7 +101,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
     public ts: AdminoThemeService,
-    public chartThemeService: ThemeService, public el: ElementRef) {
+    public chartThemeService: ThemeService, public el: ElementRef, public sanitizer: DomSanitizer) {
   }
 
 

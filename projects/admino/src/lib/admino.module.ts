@@ -25,6 +25,9 @@ import { AdminoMessagesComponent } from './modules/main/admino-messages/admino-m
 import { AdminoMessageComponent } from './modules/main/admino-messages/admino-message/admino-message.component';
 import { AdminoUniversalEditorModule } from './modules/admino-universal-editor/admino-universal-editor.module';
 import { FormatService } from './services/format.service';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+
+
 import { registerLocaleData } from '@angular/common';
 import localeHu from '@angular/common/locales/hu';
 registerLocaleData(localeHu, 'hu');
@@ -58,7 +61,8 @@ registerLocaleData(localeHu, 'hu');
     AdminoFocusTrapModule,
     AdminoVirtualTableModule,
     AdminoGridModule,
-    MaterialModulesModule
+    MaterialModulesModule,
+    MonacoEditorModule.forRoot()
 
   ],
 
