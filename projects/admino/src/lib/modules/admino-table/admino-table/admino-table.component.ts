@@ -309,8 +309,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       for (const vrow of this.vrows) {
         vrow.data = this.dataSource.buffer.get(vrow.absoluteId);
       }
-      const count = this.visibleRowCount - 2;
-      console.log("count", count)
+
+      const rowCount = Math.ceil(this.viewportSize / this.roundedRowHeight) + 1;
+
+      const count = Math.max(this.visibleRowCount - 2, rowCount);
       //  (this.visibleRowCount - 1) > this.totalsize ? this.totalsize : this.visibleRowCount - 1;
       this.dataSource.state.count = count;
       // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
