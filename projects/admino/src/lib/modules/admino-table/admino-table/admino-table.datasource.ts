@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import { Observable, Subject, BehaviorSubject, of, Subscription } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import { AdminoTableBuffer } from './admino-table.buffer';
@@ -80,7 +80,7 @@ export class AdminoTableDataSource {
     totalsize = 1;
     predefinedStyles = [];
 
-    keyAbsolutePosition;
+    // keyAbsolutePosition;
 
     state: DataSourceState = {
         keys: { '#position': 'first' },
@@ -101,6 +101,8 @@ export class AdminoTableDataSource {
 
     refreshTimeout;
     autoRefresh = 0;
+    counter = 0;
+    keyChangedByFrontend = false;
     constructor(public config: AdminoTableDataSourceConfig) {
     }
     connect(): Observable<any[]> {
@@ -131,10 +133,10 @@ export class AdminoTableDataSource {
     }
 
     loadData(shift: number = 0) {
-
         // const calculatedShift = this.calculateShift(shift);
         const calculatedShift = shift;
-
+        const num = this.counter;
+        this.counter++;
         return new Promise((resolve, reject) => {
 
             const requestObj = { subscription: null, shift, resolvePromise: resolve, rejectPromise: reject };
@@ -152,8 +154,10 @@ export class AdminoTableDataSource {
             this.state.cursorPosPercent = this.state.cursor / (this.state.count - 1);
             this.loadDataStart.next(this.state);
 
-            requestObj.subscription = this.config.listFunction(this.state.keys,
-                isNaN(this.state.cursorpos) ? 0 : this.state.cursorpos, calculatedShift,
+            const cursorpos = isNaN(this.state.cursorpos) ? 0 : this.state.cursorpos;
+
+            requestObj.subscription = this.config.listFunction(this.state.keys, cursorpos
+                , calculatedShift,
                 Math.max(this.state.count, 1), this.state.index, this.state.before, this.state.after).pipe(
                     takeUntil(this.ngUnsubscribe),
                     catchError(() => of([])),
@@ -161,14 +165,19 @@ export class AdminoTableDataSource {
                     // })
                 ).subscribe((data: any) => {
                     const index = this.currentRequests.indexOf(requestObj);
+                    // console.log("INDEX", index);
                     for (let i = 0; i <= index; i++) {
                         const req = this.currentRequests[0];
-                        req.resolvePromise();
+                        // if (req !== requestObj) {
+                        //     req.rejectPromise();
+                        // }
+                        // console.log(req.rejectPromise)
+                        // req.resolvePromise();
                         req.subscription.unsubscribe();
+                        req.subscription = null;
                         this.currentRequests.shift();
                     }
                     this.updateData(data);
-
                     resolve(data);
                 }, (err) => {
                     reject();
@@ -186,9 +195,25 @@ export class AdminoTableDataSource {
     }
 
     setKeys(rowData) {
-        this.state.keys = cloneDeep(rowData);
+        if (rowData) {
+            this.state.keys = cloneDeep(rowData);
+            if (this.currentRequests.length !== 0) {
+                this.clearRequests();
+                this.loadData();
+            }
+        }
+        // if (this.currentRequests.length !== 0) {
+        // }
     }
-
+    clearRequests() {
+        const len = this.currentRequests.length;
+        for (let i = 0; i < len; i++) {
+            const req = this.currentRequests[0];
+            req.subscription.unsubscribe();
+            req.subscription = null;
+            this.currentRequests.shift();
+        }
+    }
     updateData(data) {
         if (!data || !data.data) {
             return;
@@ -203,14 +228,11 @@ export class AdminoTableDataSource {
         this.totalsize = totalsize;
         this.state.totalsize = this.totalsize;
         this.viewpos = viewpos - 1;
-        this.state.keys = data.cursor;
         this.predefinedStyles = data.predefinedStyles;
 
         this.rows = [];
+        // this.currentRequests.length === 0 &&
 
-        if (this.currentRequests.length === 0) {
-            this.cursorAbsPos = this.viewpos + cursorpos;
-        }
 
         for (let i = 0; i < this.data.before.length; i++) {
             const d = this.data.before[i];
@@ -231,9 +253,24 @@ export class AdminoTableDataSource {
             this.rows[index] = d;
             this.buffer.set(index, d);
         }
+
+
+        // if (this.currentRequests.length === 0) {
+        //     this.keyChangedByFrontend = false;
+        // }
         // console.log(this.buffer.container);
         // this.cursorAbsPos = this.viewpos + parseInt(data.cursorpos, 10);
+        // if (!keyChangedByFrontend && !this.keyChangedByFrontend || isEqual(data.cursor, this.state.keys)) {
+        this.state.keys = data.cursor;
+        this.cursorAbsPos = this.viewpos + cursorpos;
         this.state.cursorpos = parseInt(data.cursorpos, 10);
+
+        // }
+
+
+
+
+
         this.resultSubject.next(this.rows);
     }
     // applyFormat(data) {

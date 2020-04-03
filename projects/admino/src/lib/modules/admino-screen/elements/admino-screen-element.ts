@@ -109,10 +109,13 @@ export class AdminoScreenElement {
     }
     focusEvent() {
         this.isFocused = true;
+        this.directive.cd.markForCheck();
+
     }
     blurEvent() {
-        this.isFocused = false;
 
+        this.isFocused = false;
+        this.directive.cd.markForCheck();
     }
     setValue(value) {
         this.control.setValue(value);

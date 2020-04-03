@@ -48,8 +48,7 @@
                         [ngClass]="{columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos && i===this.dataSource.state.selectedColumnIndex, first:i===0, last:i===dataSource.displayedColumns.length-1}"
                         [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data, i)">
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)"
-                            [innerHtml]="format(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format)">
-
+                            [innerHtml]="format(sanitize(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format))">
                         </div>
                         <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)"></div>
                     </div>
@@ -61,8 +60,8 @@
 
     </div>
 </div>
-<!-- 
-<table>
+
+<!-- <table>
     <tr>
         <td>not fitting rowheight</td>
         <td>{{this.notfittingRowHeight}}</td>
@@ -112,6 +111,10 @@
         <td>{{this.largePageSize}} </td>
     </tr>
     <tr>
+        <td>largePageCoeff</td>
+        <td>{{this.largePageCoeff}} </td>
+    </tr>
+    <tr>
         <td>lastLargePage</td>
         <td>{{this.lastLargePage}} </td>
     </tr>
@@ -139,8 +142,8 @@
         <td>viewportHeight</td>
         <td>{{this.viewportSize | number}}</td>
     </tr>
-</table>
- -->
+</table> -->
+
 
 <!-- <p>scrollTop:{{this.scrollPos }}</p>
 <p>maxScrollPos:{{this.maxScrollPos | number}}</p>

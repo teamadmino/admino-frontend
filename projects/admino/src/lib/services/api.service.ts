@@ -123,7 +123,7 @@ export class AdminoApiService {
       // };
 
       // response.data.forEach(row => {
-      //   fun(row);
+      //   row.city = "6,65<span style='background:#888888;color:#FFFF00'>0.0</span>";
       // });
       // response.after.forEach(row => {
       //   fun(row);
@@ -138,7 +138,7 @@ export class AdminoApiService {
       dummySubject.next(response);
       dummySubject.complete();
       return response;
-      // }, 1000);
+      // }, 300 + Math.random() * 1000);
     })).subscribe((params) => {
 
     }, (err) => {

@@ -5,7 +5,7 @@ export class AdminoTableBufferData {
 }
 export class AdminoTableBuffer {
     container = [];
-    maxBufferSize = 10000;
+    maxBufferSize = 1254547;
 
     set(index, data) {
         const bufferindex = index % this.maxBufferSize;
