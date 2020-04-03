@@ -48,7 +48,7 @@
                         [ngClass]="{columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos && i===this.dataSource.state.selectedColumnIndex, first:i===0, last:i===dataSource.displayedColumns.length-1}"
                         [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data, i)">
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)"
-                            [innerHtml]="format(sanitize(vrow.data && vrow.data.data && vrow.data.data[column.id],column.format))">
+                            [innerHtml]="format(sanitize(getCellContent(vrow, column),column.format))">
                         </div>
                         <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)"></div>
                     </div>

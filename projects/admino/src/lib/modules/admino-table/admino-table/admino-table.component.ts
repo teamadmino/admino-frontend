@@ -850,6 +850,16 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const sanitized = this.sanitizer.bypassSecurityTrustHtml(val);
     return sanitized;
   }
+  getCellContent(vrow, column) {
+    if (vrow.data && vrow.data.data) {
+      if (vrow.data.data['$' + column.id]) {
+        return vrow.data.data['$' + column.id];
+      } else {
+        return vrow.data.data[column.id];
+      }
+    }
+    return '';
+  }
   ngOnDestroy() {
     if (this.dataSource) {
       this.dataSource.disconnect();
