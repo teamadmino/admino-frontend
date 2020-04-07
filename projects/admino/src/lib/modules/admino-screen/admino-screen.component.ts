@@ -50,8 +50,14 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
 
   @HostListener('dblclick', ['$event'])
   dblclck(e: MouseEvent) {
-    if (this._screenElement.allowEdit) {
+    if (this.screenElement.allowEdit) {
       this.editMode = !this.editMode;
+
+      // if (this.screenElement.editMode) {
+      //   this.screenElement.editMode = false;
+      // } else {
+      //   this.screenElement.editMode = true;
+      // }
     }
   }
 

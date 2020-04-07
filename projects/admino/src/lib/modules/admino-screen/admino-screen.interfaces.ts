@@ -50,7 +50,10 @@ export interface ScreenElement {
     borderRadius?: string;
     borderStyle?: string;
     padding?: string;
+
+    innerStyle?: any;
     style?: any;
+    containerStyle?: any;
 
     col?: any;
     row?: any;
@@ -61,8 +64,8 @@ export interface ScreenElement {
     __hover?: boolean;
     __dragging?: boolean;
 
-    width?: string;
-    height?: string;
+    // width?: string;
+    // height?: string;
     colorPaths?: string[];
 }
 
@@ -84,6 +87,7 @@ export interface ScreenElementScreen extends ScreenElement {
     horizontalPosition?: string;
     nopadding?: boolean;
     allowClose?: boolean;
+    gridTemplateRows?: any;
 }
 
 export interface ScreenElementTimer extends ScreenElement {
@@ -149,6 +153,9 @@ export interface ScreenElementTable extends ScreenElement {
     columns?: any[];
     indexes?: any[];
     refreshFrequency?: number;
+
+    hideHeader?: boolean;
+
     tableButtons?: AdminoButton[];
     rowButtons?: AdminoButton[];
 

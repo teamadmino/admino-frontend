@@ -107,12 +107,14 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
       } else {
         this.screenElement = null;
       }
+
     });
 
     this.as.updateScreen.subscribe((updatedScreen: ScreenElementScreen) => {
       if (updatedScreen) {
         this.redrawScreen(updatedScreen);
       }
+
     });
 
 

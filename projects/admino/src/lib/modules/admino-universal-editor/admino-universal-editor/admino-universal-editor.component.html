@@ -5,6 +5,5 @@
         </div>
     </div>
 </div> -->
-
-<admino-screen [screenElement]="screenElement" [allOpenScreens]="this.getOpenScreens()">
+<admino-screen [editMode]="screenElement && screenElement.editMode" [allOpenScreens]="this.getOpenScreens()">
 </admino-screen>

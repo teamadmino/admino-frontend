@@ -845,6 +845,14 @@
 
           }
 
+          &.evenrow {
+            .acell {
+              .rowbg {
+                background-color: mat-color($foreground, base);
+              }
+            }
+          }
+
           .acell {
             border-color: mat-color($foreground, divider);
 

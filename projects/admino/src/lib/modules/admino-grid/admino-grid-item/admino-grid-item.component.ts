@@ -17,6 +17,8 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @Input() align = 'left';
   @Input() style = {};
   @Input() containerStyle = {};
+
+
   inline = false;
 
   @Input() gridComponent: AdminoGridComponent;
@@ -185,6 +187,9 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   }
 
   dragStart(e) {
+    if (!this.editMode) {
+      return;
+    }
     this.dragging = true;
     this.setActive();
 
@@ -201,7 +206,9 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   }
 
   @HostListener('drag', ['$event']) dragMoveEvent(e) {
-
+    if (!this.editMode) {
+      return;
+    }
     e.stopPropagation();
     if (this.prevDragFunc) {
       this.prevDragFunc();
@@ -231,7 +238,9 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   // dragEnd(dragEvent) {
   // }
   @HostListener('dragend', ['$event']) dragEndEvent(e) {
-
+    if (!this.editMode) {
+      return;
+    }
     this.dragging = false;
     // this.dragRef.endDrag();
     this.removeActive();

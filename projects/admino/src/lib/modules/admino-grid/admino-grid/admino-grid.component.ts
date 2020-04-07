@@ -29,6 +29,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
 
   @HostBinding('class.inline') @Input() inline = false;
 
+  @Input() gridTemplateRows;
 
   @HostListener('mousemove', ['$event'])
   onMouseup(e: MouseEvent) {
@@ -150,8 +151,8 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
         }
         rowDefs += rowSpanDef + ' ';
       }
-      // console.log(rowDefs);
-      this.gridAutoRows = rowDefs;
+
+      this.gridAutoRows = this.gridTemplateRows !== undefined ? this.gridTemplateRows : rowDefs;
       // this.rowSizePx = gr.clientHeight / this.rownum;
     }
   }
@@ -168,7 +169,10 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
     const style = {
       // 'grid-template-columns': `repeat(${this.colnum},minmax(auto,1fr))`,
       'grid-template-columns': `repeat(${this.colnum},1fr)`,
+
+
       'grid-template-rows': this.gridAutoRows,
+
       'height': this.height
     };
     return style;

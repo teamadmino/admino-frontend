@@ -1,6 +1,6 @@
 <admino-table #focusRef (valueChange)="setValue($event)" [dataSource]="this.dataSource" [indexes]="this.element.indexes"
     [columns]="this.element.columns" [autoRefresh]="this.element.autoRefresh" [rowHeight]="element.rowHeight"
-    [headerHeight]="element.headerHeight" (cellClick)="handleCellClick($event)"
+    [headerHeight]="element.headerHeight" [oddRowStyle]="element.oddRowStyle" (cellClick)="handleCellClick($event)"
     (headerCellClick)="handleHeaderCellClick($event)" [ngClass]="{'table-focused': this.isFocused}"
-    (click)="this.focus()" tabindex="0">
+    [hideHeader]="element.hideHeader" (click)="this.focus()" tabindex="0">
 </admino-table>

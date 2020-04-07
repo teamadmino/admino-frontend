@@ -158,7 +158,16 @@ export class AdminoApiService {
     screenValue: any = null, schema: any = null, initiatedBy = null, queryParams: any = null, customVars: any = null) {
     return this.http.post(this.BASE_URL + this.REQUEST + '/' + requestedScreen,
       { screen: requestingScreen, schema, queryParams, screenValue, initiatedBy, customVars })
-      .pipe(delay(0));
+    // .pipe(delay(0), map((val) => {
+    //   try {
+    //     val['updateScreen']["elements"][0]['_forceRefresh'] = true;
+
+    //   } catch (error) {
+
+    //   }
+
+    //   return val;
+    // }));
   }
 
 

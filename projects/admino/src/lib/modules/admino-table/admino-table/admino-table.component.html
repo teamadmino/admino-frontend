@@ -9,15 +9,15 @@
     </tbody>
 </table> -->
 <div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="10" (adminoResize)="resize(null)">
-    <div class="aheader" [ngStyle]="{height: headerHeight+'px'}">
+    <div class="aheader" [ngStyle]="{height: headerHeight+'px'}" #headerRef *ngIf="!hideHeader">
         <div class="ahcell" (click)="setSelectedHeader(i)" *ngFor="let column of dataSource.columns, let i=index"
             [ngStyle]="getHeaderContainerStyle(column,i)">
             <div class="cell-content" [ngStyle]="getHeaderStyle(column,i)">
 
-                <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
-                    (click)="column.sortable?sortClicked(column, sorter):null;" #sorter>
-                    {{column.label}}
-                </admino-admino-table-sorter>
+                <!-- <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
+                    (click)="column.sortable?sortClicked(column, sorter):null;" #sorter> -->
+                {{column.label}}
+                <!-- </admino-admino-table-sorter> -->
 
             </div>
         </div>
@@ -31,9 +31,10 @@
         <div class="atable" (scroll)="scrollEvent()" #tableRef>
             <div class="abody" #bodyRef>
                 <div class="fakecontent" #fakeContentRef></div>
-                <div class="arow" [ngClass]="{rowselected: vrow.absoluteId===this.dataSource.cursorAbsPos}"
+                <div class="arow"
+                    [ngClass]="{rowselected: vrow.absoluteId===this.dataSource.cursorAbsPos, 'evenrow':vrow.absoluteId%2===0, 'lastrow':vrow.absoluteId===this.dataSource.totalsize-1  }"
                     [ngStyle]="{height: roundedRowHeight+'px', top:vrow.pos+'px'}"
-                    *ngFor="let vrow of vrows; let rowIndex=index;"
+                    *ngFor="let vrow of vrows; let rowIndex=index; trackBy: trackByFn"
                     [@adminoTableRowAnimation]="vrow.data && vrow.data.data !==undefined">
                     <!-- <div class="acell">{{vrow.virtualId}}</div> -->
                     <!-- <div class="acell">{{vrow.absoluteId|number}}
@@ -42,14 +43,16 @@
                 </div>
             [adminoTooltip]="vrow.data && vrow.data.data && vrow.data.data[column.id]"
             -->
-
                     <div (click)="setSelected(vrow,i,rowIndex)" class="acell"
-                        *ngFor="let column of dataSource.displayedColumns; let i=index"
+                        *ngFor="let column of dataSource.displayedColumns; let i=index; trackBy: trackByFnCell"
                         [ngClass]="{columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos && i===this.dataSource.state.selectedColumnIndex, first:i===0, last:i===dataSource.displayedColumns.length-1}"
                         [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data, i)">
+
+                        <div class="rowbg" *ngIf="vrow.absoluteId%2===0" [ngStyle]="oddRowStyle"></div>
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)"
                             [innerHtml]="format(sanitize(getCellContent(vrow, column),column.format))">
                         </div>
+
                         <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)"></div>
                     </div>
 
@@ -59,90 +62,103 @@
         </div>
 
     </div>
+
+
+
+
+
+
+    <!-- <table>
+        <tr>
+            <td>not fitting rowheight</td>
+            <td>{{this.notfittingRowHeight}}</td>
+        </tr>
+        <tr>
+            <td>rowStart - rowEnd</td>
+            <td>{{this.rowStart}} - {{this.rowEnd}}</td>
+        </tr>
+        <tr>
+            <td> totalsize</td>
+            <td> {{this.totalsize | number}}</td>
+        </tr>
+        <tr>
+            <td>visibleRowCount </td>
+            <td>{{this.visibleRowCount}} </td>
+        </tr>
+        <tr>
+            <td class="color-accent">scrollPosCoeff </td>
+            <td>{{this.scrollPosCoeff}} </td>
+        </tr>
+        <tr>
+            <td class="color-accent">smallPage </td>
+            <td>{{this.smallPage}} </td>
+        </tr>
+        <tr>
+            <td class="color-accent">scrollPosCoeffNormal </td>
+            <td>{{this.scrollPosCoeffNormal}} </td>
+        </tr>
+        <tr>
+            <td>scrollTop </td>
+            <td>{{this.scrollPos}} </td>
+        </tr>
+        <tr>
+            <td>maxScrollPos </td>
+            <td>{{this.maxScrollPos | number}} </td>
+        </tr>
+        <tr>
+            <td> fakeScrollerHeight</td>
+            <td>{{this.fakeScrollerHeight | number}}</td>
+        </tr>
+        <tr>
+            <td>largePage </td>
+            <td>{{this.largePage | number}} </td>
+        </tr>
+        <tr>
+            <td>largePageSize</td>
+            <td>{{this.largePageSize}} </td>
+        </tr>
+        <tr>
+            <td>largePageCoeff</td>
+            <td>{{this.largePageCoeff}} </td>
+        </tr>
+        <tr>
+            <td>lastLargePage</td>
+            <td>{{this.lastLargePage}} </td>
+        </tr>
+        <tr>
+            <td>adjustedTotalsize</td>
+            <td>{{this.adjustedTotalsize }} </td>
+        </tr>
+        <tr>
+            <td>rowCountOnLastLargePage</td>
+            <td>{{this.rowCountOnLastLargePage | number}} </td>
+        </tr>
+        <tr>
+            <td>rowHeight</td>
+            <td>{{this.rowHeight | number}} </td>
+        </tr>
+        <tr>
+            <td>roundedRowHeight</td>
+            <td>{{this.roundedRowHeight | number}}</td>
+        </tr>
+        <tr>
+            <td>numOfRowSlots</td>
+            <td>{{this.viewportSize/this.roundedRowHeight | number}} </td>
+        </tr>
+        <tr>
+            <td>viewportHeight</td>
+            <td>{{this.viewportSize | number}}</td>
+        </tr>
+    </table>
+ -->
+
+
+
+
+
+
 </div>
 
-<!-- <table>
-    <tr>
-        <td>not fitting rowheight</td>
-        <td>{{this.notfittingRowHeight}}</td>
-    </tr>
-    <tr>
-        <td>rowStart - rowEnd</td>
-        <td>{{this.rowStart}} - {{this.rowEnd}}</td>
-    </tr>
-    <tr>
-        <td> totalsize</td>
-        <td> {{this.totalsize | number}}</td>
-    </tr>
-    <tr>
-        <td>visibleRowCount </td>
-        <td>{{this.visibleRowCount}} </td>
-    </tr>
-    <tr>
-        <td class="color-accent">scrollPosCoeff </td>
-        <td>{{this.scrollPosCoeff}} </td>
-    </tr>
-    <tr>
-        <td class="color-accent">smallPage </td>
-        <td>{{this.smallPage}} </td>
-    </tr>
-    <tr>
-        <td class="color-accent">scrollPosCoeffNormal </td>
-        <td>{{this.scrollPosCoeffNormal}} </td>
-    </tr>
-    <tr>
-        <td>scrollTop </td>
-        <td>{{this.scrollPos}} </td>
-    </tr>
-    <tr>
-        <td>maxScrollPos </td>
-        <td>{{this.maxScrollPos | number}} </td>
-    </tr>
-    <tr>
-        <td> fakeScrollerHeight</td>
-        <td>{{this.fakeScrollerHeight | number}}</td>
-    </tr>
-    <tr>
-        <td>largePage </td>
-        <td>{{this.largePage | number}} </td>
-    </tr>
-    <tr>
-        <td>largePageSize</td>
-        <td>{{this.largePageSize}} </td>
-    </tr>
-    <tr>
-        <td>largePageCoeff</td>
-        <td>{{this.largePageCoeff}} </td>
-    </tr>
-    <tr>
-        <td>lastLargePage</td>
-        <td>{{this.lastLargePage}} </td>
-    </tr>
-    <tr>
-        <td>adjustedTotalsize</td>
-        <td>{{this.adjustedTotalsize }} </td>
-    </tr>
-    <tr>
-        <td>rowCountOnLastLargePage</td>
-        <td>{{this.rowCountOnLastLargePage | number}} </td>
-    </tr>
-    <tr>
-        <td>rowHeight</td>
-        <td>{{this.rowHeight | number}} </td>
-    </tr>
-    <tr>
-        <td>roundedRowHeight</td>
-        <td>{{this.roundedRowHeight | number}}</td>
-    </tr>
-    <tr>
-        <td>numOfRowSlots</td>
-        <td>{{this.viewportSize/this.roundedRowHeight | number}} </td>
-    </tr>
-    <tr>
-        <td>viewportHeight</td>
-        <td>{{this.viewportSize | number}}</td>
-    </tr>
-</table> -->
 
 
 <!-- <p>scrollTop:{{this.scrollPos }}</p>

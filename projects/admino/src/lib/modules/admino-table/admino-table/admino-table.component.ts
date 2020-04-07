@@ -64,15 +64,17 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('fakeContentRef', { read: ElementRef, static: true }) fakeContentRef;
   @ViewChild('scrollerContentRef', { read: ElementRef, static: true }) scrollerContentRef;
   @ViewChild('bodyRef', { static: true }) bodyRef: ElementRef;
+  @ViewChild('headerRef', { static: false }) headerRef: ElementRef;
 
   columnWidths = [];
   sortedColumn;
 
 
   vrows: VirtualRow[] = [];
-
+  @Input() oddRowStyle: any = {};
   @Input() headerHeight = 50;
   @Input() rowHeight = 50;
+  @Input() hideHeader = false;
   roundedRowHeight = 50;
 
   viewportSize = 0;
@@ -156,7 +158,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.dataSource.loadData().then(() => {
             this.gotoPos(this.dataSource.viewpos);
           });
-        } else if (!this.isOutsideBottomMinusOne()) {
+        } else if (!this.isOutsideBottomMinusOne() && this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1) {
           // console.log("lemegy")
           // léptet egyet le csak frontenden
           cursorpos += 1;
@@ -241,17 +243,22 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         event.preventDefault();
 
         break;
-      // case 'PageUp':
-      //   this.dataSource.state.keys = { '#position': 'last' };
-      //   this.dataSource.state.cursorpos = this.dataSource.state.count - 2;
-      //   this.dataSource.loadData().then(() => {
-      //     this.gotoPos(this.dataSource.viewpos);
-      //   });
+      case 'PageUp':
+        this.dataSource.loadData(-(this.dataSource.state.count - 1)).then(() => {
+          this.gotoPos(this.dataSource.viewpos);
+        });
+        event.stopPropagation();
+        event.preventDefault();
 
-      //   event.stopPropagation();
-      //   event.preventDefault();
+        break;
+      case 'PageDown':
+        this.dataSource.loadData(this.dataSource.state.count - 1).then(() => {
+          this.gotoPos(this.dataSource.viewpos);
+        });
+        event.stopPropagation();
+        event.preventDefault();
 
-      //   break;
+        break;
       default:
         break;
     }
@@ -469,6 +476,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.lpage++;
     // }
     this.prevScrollPos = this.scrollPos;
+
+    if (this.headerRef) {
+      this.headerRef.nativeElement.style.marginLeft = - this.tableRef.nativeElement.scrollLeft + 'px';
+    }
   }
 
   updateDataSource(force = false) {
@@ -492,6 +503,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       const count = Math.max(this.visibleRowCount - 2, rowCount - 2);
       //  (this.visibleRowCount - 1) > this.totalsize ? this.totalsize : this.visibleRowCount - 1;
       this.dataSource.state.count = count;
+      // this.dataSource.buffer.maxBufferSize = count * 3;
       // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
       // console.log(this.dataSource.buffer.container);
       // console.log(this.dataSource.buffer.container);
@@ -786,7 +798,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return column.headerStyle;
   }
 
-
   getContainerStyle(column, data, i) {
     const containerStyle = Object.assign(
       {
@@ -860,6 +871,16 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return '';
   }
+
+  trackByFn(index, item) {
+    return item.absoluteId;
+    //  index; // or item.id
+  }
+  trackByFnCell(index) {
+    return index;
+    //  index; // or item.id
+  }
+
   ngOnDestroy() {
     if (this.dataSource) {
       this.dataSource.disconnect();
