@@ -408,7 +408,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   setSelected(vrow: VirtualRow, columnIndex, rowIndex) {
     if (vrow.data && vrow.data.data && vrow.data.data.processedData) {
       this.dataSource.cursorAbsPos = vrow.absoluteId;
-      this.setKeys(vrow.data.data.processedData);
+      this.setKeys(vrow.data.data.origData);
       this.dataSource.state.cursorpos = vrow.absoluteId - this.rowStart;
       this.dataSource.state.selectedColumnIndex = columnIndex;
       this.cellClick.next();
