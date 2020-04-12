@@ -288,11 +288,14 @@ export class AdminoTableDataSource {
             bufferData.processedData = cloneDeep(newData);
         }
         for (const key of Object.keys(newData)) {
-            if (key.startsWith('$') && isString(newData[key]) && newData[key] !== bufferData.origData[key]) {
-                bufferData.processedData[key] = this.sanitizer.bypassSecurityTrustHtml(newData[key]);
+            if (key.startsWith('$') && isString(newData[key])) {
+                if (newData[key] !== bufferData.origData[key]) {
+                    bufferData.processedData[key] = this.sanitizer.bypassSecurityTrustHtml(newData[key]);
+                }
+            } else {
+                bufferData.processedData[key] = newData[key];
             }
         }
-
         bufferData.origData = cloneDeep(newData);
         return bufferData;
     }
