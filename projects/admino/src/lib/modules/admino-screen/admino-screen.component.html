@@ -1,26 +1,11 @@
 <form [formGroup]="group" class="admino-screen " (submit)="onSubmit($event)" *ngIf="screenElement">
 
     <div class="scroll-area">
+
+
         <div class="screen-container"
             [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
             [ngStyle]="screenElement.innerStyle">
-            <!-- <div class="border-color-accent "> -->
-
-            <!-- <ng-container *ngFor="let element of getElementsOfType('main'); let i=index;"
-                            adminoScreenElement [rootScreenComponent]="
-                            this.rootScreenComponent" [element]="element" [parentGroup]="group"
-                            [screenComponent]='this' [index]="i">
-                        </ng-container> -->
-
-            <!-- <admino-card [nopadding]="screenElement.isPopup?false:true"
-                [opaque]="screenElement.isPopup || editMode && this !==this.rootScreenComponent"
-                [showBorder]="screenElement.showBorder"> -->
-            <!-- 
-                [height]="screenElement.height"
-                [ngStyle]="{height: screenElement.height}" -->
-
-
-            <!-- [ngStyle]="{height: screenElement.height}" [height]="screenElement.height" -->
 
             <admino-grid [allowEdit]="_screenElement.allowEdit" [editMode]="this.editMode" adminoTrapFocus
                 [adminoTrapFocus]="this.rootScreenComponent===this"
@@ -37,18 +22,23 @@
                     </ng-container>
                 </admino-grid-item>
             </admino-grid>
-
-            <!-- </admino-card> -->
-            <!-- </div> -->
         </div>
+
     </div>
+
+
+
+
+
+
+
 
     <div class="admino-screen-modals" *ngIf="getElementsOfType('popup').length>0">
         <div class="admino-screen-modal" [ngStyle]="{'z-index':i}"
             [ngClass]="{hidden: element.hidden && !this.editMode}"
             *ngFor="let element of getElementsOfType('popup'); let i=index;" (click)="closePopup(element)">
-            <div class="admino-screen-modal-content" [ngClass]="this.getPopupClasses(element)"
-                [ngStyle]="{width: element.width, height:element.height}" (click)="$event.stopPropagation()">
+            <div class="admino-screen-modal-content" [ngClass]="this.getPopupClasses(element)" [ngStyle]="element.style"
+                (click)="$event.stopPropagation()">
                 <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent" [element]="element"
                     [parentGroup]="group" [screenComponent]='this' [index]="i">
                 </ng-container>

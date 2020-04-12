@@ -1,7 +1,7 @@
 <div class="grid border-color-accent" [ngClass]="{'edit-mode': this.editMode}" [ngStyle]="this.getStyle()" #gridRef
     (drop)="drop($event)" (dragover)="allowDrop($event)">
+    <!-- {{this.getStyle()['grid-template-rows']}} -->
     <!-- <admino-grid-item [col]="10" [colnum]="colnum"></admino-grid-item> -->
-    <!-- <div class="w-100 bg-primary testdiv"></div> -->
     <ng-content></ng-content>
 
     <ng-container *ngIf="this.editMode">

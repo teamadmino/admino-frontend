@@ -12,7 +12,7 @@ export const adminoTableAnimation =
         transition('* => true', [
             query('.cell-content', [
                 style({ opacity: 0 }),
-                animate('0.4s', style({ opacity: 1 })),
+                animate('0.2s', style({ opacity: 1 })),
             ])]),
         // , transform: 'translateX(0px)' 
         // transition(':leave', [

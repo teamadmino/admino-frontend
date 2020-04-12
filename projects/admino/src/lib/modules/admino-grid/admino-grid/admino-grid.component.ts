@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 import { AdminoGridItemComponent } from './../admino-grid-item/admino-grid-item.component';
 import {
   Component, OnInit, Input, ContentChildren, QueryList, AfterContentInit, ViewChildren,
-  AfterViewInit, ViewChild, ElementRef, OnChanges, HostBinding, HostListener, enableProdMode
+  AfterViewInit, ViewChild, ElementRef, OnChanges, HostBinding, HostListener, enableProdMode, ChangeDetectorRef
 } from '@angular/core';
 
 @Component({
@@ -27,9 +27,21 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
 
   activeItem: BehaviorSubject<any> = new BehaviorSubject(null);
 
+
   @HostBinding('class.inline') @Input() inline = false;
 
-  @Input() gridTemplateRows;
+
+
+  _gridTemplateRows: string;
+  get gridTemplateRows(): string {
+    return this._gridTemplateRows;
+  }
+
+  @Input() set gridTemplateRows(val) {
+
+    this._gridTemplateRows = val;
+    this.refresh();
+  }
 
   @HostListener('mousemove', ['$event'])
   onMouseup(e: MouseEvent) {
@@ -53,7 +65,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
     };
   }
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
 
   }
   ngOnChanges() {
@@ -141,7 +153,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
       let rowDefs = '';
       for (let i = 1; i < itemsPerRows.length; i++) {
         const items = itemsPerRows[i];
-        let rowSpanDef = 'minmax(1fr, auto)';
+        let rowSpanDef = 'minmax(auto, auto)';
         if (items) {
           for (const item of items) {
             if (item.autoRow === true) {
@@ -151,8 +163,8 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
         }
         rowDefs += rowSpanDef + ' ';
       }
-
-      this.gridAutoRows = this.gridTemplateRows !== undefined ? this.gridTemplateRows : rowDefs;
+      this.gridAutoRows = this.gridTemplateRows !== undefined && this.gridTemplateRows !== null ? this.gridTemplateRows : rowDefs;
+      // console.log(this.gridAutoRows)
       // this.rowSizePx = gr.clientHeight / this.rownum;
     }
   }
@@ -166,7 +178,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
 
 
   getStyle() {
-    const style = {
+    return {
       // 'grid-template-columns': `repeat(${this.colnum},minmax(auto,1fr))`,
       'grid-template-columns': `repeat(${this.colnum},1fr)`,
 
@@ -175,7 +187,7 @@ export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewI
 
       'height': this.height
     };
-    return style;
+    // return style;
   }
 
 }

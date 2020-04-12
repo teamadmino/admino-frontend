@@ -32,11 +32,13 @@ export class AdminoMenuItemComponent implements OnInit {
       this.open = !this.open;
     } else {
       this.clickEvent.emit({ url: this.menuItem.action as unknown as string, newWindow, menuItem: this.menuItem });
+      this.menuItem._isActive = true;
     }
   }
 
   childClicked(menuEvent: AdminoMenuEvent) {
     this.clickEvent.emit(menuEvent);
+    this.menuItem._isActive = true;
   }
 
 }

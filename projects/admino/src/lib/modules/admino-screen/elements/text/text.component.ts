@@ -14,8 +14,10 @@ export class TextComponent extends AdminoScreenElement implements OnInit {
   @HostBinding('style.text-align') align = '';
   @HostBinding('style.font-weight') weight = '600';
 
+  sanitizedVal;
   ngOnInit() {
     this.onChange(null);
+    this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.value);
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
 
@@ -28,6 +30,9 @@ export class TextComponent extends AdminoScreenElement implements OnInit {
     }
     if (this.element.weight !== undefined) {
       this.weight = this.element.weight;
+    }
+    if (changes && changes.value) {
+      this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.value);
     }
   }
 

@@ -715,7 +715,15 @@
         background: mat-color($background, background) !important;
         background: linear-gradient(-20deg, $bgrad1, $bgrad) !important;
       }
+
+      .admino-screen-modal-content {
+        background-color: mat-color($background, card);
+        border: 1px solid mat-color($foreground, divider);
+        box-shadow: 5px 5px 30px rgba(darken(mat-color($background, card), 20%), 0.3);
+
+      }
     }
+
   }
 
   ///////////////////////
@@ -840,8 +848,8 @@
 
         .arow {
           &.rowselected {
-            background-color: lighten(mat-color($background, card), 8%) !important;
-            box-shadow: inset 0px 0px 1px 1px rgba(mat-color($foreground, disabled), 0.3) !important;
+            // background-color: lighten(mat-color($background, card), 8%) !important;
+            box-shadow: inset 0px 0px 1px 1px rgba(mat-color($foreground, disabled), 0.3);
 
           }
 
@@ -857,7 +865,7 @@
             border-color: mat-color($foreground, divider);
 
             &.columnselected {
-              box-shadow: inset 0px 0px 1px 1px mat-color($foreground, disabled) !important;
+              box-shadow: inset 0px 0px 1px 1px mat-color($foreground, disabled);
 
             }
           }

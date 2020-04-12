@@ -20,7 +20,6 @@ export class AdminoDragDirective implements OnDestroy {
   // @HostListener('touchstart', ['$event'])
   @HostListener('mousedown', ['$event'])
   onStart(evt) {
-
     this.dragStartPosX = evt.clientX;
     this.dragStartPosY = evt.clientY;
     this.isDragging = true;
@@ -44,6 +43,7 @@ export class AdminoDragDirective implements OnDestroy {
   }
 
   endDrag() {
+
     this.isDragging = false;
     this.adminoDragEnd.next();
 

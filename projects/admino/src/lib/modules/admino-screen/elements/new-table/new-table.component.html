@@ -2,5 +2,8 @@
     [columns]="this.element.columns" [autoRefresh]="this.element.autoRefresh" [rowHeight]="element.rowHeight"
     [headerHeight]="element.headerHeight" [oddRowStyle]="element.oddRowStyle" (cellClick)="handleCellClick($event)"
     (headerCellClick)="handleHeaderCellClick($event)" [ngClass]="{'table-focused': this.isFocused}"
-    [hideHeader]="element.hideHeader" (click)="this.focus()" tabindex="0">
+    [hideHeader]="element.hideHeader" [debug]="element.debug" tabindex="0" [selectedRowStyle]="element.selectedRowStyle"
+    [selectedCellStyle]="element.selectedCellStyle">
+
+    <!-- (click)="this.focus()" -->
 </admino-table>

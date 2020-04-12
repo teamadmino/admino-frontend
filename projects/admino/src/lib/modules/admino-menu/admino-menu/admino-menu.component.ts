@@ -11,7 +11,6 @@ import { Component, OnInit, Input, ViewEncapsulation, EventEmitter, Output } fro
 export class AdminoMenuComponent implements OnInit {
   @Input() menus: AdminoMenuItem[];
   @Output() clickEvent: EventEmitter<AdminoMenuEvent> = new EventEmitter();
-
   constructor() { }
 
   ngOnInit() {
@@ -19,8 +18,16 @@ export class AdminoMenuComponent implements OnInit {
 
   clicked(menuEvent: AdminoMenuEvent) {
     this.clickEvent.emit(menuEvent);
+    this.traverse(this.menus);
   }
-
+  traverse(children: AdminoMenuItem[]) {
+    for (const menuItem of children) {
+      if (menuItem.children) {
+        this.traverse(menuItem.children);
+      }
+      menuItem._isActive = false;
+    }
+  }
   trackByFn(index, item: AdminoMenuItem) {
     return item.id;
   }

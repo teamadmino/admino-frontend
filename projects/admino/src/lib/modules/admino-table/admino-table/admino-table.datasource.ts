@@ -2,6 +2,8 @@ import { cloneDeep, isEqual } from 'lodash';
 import { Observable, Subject, BehaviorSubject, of, Subscription } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import { AdminoTableBuffer } from './admino-table.buffer';
+import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
+import { isString } from 'util';
 export interface AdminoTableDataSourceConfig {
     listFunction: (keys, cursor, shift, count, index, before, after) => Observable<any>;
 }
@@ -26,7 +28,7 @@ export interface VirtualDataSourceInfoColumn {
 //     indexes: { keys: string[], description: string }[];
 // }
 export interface VirtualDataSourceColumn {
-    label: string;
+    label: SafeHtml;
     id: string;
     format: string;
     align: string;
@@ -103,7 +105,7 @@ export class AdminoTableDataSource {
     autoRefresh = 0;
     counter = 0;
     keyChangedByFrontend = false;
-    constructor(public config: AdminoTableDataSourceConfig) {
+    constructor(public config: AdminoTableDataSourceConfig, public sanitizer: DomSanitizer) {
     }
     connect(): Observable<any[]> {
         return this.resultSubject.asObservable();
@@ -238,22 +240,22 @@ export class AdminoTableDataSource {
             const d = this.data.before[i];
             const index = this.viewpos - this.data.before.length + i;
             this.rows[index] = d;
-            this.buffer.set(index, d);
+            this.setData(index, d);
         }
 
         for (let i = 0; i < this.data.data.length; i++) {
             const d = this.data.data[i];
+            const index = this.viewpos + i;
             this.rows[this.viewpos + i] = d;
-            this.buffer.set(this.viewpos + i, d);
+            this.setData(index, d);
         }
 
         for (let i = 0; i < this.data.after.length; i++) {
             const d = this.data.after[i];
             const index = this.viewpos + this.data.data.length + i;
             this.rows[index] = d;
-            this.buffer.set(index, d);
+            this.setData(index, d);
         }
-
 
         // if (this.currentRequests.length === 0) {
         //     this.keyChangedByFrontend = false;
@@ -264,15 +266,37 @@ export class AdminoTableDataSource {
         this.state.keys = data.cursor;
         this.cursorAbsPos = this.viewpos + cursorpos;
         this.state.cursorpos = parseInt(data.cursorpos, 10);
-
         // }
-
-
-
-
 
         this.resultSubject.next(this.rows);
     }
+
+    setData(index, d) {
+        const currentBuffer = this.buffer.get(index);
+        if (currentBuffer && currentBuffer.data) {
+            this.buffer.set(index, this.processData(d, currentBuffer.data));
+        } else {
+            this.buffer.set(index, this.processData(d, null));
+        }
+    }
+
+    processData(newData, bufferData: any) {
+        if (!bufferData) {
+            bufferData = {};
+            bufferData.origData = {};
+            bufferData.dataVersion = 0;
+            bufferData.processedData = cloneDeep(newData);
+        }
+        for (const key of Object.keys(newData)) {
+            if (key.startsWith('$') && isString(newData[key]) && newData[key] !== bufferData.origData[key]) {
+                bufferData.processedData[key] = this.sanitizer.bypassSecurityTrustHtml(newData[key]);
+            }
+        }
+
+        bufferData.origData = cloneDeep(newData);
+        return bufferData;
+    }
+
     // applyFormat(data) {
     //     for (const colId of Object.keys(data)) {
     //         const col = this.columns.find((_col) => {

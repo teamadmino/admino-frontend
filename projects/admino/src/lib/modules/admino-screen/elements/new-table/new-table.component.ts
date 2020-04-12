@@ -35,7 +35,7 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
       {
         listFunction: (keys, cursorpos, shift, count, index, before, after) =>
           this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after, this.element.customVars),
-      }
+      }, this.directive.sanitizer
     );
   }
   handleCellClick(e) {
