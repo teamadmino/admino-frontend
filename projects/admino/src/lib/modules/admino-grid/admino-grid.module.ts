@@ -1,3 +1,4 @@
+import { AdminoPreloaderModule } from './../admino-preloader/admino-preloader.module';
 import { AdminoDragModule } from './../../directives/admino-drag/admino-drag.module';
 import { MaterialModulesModule } from './../material-modules/material-modules.module';
 import { NgModule } from '@angular/core';
@@ -12,7 +13,8 @@ import { AdminoGridItemComponent } from './admino-grid-item/admino-grid-item.com
   imports: [
     CommonModule,
     MaterialModulesModule,
-    AdminoDragModule
+    AdminoDragModule,
+    AdminoPreloaderModule
   ],
   exports: [AdminoGridComponent, AdminoGridItemComponent]
 })

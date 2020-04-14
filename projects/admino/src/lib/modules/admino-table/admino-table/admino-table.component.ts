@@ -81,6 +81,8 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() debug = false;
   @Input() selectedRowStyle = {};
   @Input() selectedCellStyle = {};
+  @Input() inactiveSelectedRowStyle = {};
+  @Input() inactiveSelectedCellStyle = {};
 
 
   roundedRowHeight = 50;
@@ -121,6 +123,8 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   asd = 100;
   timeoutHelper;
   leavespace = 2;
+  @Input() keyOverrides: { trigger: string, key: string }[] = [];
+  @Input() isFocused = false;
 
   @HostListener('window:resize', ['$event'])
   resize(event: MouseEvent) {
@@ -133,6 +137,12 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
   @HostListener('keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (this.keyOverrides.find((override) => {
+      return override.key === 'any' || (override.key === event.key && override.trigger === 'keydown');
+    })) {
+      console.log("OVERRIDE")
+      return;
+    }
     // if (event.key === "ArrowDown") {
     //   // Your row selection code
     //   console.log(event);
@@ -167,7 +177,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.gotoPos(this.dataSource.viewpos);
           });
         } else if (!this.isOutsideBottomMinusOne() && this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1) {
-          // console.log("lemegy")
           // léptet egyet le csak frontenden
           cursorpos += 1;
           this.dataSource.cursorAbsPos++;
@@ -186,7 +195,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.gotoPos(this.dataSource.viewpos);
           });
         }
-        event.stopPropagation();
         event.preventDefault();
         break;
       case 'ArrowUp':
@@ -223,7 +231,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
 
-        event.stopPropagation();
         event.preventDefault();
 
         break;
@@ -236,7 +243,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log(this.dataSource.data);
           console.log(this.vrows);
         });
-        event.stopPropagation();
         event.preventDefault();
 
         break;
@@ -247,7 +253,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.gotoPos(this.dataSource.viewpos);
         });
 
-        event.stopPropagation();
         event.preventDefault();
 
         break;
@@ -255,7 +260,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource.loadData(-(this.dataSource.state.count - 1)).then(() => {
           this.gotoPos(this.dataSource.viewpos);
         });
-        event.stopPropagation();
         event.preventDefault();
 
         break;
@@ -263,26 +267,22 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource.loadData(this.dataSource.state.count - 1).then(() => {
           this.gotoPos(this.dataSource.viewpos);
         });
-        event.stopPropagation();
         event.preventDefault();
         break;
       case 'Enter':
         this.cellClick.next();
-        event.stopPropagation();
         event.preventDefault();
         break;
       case 'ArrowRight':
         if (this.dataSource.state.selectedColumnIndex < this.dataSource.columns.length - 1) {
           this.dataSource.state.selectedColumnIndex++;
         }
-        event.stopPropagation();
         event.preventDefault();
         break;
       case 'ArrowLeft':
         if (this.dataSource.state.selectedColumnIndex > 0) {
           this.dataSource.state.selectedColumnIndex--;
         }
-        event.stopPropagation();
         event.preventDefault();
         break;
 
@@ -529,6 +529,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.refreshVrows();
       const rowCount = Math.ceil(this.viewportSize / this.roundedRowHeight) + 1;
       const count = Math.max(this.visibleRowCount - 2, rowCount - 2);
+      console.log("count", rowCount, count)
       //  (this.visibleRowCount - 1) > this.totalsize ? this.totalsize : this.visibleRowCount - 1;
       this.dataSource.state.count = count;
       // this.dataSource.buffer.maxBufferSize = count * 3;

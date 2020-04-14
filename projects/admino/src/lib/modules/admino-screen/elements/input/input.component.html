@@ -4,7 +4,7 @@
 
     <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.label" #inputRef
         #focusRef [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null"
-        [type]="element.inputType?element.inputType:'text'">
+        [type]="element.inputType?element.inputType:'text'" [maxlength]="element.maxLength">
 
     <!-- *ngIf="element.value && focused===false" -->
     <!-- <div class="print-helper">

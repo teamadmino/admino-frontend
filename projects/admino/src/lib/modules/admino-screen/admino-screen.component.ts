@@ -40,6 +40,8 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   public pauseEvent: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public focusEvent: BehaviorSubject<string> = new BehaviorSubject('');
 
+  blockingActionRunning = false;
+
 
   @Input() isPopup = false;
   @Input() allOpenScreens: AdminoScreenComponent[] = [];

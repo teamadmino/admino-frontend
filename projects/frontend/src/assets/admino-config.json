@@ -6,12 +6,14 @@
         "isDark": true
     },
     "loginScreen122": "_admino:system/login",
-    "loginScreen": "_admino:system/login_orig",
-    "loginScreen145": "_test:t1/test1_size1",
-    "loginScreen00": "_test:t5/test5",
-    "loginScreen0": "_test:t4/test_row",
-    "loginScreen10": "_test:t5/test2",
-    "userConfigScreen": "UserConfigScreen",
+    "loginScreen11": "_admino:system/login_orig",
+    "loginScreen010": "_test:t6/test6",
+    "loginScreen0": "_test:t5/test5",
+    "loginScreen": "_test:t1/test1_size1",
+    "loginScreen220": "_test:t1/test8",
+    "loginScreen5": "_test:t4/test_row",
+    "loginScreen111": "_test:t5/test2",
+    "userConfigScreen555": "UserConfigScreen",
     "editorEndpoint": "_editorEndpoint",
     "translations": {}
 }

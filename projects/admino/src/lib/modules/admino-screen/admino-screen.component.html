@@ -1,7 +1,8 @@
-<form [formGroup]="group" class="admino-screen " (submit)="onSubmit($event)" *ngIf="screenElement">
+<admino-preloader *ngIf="blockingActionRunning"></admino-preloader>
+<form [formGroup]="group" class="admino-screen " [ngClass]="{'loading': blockingActionRunning}"
+    (submit)="onSubmit($event)" *ngIf="screenElement">
 
-    <div class="scroll-area">
-
+    <div class="scroll-area" cdkTrapFocus>
 
         <div class="screen-container"
             [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
@@ -14,9 +15,11 @@
                 <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
                     [col]="element.col!==undefined?element.col:1" [row]="element.row!==undefined?element.row:i+1"
                     [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1" [hidden]="element.hidden"
-                    [style]="element.style?element.style:{}" [align]="element.align"
+                    [style]="element.style?element.style:{}" [align]="element.align" [isLoading]="element.isLoading"
                     [containerStyle]="element.containerStyle?element.containerStyle:{}"
                     *ngFor="let element of getElementsOfType('main'); let i=index;">
+
+
                     <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
                         [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i">
                     </ng-container>

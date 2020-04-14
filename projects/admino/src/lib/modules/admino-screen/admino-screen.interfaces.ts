@@ -39,7 +39,7 @@ export interface ScreenElement {
     innerClasses?: string[];
     validators?: ScreenElementValidator[];
     conditions?: Condition[];
-    actions?: ScreenAction[];
+    actions?: AdminoAction[];
 
 
     disabled?: boolean;
@@ -54,6 +54,8 @@ export interface ScreenElement {
     innerStyle?: any;
     style?: any;
     containerStyle?: any;
+
+    isLoading?: boolean;
 
     col?: any;
     row?: any;
@@ -101,6 +103,8 @@ export interface ScreenElementInput extends ScreenElement {
     suffix: string;
     readonly: boolean;
     inputType: string;
+    maxLength: boolean;
+
 }
 export interface ScreenElementSelect extends ScreenElement {
     label?: string;
@@ -116,7 +120,7 @@ export interface ScreenElementSlider extends ScreenElement {
 }
 export interface ScreenElementTextarea extends ScreenElement {
     label?: string;
-    maxlength: boolean;
+    maxLength: boolean;
     readonly: boolean;
     rows: number;
 }

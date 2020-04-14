@@ -16,6 +16,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @Input() col: any = 1;
   @Input() align = 'left';
   @Input() style = {};
+  @Input() isLoading = false;
   @Input() containerStyle = {};
 
 

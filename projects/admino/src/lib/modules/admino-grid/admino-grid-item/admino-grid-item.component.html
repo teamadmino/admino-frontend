@@ -20,6 +20,9 @@
         </button>
     </div>
 </div>
-<div class="content" [ngClass]="{inline:inline,firstrow: this.row===1}" [ngStyle]="this.style">
+
+<admino-preloader *ngIf="isLoading"></admino-preloader>
+
+<div class="content" [ngClass]="{inline:inline,firstrow: this.row===1, loading:isLoading}" [ngStyle]="this.style">
     <ng-content></ng-content>
 </div>

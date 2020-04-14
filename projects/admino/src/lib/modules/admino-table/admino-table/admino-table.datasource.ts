@@ -287,15 +287,19 @@ export class AdminoTableDataSource {
             bufferData.dataVersion = 0;
             bufferData.processedData = cloneDeep(newData);
         }
+        const newProcessedData = {};
         for (const key of Object.keys(newData)) {
             if (key.startsWith('$') && isString(newData[key])) {
                 if (newData[key] !== bufferData.origData[key]) {
-                    bufferData.processedData[key] = this.sanitizer.bypassSecurityTrustHtml(newData[key]);
+                    newProcessedData[key] = this.sanitizer.bypassSecurityTrustHtml(newData[key]);
+                } else {
+                    newProcessedData[key] = bufferData.processedData[key];
                 }
             } else {
-                bufferData.processedData[key] = newData[key];
+                newProcessedData[key] = newData[key];
             }
         }
+        bufferData.processedData = newProcessedData;
         bufferData.origData = cloneDeep(newData);
         return bufferData;
     }

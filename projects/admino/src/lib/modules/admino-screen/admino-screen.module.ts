@@ -1,3 +1,4 @@
+import { AdminoPreloaderModule } from './../admino-preloader/admino-preloader.module';
 import { AdminoTableModule } from './../admino-table/admino-table.module';
 import { AdminoModalModule } from './../admino-modal/admino-modal.module';
 import { AdminoDragModule } from './../../directives/admino-drag/admino-drag.module';
@@ -80,7 +81,8 @@ import { IframeComponent } from './elements/iframe/iframe.component';
     AdminoTableModule,
     ChartsModule,
     ZXingScannerModule,
-    MonacoEditorModule
+    MonacoEditorModule,
+    AdminoPreloaderModule
   ],
   exports: [
     AdminoScreenComponent,

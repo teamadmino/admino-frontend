@@ -872,8 +872,14 @@
         }
       }
     }
-
-
-
   }
+
+  ////
+
+  .admino-preloader div {
+    background-color: mat-color($primary, 500) !important;
+  }
+
+
+
 }

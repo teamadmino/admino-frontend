@@ -2,6 +2,14 @@
 
 :host {
 
+  admino-preloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 100000;
+  }
+
   &.hidden {
     display: none;
     pointer-events: none;
@@ -46,6 +54,10 @@
       margin-top: 0em;
     }
 
+    &.loading {
+      pointer-events: none;
+      opacity: 0.2 !important;
+    }
   }
 
   .edit-mode & {

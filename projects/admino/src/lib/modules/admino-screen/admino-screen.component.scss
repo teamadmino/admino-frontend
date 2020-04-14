@@ -1,3 +1,11 @@
+admino-preloader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 100000;
+}
+
 .admino-screen-modals {
   position: absolute;
   overflow: hidden;
@@ -91,6 +99,14 @@ form {
 
 .admino-screen {
   position: relative;
+
+  transition: opacity 0.5s;
+
+  &.loading {
+    opacity: 0.5;
+    pointer-events: none;
+
+  }
 
   .screen-container {
     padding-top: 1em;

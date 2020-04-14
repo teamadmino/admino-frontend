@@ -4,6 +4,7 @@
     (click)="handleAction(this.element.action)" mat-flat-button #focusRef
     [color]="element.color?element.color:'primary'"
     [ngClass]="['focusinnerglow-'+(element.color?element.color:'primary')]">
-    <mat-icon class="" *ngIf="element.icon"> {{element.icon}}</mat-icon> {{element.label}}
+    <mat-icon class="" *ngIf="element.icon"> {{element.icon}}</mat-icon>
+    <span [innerHTML]="element.label"></span>
   </button>
 </div>

@@ -48,6 +48,9 @@ export interface ActionEvent {
   openScreens?: AdminoScreenComponent[];
   screenConfig?: ScreenElementScreen;
   initiatedBy?: any;
+
+  trigger?: any;
+  key?: any;
 }
 
 ////////////
@@ -64,7 +67,14 @@ export interface ActionSubscription {
 }
 ////////////
 export interface AdminoAction {
+
+  trigger?: string;
+  key?: string;
+  overrideDefault?: boolean;
+
   type: 'backend' | 'frontend' | 'url' | 'download';
+  // 
+  isBlocking?: boolean;
   // backend
   backendAction?: any;
   // frontend

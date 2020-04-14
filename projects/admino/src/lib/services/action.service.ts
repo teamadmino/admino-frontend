@@ -77,7 +77,8 @@ export class AdminoActionService {
         schema = actionEvent.screenConfig;
       }
       const requestingScreen = actionEvent.screenConfig ? actionEvent.screenConfig.id : null;
-      return this.backendRequest(actionEvent.action.backendAction, requestingScreen, schema, screenValue, actionEvent.initiatedBy);
+      return this.backendRequest(actionEvent.action.backendAction, requestingScreen, schema, screenValue, actionEvent.initiatedBy,
+        actionEvent.trigger, actionEvent.key);
     } else if (actionEvent.action.type === 'frontend') {
       return this.handleFrontendAction(actionEvent.action);
 
@@ -113,9 +114,9 @@ export class AdminoActionService {
     a.click();
     window.URL.revokeObjectURL(url);
   }
-  backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null) {
+  backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null, trigger: string = null, key: string = null) {
     return this.api.request(screen, requestingScreen, screenValue, schema,
-      initiatedBy, this.currentQueryParams, this.customVars).pipe(map((response: BackendResponse) => {
+      initiatedBy, trigger, key, this.currentQueryParams, this.customVars).pipe(map((response: BackendResponse) => {
         this.handleResponse(response);
       }));
   }
@@ -163,7 +164,7 @@ export class AdminoActionService {
       // this.user.sid = response.setSid;
     }
     if (response.setPing !== undefined) {
-      this.pingFrequency.next(response.setPing);
+      // this.pingFrequency.next(response.setPing);
     }
     if (response.setSnackbars) {
       this.snackbarEvent.next(response.setSnackbars);

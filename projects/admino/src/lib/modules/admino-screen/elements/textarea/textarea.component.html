@@ -1,6 +1,6 @@
 <mat-form-field class="admino-input" [formGroup]="group">
     <mat-label>{{element.label}}</mat-label>
     <textarea matInput [formControlName]="element.id" [placeholder]="element.label" #inputRef #focusRef
-        [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null" [maxlength]="element.maxlength"
+        [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null" [maxlength]="element.maxLength"
         [rows]="element.rows"></textarea>
 </mat-form-field>
