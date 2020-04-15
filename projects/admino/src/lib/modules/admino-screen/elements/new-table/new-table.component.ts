@@ -3,9 +3,10 @@ import { AdminoScreenElement } from '../admino-screen-element';
 import { AdminoTableDataSource } from '../../../admino-table/admino-table/admino-table.datasource';
 import { ScreenElementTable, ScreenElementChange } from '../../admino-screen.interfaces';
 import { AdminoTableComponent } from '../../../admino-table/admino-table/admino-table.component';
-import { takeUntil } from 'rxjs/operators';
-import { isEqual } from 'lodash';
+import { takeUntil, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { isEqual, debounce, cloneDeep } from 'lodash';
 import { propExists } from '../../../../utils/propExists';
+import { timer, Subscription } from 'rxjs';
 
 @Component({
   selector: 'admino-new-table',
@@ -15,21 +16,12 @@ import { propExists } from '../../../../utils/propExists';
 export class NewTableComponent extends AdminoScreenElement implements OnInit {
   dataSource: AdminoTableDataSource;
   @ViewChild(AdminoTableComponent, { static: true }) table: AdminoTableComponent;
-
+  oldVal;
+  valueChangeSub: Subscription;
   ngOnInit() {
+    // debounceTime(1000),
 
-    this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((newVal) => {
-      // console.log(this.element.value !== undefined && !isEqual(this.element.value.keys, newVal.keys))
-      // console.log(this.element.value !== undefined && this.element.value.keys, newVal.keys)
-      if (this.element.value !== undefined && !isEqual(this.element.value.keys, newVal.keys)) {
-        const keyChangeAction = this.getAction('keyChange');
-        if (keyChangeAction) {
-          this.handleAction(keyChangeAction);
-        }
-      }
-    });
-
-
+    this.subscribeToValueChange();
     const conf = this.element as ScreenElementTable;
     this.dataSource = new AdminoTableDataSource(
       {
@@ -38,6 +30,29 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
       }, this.directive.sanitizer
     );
   }
+
+  subscribeToValueChange() {
+    if (this.valueChangeSub) {
+      this.valueChangeSub.unsubscribe();
+    }
+    const keyChangeAction = this.getAction('keyChange');
+    const dt = keyChangeAction.debounce ? keyChangeAction.debounce : 50;
+    this.valueChangeSub = this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe),
+      debounceTime(dt),
+      filter((newVal) => {
+        return !isEqual(this.oldVal, newVal);
+      })
+    ).subscribe((newVal) => {
+      if (this.element.value !== undefined) {
+        if (keyChangeAction) {
+          this.handleAction(keyChangeAction);
+        }
+      }
+      this.oldVal = cloneDeep(newVal);
+    });
+
+  }
+
   handleCellClick(e) {
     const cellClickAction = this.getAction('cellClick');
     if (cellClickAction) {
@@ -67,7 +82,9 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
     if (changes.rowHeight) {
       reinitNeeded = true;
     }
-
+    if (changes.actions) {
+      this.subscribeToValueChange();
+    }
 
     if (this.element.value && this.element.value.shift) {
       delete this.element.value.shift;

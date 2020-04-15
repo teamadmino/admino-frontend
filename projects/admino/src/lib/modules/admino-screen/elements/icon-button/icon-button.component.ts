@@ -1,18 +1,16 @@
-import { ActionEvent } from './../../../../interfaces';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 import { ScreenElementChange } from '../../admino-screen.interfaces';
 
 @Component({
-  selector: 'admino-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  selector: 'admino-icon-button',
+  templateUrl: './icon-button.component.html',
+  styleUrls: ['./icon-button.component.scss']
 })
-export class ButtonComponent extends AdminoScreenElement implements OnInit {
+export class IconButtonComponent extends AdminoScreenElement implements OnInit {
   @ViewChild('focusRef', { static: true }) focusRef: any;
-  sanitizedLabel;
   ngOnInit() {
-    this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.label);
+
   }
   clicked() {
 
@@ -27,9 +25,6 @@ export class ButtonComponent extends AdminoScreenElement implements OnInit {
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
 
-    if (changes && changes.label) {
-      this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.label);
-    }
   }
   focusEvent() {
     super.focusEvent();

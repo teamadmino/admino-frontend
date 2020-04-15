@@ -39,6 +39,7 @@ import { ToggleComponent } from './elements/toggle/toggle.component';
 import { CodeComponent } from './elements/code/code.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { IframeComponent } from './elements/iframe/iframe.component';
+import { IconButtonComponent } from './elements/icon-button/icon-button.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -66,6 +67,7 @@ import { IframeComponent } from './elements/iframe/iframe.component';
     ToggleComponent,
     CodeComponent,
     IframeComponent,
+    IconButtonComponent,
   ],
   imports: [
     CommonModule,
@@ -112,6 +114,8 @@ import { IframeComponent } from './elements/iframe/iframe.component';
     ToggleComponent,
     CodeComponent,
     IframeComponent,
+    IconButtonComponent,
+
 
   ]
 })

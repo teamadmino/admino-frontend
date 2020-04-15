@@ -126,7 +126,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() keyOverrides: { trigger: string, key: string }[] = [];
   @Input() isFocused = false;
 
-  @HostListener('window:resize', ['$event'])
+  // @HostListener('window:resize', ['$event'])
   resize(event: MouseEvent) {
     this.updateSize();
     this.scrollEvent();
@@ -165,7 +165,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           || this.dataSource.state.cursorpos < 0 || this.dataSource.state.cursorpos > this.dataSource.state.count - 1
         ) {
           // középre igazít
-          // console.log('center')
+          console.log('center')
           if (this.isOutsideBottom()) {
             cursorpos = this.dataSource.state.count - this.leavespace;
           } else {
@@ -178,6 +178,8 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         } else if (!this.isOutsideBottomMinusOne() && this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1) {
           // léptet egyet le csak frontenden
+          console.log('léptet')
+
           cursorpos += 1;
           this.dataSource.cursorAbsPos++;
           this.dataSource.state.cursorpos = cursorpos;
@@ -186,8 +188,12 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           // leshiftel
           if (this.isOutsideBottom()) {
             cursorpos -= 1;
+            console.log('shiftel1')
+
           } else if (this.isOutsideTop()) {
             cursorpos += 1;
+            console.log('shiftel2')
+
           }
           this.dataSource.state.cursorpos = cursorpos;
 
@@ -325,10 +331,13 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.setKeys(data);
     this.valueChange.next(this.dataSource.state);
   }
+
   constructor(public cd: ChangeDetectorRef, public formatService: FormatService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.browserMaxSize = this.calcMaxBrowserScrollSize();
+    this.calculateWidths();
+
     // this.gotoPos(900719000);
     // this.gotoPos(9007199254740991);
     // this.gotoPos(9007199254740991);
@@ -344,6 +353,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.gotoPos(9007199254740991);
   }
   ngAfterViewInit() {
+
     this.dataSource.loadDataStart.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       this.valueChange.next(value);
     });
@@ -656,7 +666,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // console.log("smallPage", this.smallPage);
     // console.log("largePageCoeff", this.largePageCoeff);
     this.rowStart = this.scrollPosCoeff + (this.largePage * this.largePageSize) - this.largePageCoeff;
-    this.rowEnd = this.rowStart + this.visibleRowCount - 1 - 1;
+    this.rowEnd = Math.max(this.rowStart + this.visibleRowCount - 1, this.rowStart);
 
     for (const vrow of this.vrows) {
       this.updateRow(vrow);
@@ -729,7 +739,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }
   // }
   calculateWidths() {
-    // console.log('calculateWidths');
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
       return;
     }
@@ -740,6 +749,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // const actionsWidth = trArr[trArr.length - 1].clientWidth;
     // const availableWidth = fullWidth - actionsWidth - this.scrollBarWidth;
     const availableWidth = fullWidth;
+    // console.log(this.tableRef.nativeElement.clientWidth, this.dataSource.state.keys)
     let max = 0;
     this.dataSource.columns.forEach((col) => {
       max += col.length;

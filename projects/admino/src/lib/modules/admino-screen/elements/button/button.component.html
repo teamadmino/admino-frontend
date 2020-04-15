@@ -1,10 +1,8 @@
 <div class="d-block " [formGroup]="group">
-  <button [ngStyle]="{'width': this.element.width!==undefined?this.element.width:'',
-'height': this.element.height!==undefined?this.element.height:''}" [type]="'button'"
-    (click)="handleAction(this.element.action)" mat-flat-button #focusRef
-    [color]="element.color?element.color:'primary'"
-    [ngClass]="['focusinnerglow-'+(element.color?element.color:'primary')]">
+  <button [ngStyle]="element.innerStyle" [type]="'button'" (click)="handleAction(this.element.action)" mat-flat-button
+    #focusRef [color]="element.color?element.color:'primary'"
+    [ngClass]="['focusinnerglow-'+(element.color?element.color:'primary')]" [disabled]="element.disabled">
     <mat-icon class="" *ngIf="element.icon"> {{element.icon}}</mat-icon>
-    <span [innerHTML]="element.label"></span>
+    <span [innerHTML]="sanitizedLabel"></span>
   </button>
 </div>

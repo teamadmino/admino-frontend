@@ -38,12 +38,14 @@ import { TabsComponent } from './elements/tabs/tabs.component';
 import { ImageComponent } from './elements/image/image.component';
 import { SelectComponent } from './elements/select/select.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { IconButtonComponent } from './elements/icon-button/icon-button.component';
 
 
 const componentMapper = {
   input: InputComponent,
   textarea: TextareaComponent,
   button: ButtonComponent,
+  iconbutton: IconButtonComponent,
   table: TableComponent,
   group: GroupComponent,
   popup: GroupComponent,
@@ -285,7 +287,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     this.valueChangeSub = this.group.valueChanges.pipe(filter(_ => !this.rootScreenComponent.pauseValueChange)).subscribe((changes) => {
       // TODO Group value changes handling
       // console.log(this.screenComponent.pauseValueChange);
-      console.log('GROUP VALUE CHANGE');
+      // console.log('GROUP VALUE CHANGE');
       // console.log(changes);
       // this.handleValueChange(changes);
       // this.elementComponent.valueChanges.next(changes);

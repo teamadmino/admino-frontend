@@ -71,6 +71,7 @@ export interface AdminoAction {
   trigger?: string;
   key?: string;
   overrideDefault?: boolean;
+  debounce?: number;
 
   type: 'backend' | 'frontend' | 'url' | 'download';
   // 
