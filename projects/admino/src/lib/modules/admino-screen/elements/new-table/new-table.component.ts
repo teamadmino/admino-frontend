@@ -165,4 +165,9 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
       });
     }
   }
+  onDestroy() {
+    if (this.valueChangeSub) {
+      this.valueChangeSub.unsubscribe();
+    }
+  }
 }

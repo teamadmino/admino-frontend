@@ -8,7 +8,8 @@
         </tr>
     </tbody>
 </table> -->
-<div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize(null)">
+<div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize(null)"
+    #mainRef>
     <div class="aheader" [ngStyle]="{height: headerHeight+'px'}" #headerRef *ngIf="!hideHeader">
         <div class="ahcell" (click)="setSelectedHeader(i)" *ngFor="let column of dataSource.columns, let i=index"
             [ngStyle]="getHeaderContainerStyle(column,i)">

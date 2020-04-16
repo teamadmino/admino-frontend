@@ -68,6 +68,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollerContentRef', { read: ElementRef, static: true }) scrollerContentRef;
   @ViewChild('bodyRef', { static: true }) bodyRef: ElementRef;
   @ViewChild('headerRef', { static: false }) headerRef: ElementRef;
+  @ViewChild('mainRef', { static: true }) mainRef: ElementRef;
 
   columnWidths = [];
   sortedColumn;
@@ -337,7 +338,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.browserMaxSize = this.calcMaxBrowserScrollSize();
     this.calculateWidths();
-
     // this.gotoPos(900719000);
     // this.gotoPos(9007199254740991);
     // this.gotoPos(9007199254740991);
@@ -387,6 +387,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.timeoutHelper = setTimeout((params) => {
       this.reinit();
       this.updateDataSource(true);
+      // this.calculateWidths();
 
     });
 
@@ -739,7 +740,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }
   // }
   calculateWidths() {
+    console.log(this.bodyRef.nativeElement.clientWidth)
+
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
+      console.log("returned")
       return;
     }
     const fullWidth = this.bodyRef.nativeElement.clientWidth;
@@ -749,7 +753,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // const actionsWidth = trArr[trArr.length - 1].clientWidth;
     // const availableWidth = fullWidth - actionsWidth - this.scrollBarWidth;
     const availableWidth = fullWidth;
-    // console.log(this.tableRef.nativeElement.clientWidth, this.dataSource.state.keys)
     let max = 0;
     this.dataSource.columns.forEach((col) => {
       max += col.length;
@@ -761,6 +764,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columnWidths[i] = col.length * 10;
       }
     }
+
     // this.cd.detectChanges();
     // this.columnWidths[this.dataSource.displayedColumns.length] = actionsWidth;
     // console.log(this.dataSource.displayedColumns);
