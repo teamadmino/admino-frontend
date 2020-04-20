@@ -36,7 +36,7 @@ export class SuperTableComponent extends AdminoScreenElement implements OnInit {
       this.valueChangeSub.unsubscribe();
     }
     const keyChangeAction = this.getAction('keyChange');
-    const dt = keyChangeAction.debounce ? keyChangeAction.debounce : 50;
+    const dt = keyChangeAction && keyChangeAction.debounce ? keyChangeAction.debounce : 50;
     this.valueChangeSub = this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe),
       debounceTime(dt),
       filter((newVal) => {
