@@ -33,7 +33,7 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
     this.clearTimeout();
     if (this.element.frequency > 0) {
 
-      if (this.element.count === undefined || this.element.count || this.count < this.element.count) {
+      if (this.element.count === undefined || this.element.count === 0 || this.count < this.element.count) {
         this.timeoutHelper = setTimeout(() => {
           this.handleAction(this.element.action).then(() => {
             this.startTimeout();
