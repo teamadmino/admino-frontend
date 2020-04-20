@@ -28,7 +28,6 @@ export class ChartjsComponent extends AdminoScreenElement implements OnInit {
     if (changes.__forceRefresh) {
       this.chart.destroy();
       this.chart = new Chart(this.canvasRef.nativeElement, cloneDeep(this.element.config));
-
     }
   }
 }

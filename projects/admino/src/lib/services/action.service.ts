@@ -170,10 +170,13 @@ export class AdminoActionService {
       this.snackbarEvent.next(response.setSnackbars);
       // this.setQueryParams(response.setQueryParams);
     }
+
     if (response.startAction) {
-      for (const action of response.startAction) {
-        this.handleAction({ action }).subscribe();
-      }
+      setTimeout((params) => {
+        for (const action of response.startAction) {
+          this.handleAction({ action }).subscribe();
+        }
+      });
       // this.api.downloadFile(response.downloadFile.url).subscribe((data) => {
       //   const blob = new Blob([data], { type: response.downloadFile.type });
       //   const url = window.URL.createObjectURL(blob);
