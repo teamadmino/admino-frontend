@@ -1,3 +1,5 @@
+import { AdminoOldTableModule } from './../admino-old-table/admino-table.module';
+import { SuperTableComponent } from './elements/super-table/super-table.component';
 import { AdminoPreloaderModule } from './../admino-preloader/admino-preloader.module';
 import { AdminoTableModule } from './../admino-table/admino-table.module';
 import { AdminoModalModule } from './../admino-modal/admino-modal.module';
@@ -27,8 +29,6 @@ import { NewTableComponent } from './elements/new-table/new-table.component';
 import { TextareaComponent } from './elements/textarea/textarea.component';
 import { DateComponent } from './elements/date/date.component';
 import { ScannerComponent } from './elements/scanner/scanner.component';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { SuccessAnimationComponent } from './elements/scanner/success-animation/success-animation.component';
 import { ChartjsComponent } from './elements/chartjs/chartjs.component';
 import { ColorpickerComponent } from './elements/colorpicker/colorpicker.component';
 import { TabsComponent } from './elements/tabs/tabs.component';
@@ -40,6 +40,8 @@ import { CodeComponent } from './elements/code/code.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { IframeComponent } from './elements/iframe/iframe.component';
 import { IconButtonComponent } from './elements/icon-button/icon-button.component';
+import { TableselectComponent } from './elements/tableselect/tableselect.component';
+import { OverlaycontentComponent } from './elements/tableselect/overlaycontent/overlaycontent.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -57,7 +59,6 @@ import { IconButtonComponent } from './elements/icon-button/icon-button.componen
     TextareaComponent,
     DateComponent,
     ScannerComponent,
-    SuccessAnimationComponent,
     ChartjsComponent,
     ColorpickerComponent,
     TabsComponent,
@@ -68,6 +69,9 @@ import { IconButtonComponent } from './elements/icon-button/icon-button.componen
     CodeComponent,
     IframeComponent,
     IconButtonComponent,
+    SuperTableComponent,
+    TableselectComponent,
+    OverlaycontentComponent
   ],
   imports: [
     CommonModule,
@@ -82,9 +86,9 @@ import { IconButtonComponent } from './elements/icon-button/icon-button.componen
     AdminoModalModule,
     AdminoTableModule,
     ChartsModule,
-    ZXingScannerModule,
     MonacoEditorModule,
-    AdminoPreloaderModule
+    AdminoPreloaderModule,
+    AdminoOldTableModule
   ],
   exports: [
     AdminoScreenComponent,
@@ -115,6 +119,9 @@ import { IconButtonComponent } from './elements/icon-button/icon-button.componen
     CodeComponent,
     IframeComponent,
     IconButtonComponent,
+    SuperTableComponent,
+    TableselectComponent,
+    OverlaycontentComponent
 
 
   ]

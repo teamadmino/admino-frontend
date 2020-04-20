@@ -40,6 +40,7 @@ import {
 } from '@angular/material';
 import { A11yModule } from '@angular/cdk/a11y';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 
     CdkTableModule,
     DragDropModule,
-    ScrollingModule
+    ScrollingModule,
+    OverlayModule
   ],
   exports: [
     CommonModule,
@@ -147,8 +149,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 
     CdkTableModule,
     DragDropModule,
-    ScrollingModule
-
+    ScrollingModule,
+    OverlayModule
   ],
 
 })

@@ -18,14 +18,13 @@ export interface VirtualRow {
 }
 
 @Component({
-  selector: 'admino-table',
+  selector: 'admino-old-table',
   templateUrl: './admino-table.component.html',
   styleUrls: ['./admino-table.component.scss'],
-  animations: [adminoTableAnimation],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  animations: [adminoTableAnimation]
 
 })
-export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AdminoOldTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
@@ -129,13 +128,13 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // @HostListener('window:resize', ['$event'])
   resize(event: MouseEvent) {
-    // this.updateSize();
+    this.updateSize();
     this.scrollEvent();
-    this.reinit();
   }
   @HostListener('document:mouseup', ['$event'])
   mouseUp(event: MouseEvent) {
     this.manualScroll = false;
+
   }
   @HostListener('keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     if (this.keyOverrides.find((override) => {
@@ -179,6 +178,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         } else if (!this.isOutsideBottomMinusOne() && this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1) {
           // léptet egyet le csak frontenden
+          console.log('léptet')
 
           cursorpos += 1;
           this.dataSource.cursorAbsPos++;
@@ -337,7 +337,20 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.browserMaxSize = this.calcMaxBrowserScrollSize();
     this.scrollBarWidth = this.getScrollbarWidth();
+    this.calculateWidths();
+    // this.gotoPos(900719000);
+    // this.gotoPos(9007199254740991);
+    // this.gotoPos(9007199254740991);
+    // setTimeout((params) => {
+    //   this.gotoPos(1);
 
+    // }, 100)
+
+    // setInterval(() => {
+    //   this.gotoPos(this.asd);
+    //   // this.asd += 10000;
+    // }, 1000);
+    // this.gotoPos(9007199254740991);
   }
   ngAfterViewInit() {
 
@@ -348,26 +361,34 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.dataSource.connect().pipe(takeUntil(this.ngUnsubscribe)).subscribe((data) => {
       if (data) {
-
+        // console.log('browse response');
+        // console.log(data);
         if (this.totalsize !== this.dataSource.totalsize) {
           this.totalsize = this.dataSource.totalsize;
           this.updateSize();
           this.pageChange();
-          this.cd.detectChanges();
           this.calculateWidths();
         }
         this.updateRows();
         this.refreshVrows();
+        // this.vsRef.patchData(this.dataSource.rows);
         this.cd.detectChanges();
+
+        // console.log("count", this.dataSource.count)
+        // if (this.lastSetCursorPosPercent != null) {
+        //   this.scrollToSelected(this.lastSetCursorPosPercent);
+        //   this.lastSetCursorPosPercent = null;
+        //   // console.log("SCROLL HAPPENDED")
+        // }
 
       }
       this.valueChange.next(this.dataSource.state);
     });
-    this.reinit();
-
     this.timeoutHelper = setTimeout((params) => {
       this.reinit();
       this.updateDataSource(true);
+      // this.calculateWidths();
+
     });
 
   }
@@ -375,13 +396,22 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateSize();
     this.updateRows();
     this.pageChange();
-    this.cd.detectChanges();
-    this.calculateWidths();
+
     this.prevRowStart = this.rowStart;
     this.prevRowEnd = this.rowEnd;
 
   }
+  // update(state: DataSourceState) {
 
+  //   this.dataSource.state = Object.assign(this.dataSource.state, state);
+  //   this.dataSource.state.shift = 0;
+  //   // console.log("state", this.dataSource.state);
+  //   const shift = state.shift !== undefined ? state.shift : 0;
+  //   this.dataSource.loadData(shift).then(() => {
+  //     this.gotoPos(this.dataSource.viewpos);
+
+  //   });
+  // }
   setSelectedHeader(columnIndex) {
     this.dataSource.state.selectedHeaderColumnIndex = columnIndex;
     this.headerCellClick.next();
@@ -394,7 +424,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource.state.selectedColumnIndex = columnIndex;
       this.cellClick.next();
     }
-
+    // this.dataSource.state.cursor = vrow.absoluteId - this.rowStart;
+    // this.updateDataSource(true);
+    // this.dataSource.loadData();
+    // console.log(vrow.data)
   }
   gotoPos(absoluteId = 0) {
     // console.log("goto", absoluteId);
@@ -412,6 +445,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const remainder = this.largePageSize > 0 ? absoluteId % (this.largePageSize) : 0;
     this.scrollPos = this.tableRef.nativeElement.scrollTop = (remainder + this.largePageCoeff) * this.rowHeight + lastRowFix;
     this.updateRows();
+    // console.log("remainder", this.largePageCoeff)
     this.refreshVrows();
   }
   scrollbarMouseDown() {
@@ -422,10 +456,21 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       const target = (this.scrollerRef.nativeElement.scrollTop /
         (this.scrollerRef.nativeElement.scrollHeight - this.scrollerRef.nativeElement.clientHeight))
         * (this.adjustedTotalsize);
+      console.log("maxscrollpos", (this.scrollerRef.nativeElement.scrollHeight - this.scrollerRef.nativeElement.clientHeight))
+      console.log("target", target)
       this.gotoPos(target);
     }
   }
   scrollEvent() {
+    // console.log("scrololEvent");
+    // console.log(asd === asd + 10000);
+    // console.log(9007199254740991 * 9007199254740991);
+
+    // if (Math.abs(this.scrollPos - this.prevScrollPos) > this.viewportSize) {
+    //   // this.lpage = Math.floor(scrollPos * ((this.combinedSizeOfItems - this.viewportSize)
+    //   //   / (this.realScrollSize - this.viewportSize)) * (1 / this.pageHeight));
+    // } else {
+    // }
 
 
 
@@ -477,29 +522,47 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateDataSource(force = false) {
-
+    // console.log("_________________")
+    // console.log("start", this.dataSource.viewpos, "end", this.dataSource.viewpos + this.dataSource.state.count)
+    // console.log("start", this.rowStart, "end", this.rowEnd)
     const currentLoadedStart = this.dataSource.viewpos;
     const currentLoadedEnd = this.dataSource.viewpos + this.dataSource.state.count;
 
     if (force || currentLoadedStart !== this.rowStart || currentLoadedEnd !== this.rowEnd) {
+      // console.log("UPDATE")
 
+      // if (this.prevRowEnd < this.rowEnd) {
+      //   this.dataSource.buffer.clear(this.prevRowEnd + 1, this.rowEnd);
+      // }
+      // if (this.prevRowStart > this.rowStart) {
+      //   this.dataSource.buffer.clear(this.prevRowStart - 1, this.rowStart);
+      // }
       this.refreshVrows();
       const rowCount = Math.ceil(this.viewportSize / this.rowHeight) + 1;
       const count = Math.max(this.visibleRowCount - 2, rowCount - 2);
+      console.log("count", rowCount, count)
+      //  (this.visibleRowCount - 1) > this.totalsize ? this.totalsize : this.visibleRowCount - 1;
       this.dataSource.state.count = count;
-
+      // this.dataSource.buffer.maxBufferSize = count * 3;
+      // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
+      // console.log(this.dataSource.buffer.container);
+      // console.log(this.dataSource.buffer.container);
       this.dataSource.state.cursorpos = -(this.rowStart - this.dataSource.cursorAbsPos);
       this.dataSource.loadData();
       this.cd.detectChanges();
     }
-
+    // this.prevRowStart = this.rowStart;
+    // this.prevRowEnd = this.rowEnd;
 
   }
 
   pageChange() {
 
     this.maxScrollPos = Math.floor(this.largePageSize * this.rowHeight);
-
+    // if (this.largePage === 0) {
+    // } else {
+    //   this.maxScrollPos = Math.floor((this.largePageSize + 1) * this.rowHeight);
+    // }
     this.fakeScrollerHeight = this.maxScrollPos + (this.visibleRowCount - 1) * this.rowHeight;
     this.fakeContentRef.nativeElement.style.height = this.fakeScrollerHeight + 'px';
 
@@ -510,10 +573,23 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.largePageCoeff = this.largePage - 1 >= 0 ? 1 : 0;
 
+    // console.log("pageChange")
+    // console.log("scrollersize", this.lastPage, this.lpage)
+    // if (this.lastPage === this.lpage) {
+    //   this.fakeContentRef.nativeElement.style.height =
+    //     this.rowCountOnLastPage * this.rowHeight + this.lpage * this.rowHeight
+    //     + (this.rowCount - 1) * this.rowHeight + 'px';
+    //   // this.rowCountOnLastPage * this.rowHeight + (this.rowCount - 1) * this.rowHeight + (this.rowCount - 1) * this.rowHeight + 'px';
+    //   console.log('last', this.rowCountOnLastPage + (this.rowCount - 1));
+    // } else {
+
+    // }
+    // this.cd.markForCheck();
   }
   updateSize() {
-    // this.calculateWidths();
-    // this.cd.detectChanges();
+    console.log("UPDATESIZE")
+    this.calculateWidths();
+    this.cd.detectChanges();
     // this.tableRef.nativeElement.style.paddingRight = this.scrollBarWidth + 'px';
     this.viewportSize = this.tableRef.nativeElement.clientHeight;
     const count = Math.floor(this.viewportSize / this.rowHeight);
@@ -586,8 +662,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.smallPage = Math.floor(this.scrollPosCoeff / (this.visibleRowCount));
     this.scrollPosCoeffNormal = this.scrollPosCoeff - this.smallPage * (this.visibleRowCount);
 
+    // console.log("smallPage", this.smallPage);
+    // console.log("largePageCoeff", this.largePageCoeff);
     this.rowStart = this.scrollPosCoeff + (this.largePage * this.largePageSize) - this.largePageCoeff;
-    this.rowEnd = Math.max(this.rowStart + this.visibleRowCount - 1 - 1, this.rowStart);
+    this.rowEnd = Math.max(this.rowStart + this.visibleRowCount - 1, this.rowStart);
 
     for (const vrow of this.vrows) {
       this.updateRow(vrow);
@@ -614,6 +692,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         vrow.pos = vrow.virtualId * this.rowHeight + this.smallPage * this.rowHeight * (this.visibleRowCount);
       }
     }
+    // console.log(vrow.absoluteId);
   }
 
   refreshVrows() {
@@ -621,10 +700,45 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       const d = this.dataSource.buffer.get(vrow.absoluteId);
       vrow.data = d;
     }
+    // console.log(this.vrows)
   }
 
+
+  // refreshVrows1() {
+  //   for (const vrow of this.vrows) {
+  //     const d = this.dataSource.buffer.get(vrow.absoluteId);
+  //     const prevTemp = cloneDeep(d);
+  //     // vrow.origdata = prevTemp;
+  //     vrow.data = d;
+  //     // const prevdata = vrow.data && vrow.data.data;
+  //     // const newdata = d && d.data;
+  //     if (vrow.data && vrow.data.data) {
+  //       // vrow.data.data = prevdata;
+  //       this.refreshVrow(vrow);
+  //     }
+  //     vrow.prevdata = prevTemp;
+  //   }
+  // }
+  // refreshVrow(vrow: VirtualRow) {
+  //   if (!vrow.processedData) {
+  //     vrow.processedData = {};
+  //   }
+  //   for (const key of Object.keys(vrow.data.data)) {
+  //     if (isString(vrow.data.data[key])) {
+  //       // && key.startsWith('$')
+  //       // key.startsWith('$')
+  //       const prev = vrow.prevdata && vrow.prevdata.data && vrow.prevdata.data[key];
+  //       const orig = vrow.data && vrow.data.data && vrow.data.data[key];
+  //       if (orig !== prev) {
+  //         vrow.processedData[key] = this.sanitizer.bypassSecurityTrustHtml(vrow.data.data[key]);
+  //       }
+  //     } else {
+  //       vrow.processedData[key] = vrow.data.data[key];
+  //     }
+  //   }
+  // }
   calculateWidths() {
-    console.log(this.bodyRef.nativeElement.clientWidth, this.dataSource.state.keys)
+    console.log(this.bodyRef.nativeElement.clientWidth)
 
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
       console.log("returned")
@@ -649,6 +763,9 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
+    // this.cd.detectChanges();
+    // this.columnWidths[this.dataSource.displayedColumns.length] = actionsWidth;
+    // console.log(this.dataSource.displayedColumns);
   }
 
   private calcMaxBrowserScrollSize(): number {
@@ -708,11 +825,49 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // updateIndexes() {
+  //   this.dataSource.indexes = this.indexes;
+  //   this._indexes.forEach((index) => {
+  //     const id = index.keys[0];
+  //     const found = this.dataSource.columns.find((column) => {
+  //       return column.id === id;
+  //     });
+  //     if (found) {
+  //       found.sortable = true;
+  //     }
+  //   });
+  // }
 
   format(val, format) {
     return this.formatService.format(val, format);
   }
 
+  // sortClicked(column, sorter) {
+  //   // const dir = e.direction === 'asc' ? 1 : -1;
+  //   sorter.direction = sorter.direction * -1;
+  //   if (this.sortedColumn === column && sorter.direction === 1) {
+  //     this.sortedColumn = null;
+  //     sorter.direction = -1;
+  //     this.dataSource.state.index = 1;
+  //   } else {
+  //     this.sortedColumn = column;
+  //     const found = this.dataSource.indexes.find((index) => {
+  //       return index.keys[0] === this.sortedColumn.id;
+  //     });
+  //     if (found) {
+  //       this.dataSource.state.index = (this.dataSource.indexes.indexOf(found) + 1) * sorter.direction;
+  //     } else {
+  //       this.dataSource.state.index = 1;
+  //     }
+  //   }
+  //   this.updateDataSource(true);
+  //   // this.vsRef.refresh();
+  //   // this.dataSource.loadData().then(() => {
+  //   //   // this.cd.detectChanges();
+  //   //   // this.vsRef.refresh();
+  //   //   // this.scrollToSelected();
+  //   // });
+  // }
 
   getHeaderContainerStyle(column, i) {
     const lastColumnFix = i === this.dataSource.columns.length - 1 ? this.scrollBarWidth : 0;
@@ -729,17 +884,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   getRowStyle(vrow) {
     // transform1: 'translateY(' + vrow.pos + 'px)', 
-    const style = { height: this.rowHeight + 'px', transform: 'translateY(' + vrow.pos + 'px)', }
-
+    const style = { height: this.rowHeight + 'px', top: vrow.pos + 'px' }
     if (vrow.absoluteId === this.dataSource.cursorAbsPos && this.selectedRowStyle) {
-      if (this.isFocused) {
-        Object.assign(style, this.selectedRowStyle);
-      } else {
-        Object.assign(style, this.inactiveSelectedRowStyle);
-      }
+      Object.assign(style, this.selectedRowStyle);
     }
-
-
     return style;
   }
   getContainerStyle(column, data, i, vrow) {
@@ -753,27 +901,65 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const extra = data && data.styles && data.styles[column.id] && data.styles[column.id].containerStyle;
 
+    // data && data[column.extraCellDefinitions];
+    // const extraStyle = extra && extra.containerStyle;
+    // const extraPredefinedStyle = extra && extra.predefinedContainerStyleId !== undefined && this.dataSource.predefinedStyles !== undefined
+    //   && this.dataSource.predefinedStyles[extra.predefinedContainerStyleId];
+
+
+    // if (extraPredefinedStyle) {
+    //   Object.assign(containerStyle, extraPredefinedStyle);
+    // }
     if (extra) {
       Object.assign(containerStyle, extra);
     }
 
     if (vrow.absoluteId === this.dataSource.cursorAbsPos && i === this.dataSource.state.selectedColumnIndex && this.selectedCellStyle) {
-      if (this.isFocused) {
-        Object.assign(containerStyle, this.selectedCellStyle);
-      } else {
-        Object.assign(containerStyle, this.inactiveSelectedCellStyle);
-      }
+      Object.assign(containerStyle, this.selectedCellStyle);
     }
+
     return containerStyle;
 
   }
   getStyle(column, data, i) {
+    // const style = column.style ? cloneDeep(column.style) : {};
+    // const extra = data && data[column.extraCellDefinitions];
+    // const extraStyle = extra && extra.style;
+    // const extraPredefinedStyle = extra && extra.predefinedStyleId !== undefined && this.dataSource.predefinedStyles !== undefined
+    //   && this.dataSource.predefinedStyles[extra.predefinedStyleId];
+
+    // if (extraStyle) {
+    //   Object.assign(style, extraStyle);
+    // }
+    // if (extraPredefinedStyle) {
+    //   Object.assign(style, extraPredefinedStyle);
+    // }
     return data && data.styles && data.styles[column.id] && data.styles[column.id].style;
   }
   getBarStyle(column, data, i) {
+    // const style = {};
+    // const extra = data && data[column.extraCellDefinitions];
+    // const barStyle = extra && extra.bar;
+
+    // const extraPredefinedBarStyle = extra && extra.predefinedBarStyleId !== undefined && this.dataSource.predefinedStyles !== undefined
+    //   && this.dataSource.predefinedStyles[extra.predefinedBarStyleId];
+
+    // if (barStyle) {
+    //   Object.assign(style, barStyle);
+    // }
+    // if (extraPredefinedBarStyle) {
+    //   Object.assign(style, extraPredefinedBarStyle);
+    // }
+
     return data && data.styles && data.styles[column.id] && data.styles[column.id].barStyle;
   }
-
+  sanitize(val) {
+    if (val === undefined) {
+      return '';
+    }
+    const sanitized = this.sanitizer.bypassSecurityTrustHtml(val);
+    return val;
+  }
   getCellContent(vrow, column) {
     if (vrow.data && vrow.data.data && vrow.data.data.processedData) {
       if (vrow.data.data.processedData['$' + column.id]) {
@@ -782,7 +968,13 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return vrow.data.data.processedData[column.id];
       }
     }
-
+    // if (vrow.processedData) {
+    //   if (vrow.processedData['$' + column.id]) {
+    //     return vrow.processedData['$' + column.id];
+    //   } else {
+    //     return vrow.processedData[column.id];
+    //   }
+    // }
     return '';
   }
 
@@ -790,8 +982,8 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return item.absoluteId;
     //  index; // or item.id
   }
-  trackByFnCell(index, item) {
-    return item.id;
+  trackByFnCell(index) {
+    return index;
     //  index; // or item.id
   }
 

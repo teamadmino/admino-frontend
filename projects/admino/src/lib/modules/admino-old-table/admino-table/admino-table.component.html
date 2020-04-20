@@ -43,15 +43,14 @@
             [adminoTooltip]="vrow.data && vrow.data.data && vrow.data.data[column.id]"
             -->
                     <div (click)="setSelected(vrow,i,rowIndex)" class="acell"
-                        *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell" [ngClass]=" {columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos &&
-                        i===this.dataSource.state.selectedColumnIndex, first:i===0,
-                        last:i===dataSource.columns.length-1}"
+                        *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell"
+                        [ngClass]="{columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos && i===this.dataSource.state.selectedColumnIndex, first:i===0, last:i===dataSource.columns.length-1}"
                         [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data , i, vrow)">
                         <!-- {{vrow.absoluteId}}
                         {{vrow.virtualId}} -->
                         <div class="rowbg" *ngIf="vrow.absoluteId%2===0" [ngStyle]="oddRowStyle"></div>
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)"
-                            [innerHtml]="format(getCellContent(vrow, column),column.format)">
+                            [innerHtml]="format(sanitize(getCellContent(vrow, column),column.format))">
                         </div>
 
                         <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)">

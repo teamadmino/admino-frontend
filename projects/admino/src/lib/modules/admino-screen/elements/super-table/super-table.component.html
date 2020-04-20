@@ -1,0 +1,11 @@
+<admino-table #focusRef (valueChange)="setValue($event)" [dataSource]="this.dataSource" [indexes]="this.element.indexes"
+    [columns]="this.element.columns" [autoRefresh]="this.element.autoRefresh" [rowHeight]="element.rowHeight"
+    [headerHeight]="element.headerHeight" [oddRowStyle]="element.oddRowStyle" (cellClick)="handleCellClick($event)"
+    (headerCellClick)="handleHeaderCellClick($event)" [ngClass]="{'table-focused': this.isFocused}"
+    [hideHeader]="element.hideHeader" [debug]="element.debug" tabindex="0" [selectedRowStyle]="element.selectedRowStyle"
+    [selectedCellStyle]="element.selectedCellStyle" [inactiveSelectedRowStyle]="element.inactiveSelectedRowStyle"
+    [inactiveSelectedCellStyle]="element.inactiveSelectedCellStyle" [keyOverrides]="this.getOverrideList()"
+    [isFocused]="this.isFocused">
+
+    <!-- (click)="this.focus()" -->
+</admino-table>

@@ -1,3 +1,6 @@
+import { TableselectComponent } from './elements/tableselect/tableselect.component';
+import { SuperTableComponent } from './elements/super-table/super-table.component';
+import { AdminoOldTableComponent } from './../admino-old-table/admino-table/admino-table.component';
 import { IframeComponent } from './elements/iframe/iframe.component';
 import { CodeComponent } from './elements/code/code.component';
 import { ToggleComponent } from './elements/toggle/toggle.component';
@@ -39,6 +42,7 @@ import { ImageComponent } from './elements/image/image.component';
 import { SelectComponent } from './elements/select/select.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IconButtonComponent } from './elements/icon-button/icon-button.component';
+import { Overlay } from '@angular/cdk/overlay';
 
 
 const componentMapper = {
@@ -55,7 +59,7 @@ const componentMapper = {
   radiobutton: RadiobuttonComponent,
   chart: ChartComponent,
   map: MapComponent,
-  newtable: NewTableComponent,
+  newtable: SuperTableComponent,
   date: DateComponent,
   scanner: ScannerComponent,
   chartjs: ChartjsComponent,
@@ -67,6 +71,9 @@ const componentMapper = {
   toggle: ToggleComponent,
   code: CodeComponent,
   iframe: IframeComponent,
+  tableselect: TableselectComponent,
+  // supertable: SuperTableComponent,
+
 };
 
 @Directive({
@@ -103,7 +110,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
     public ts: AdminoThemeService,
-    public chartThemeService: ThemeService, public el: ElementRef, public sanitizer: DomSanitizer) {
+    public chartThemeService: ThemeService, public el: ElementRef, public sanitizer: DomSanitizer, public overlay: Overlay) {
   }
 
 
