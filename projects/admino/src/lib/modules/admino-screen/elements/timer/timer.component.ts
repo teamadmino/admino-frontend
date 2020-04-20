@@ -12,12 +12,16 @@ import { Subject } from 'rxjs';
 })
 export class TimerComponent extends AdminoScreenElement implements OnInit {
 
+  count = 0;
   timeoutHelper;
   ngOnInit() {
     this.init();
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
     if (changes.frequency) {
+      this.init();
+    }
+    if (changes.count) {
       this.init();
     }
   }
@@ -28,14 +32,21 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
   startTimeout() {
     this.clearTimeout();
     if (this.element.frequency > 0) {
-      this.timeoutHelper = setTimeout(() => {
-        this.handleAction(this.element.action).then(() => {
-          this.startTimeout();
-        }, (params) => {
-          this.startTimeout();
-        });
-        // this.handleAction(this.element.config.action).pipe(takeUntil(this.ngUnsubscribe));
-      }, this.element.frequency);
+
+      if (this.element.count === undefined || this.element.count || this.count < this.element.count) {
+        this.timeoutHelper = setTimeout(() => {
+          this.handleAction(this.element.action).then(() => {
+            this.startTimeout();
+            this.count++;
+          }, (params) => {
+            this.count++;
+            this.startTimeout();
+          });
+          // this.handleAction(this.element.config.action).pipe(takeUntil(this.ngUnsubscribe));
+        }, this.element.frequency);
+      }
+
+
     }
   }
 
