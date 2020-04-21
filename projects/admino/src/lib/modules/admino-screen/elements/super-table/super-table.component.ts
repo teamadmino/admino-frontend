@@ -59,6 +59,12 @@ export class SuperTableComponent extends AdminoScreenElement implements OnInit {
       this.handleAction(cellClickAction);
     }
   }
+  handleCellDoubleClick(e) {
+    const cellClickAction = this.getAction('cellDoubleClick');
+    if (cellClickAction) {
+      this.handleAction(cellClickAction);
+    }
+  }
   handleHeaderCellClick(e) {
     const headerClickAction = this.getAction('headerCellClick');
     if (headerClickAction) {

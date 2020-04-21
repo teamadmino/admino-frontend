@@ -15,17 +15,17 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
   count = 0;
   timeoutHelper;
   ngOnInit() {
-    this.init();
+    this.timerInit();
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
     if (changes.frequency) {
-      this.init();
+      this.timerInit();
     }
-    if (changes.count) {
-      this.init();
+    if (changes.value) {
+      this.timerInit();
     }
   }
-  init() {
+  timerInit() {
     this.startTimeout();
   }
 
@@ -33,14 +33,20 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
     this.clearTimeout();
     if (this.element.frequency > 0) {
 
-      if (this.element.count === undefined || this.element.count === 0 || this.count < this.element.count) {
+      if (this.control.value === undefined || this.control.value === null || this.control.value < 0 || this.control.value > 0) {
         this.timeoutHelper = setTimeout(() => {
-          this.count++;
           this.handleAction(this.element.action).then(() => {
             this.startTimeout();
           }, (params) => {
             this.startTimeout();
           });
+
+          let currval = this.control.value !== null || this.control.value !== undefined ? this.control.value : 0;
+          if (currval > 0) {
+            currval--;
+          }
+          this.control.setValue(currval);
+
           // this.handleAction(this.element.config.action).pipe(takeUntil(this.ngUnsubscribe));
         }, this.element.frequency);
       }

@@ -2,7 +2,7 @@
 <form [formGroup]="group" class="admino-screen " [ngClass]="{'loading': blockingActionRunning}"
     (submit)="onSubmit($event)" *ngIf="screenElement">
 
-    <div class="scroll-area" cdkTrapFocus>
+    <div class="scroll-area" [cdkTrapFocus]="trapFocus()">
 
         <div class="screen-container"
             [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"

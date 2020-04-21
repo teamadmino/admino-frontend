@@ -32,6 +32,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Output() cellClick: EventEmitter<any> = new EventEmitter();
+  @Output() cellDoubleClick: EventEmitter<any> = new EventEmitter();
   @Output() headerCellClick: EventEmitter<any> = new EventEmitter();
 
   @Input() dataSource: AdminoTableDataSource;
@@ -276,7 +277,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         event.preventDefault();
         break;
       case 'Enter':
-        this.cellClick.next();
+        this.cellDoubleClick.next();
         event.preventDefault();
         break;
       case 'ArrowRight':

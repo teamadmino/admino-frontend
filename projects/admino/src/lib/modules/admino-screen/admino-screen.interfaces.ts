@@ -81,6 +81,8 @@ export interface ScreenElementScreen extends ScreenElement {
     allowEdit?: boolean;
     editMode?: boolean;
 
+    allowTabOut?: boolean;
+
     isFluidContainer?: boolean;
     colNum?: number;
     // popup settings

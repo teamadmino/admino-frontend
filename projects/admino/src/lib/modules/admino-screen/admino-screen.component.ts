@@ -220,6 +220,21 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
       return false;
     }
   }
+  trapFocus() {
+    if (this.screenElement.allowTabOut !== undefined && this.screenElement.allowTabOut === false) {
+      return true;
+    }
+    if (this.screenElement.allowTabOut) {
+      return false;
+    }
+
+    if (this.isPopup) {
+      return true;
+    }
+    if (this.rootScreenComponent !== this) {
+      return false;
+    }
+  }
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

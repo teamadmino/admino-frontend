@@ -36,7 +36,7 @@
                     [ngStyle]="getRowStyle(vrow)" *ngFor="let vrow of vrows; let rowIndex=index; trackBy: trackByFn"
                     [@adminoTableRowAnimation]="vrow.data && vrow.data.data !==undefined">
 
-                    <div (click)="setSelected(vrow,i,rowIndex)" class="acell"
+                    <div (click)="setSelected(vrow,i,rowIndex)" (dblclick)="cellDoubleClick.next()" class="acell"
                         *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell" [ngClass]=" {columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos &&
                         i===this.dataSource.state.selectedColumnIndex, first:i===0,
                         last:i===dataSource.columns.length-1}"
