@@ -6,6 +6,8 @@ import { ScreenElement } from '../admino-screen.interfaces';
 import { ViewChild, ElementRef, HostBinding } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoScreenElementDirective } from '../admino-screen-element.directive';
+import { isArray } from 'util';
+import { isEqual } from 'lodash';
 
 export class AdminoScreenElement {
     // @ViewChild('focusRef', { static: true }) focusRef: any;
@@ -35,8 +37,11 @@ export class AdminoScreenElement {
     @HostBinding('style.height') height = '';
 
     supportedKeyTriggers = ['keydown', 'keyup'];
+
     keyTriggers: { trigger: string, boundFunc: any }[] = [];
 
+    shortcutTriggers: { trigger: string, boundFunc: any }[] = [];
+    currentShortcutKeys = [];
     init() {
         if (this.focusElRef) {
 
@@ -63,7 +68,7 @@ export class AdminoScreenElement {
                                 if (action.overrideDefault) {
                                     e.preventDefault();
                                 }
-                            } else if (action.key === e.key) {
+                            } else if (action.key === e.key.toLowerCase()) {
                                 this.handleAction(action);
                                 if (action.overrideDefault) {
                                     e.preventDefault();
@@ -76,13 +81,92 @@ export class AdminoScreenElement {
                 document.addEventListener(trigger, keyTrigger.boundFunc);
             }
         });
-
     }
     clearKeyTriggers() {
         this.keyTriggers.forEach((keyTrigger: { trigger: string, boundFunc: any }) => {
             document.removeEventListener(keyTrigger.trigger, keyTrigger.boundFunc);
         });
     }
+
+    createShortcutTriggers() {
+
+        const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger: 'shortcut' });
+        if (filteredActions.length > 0) {
+            console.log("shortcutclicktrigter")
+
+            const shortcutKeydownTrigger = {
+                trigger: 'keydown',
+                boundFunc: (e) => {
+                    const key = e.key.toLowerCase();
+                    if (this.currentShortcutKeys.indexOf(key) > -1) {
+                        this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
+                    }
+                    this.currentShortcutKeys.push(key);
+
+                    filteredActions.forEach((action: AdminoAction) => {
+                        if (isEqual(action.shortcut, this.currentShortcutKeys)) {
+                            this.handleAction(action, action.shortcut);
+                            if (action.overrideDefault) {
+                                e.preventDefault();
+                            }
+                        }
+                    });
+                }
+            };
+            const shortcutKeyupTrigger = {
+                trigger: 'keyup',
+                boundFunc: (e) => {
+                    const key = e.key.toLowerCase();
+                    if (this.currentShortcutKeys.indexOf(key) > -1) {
+                        this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
+                        // this.currentShortcutKeys.splice(0, this.currentShortcutKeys.indexOf(key) + 1);
+                    }
+                }
+            };
+            const shortcutClickTrigger = {
+                trigger: 'click',
+                boundFunc: (e) => {
+                    console.log("clickk")
+                    const key = 'click';
+                    if (this.currentShortcutKeys.indexOf(key) > -1) {
+                        this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
+                    }
+                    this.currentShortcutKeys.push(key);
+                    filteredActions.forEach((action: AdminoAction) => {
+                        if (isEqual(action.shortcut, this.currentShortcutKeys)) {
+                            this.handleAction(action, action.shortcut);
+                            if (action.overrideDefault) {
+                                e.preventDefault();
+                            }
+                        }
+                    });
+                    this.currentShortcutKeys = [];
+                }
+            };
+            this.shortcutTriggers.push(shortcutKeydownTrigger);
+            this.shortcutTriggers.push(shortcutKeyupTrigger);
+            this.shortcutTriggers.push(shortcutClickTrigger);
+            document.addEventListener('keydown', shortcutKeydownTrigger.boundFunc);
+            document.addEventListener('keyup', shortcutKeyupTrigger.boundFunc);
+            document.addEventListener('click', shortcutClickTrigger.boundFunc);
+        }
+
+    }
+    // handleKeyCombinations(action, e) {
+    //     console.log("combi", e);
+    //     this.handleAction(action);
+    //     if (action.overrideDefault) {
+    //         e.preventDefault();
+    //     }
+    // }
+    clearShortcutTriggers() {
+        this.shortcutTriggers.forEach((shortcutTrigger: { trigger: string, boundFunc: any }) => {
+            document.removeEventListener(shortcutTrigger.trigger, shortcutTrigger.boundFunc);
+        });
+        this.currentShortcutKeys = [];
+    }
+
+
     getOverrideList() {
         const filtered = this.filterActions(this.element.actions, { overrideDefault: true });
         const mapped = filtered.map((action) => {
@@ -191,12 +275,14 @@ export class AdminoScreenElement {
     }
     focusEvent() {
         this.createKeyTiggers();
+        this.createShortcutTriggers();
         this.isFocused = true;
         this.directive.cd.markForCheck();
 
     }
     blurEvent() {
         this.clearKeyTriggers();
+        this.clearShortcutTriggers();
         this.isFocused = false;
         this.directive.cd.markForCheck();
     }

@@ -14,6 +14,8 @@
   }
 
   &.inline {
+    display: block;
+
     .grid {
       display: block !important;
     }

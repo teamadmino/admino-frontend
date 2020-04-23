@@ -1,1 +1,31 @@
-<p>scanner works!</p>
+<div class="admino-scanner">
+    <div class="codes-wrapper">
+        <div class="noscan-notice w-100 text-center" *ngIf="getCodes().length<1">Kezdje meg a beolvasást</div>
+        <mat-list class="codes pt-0" #codesRef>
+
+
+            <mat-list-item *ngFor="let reading of getCodes();let i=index;"
+                [@codeAnimation]="{value:'',params:{startColor:this.directive.ts.accentColor, endColor:'*'}}"
+                [ngClass]="{'selected': i===this.selectedId}" (click)="codeClicked(i)">
+
+                <mat-icon class="syncindicator" [ngClass]="{hide: reading.synced}">sync_problem</mat-icon>
+                <button mat-icon-button (click)="this.showConfirmationId=i" *ngIf=" i===this.selectedId">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <h2 mat-line class="code"> {{reading.code}}</h2>
+                <p mat-line class="opacity-70">{{reading.date | date:'H:mm:ss'}} </p>
+
+                <div class="confirmation p-3 d-flex align-items-center" *ngIf="this.showConfirmationId===i">
+                    Biztosan törli?
+                    <div class="flex-grow-1"></div>
+                    <button (click)="removeCode(reading)" mat-flat-button color="warn">Igen</button>
+                    <button (click)="this.showConfirmationId=-1" mat-button>Nem</button>
+
+                </div>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+
+
+        </mat-list>
+    </div>
+</div>
