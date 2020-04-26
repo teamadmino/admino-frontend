@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, catchError, delay } from 'rxjs/operators';
 import { Subject, Observable, ObservableInput } from 'rxjs';
-import { AdminoNavService } from './nav.service';
 import { AdminoUserService } from './user.service';
 import { AdminoSiteService } from './site.service';
 
@@ -25,7 +24,7 @@ export class AdminoApiService {
   REQUEST = '/request';
   PING = '/ping';
 
-  constructor(private http: HttpClient, private nav: AdminoNavService, private user: AdminoUserService, private site: AdminoSiteService) {
+  constructor(private http: HttpClient, private user: AdminoUserService, private site: AdminoSiteService) {
   }
 
 

@@ -70,7 +70,7 @@ export interface AdminoAction {
 
   trigger?: string;
   key?: string;
-  shortcut?: string;
+  shortcut?: string[];
   overrideDefault?: boolean;
   debounce?: number;
 

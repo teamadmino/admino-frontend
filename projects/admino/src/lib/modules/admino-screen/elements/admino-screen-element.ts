@@ -43,6 +43,7 @@ export class AdminoScreenElement {
     shortcutTriggers: { trigger: string, boundFunc: any }[] = [];
     currentShortcutKeys = [];
     init() {
+        console.log("init", this.element)
         if (this.focusElRef) {
 
             this.boundFocusFunction = this.focusEvent.bind(this);
@@ -55,6 +56,8 @@ export class AdminoScreenElement {
     }
 
     createKeyTiggers() {
+
+        console.log("createtriggers", this.element)
         this.clearKeyTriggers();
         this.supportedKeyTriggers.forEach((trigger) => {
             const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger });
@@ -68,7 +71,7 @@ export class AdminoScreenElement {
                                 if (action.overrideDefault) {
                                     e.preventDefault();
                                 }
-                            } else if (action.key === e.key.toLowerCase()) {
+                            } else if (e.key !== undefined && action.key.toLowerCase() === e.key.toLowerCase()) {
                                 this.handleAction(action);
                                 if (action.overrideDefault) {
                                     e.preventDefault();
@@ -92,11 +95,12 @@ export class AdminoScreenElement {
 
         const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger: 'shortcut' });
         if (filteredActions.length > 0) {
-            console.log("shortcutclicktrigter")
-
             const shortcutKeydownTrigger = {
                 trigger: 'keydown',
                 boundFunc: (e) => {
+                    if (e.key === undefined) {
+                        return;
+                    }
                     const key = e.key.toLowerCase();
                     if (this.currentShortcutKeys.indexOf(key) > -1) {
                         this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
@@ -104,7 +108,10 @@ export class AdminoScreenElement {
                     this.currentShortcutKeys.push(key);
 
                     filteredActions.forEach((action: AdminoAction) => {
-                        if (isEqual(action.shortcut, this.currentShortcutKeys)) {
+                        const lowerCaseShortcut = action.shortcut.map((_key) => {
+                            return _key.toLowerCase();
+                        });
+                        if (isEqual(lowerCaseShortcut, this.currentShortcutKeys)) {
                             this.handleAction(action, action.shortcut);
                             if (action.overrideDefault) {
                                 e.preventDefault();
@@ -116,6 +123,9 @@ export class AdminoScreenElement {
             const shortcutKeyupTrigger = {
                 trigger: 'keyup',
                 boundFunc: (e) => {
+                    if (e.key === undefined) {
+                        return;
+                    }
                     const key = e.key.toLowerCase();
                     if (this.currentShortcutKeys.indexOf(key) > -1) {
                         this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
@@ -126,7 +136,6 @@ export class AdminoScreenElement {
             const shortcutClickTrigger = {
                 trigger: 'click',
                 boundFunc: (e) => {
-                    console.log("clickk")
                     const key = 'click';
                     if (this.currentShortcutKeys.indexOf(key) > -1) {
                         this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
@@ -208,7 +217,7 @@ export class AdminoScreenElement {
         return null;
     }
 
-    handleAction(action: AdminoAction, overrideKey: string = null) {
+    handleAction(action: AdminoAction, overrideKey: any = null) {
         return new Promise((resolve, reject) => {
             const actionSub: ActionSubscription = {};
             this.activeActionSubscriptions.push(actionSub);
@@ -273,6 +282,7 @@ export class AdminoScreenElement {
         }
         this.blurEvent();
     }
+
     focusEvent() {
         this.createKeyTiggers();
         this.createShortcutTriggers();
@@ -281,6 +291,7 @@ export class AdminoScreenElement {
 
     }
     blurEvent() {
+
         this.clearKeyTriggers();
         this.clearShortcutTriggers();
         this.isFocused = false;

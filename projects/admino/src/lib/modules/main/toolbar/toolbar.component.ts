@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { AdminoThemeService } from '../../../services/theme.service';
 import { AdminoSiteService } from '../../../services/site.service';
-import { AdminoNavService } from '../../../services/nav.service';
 import { AdminoUserService } from '../../../services/user.service';
 
 @Component({
@@ -12,7 +11,6 @@ import { AdminoUserService } from '../../../services/user.service';
 export class ToolbarComponent implements OnInit {
   constructor(public ts: AdminoThemeService,
     public site: AdminoSiteService,
-    public nav: AdminoNavService,
     public user: AdminoUserService,
     private cd: ChangeDetectorRef) {
 

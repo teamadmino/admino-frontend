@@ -12,7 +12,6 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { DOCUMENT } from '@angular/common';
 import { AdminoThemeService } from '../../services/theme.service';
 import { AdminoSiteService } from '../../services/site.service';
-import { AdminoNavService } from '../../services/nav.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AdminoMenuEvent } from '../../interfaces';
@@ -51,7 +50,7 @@ export class MainComponent implements OnInit, OnDestroy {
     public ping: AdminoPingService,
     public renderer: Renderer2,
     public user: AdminoUserService,
-    public nav: AdminoNavService, private api: AdminoApiService,
+    private api: AdminoApiService,
     private media: MediaMatcher, private route: ActivatedRoute,
     public as: AdminoActionService, public cs: ConfigService, private cd: ChangeDetectorRef, @Inject(DOCUMENT) document
   ) {
@@ -78,7 +77,6 @@ export class MainComponent implements OnInit, OnDestroy {
       if (config) {
         this.ts.init(config.theme);
         this.api.init(config.server);
-        this.nav.init();
         this.init();
         this.as.init();
         this.user.init();

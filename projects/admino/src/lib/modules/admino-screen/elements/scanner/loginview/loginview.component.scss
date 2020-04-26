@@ -1,0 +1,38 @@
+// .mat-icon {
+//   font-size: 100px;
+//   height: 100px;
+//   width: 100px;
+// }
+:host {
+  margin-bottom: 50px;
+  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: inline-block;
+  width: 100%;
+
+}
+
+
+button {
+  margin-top: 15px;
+  font-size: 20px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.login {
+  h2 {
+    margin-bottom: 30px;
+  }
+
+  // max-width: 300px;
+  width: 100%;
+
+  text-align: center;
+  margin-bottom: 70px;
+
+  .mat-form-field {
+    width: 100%;
+  }
+}

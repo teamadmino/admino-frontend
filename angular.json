@@ -65,7 +65,8 @@
                 "glob": "**/*",
                 "input": "node_modules/ngx-monaco-editor/assets/monaco",
                 "output": "./assets/monaco/"
-              }
+              },
+              "projects/frontend/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/frontend/src/styles.scss",
@@ -105,7 +106,9 @@
                   "maximumWarning": "6kb",
                   "maximumError": "10kb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/frontend/ngsw-config.json"
             }
           }
         },
@@ -135,7 +138,8 @@
             "karmaConfig": "projects/frontend/karma.conf.js",
             "assets": [
               "projects/frontend/src/favicon.ico",
-              "projects/frontend/src/assets"
+              "projects/frontend/src/assets",
+              "projects/frontend/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/frontend/src/styles.scss"

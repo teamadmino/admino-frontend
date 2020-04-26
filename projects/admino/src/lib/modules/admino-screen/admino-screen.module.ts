@@ -42,6 +42,10 @@ import { IframeComponent } from './elements/iframe/iframe.component';
 import { IconButtonComponent } from './elements/icon-button/icon-button.component';
 import { TableselectComponent } from './elements/tableselect/tableselect.component';
 import { OverlaycontentComponent } from './elements/tableselect/overlaycontent/overlaycontent.component';
+import { InputviewComponent } from './elements/scanner/inputview/inputview.component';
+import { LoginviewComponent } from './elements/scanner/loginview/loginview.component';
+import { UtcafakkviewComponent } from './elements/scanner/utcafakkview/utcafakkview.component';
+import { ScannerView } from './elements/scanner/scannerview';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -71,7 +75,11 @@ import { OverlaycontentComponent } from './elements/tableselect/overlaycontent/o
     IconButtonComponent,
     SuperTableComponent,
     TableselectComponent,
-    OverlaycontentComponent
+    OverlaycontentComponent,
+    InputviewComponent,
+    LoginviewComponent,
+    UtcafakkviewComponent,
+    ScannerView
   ],
   imports: [
     CommonModule,

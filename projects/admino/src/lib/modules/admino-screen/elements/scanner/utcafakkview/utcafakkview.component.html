@@ -1,0 +1,37 @@
+<form [formGroup]="formGroup">
+    <mat-form-field appearance="outline">
+        <mat-label>Utca</mat-label>
+
+        <input type="number" matInput formControlName="utca" [matAutocomplete]="autoUtca" #utcaRef
+            (blur)="onUtcaChanged()">
+        <mat-autocomplete (optionSelected)="onUtcaChanged()" class="scanner-autocomplete" autoActiveFirstOption
+            #autoUtca="matAutocomplete">
+            <!-- [displayWith]="displayWith()" -->
+            <mat-option *ngFor="let option of filteredUtcak | async" [value]="option.utca">
+                {{option.utca}} <span class="opacity-70"> - {{option.raktar}}</span>
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="this.formGroup.get('utca').invalid">Nem létező utca</mat-error>
+
+    </mat-form-field>
+
+
+    <mat-form-field class="fakk-input" appearance="outline"
+        [ngClass]="{'hidden-input': this.formGroup.get('utca').value===null || this.formGroup.get('utca').invalid}">
+        <mat-label>Fakk</mat-label>
+
+        <input type="number" matInput formControlName="fakk" [matAutocomplete]="autoFakk" #fakkRef
+            (blur)="onFakkChanged()">
+        <mat-autocomplete (optionSelected)="onFakkChanged()" class="scanner-autocomplete" autoActiveFirstOption
+            #autoFakk="matAutocomplete">
+            <mat-option *ngFor="let option of filteredFakkok | async" [value]="option">
+                {{option}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="this.formGroup.get('fakk').invalid">Nem létező fakk</mat-error>
+
+    </mat-form-field>
+    <!-- <button [type]="'button'" color="accent" mat-flat-button [disabled]="this.formGroup.invalid">
+        Tovább
+    </button> -->
+</form>

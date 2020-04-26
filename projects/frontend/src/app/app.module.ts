@@ -9,6 +9,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminoSidInterceptor } from 'admino';
 import { GestureConfig } from '@angular/material';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { GestureConfig } from '@angular/material';
     AppRoutingModule,
     HttpClientModule,
     DeviceDetectorModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AdminoSidInterceptor, multi: true },

@@ -1,0 +1,18 @@
+:host {
+  margin-bottom: 50px;
+  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: inline-block;
+
+}
+
+::ng-deep.scanner-autocomplete {
+  max-height: 200px !important;
+}
+
+.fakk-input {
+  &.hidden-input {
+    opacity: 0;
+  }
+}

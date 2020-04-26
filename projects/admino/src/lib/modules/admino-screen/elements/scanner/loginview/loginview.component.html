@@ -1,0 +1,11 @@
+<div class="login">
+    <form [formGroup]="formGroup" #form novalidate>
+        <mat-form-field appearance="outline">
+            <mat-label>Dolgozó kód</mat-label>
+            <input matInput [type]="'number'" formControlName="dolgozo" (input)="input()">
+            <mat-error *ngIf="this.formGroup.get('dolgozo').hasError('validDolgozo') && this.formSubmitted">Nem létező
+                dolgozó
+            </mat-error>
+        </mat-form-field>
+    </form>
+</div>
