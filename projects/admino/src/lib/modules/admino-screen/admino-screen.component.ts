@@ -96,7 +96,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     // deepMerge(this.config, config);
     if (replace) {
       this.focusEvent.next(null);
-      this.screenElement = element;
+      this.screenElement = this.mergeConfig({}, element);
     } else {
       this.screenElement = this.mergeConfig(this.screenElement, element);
       // console.log('mergeconfig', element, this.screenElement);

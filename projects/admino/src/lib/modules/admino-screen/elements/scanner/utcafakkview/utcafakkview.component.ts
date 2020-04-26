@@ -10,6 +10,7 @@ import { ScannerView } from '../scannerview';
   styleUrls: ['./utcafakkview.component.scss']
 })
 export class UtcafakkviewComponent extends ScannerView implements OnInit {
+  @ViewChild('utcaRef', { static: true, read: ElementRef }) utcaRef: ElementRef;
   @ViewChild('fakkRef', { static: true, read: ElementRef }) fakkRef: ElementRef;
   formGroup = new FormGroup({
     utca: new FormControl(null, this.validateUtca.bind(this)),
@@ -37,6 +38,8 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit {
     this.formGroup.get('utca').setValue(this.scannerService.selectedUtca && this.scannerService.selectedUtca.utca);
     this.onUtcaChanged();
     this.formGroup.get('fakk').setValue(this.scannerService.selectedFakk);
+    this.utcaRef.nativeElement.focus();
+
   }
   onUtcaChanged() {
     this.formGroup.get('fakk').setValue(null);

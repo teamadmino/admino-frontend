@@ -46,6 +46,10 @@ export class ScannerService {
     { utca: 115, raktar: 'Cipősdoboz', fakkok: 100 },
   ];
 
-
+  reset() {
+    this.selectedFakk = null;
+    this.selectedUtca = null;
+    this.dolgozo = null;
+  }
   constructor() { }
 }

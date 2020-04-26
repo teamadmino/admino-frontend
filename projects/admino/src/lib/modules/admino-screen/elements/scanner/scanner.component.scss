@@ -35,6 +35,11 @@
 :host {
   ::ng-deep {
 
+
+    .mat-form-field {
+      width: 100%;
+    }
+
     input:-webkit-autofill {
       -webkit-animation-delay: 1s;
       /* Safari support - any positive time runs instantly */

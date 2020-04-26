@@ -8,6 +8,7 @@ import { FormControl, FormGroup, NgForm, AbstractControl } from '@angular/forms'
   styleUrls: ['./loginview.component.scss']
 })
 export class LoginviewComponent extends ScannerView implements OnInit {
+  @ViewChild('focusRef', { static: true, read: ElementRef }) focusRef: ElementRef;
 
   formGroup = new FormGroup({
     dolgozo: new FormControl(null, this.validateDolgozo.bind(this))
@@ -16,7 +17,8 @@ export class LoginviewComponent extends ScannerView implements OnInit {
   // @ViewChild('form', { static: true }) form: ElementRef;
   formSubmitted = false;
   ngOnInit() {
-    this.scannerService.dolgozo = null;
+    this.scannerService.reset();
+    this.focusRef.nativeElement.focus();
   }
   input() {
     this.formSubmitted = false;
@@ -24,6 +26,7 @@ export class LoginviewComponent extends ScannerView implements OnInit {
   }
   onNext() {
     this.formGroup.updateValueAndValidity();
+    this.formGroup.markAllAsTouched();
     // this.form.nativeElement.submit();
     const found = this.scannerService.dolgozok.find((el) => {
       return el.id === parseInt(this.formGroup.get('dolgozo').value, 10);
