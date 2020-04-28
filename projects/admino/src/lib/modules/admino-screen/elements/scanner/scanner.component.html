@@ -1,10 +1,42 @@
 <div class="admino-scanner">
 
+    <div class="header">
+        <div class="user">
+            <ng-container *ngIf="scannerService.dolgozo">
+                <button mat-icon-button aria-label="Kilepes" (click)="logout()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <h6 class="mb-0 mt-1 d-inline-block">
+                    {{scannerService.dolgozo && scannerService.dolgozo.nev}}
+                </h6>
+
+            </ng-container>
+
+        </div>
+        <div class="pr-3" *ngIf=" scannerService.syncId-scannerService.syncedTill >0">
+            <div class="unsyncronized mr-1">
+                <h6>
+                    {{ scannerService.syncId-scannerService.syncedTill}}
+                </h6>
+            </div>
+
+            <mat-icon class="color-warn">warning</mat-icon>
+        </div>
+        <div>
+            <mat-icon class="color-accent" *ngIf="scannerService.online">wifi</mat-icon>
+            <mat-icon class="color-warn" *ngIf="!scannerService.online">wifi_off </mat-icon>
+        </div>
+
+        <!-- <button [type]="'button'" color="accent" (click)="scannerService.next.next()" mat-flat-button>
+            {{scannerService.labels[scannerService.page.value][1]}}
+        </button> -->
+    </div>
+
     <!-- -->
     <!--  -->
 
 
-    <div class="content" [ngSwitch]="this.scannerService.page.value">
+    <div class="content" [ngSwitch]="this.scannerService.page.value" *ngIf="scannerService.dataLoaded">
         <div class="page" *ngSwitchCase="0">
             <admino-loginview [active]="scannerService.page.value===0"></admino-loginview>
         </div>
@@ -12,17 +44,19 @@
             <admino-utcafakkview [active]="scannerService.page.value===1"></admino-utcafakkview>
         </div>
         <div class="page h-100" *ngSwitchCase="2">
-            <admino-inputview [active]="scannerService.page.value===2" [control]="this.control"></admino-inputview>
+            <admino-inputview [active]="scannerService.page.value===2"></admino-inputview>
         </div>
     </div>
 
+
     <div class="bottomnav ">
-        <button *ngIf="scannerService.page.value>0" [type]="'button'" (click)="scannerService.prev.next()"
-            mat-flat-button>
+        <button *ngIf="scannerService.labels[scannerService.page.value][0]" [type]="'button'"
+            (click)="scannerService.prev.next()" mat-flat-button>
             {{scannerService.labels[scannerService.page.value][0]}}
         </button>
 
-        <button [type]="'button'" color="accent" (click)="scannerService.next.next()" mat-flat-button>
+        <button *ngIf="scannerService.labels[scannerService.page.value][1]" [type]="'button'" color="accent"
+            (click)="scannerService.next.next()" mat-flat-button>
             {{scannerService.labels[scannerService.page.value][1]}}
 
         </button>

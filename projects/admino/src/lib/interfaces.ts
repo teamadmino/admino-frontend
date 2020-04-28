@@ -135,6 +135,8 @@ export interface BackendResponse {
   setSnackbars: AdminoSnackbar[];
   startAction: AdminoAction[];
 
+  showToolbar: boolean;
+
   closePopup: boolean | string;
 
 

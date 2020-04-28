@@ -158,7 +158,6 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
           }
         } else {
           Object.assign(target, { [key]: source[key] });
-
         }
       }
     } else {

@@ -25,7 +25,8 @@
 
     </div>
     <div class="awrapper">
-        <div class="scroller" (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
+        <div class="scroller" [ngClass]="{'d-none': this.dataSource.totalsize<this.calculatedLargePageSize}"
+            (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
             <div class="scrollercontent" #scrollerContentRef></div>
         </div>
         <div class="atable" (scroll)="scrollEvent()" #tableRef>

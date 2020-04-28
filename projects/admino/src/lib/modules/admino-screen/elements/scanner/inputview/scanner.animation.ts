@@ -10,9 +10,9 @@ export const codeAnimation =
     trigger('codeAnimation', [
 
         transition('void => *', [
-            style({ color: '{{startColor}}', transform: 'scale(1.5)' }),
+            style({ transform: 'scale(1.2)', opacity: 0, height: 0 }),
             group([
-                animate('1.4s', style({ opacity: 1, color: '{{endColor}}' })),
+                animate('1.4s', style({ opacity: 1, height: '*' })),
                 animate('0.2s ease-out', style({ transform: 'scale(1)' })),
 
             ])

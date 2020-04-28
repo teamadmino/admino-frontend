@@ -4,6 +4,8 @@
   align-items: center;
   width: 100%;
   height: 100%;
+  max-height: 100%;
+  position: relative;
 
   .raktar {
     margin-top: 15px;
@@ -11,7 +13,6 @@
 
   .header {
     display: flex;
-
     width: 100%;
 
     .headerdata {
@@ -35,19 +36,37 @@
     }
   }
 
-  mat-list-item {
-    overflow: hidden;
+  .current-read {
+    position: absolute;
+    bottom: 25px;
+    background-color: red;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    z-index: 101;
+
+    h3 {
+      margin-bottom: 0;
+    }
   }
 
   .codes-wrapper {
-    border: 2px solid red;
-    border-top: 0px;
-    border-bottom: 0px;
-    border-radius: 0px 0px 5px 5px;
-    flex: 1;
+    .anim {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      top: 15px;
+    }
+
+    border: 1px solid red;
+    border-left: 0px;
+    border-right: 0px;
+    // border-radius: 0px 0px 5px 5px;
+    flex-grow: 1;
     width: 100%;
-    min-height: 100px;
     position: relative;
+    overflow: hidden;
 
     .noscan-notice {
       position: absolute;
@@ -58,15 +77,15 @@
       opacity: 0.5;
     }
 
-    &:after {
-      content: '';
+    .hider {
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 100%;
+      width: calc(100% - 7px);
       height: 25%;
       background-color: red;
       pointer-events: none;
+      z-index: 100;
     }
 
     .codes {
@@ -81,90 +100,150 @@
         // background: red;
       }
 
-      .syncindicator {
-        transition: opacity 1s;
+      .listitem {
+        overflow: hidden;
 
-        &.hide {
-          opacity: 0;
+        // display: flex;
+        // &.last {
+        //   color: red;
+        //   animation: fadeIn 1s linear 0s forwards;
+        // }
+
+        .codewrapper {
+          display: flex;
+          width: 100%;
+          align-items: center;
+
+          .code {
+            flex: 1;
+
+            h2 {
+
+              font-size: 1.2em;
+
+              .manual {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+
+        .syncindicator {
+          display: none;
+        }
+
+
+        &.synced {
+
+          .unsyncindicator {
+            display: none;
+          }
+
+          .syncindicator {
+            display: inline-block;
+          }
+        }
+
+        .unsyncindicator {
+          // animation: rotate 0.5s linear 0s infinite alternate;
+
         }
       }
 
-      .confirmation {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-      }
+      // .confirmation {
+      //   position: absolute;
+      //   width: 100%;
+      //   height: 100%;
+      //   left: 0;
+      // }
 
-      .code {
-        font-size: 1.2em;
-      }
+
     }
   }
 }
 
-.scanbutton {
-  position: relative;
-  // border-top-left-radius: 0;
-  // border-top-right-radius: 0;
-  transition: 0.5s box-shadow, 0.5s text-shadow;
-
-  .label {
-    font-size: 2em !important;
-
-  }
-
-  .spinner {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-
-    mat-spinner {
-      margin: 0 auto;
-    }
-
-    // transform: translateX(-50%) translateY(-50%);
-  }
-
-  &.scanning {
-    .label {
-      opacity: 0;
-    }
-  }
-}
-
-@keyframes fadeOut {
+@keyframes rotate {
   0% {
+    transform: rotate(-10deg);
+  }
+
+  100% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
     opacity: 1;
   }
-
-  100% {
-    opacity: 0;
-  }
 }
 
-@keyframes scanLineAnim {
-  0% {
-    top: 140%;
-  }
+// .scanbutton {
+//   position: relative;
+//   // border-top-left-radius: 0;
+//   // border-top-right-radius: 0;
+//   transition: 0.5s box-shadow, 0.5s text-shadow;
 
-  100% {
-    top: -40%;
-  }
-}
+//   .label {
+//     font-size: 2em !important;
 
-@keyframes scanOverlayAnim {
-  0% {
-    opacity: 0;
-  }
+//   }
 
-  50% {
-    opacity: 0.5;
-  }
+//   .spinner {
+//     position: absolute;
+//     width: 100%;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     left: 0;
 
-  100% {
-    opacity: 0;
-  }
-}
+//     mat-spinner {
+//       margin: 0 auto;
+//     }
+
+//     // transform: translateX(-50%) translateY(-50%);
+//   }
+
+//   &.scanning {
+//     .label {
+//       opacity: 0;
+//     }
+//   }
+// }
+
+// @keyframes fadeOut {
+//   0% {
+//     opacity: 1;
+//   }
+
+//   100% {
+//     opacity: 0;
+//   }
+// }
+
+// @keyframes scanLineAnim {
+//   0% {
+//     top: 140%;
+//   }
+
+//   100% {
+//     top: -40%;
+//   }
+// }
+
+// @keyframes scanOverlayAnim {
+//   0% {
+//     opacity: 0;
+//   }
+
+//   50% {
+//     opacity: 0.5;
+//   }
+
+//   100% {
+//     opacity: 0;
+//   }
+// }

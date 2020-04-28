@@ -25,6 +25,7 @@ export class AdminoActionService {
   updateScreen: BehaviorSubject<any> = new BehaviorSubject(null);
   snackbarEvent: Subject<any> = new Subject();
 
+  showToolbar: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   setFocus: BehaviorSubject<string> = new BehaviorSubject('');
   currentQueryParams = null;
@@ -40,10 +41,10 @@ export class AdminoActionService {
     private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService) { }
 
   init() {
-    this.backendRequest(this.cs.config.loginScreen).subscribe();
     this.route.queryParams.subscribe(params => {
       this.currentQueryParams = decodeParams(params);
     });
+    this.backendRequest(this.cs.config.loginScreen).subscribe();
 
   }
 
@@ -122,56 +123,59 @@ export class AdminoActionService {
   }
 
   handleResponse(response: BackendResponse) {
-    if (response.setScreen) {
+    if (response.setScreen !== undefined) {
       this.activeScreenId = response.setScreen.id;
       this.setQueryParams({});
       this.redrawScreen.next(response.setScreen);
     }
-    if (response.updateScreen) {
+    if (response.updateScreen !== undefined) {
       this.updateScreen.next(response.updateScreen);
     }
-    if (response.setSid) {
+    if (response.setSid !== undefined) {
       this.user.sid = response.setSid;
     }
-    if (response.setMenu) {
+    if (response.setMenu !== undefined) {
       this.user.setMenu(response.setMenu);
     }
-    if (response.setTheme) {
+    if (response.showToolbar !== undefined) {
+      this.showToolbar.next(response.showToolbar);
+    }
+    if (response.setTheme !== undefined) {
       const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;
       const isDark = response.setTheme.isDark !== undefined ? response.setTheme.isDark : this.ts.isDarkTheme;
       this.ts.setTheme(color, isDark);
     }
-    if (response.setBottomButtons) {
+    if (response.setBottomButtons !== undefined) {
       this.user.setBottomButtons(response.setBottomButtons);
     }
-    if (response.setFirstName) {
+    if (response.setFirstName !== undefined) {
       this.user.firstname = response.setFirstName;
     }
-    if (response.setLastname) {
+    if (response.setLastname !== undefined) {
       this.user.lastname = response.setLastname;
     }
-    if (response.setCustomVars) {
+    if (response.setCustomVars !== undefined) {
       this.customVars = response.setCustomVars;
     }
-    if (response.updateCustomVars) {
+    if (response.updateCustomVars !== undefined) {
       deepMerge(this.customVars, response.updateCustomVars);
     }
-    if (response.setQueryParams) {
+    if (response.setQueryParams !== undefined) {
       this.setQueryParams(response.setQueryParams);
     }
-    if (response.setFocus) {
+    if (response.setFocus !== undefined) {
       this.setFocus.next(response.setFocus);
       // this.user.sid = response.setSid;
     }
     if (response.setPing !== undefined) {
       // this.pingFrequency.next(response.setPing);
     }
-    if (response.setSnackbars) {
+    if (response.setSnackbars !== undefined) {
       this.snackbarEvent.next(response.setSnackbars);
       // this.setQueryParams(response.setQueryParams);
     }
 
-    if (response.startAction) {
+    if (response.startAction !== undefined) {
       for (const action of response.startAction) {
         this.handleAction({ action }).subscribe();
       }

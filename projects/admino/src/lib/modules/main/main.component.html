@@ -46,7 +46,7 @@
   </div>
   <div class="admino-sidenav-backdrop" (click)='closeSidenav()'></div>
   <div class="admino-main-bg admino-main-wrapper">
-    <admino-toolbar> </admino-toolbar>
+    <admino-toolbar *ngIf="this.as.showToolbar.value"> </admino-toolbar>
     <div class="admino-main fill-height">
       <admino-snackbar-container></admino-snackbar-container>
       <admino-modal-container></admino-modal-container>

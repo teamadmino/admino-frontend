@@ -93,6 +93,10 @@ export class MainComponent implements OnInit, OnDestroy {
       this.bottomButtons = buttons;
       this.cd.markForCheck();
     });
+
+    this.as.showToolbar.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.cd.markForCheck();
+    });
   }
   prepareSidebarState() {
     const state = this.site.isSideNavOpen.value ? 'opened' : 'closed';

@@ -1,3 +1,4 @@
+import { SuccessAnimationComponent } from './elements/scanner/inputview/success-animation/success-animation.component';
 import { AdminoOldTableModule } from './../admino-old-table/admino-table.module';
 import { SuperTableComponent } from './elements/super-table/super-table.component';
 import { AdminoPreloaderModule } from './../admino-preloader/admino-preloader.module';
@@ -79,7 +80,8 @@ import { ScannerView } from './elements/scanner/scannerview';
     InputviewComponent,
     LoginviewComponent,
     UtcafakkviewComponent,
-    ScannerView
+    ScannerView,
+    SuccessAnimationComponent
   ],
   imports: [
     CommonModule,

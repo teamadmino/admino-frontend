@@ -1,17 +1,51 @@
+:host {
+  height: 100%;
+  position: relative;
+}
+
 .admino-scanner {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  // justify-content: flex-end;
   align-items: center;
   flex-direction: column;
+  position: relative;
+
+  .header {
+    width: 100%;
+    padding: 15px;
+    padding-left: 0;
+    // height: 66px;
+
+    .user {
+      transform: translateY(-8px);
+
+      flex: 1;
+
+      h6 {
+        transform: translateY(2px);
+
+      }
+    }
+
+    .unsyncronized {
+      transform: translateY(-5px);
+      display: inline-block;
+    }
+
+
+    display: flex;
+  }
 
   .content {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
-    flex-grow: 1;
+    flex: 1;
     width: 100%;
+    position: relative;
+    overflow: hidden;
 
     .page {
       width: 100%;

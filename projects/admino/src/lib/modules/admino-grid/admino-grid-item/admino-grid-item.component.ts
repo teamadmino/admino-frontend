@@ -24,7 +24,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
 
   @Input() gridComponent: AdminoGridComponent;
   @HostBinding('class.edit-mode') @Input() editMode = false;
-  @HostBinding('class.border-color-primary') bcolor = true;
+  @HostBinding('class.border-color-primary') bcolor = false;
   @HostBinding('attr.draggable') dragging = false;
 
   @ViewChild('dragRef', { static: false, read: AdminoDragDirective }) dragRef: AdminoDragDirective;
@@ -99,7 +99,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
 
   }
   ngOnInit() {
-
+    console.log("style", this.style);
   }
   ngAfterContentInit() {
 
