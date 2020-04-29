@@ -46,7 +46,12 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
       );
 
   }
-
+  handleInput(e, formcontrolname, maxlength) {
+    if (e.target.value !== undefined && e.target.value !== null && e.target.value.toString().length > maxlength) {
+      e.target.value = e.target.value.toString().substring(0, maxlength);
+      this.formGroup.get(formcontrolname).setValue(e.target.value);
+    }
+  }
   keyInput(e) {
     this.triggerFakkRef.closePanel();
     this.triggerUtcaRef.closePanel();

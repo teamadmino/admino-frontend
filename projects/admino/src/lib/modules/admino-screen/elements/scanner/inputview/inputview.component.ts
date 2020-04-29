@@ -140,10 +140,9 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
   }
 
 
-
   @HostListener('document:keypress', ['$event'])
   onInput(e) {
-    if ((this.isNumber(e.key) || e.key === '/') && this.currentManualRead.length <= 10) {
+    if ((this.isNumber(e.key) || e.key === '/') && this.currentManualRead.length < 10) {
       this.currentManualRead += e.key;
     }
     this.currentRead += e.key;

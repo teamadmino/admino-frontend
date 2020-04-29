@@ -3,7 +3,8 @@
         <mat-label>Utca</mat-label>
 
         <input type="number" matInput formControlName="utca" [matAutocomplete]="autoUtca" #utcaRef
-            #triggerUtca="matAutocompleteTrigger" (blur)="onUtcaChanged()" [readonly]="scannerService.keyboardMode">
+            #triggerUtca="matAutocompleteTrigger" (blur)="onUtcaChanged()" [readonly]="scannerService.keyboardMode"
+            (input)="handleInput($event,'utca', 3)">
         <mat-autocomplete (optionSelected)="onUtcaChanged()" class="scanner-autocomplete" autoActiveFirstOption
             #autoUtca="matAutocomplete">
             <!-- [displayWith]="displayWith()" -->
@@ -22,7 +23,8 @@
         <mat-label>Fakk</mat-label>
 
         <input type="number" matInput formControlName="fakk" [matAutocomplete]="autoFakk" #fakkRef
-            #triggerFakk="matAutocompleteTrigger" (blur)="onFakkChanged()" [readonly]="scannerService.keyboardMode">
+            #triggerFakk="matAutocompleteTrigger" (blur)="onFakkChanged()" [readonly]="scannerService.keyboardMode"
+            (input)="handleInput($event,'fakk', 1)">
         <mat-autocomplete (optionSelected)="onFakkChanged()" class="scanner-autocomplete" autoActiveFirstOption
             #autoFakk="matAutocomplete">
             <mat-option *ngFor="let option of filteredFakkok | async" [value]="option">
