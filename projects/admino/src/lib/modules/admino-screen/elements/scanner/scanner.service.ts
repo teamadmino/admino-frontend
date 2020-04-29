@@ -35,7 +35,7 @@ export class ScannerService {
   // beolvasaschunk = 100;
   beolvasasmax = 1000;
 
-  page: BehaviorSubject<number> = new BehaviorSubject(1);
+  page: BehaviorSubject<number> = new BehaviorSubject(0);
   next: Subject<null> = new Subject();
   prev: Subject<null> = new Subject();
   newBeolvasasEvent: Subject<null> = new Subject();

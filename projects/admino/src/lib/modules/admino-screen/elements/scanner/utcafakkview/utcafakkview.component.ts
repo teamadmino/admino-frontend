@@ -52,11 +52,11 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
       this.formGroup.get(formcontrolname).setValue(e.target.value);
     }
   }
-  keyInput(e) {
-    this.triggerFakkRef.closePanel();
-    this.triggerUtcaRef.closePanel();
-    this.activeTrigger.openPanel();
-  }
+  // keyInput(e) {
+  //   // this.triggerFakkRef.closePanel();
+  //   // this.triggerUtcaRef.closePanel();
+  //   // this.activeTrigger.openPanel();
+  // }
 
   ngAfterViewInit() {
     this.formGroup.get('utca').setValue(this.scannerService.selectedUtca && this.scannerService.selectedUtca.utca);

@@ -32,10 +32,10 @@ export class LoginviewComponent extends ScannerView implements OnInit {
     // if (this.scannerService.keyboardMode) {
     //   e.preventDefault();
     // }
-    // if (e.target.value !== undefined && e.target.value !== null && e.target.value.toString().length > this.maxAzonositoLength) {
-    //   e.target.value = e.target.value.toString().substring(0, this.maxAzonositoLength);
-    //   this.formGroup.get('dolgozo').setValue(e.target.value);
-    // }
+    if (e.target.value !== undefined && e.target.value !== null && e.target.value.toString().length > this.maxAzonositoLength) {
+      e.target.value = e.target.value.toString().substring(0, this.maxAzonositoLength);
+      this.formGroup.get('dolgozo').setValue(e.target.value);
+    }
     this.formSubmitted = false;
     this.formGroup.get('dolgozo').markAsPristine();
     this.formGroup.get('dolgozo').markAsUntouched();
