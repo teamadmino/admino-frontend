@@ -3,6 +3,7 @@ import { FormControl, FormGroup, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ScannerView } from '../scannerview';
+import { MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
   selector: 'admino-utcafakkview',
@@ -12,6 +13,8 @@ import { ScannerView } from '../scannerview';
 export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterViewInit {
   @ViewChild('utcaRef', { static: true, read: ElementRef }) utcaRef: ElementRef;
   @ViewChild('fakkRef', { static: true, read: ElementRef }) fakkRef: ElementRef;
+  @ViewChild('triggerUtca', { static: true, read: MatAutocompleteTrigger }) triggerUtcaRef: MatAutocompleteTrigger;
+  @ViewChild('triggerFakk', { static: true, read: MatAutocompleteTrigger }) triggerFakkRef: MatAutocompleteTrigger;
   formGroup = new FormGroup({
     utca: new FormControl(null, this.validateUtca.bind(this)),
     fakk: new FormControl(null, this.validateFakk.bind(this)),
@@ -21,7 +24,7 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
 
   fakkok: number[];
 
-
+  activeTrigger;
 
 
 
@@ -42,14 +45,36 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
         })
       );
 
-
-
   }
+
+  keyInput(e) {
+    this.triggerFakkRef.closePanel();
+    this.triggerUtcaRef.closePanel();
+    this.activeTrigger.openPanel();
+  }
+
   ngAfterViewInit() {
     this.formGroup.get('utca').setValue(this.scannerService.selectedUtca && this.scannerService.selectedUtca.utca);
-    this.onUtcaChanged();
-    this.utcaRef.nativeElement.focus();
+    if (this.formGroup.get('utca').value === undefined || this.formGroup.get('utca').value === null) {
+      this.activateUtca();
+    } else {
+      this.onUtcaChanged();
+
+    }
   }
+
+  activateUtca() {
+    this.utcaRef.nativeElement.focus();
+    this.activeControl = this.formGroup.get('utca');
+    this.activeTrigger = this.triggerUtcaRef;
+  }
+
+  activateFakk() {
+    this.fakkRef.nativeElement.focus();
+    this.activeControl = this.formGroup.get('fakk');
+    this.activeTrigger = this.triggerFakkRef;
+  }
+
   onUtcaChanged() {
     this.formGroup.get('fakk').setValue(null);
     this.formGroup.get('fakk').markAsUntouched();
@@ -72,6 +97,7 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
       setTimeout((params) => {
         this.fakkRef.nativeElement.focus();
         this.fakkRef.nativeElement.select();
+        this.activeControl = this.formGroup.get('fakk');
       });
     } else {
       this.fakkok = [];
@@ -81,6 +107,7 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
     this.scannerService.selectedFakk = this.formGroup.get('fakk').value;
   }
   onNext() {
+    console.log("onNext")
     if (this.formGroup.valid) {
       this.scannerService.page.next(2);
     } else {
@@ -89,8 +116,7 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
   }
   onPrev() {
     this.scannerService.reset();
-    this.scannerService.page.next(this.scannerService.page.value - 1);
-
+    this.scannerService.page.next(0);
   }
   private _filter(value: number): any[] {
     if (value === null || value === undefined) {
@@ -112,7 +138,8 @@ export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterV
 
   validateUtca(control: AbstractControl) {
     const found = this.scannerService.utcak && this.scannerService.utcak.find((utca) => {
-      return control.value !== null && utca.utca.toString() === control.value.toString();
+      return control.value !== null && control.value !== undefined
+        && utca.utca !== null && utca.utca !== undefined && utca.utca.toString() === control.value.toString();
     });
     if (found) {
       return null;

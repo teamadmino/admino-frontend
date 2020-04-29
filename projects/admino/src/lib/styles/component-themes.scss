@@ -778,6 +778,11 @@
       background-color: mat-color($background, card) !important;
     }
 
+    .error {
+      border-color: mat-color($foreground, divider) !important;
+      background-color: mat-color($background, card) !important;
+    }
+
     .codes-wrapper {
       // background: mat-color($background, background) !important;
       // border-color: mat-color($accent, 600) !important;

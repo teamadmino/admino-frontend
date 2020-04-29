@@ -38,13 +38,14 @@
 
     <div class="content" [ngSwitch]="this.scannerService.page.value" *ngIf="scannerService.dataLoaded">
         <div class="page" *ngSwitchCase="0">
-            <admino-loginview [active]="scannerService.page.value===0"></admino-loginview>
+            <admino-loginview [pageNum]="0"></admino-loginview>
         </div>
         <div class="page" *ngSwitchCase="1">
-            <admino-utcafakkview [active]="scannerService.page.value===1"></admino-utcafakkview>
+            <admino-utcafakkview [pageNum]="1"></admino-utcafakkview>
         </div>
         <div class="page h-100" *ngSwitchCase="2">
-            <admino-inputview [active]="scannerService.page.value===2"></admino-inputview>
+            <admino-inputview [pageNum]="2" [testData]="this.element.testData">
+            </admino-inputview>
         </div>
     </div>
 

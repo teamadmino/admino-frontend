@@ -17,15 +17,25 @@ export class LoginviewComponent extends ScannerView implements OnInit {
   // @ViewChild('form', { static: true }) form: ElementRef;
   formSubmitted = false;
   maxAzonositoLength = 6;
+  keyInput(e) {
+    this.formSubmitted = false;
+    this.formGroup.get('dolgozo').markAsPristine();
+    this.formGroup.get('dolgozo').markAsUntouched();
+
+  }
   ngOnInit() {
     this.scannerService.reset();
     this.focusRef.nativeElement.focus();
+    this.activeControl = this.formGroup.get('dolgozo');
   }
   input(e) {
-    if (e.target.value !== undefined && e.target.value !== null && e.target.value.toString().length > this.maxAzonositoLength) {
-      e.target.value = e.target.value.toString().substring(0, this.maxAzonositoLength);
-      this.formGroup.get('dolgozo').setValue(e.target.value);
-    }
+    // if (this.scannerService.keyboardMode) {
+    //   e.preventDefault();
+    // }
+    // if (e.target.value !== undefined && e.target.value !== null && e.target.value.toString().length > this.maxAzonositoLength) {
+    //   e.target.value = e.target.value.toString().substring(0, this.maxAzonositoLength);
+    //   this.formGroup.get('dolgozo').setValue(e.target.value);
+    // }
     this.formSubmitted = false;
     this.formGroup.get('dolgozo').markAsPristine();
     this.formGroup.get('dolgozo').markAsUntouched();

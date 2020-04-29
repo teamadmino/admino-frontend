@@ -19,6 +19,8 @@ export interface Beolvasas {
 @Injectable()
 export class ScannerService {
 
+  keyboardMode = false;
+
   JSON_DOLGOZOK = 'dolgozok';
   JSON_UTCAK = 'utcak';
   JSON_VERSION = 'version';
@@ -33,7 +35,7 @@ export class ScannerService {
   // beolvasaschunk = 100;
   beolvasasmax = 1000;
 
-  page: BehaviorSubject<number> = new BehaviorSubject(0);
+  page: BehaviorSubject<number> = new BehaviorSubject(1);
   next: Subject<null> = new Subject();
   prev: Subject<null> = new Subject();
   newBeolvasasEvent: Subject<null> = new Subject();

@@ -24,9 +24,18 @@
     </div>
 
 </div>
+<div class="error color-warn" *ngIf="showError">
+    <div>
 
+        <h1>
+            Sikertelen beolvasás
+        </h1>
+        <h6>Nem megfelelő formátum</h6>
+    </div>
+</div>
 
 <div class="codes-wrapper">
+
     <admino-success-animation *ngIf="showAnim" class="anim"></admino-success-animation>
     <div class="noscan-notice w-100 text-center" *ngIf="getCodes().length<1">Kezdje meg a beolvasást</div>
     <!-- <mat-list class="codes pt-0" #codesRef> -->
@@ -44,15 +53,24 @@
                 <mat-icon>delete</mat-icon>
             </button> -->
 
-            <div class="codewrapper pt-3 pl-3 pr-3">
+            <div class="codewrapper pt-3 pl-3 pr-3 pb-3">
 
                 <div class="code">
                     <h2> {{reading.bala}} <mat-icon *ngIf="reading.manualis" class="manual">pan_tool
-                        </mat-icon>
+                        </mat-icon><span class="id  opacity-50">
+                            #{{reading.id}}</span>
                     </h2>
-                    <p class="opacity-70">{{reading.datum | date:'yy/MM/dd H:mm:ss'}} - {{reading.utca}} -
-                        {{reading.fakk}} -
-                        {{reading.id}}
+                    <p class="opacity-70 mb-0">
+                        <span class="utca">{{reading.utca}} <span class="smalltext">utca</span> </span> <span
+                            class="fakk ml-2"> {{reading.fakk}} <span class="smalltext">fakk</span></span>
+                        <span class="id ml-2 opacity-50"> {{reading.datum | date:getDateFormat(reading.datum)}}
+                        </span>
+
+
+                        <!-- <span class="utca">{{reading.utca}}</span>/<span class="fakk">{{reading.fakk}}</span>
+                        <span class="id ml-2 opacity-50"> {{reading.datum | date:getDateFormat(reading.datum)}}
+                            #{{reading.id}}</span> -->
+
                     </p>
                 </div>
 

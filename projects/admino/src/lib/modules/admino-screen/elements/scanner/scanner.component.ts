@@ -33,9 +33,9 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
       this.control.setValue(this.scannerService.getUnsyncedBeolvasasok());
       this.tryUpload();
     });
+
     this.scannerService.loadConfig();
     // console.log(Object.entries(localStorage))
-
   }
   ngOnInit() {
     // this.directive.ts.setTheme('gold', false);
@@ -48,7 +48,9 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
       this.control.setValue(this.scannerService.getUnsyncedBeolvasasok());
       this.tryUpload();
     }
-
+    this.scannerService.page.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.directive.cd.detectChanges();
+    });
     this.scannerService.dataLoaded = true;
   }
   tryUpload() {

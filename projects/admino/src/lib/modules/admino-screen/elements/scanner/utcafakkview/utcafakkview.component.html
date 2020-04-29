@@ -1,9 +1,9 @@
 <form [formGroup]="formGroup">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" (click)="activateUtca()" [ngClass]="{'mat-focused': true}">
         <mat-label>Utca</mat-label>
 
         <input type="number" matInput formControlName="utca" [matAutocomplete]="autoUtca" #utcaRef
-            (blur)="onUtcaChanged()">
+            #triggerUtca="matAutocompleteTrigger" (blur)="onUtcaChanged()" [readonly]="scannerService.keyboardMode">
         <mat-autocomplete (optionSelected)="onUtcaChanged()" class="scanner-autocomplete" autoActiveFirstOption
             #autoUtca="matAutocomplete">
             <!-- [displayWith]="displayWith()" -->
@@ -17,11 +17,12 @@
 
 
     <mat-form-field class="fakk-input" appearance="outline"
-        [ngClass]="{'hidden-input': this.formGroup.get('utca').value===null || this.formGroup.get('utca').invalid}">
+        [ngClass]="{'hidden-input': this.formGroup.get('utca').value===null || this.formGroup.get('utca').invalid}"
+        (click)="activateFakk()">
         <mat-label>Fakk</mat-label>
 
         <input type="number" matInput formControlName="fakk" [matAutocomplete]="autoFakk" #fakkRef
-            (blur)="onFakkChanged()">
+            #triggerFakk="matAutocompleteTrigger" (blur)="onFakkChanged()" [readonly]="scannerService.keyboardMode">
         <mat-autocomplete (optionSelected)="onFakkChanged()" class="scanner-autocomplete" autoActiveFirstOption
             #autoFakk="matAutocomplete">
             <mat-option *ngFor="let option of filteredFakkok | async" [value]="option">
