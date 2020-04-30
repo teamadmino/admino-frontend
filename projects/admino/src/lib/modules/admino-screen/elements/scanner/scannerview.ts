@@ -68,6 +68,7 @@ export class ScannerView implements OnDestroy {
         }
     }
     ngOnDestroy() {
+        console.log("ONDESTROY")
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

@@ -43,9 +43,9 @@ export class ScannerService {
   syncId = 0;
   syncedTill = 0;
   labels = [
-    ['', 'Bejelentkezés'],
-    ['Kilépés', 'Adatfelvitel'],
-    ['Utcaválasztás'],
+    [null, { label: 'Bejelentkezés', icon: 'arrow_forward' }],
+    [{ label: 'Kilépés', icon: 'arrow_back' }, { label: 'Adatfelvitel', icon: 'arrow_forward' }],
+    [{ label: 'Utcaválasztás', icon: 'arrow_back' }, null],
   ];
 
   selectedUtca: any = {};

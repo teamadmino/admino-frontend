@@ -783,10 +783,21 @@
       background-color: mat-color($background, card) !important;
     }
 
+
+
     .codes-wrapper {
       // background: mat-color($background, background) !important;
       // border-color: mat-color($accent, 600) !important;
       border-color: mat-color($foreground, divider) !important;
+
+
+      .listitem {
+        &.animate {
+          .codebg {
+            background-color: mat-color($accent, 500);
+          }
+        }
+      }
 
       .selected {
         // border: 2px solid red;
@@ -799,6 +810,20 @@
 
       .hider {
         background: linear-gradient(rgba(mat-color($background, card), 0), rgba(mat-color($background, card), 0.9)) !important;
+      }
+    }
+
+    .header {
+      border-color: mat-color($foreground, divider) !important;
+
+    }
+
+    .bottomnav {
+      border-color: mat-color($foreground, divider) !important;
+
+      .prevbutton {
+        background: lighten(mat-color($background, raised-button), 10%);
+
       }
     }
 
@@ -821,7 +846,10 @@
 
     //   }
     // }
+
+
   }
+
 
 
 

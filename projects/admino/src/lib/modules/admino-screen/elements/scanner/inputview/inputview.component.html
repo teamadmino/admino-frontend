@@ -24,6 +24,7 @@
     </div>
 
 </div>
+<!--  -->
 <div class="error color-warn" *ngIf="showError">
     <div>
 
@@ -36,7 +37,7 @@
 
 <div class="codes-wrapper">
 
-    <admino-success-animation *ngIf="showAnim" class="anim"></admino-success-animation>
+    <!-- <admino-success-animation *ngIf="showAnim" class="anim"></admino-success-animation> -->
     <div class="noscan-notice w-100 text-center" *ngIf="getCodes().length<1">Kezdje meg a beolvasást</div>
     <!-- <mat-list class="codes pt-0" #codesRef> -->
     <div class="hider" [ngStyle]="{opacity: hiderOpacity}"></div>
@@ -45,7 +46,8 @@
 
         <!-- *ngFor="let reading of getCodes();let i=index; trackBy: trackByFn" -->
         <div class="listitem" *cdkVirtualFor="let reading of getCodes();let i=index; trackBy: trackByFn"
-            [ngClass]="{last:reading.id=== this.scannerService.syncId, synced: reading.id <= scannerService.syncedTill}">
+            [ngClass]="{animate:this.animated.indexOf(reading.id)>-1, synced: reading.id <= scannerService.syncedTill}">
+            <div class="codebg"></div>
             <!--[@codeAnimation]='reading.id' -->
             <!-- [ngClass]="{'selected': i===this.selectedId}" (click)="codeClicked(i)" -->
 

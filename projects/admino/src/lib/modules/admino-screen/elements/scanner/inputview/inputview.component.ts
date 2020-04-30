@@ -18,10 +18,12 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
   currentRead = '';
   currentManualRead = '';
   hiderOpacity = 1;
-  showAnim = false;
   showError = false;
   animTimeout;
   currentYear = new Date().getFullYear();
+
+  timeouts = [];
+  animated = [];
   // @HostListener('document:keydown', ['$event'])
   // onInput(e) {
   //   this.val = e;
@@ -204,27 +206,22 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
 
       this.currentRead = '';
       this.currentManualRead = '';
-      this.playAnim();
       this.virtualScrollRef.nativeElement.scrollTop = 0;
       this.scrollEvt();
       this.showError = false;
+
+      this.animated.push(reading.id);
+      const timeout = setTimeout((params) => {
+        this.animated.splice(this.animated.indexOf(reading.id), 1);
+        this.timeouts.splice(this.timeouts.indexOf(reading.id), 1);
+      }, 1000);
+      this.timeouts.push(timeout);
 
     } else {
       this.playError();
     }
   }
 
-  playAnim() {
-    // if (this.animTimeout) {
-    //   clearTimeout(this.animTimeout);
-    // }
-    this.showAnim = false;
-    this.cd.detectChanges();
-    this.showAnim = true;
-    // this.animTimeout = setTimeout((params) => {
-    //   this.showAnim = false;
-    // }, 1000);
-  }
   playError() {
     this.showError = false;
     this.cd.detectChanges();
@@ -310,6 +307,11 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
   //   this.cd.detectChanges();
   // }
   ngOnDestroy() {
+    super.ngOnDestroy();
+    this.timeouts.forEach((timeout) => {
+      clearTimeout(timeout);
+    });
+    this.timeouts = [];
     // if (this.animTimeout) {
     //   clearInterval(this.animTimeout)
     // }

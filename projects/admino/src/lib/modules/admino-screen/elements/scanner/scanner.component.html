@@ -51,14 +51,18 @@
 
 
     <div class="bottomnav ">
-        <button *ngIf="scannerService.labels[scannerService.page.value][0]" [type]="'button'"
+        <button class="prevbutton" *ngIf="scannerService.labels[scannerService.page.value][0]" [type]="'button'"
             (click)="scannerService.prev.next()" mat-flat-button>
-            {{scannerService.labels[scannerService.page.value][0]}}
+            <mat-icon class="lefticon mr-1" *ngIf="scannerService.labels[scannerService.page.value][0].icon">
+                {{scannerService.labels[scannerService.page.value][0].icon}}</mat-icon>
+            {{scannerService.labels[scannerService.page.value][0].label}}
         </button>
 
         <button *ngIf="scannerService.labels[scannerService.page.value][1]" [type]="'button'" color="accent"
             (click)="scannerService.next.next()" mat-flat-button>
-            {{scannerService.labels[scannerService.page.value][1]}}
+            {{scannerService.labels[scannerService.page.value][1].label}}
+            <mat-icon class="righticon ml-1" *ngIf="scannerService.labels[scannerService.page.value][1].icon">
+                {{scannerService.labels[scannerService.page.value][1].icon}}</mat-icon>
 
         </button>
     </div>
