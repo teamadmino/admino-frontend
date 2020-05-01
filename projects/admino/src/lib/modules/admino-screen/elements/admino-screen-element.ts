@@ -43,7 +43,6 @@ export class AdminoScreenElement {
     shortcutTriggers: { trigger: string, boundFunc: any }[] = [];
     currentShortcutKeys = [];
     init() {
-        console.log("init", this.element)
         if (this.focusElRef) {
 
             this.boundFocusFunction = this.focusEvent.bind(this);
@@ -57,7 +56,6 @@ export class AdminoScreenElement {
 
     createKeyTiggers() {
 
-        console.log("createtriggers", this.element)
         this.clearKeyTriggers();
         this.supportedKeyTriggers.forEach((trigger) => {
             const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger });

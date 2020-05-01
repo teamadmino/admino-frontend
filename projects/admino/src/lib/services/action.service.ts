@@ -119,6 +119,7 @@ export class AdminoActionService {
     return this.api.request(screen, requestingScreen, screenValue, schema,
       initiatedBy, trigger, key, this.currentQueryParams, this.customVars).pipe(map((response: BackendResponse) => {
         this.handleResponse(response);
+        return response;
       }));
   }
 

@@ -59,7 +59,8 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     }
     const uploadAction = this.getAction('uploadAction');
     if (uploadAction) {
-      this.handleAction(uploadAction).then((params) => {
+      this.handleAction(uploadAction).then((response) => {
+        console.log(response)
         console.log("Successful upload")
         this.retryTime = 1000;
         this.scannerService.online = true;

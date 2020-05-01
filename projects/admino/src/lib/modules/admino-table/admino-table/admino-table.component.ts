@@ -32,6 +32,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Output() cellClick: EventEmitter<any> = new EventEmitter();
+  @Output() cellChange: EventEmitter<any> = new EventEmitter();
   @Output() cellDoubleClick: EventEmitter<any> = new EventEmitter();
   @Output() headerCellClick: EventEmitter<any> = new EventEmitter();
 
@@ -284,12 +285,15 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'ArrowRight':
         if (this.dataSource.state.selectedColumnIndex < this.dataSource.columns.length - 1) {
           this.dataSource.state.selectedColumnIndex++;
+          this.handleCellChange();
+
         }
         event.preventDefault();
         break;
       case 'ArrowLeft':
         if (this.dataSource.state.selectedColumnIndex > 0) {
           this.dataSource.state.selectedColumnIndex--;
+          this.handleCellChange();
         }
         event.preventDefault();
         break;
@@ -397,7 +401,25 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource.state.selectedColumnIndex = columnIndex;
       this.cellClick.next();
     }
+    this.handleCellChange();
 
+  }
+  handleCellChange() {
+    const col = this.dataSource.state.selectedColumnIndex;
+    const getpos = this.columnWidths.reduce((prev, curr, i) => i < col ? prev + curr : prev, 0);
+    const getw = this.columnWidths[col];
+    const getwpos = getpos + getw;
+    const vpw = this.tableRef.nativeElement.clientWidth;
+    const sp = this.tableRef.nativeElement.scrollLeft;
+
+
+    if (getwpos > sp + vpw) {
+      this.tableRef.nativeElement.scrollLeft = getpos - (vpw - getw);
+    } else if (getpos < sp) {
+      this.tableRef.nativeElement.scrollLeft = getpos;
+    }
+
+    this.cellChange.next();
   }
   gotoPos(absoluteId = 0) {
     // console.log("goto", absoluteId);

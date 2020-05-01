@@ -45,8 +45,9 @@ import { TableselectComponent } from './elements/tableselect/tableselect.compone
 import { OverlaycontentComponent } from './elements/tableselect/overlaycontent/overlaycontent.component';
 import { InputviewComponent } from './elements/scanner/inputview/inputview.component';
 import { LoginviewComponent } from './elements/scanner/loginview/loginview.component';
-import { UtcafakkviewComponent } from './elements/scanner/utcafakkview/utcafakkview.component';
 import { ScannerView } from './elements/scanner/scannerview';
+import { FakkviewComponent } from './elements/scanner/fakkview/fakkview.component';
+import { UtcaviewComponent } from './elements/scanner/utcafakkview/utcaview.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -79,9 +80,10 @@ import { ScannerView } from './elements/scanner/scannerview';
     OverlaycontentComponent,
     InputviewComponent,
     LoginviewComponent,
-    UtcafakkviewComponent,
+    UtcaviewComponent,
     ScannerView,
-    SuccessAnimationComponent
+    SuccessAnimationComponent,
+    FakkviewComponent
   ],
   imports: [
     CommonModule,

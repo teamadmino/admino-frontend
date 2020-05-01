@@ -41,11 +41,10 @@
             <admino-loginview [pageNum]="0"></admino-loginview>
         </div>
         <div class="page" *ngSwitchCase="1">
-            <admino-utcafakkview [pageNum]="1"></admino-utcafakkview>
+            <admino-utcaview [pageNum]="1"></admino-utcaview>
         </div>
         <div class="page h-100" *ngSwitchCase="2">
-            <admino-inputview [pageNum]="2" [testData]="this.element.testData">
-            </admino-inputview>
+            <admino-inputview [pageNum]="2" [testData]="this.element.testData"></admino-inputview>
         </div>
     </div>
 

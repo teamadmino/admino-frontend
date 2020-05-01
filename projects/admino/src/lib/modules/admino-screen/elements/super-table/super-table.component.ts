@@ -52,7 +52,12 @@ export class SuperTableComponent extends AdminoScreenElement implements OnInit {
     });
 
   }
-
+  handleCellChange(e) {
+    const cellChangeAction = this.getAction('cellChange');
+    if (cellChangeAction) {
+      this.handleAction(cellChangeAction);
+    }
+  }
   handleCellClick(e) {
     const cellClickAction = this.getAction('cellClick');
     if (cellClickAction) {

@@ -6,11 +6,11 @@ import { ScannerView } from '../scannerview';
 import { MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
-  selector: 'admino-utcafakkview',
-  templateUrl: './utcafakkview.component.html',
-  styleUrls: ['./utcafakkview.component.scss']
+  selector: 'admino-utcaview',
+  templateUrl: './utcaview.component.html',
+  styleUrls: ['./utcaview.component.scss']
 })
-export class UtcafakkviewComponent extends ScannerView implements OnInit, AfterViewInit {
+export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewInit {
   @ViewChild('utcaRef', { static: true, read: ElementRef }) utcaRef: ElementRef;
   @ViewChild('fakkRef', { static: true, read: ElementRef }) fakkRef: ElementRef;
   @ViewChild('triggerUtca', { static: true, read: MatAutocompleteTrigger }) triggerUtcaRef: MatAutocompleteTrigger;

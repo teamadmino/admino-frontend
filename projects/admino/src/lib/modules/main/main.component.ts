@@ -78,8 +78,8 @@ export class MainComponent implements OnInit, OnDestroy {
         this.ts.init(config.theme);
         this.api.init(config.server);
         this.init();
-        this.as.init();
         this.user.init();
+        this.as.init();
         this.ping.init();
       }
     });
