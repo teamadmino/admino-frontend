@@ -1,5 +1,5 @@
 <!-- [adminoKeyItem]="this.keyAreaId" [adminoKeyIndex]="index" [focusElementSelector]="'input'" -->
-<mat-form-field class="admino-input" [formGroup]="group">
+<mat-form-field class="admino-input" [formGroup]="group" [appearance]="element.appearance">
     <mat-label>{{element.label}}</mat-label>
 
     <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.label" #inputRef

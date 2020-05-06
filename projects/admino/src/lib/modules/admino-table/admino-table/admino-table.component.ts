@@ -402,7 +402,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cellClick.next();
     }
     this.handleCellChange();
-
   }
   handleCellChange() {
     const col = this.dataSource.state.selectedColumnIndex;

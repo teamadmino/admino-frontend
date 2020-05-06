@@ -1,1 +1,16 @@
-<p>fakkview works!</p>
+<mat-form-field class="fakk-input" appearance="outline">
+    <mat-label>Fakk</mat-label>
+    <!-- [ngClass]="{'hidden-input': this.formGroup.get('utca').value===null || this.formGroup.get('utca').invalid}" -->
+    <input type="number" matInput [formControl]="control" #fakkRef (blur)="onFakkChanged()"
+        [readonly]="scannerService.keyboardMode" (input)="handleInput($event, 1)">
+    <!-- [matAutocomplete]="autoFakk"
+        #triggerFakk="matAutocompleteTrigger" -->
+    <!-- <mat-autocomplete (optionSelected)="onFakkChanged()" class="scanner-autocomplete" autoActiveFirstOption
+        #autoFakk="matAutocomplete">
+        <mat-option *ngFor="let option of filteredFakkok | async" [value]="option">
+            {{option}}
+        </mat-option>
+    </mat-autocomplete> -->
+    <mat-error *ngIf="control.invalid">Nem létező fakk</mat-error>
+
+</mat-form-field>

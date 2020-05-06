@@ -5,14 +5,11 @@
   padding-right: 15px;
   display: inline-block;
   width: 100%;
-}
 
-::ng-deep.scanner-autocomplete {
-  max-height: 200px !important;
-}
+  height: 100%;
+  padding-top: 30px;
 
-.fakk-input {
-  &.hidden-input {
-    opacity: 0;
-  }
+  // ::ng-deep.scanner-autocomplete {
+  //   max-height: 200px !important;
+  // }
 }

@@ -1,0 +1,36 @@
+{
+    "showToolbar": false,
+    "setQueryParams": {
+        "scanner": "set_by_code"
+    },
+    "setScreen": {
+        "id": "screentest",
+        "innerStyle": {
+            "height": "100%",
+            "padding": 0
+        },
+        "gridTemplateRows": "1fr",
+        "isFluidContainer": true,
+        "elements": [
+            {
+                "type": "scanner",
+                "id": "scannertest",
+                "containerStyle": {
+                    "height": "100%"
+                },
+                "style": {
+                    "height": "100%",
+                    "margin-top": 0
+                },
+                "actions": [
+                    {
+                        "trigger": "uploadAction",
+                        "type": "backend",
+                        "backendAction": "_test:t1/scanner_update"
+                    }
+                ],
+                "scanner": "set_by_code"
+            }
+        ]
+    }
+}

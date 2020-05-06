@@ -168,7 +168,9 @@ export class AdminoApiService {
     //   return val;
     // }));
   }
-
+  getRequest(requestedScreen: string) {
+    return this.http.get(this.BASE_URL + this.REQUEST + '/' + requestedScreen);
+  }
 
   ping(screenName) {
     return this.http.post(this.BASE_URL + this.PING, { screenName });

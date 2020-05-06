@@ -19,22 +19,13 @@ export class ScannerView implements OnDestroy {
             if (this.isActive()) {
                 this.onNext();
             }
+            e.preventDefault();
         } else if (e.key === 'Escape') {
             if (this.isActive()) {
                 this.onPrev();
             }
-        } else if (this.scannerService.keyboardMode) {
-            const length = this.activeControl.value === null ? 0 : this.activeControl.value.length;
-            const currentVal = this.activeControl.value === null ? '' : this.activeControl.value;
-            if (e.key === 'Backspace') {
-                this.activeControl.setValue(currentVal.substring(0, length - 1));
+            e.preventDefault();
 
-            } else {
-                if ((this.isNumber(e.key)) && length <= 8) {
-                    this.activeControl.setValue(currentVal + e.key.toString());
-                }
-            }
-            this.keyInput(e);
         }
     }
     keyInput(e) {
@@ -64,11 +55,10 @@ export class ScannerView implements OnDestroy {
     onNext() { }
     onPrev() {
         if (this.scannerService.page.value > 0) {
-            this.scannerService.page.next(this.scannerService.page.value - 1);
+            this.scannerService.page.next(this.pageNum - 1);
         }
     }
     ngOnDestroy() {
-        console.log("ONDESTROY")
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }

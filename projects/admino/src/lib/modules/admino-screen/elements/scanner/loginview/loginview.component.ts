@@ -51,7 +51,15 @@ export class LoginviewComponent extends ScannerView implements OnInit {
     this.formSubmitted = true;
     if (found) {
       this.scannerService.dolgozo = found;
-      this.scannerService.page.next(1);
+
+
+      const success = this.scannerService.addBeolvasas({
+        type: 'dolgozoBe'
+      });
+
+      if (success) {
+        this.scannerService.page.next(1);
+      }
 
     } else {
     }

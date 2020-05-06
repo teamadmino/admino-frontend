@@ -31,6 +31,7 @@ export * from './lib/modules/admino-modal/admino-modal.service';
 
 
 export * from './lib/interceptors/admino-sid.interceptor';
+export * from './lib/interceptors/admino-post-cache.interceptor';
 
 export * from './lib/services/site.service';
 export * from './lib/services/user.service';

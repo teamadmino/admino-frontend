@@ -18,6 +18,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   retryTimer;
   retryTime = 1000;
   maxRetryTime = 5000;
+  trying = false;
   // @HostListener('window:offline', ['$event']) offline(e) {
   //   this.scannerService.online = false;
   // }
@@ -60,13 +61,10 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     const uploadAction = this.getAction('uploadAction');
     if (uploadAction) {
       this.handleAction(uploadAction).then((response) => {
-        console.log(response)
-        console.log("Successful upload")
         this.retryTime = 1000;
         this.scannerService.online = true;
         this.directive.cd.markForCheck();
       }).catch((params) => {
-        console.log("Couldnt upload")
         this.retryTimer = setTimeout(() => {
           this.tryUpload();
         }, this.retryTime);
@@ -76,6 +74,18 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
         this.scannerService.online = false;
         this.directive.cd.markForCheck();
       });
+    }
+  }
+
+  handleClick(button) {
+
+    if (button.func === 'next') {
+      this.scannerService.next.next();
+    } else if (button.func === 'prev') {
+      this.scannerService.prev.next();
+    } else if (button.func === 'doubleprev') {
+      this.scannerService.prev.next();
+      this.scannerService.prev.next();
     }
   }
 

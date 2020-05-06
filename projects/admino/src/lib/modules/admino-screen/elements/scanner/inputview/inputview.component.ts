@@ -1,8 +1,9 @@
-import { Beolvasas } from './../scanner.service';
+import { BeolvasasEvent } from './../scanner.service';
 import { ScannerView } from './../scannerview';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit, HostListener, Input, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { codeAnimation } from './scanner.animation';
+import { padStart } from 'lodash';
 
 @Component({
   selector: 'admino-inputview',
@@ -11,19 +12,13 @@ import { codeAnimation } from './scanner.animation';
   animations: [codeAnimation]
 
 })
-export class InputviewComponent extends ScannerView implements OnInit, OnDestroy {
-  @ViewChild('virtualScrollRef', { static: true, read: ElementRef }) virtualScrollRef: ElementRef;
+export class InputviewComponent extends ScannerView implements OnInit {
   // control: FormControl = new FormControl('');
   // selectedId = 0;
   currentRead = '';
   currentManualRead = '';
-  hiderOpacity = 1;
-  showError = false;
-  animTimeout;
-  currentYear = new Date().getFullYear();
+  errorMessage = { error: 'Sikertelen beolvasás', description: 'Nem megfelelő formátum' };
 
-  timeouts = [];
-  animated = [];
   // @HostListener('document:keydown', ['$event'])
   // onInput(e) {
   //   this.val = e;
@@ -71,15 +66,7 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
   //   '1234567891/12',
   //   '12/'
   // ];
-  scrollEvt() {
-    const scrollPos = this.virtualScrollRef.nativeElement.scrollTop + this.virtualScrollRef.nativeElement.offsetHeight;
-    const max = this.virtualScrollRef.nativeElement.scrollHeight;
-    if (scrollPos > max - 300) {
-      this.hiderOpacity = (max - scrollPos) / 300;
-    } else {
-      this.hiderOpacity = 1;
-    }
-  }
+
 
   ngOnInit() {
     // this.control.setValue(this.scannerService.beolvasasok);
@@ -128,12 +115,12 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
       // this.scannerService.setSyncedTill(this.scannerService.syncedTill + 3);
     }
     if (e.key === 'Enter') {
-      if (this.validateInput(this.currentManualRead, this.currentYear)) {
+      if (this.validateInput(this.currentManualRead, new Date().getFullYear() + 1)) {
         this.codeDetected(this.currentManualRead, true);
         this.currentManualRead = '';
         this.currentRead = '';
       } else if (this.currentManualRead.length > 0) {
-        this.playError();
+        this.scannerService.newErrorEvent.next(this.errorMessage);
       }
     }
     if (e.key === 'Escape') {
@@ -167,66 +154,44 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
   // kézzel írva 7 számjegy max de lehet + perjel + évszám kétszámjegy 00-21ig idén (databaseDate + egy év max)
   // manuálisan is lehet vonalkódot beírni
 
-  getControlValue() {
-    let val = this.scannerService.beolvasasok;
-    if (!val) {
-      val = {
-        version: this.scannerService.version,
-        scanner: this.scannerService.scanner,
-        data: []
-      };
-    }
-    if (!val.data) {
-      val.data = [];
-    }
-    return val;
-  }
-  getDateFormat(date) {
-    if (this.currentYear !== new Date(date).getFullYear()) {
-      return 'yy/MM/dd H:mm:ss';
-    } else {
-      return 'MM/dd H:mm:ss';
-    }
-  }
+  // getControlValue() {
+  //   let val = this.scannerService.beolvasasok;
+  //   if (!val) {
+  //     val = {
+  //       version: this.scannerService.version,
+  //       scanner: this.scannerService.scanner,
+  //       data: []
+  //     };
+  //   }
+  //   if (!val.data) {
+  //     val.data = [];
+  //   }
+  //   return val;
+  // }
+
   codeDetected(code, manualis = false) {
-    const validated = this.validateInput(code, this.currentYear + 1);
+    const validated = this.validateInput(code, new Date().getFullYear() + 1);
     if (validated) {
-      this.scannerService.syncId++;
-      const val = this.getControlValue();
-      const reading: Beolvasas = {
-        bala: validated, datum: new Date(), id: this.scannerService.syncId, dolgozo: this.scannerService.dolgozo.id,
-        utca: this.scannerService.selectedUtca.utca,
+      // const val = this.getControlValue();
+      const reading: BeolvasasEvent = {
+        type: 'bala',
+        bala: validated, utca: this.scannerService.selectedUtca.utca,
         fakk: this.scannerService.selectedFakk,
         manualis
       };
-      val.data.push(reading);
-
+      // val.data.push(reading);
       // this.scannerService.beolvasasok = val;
-      this.scannerService.updateBeolvasas(val, reading.id);
+      this.scannerService.addBeolvasas(reading);
 
       this.currentRead = '';
       this.currentManualRead = '';
-      this.virtualScrollRef.nativeElement.scrollTop = 0;
-      this.scrollEvt();
-      this.showError = false;
-
-      this.animated.push(reading.id);
-      const timeout = setTimeout((params) => {
-        this.animated.splice(this.animated.indexOf(reading.id), 1);
-        this.timeouts.splice(this.timeouts.indexOf(reading.id), 1);
-      }, 1000);
-      this.timeouts.push(timeout);
 
     } else {
-      this.playError();
+      this.scannerService.newErrorEvent.next(this.errorMessage);
     }
   }
 
-  playError() {
-    this.showError = false;
-    this.cd.detectChanges();
-    this.showError = true;
-  }
+
 
 
   validateInput(input: string, maxEv: number): string {
@@ -264,7 +229,7 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
         return null;
       }
 
-      return balaSorszamValue + '/' + balaEvValue;
+      return balaSorszamValue + '/' + padStart(balaEvValue.toString(), 2, '0');
       //String.format('%7d/%02d', balaSorszamValue, balaEvValue);
     } else {
       // console.log(e)
@@ -285,13 +250,7 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
   // codeClicked(i) {
   //   this.selectedId = i;
   // }
-  getCodes() {
-    const val = this.getControlValue();
-    return val.data.slice().reverse();
-  }
-  trackByFn(index, item) {
-    return item.id;
-  }
+
   // removeCode(code) {
   //   const val = this.getControlValue();
 
@@ -306,15 +265,6 @@ export class InputviewComponent extends ScannerView implements OnInit, OnDestroy
 
   //   this.cd.detectChanges();
   // }
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    this.timeouts.forEach((timeout) => {
-      clearTimeout(timeout);
-    });
-    this.timeouts = [];
-    // if (this.animTimeout) {
-    //   clearInterval(this.animTimeout)
-    // }
-  }
+
 
 }

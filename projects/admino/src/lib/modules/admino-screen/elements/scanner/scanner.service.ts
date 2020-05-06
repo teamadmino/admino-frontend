@@ -5,16 +5,25 @@ import { cloneDeep } from 'lodash';
 export interface BeolvasasData {
   version: number;
   scanner: number;
-  data: Beolvasas[];
+  data: BeolvasasEvent[];
 }
-export interface Beolvasas {
-  bala: string;
-  datum: any;
-  id: number;
-  dolgozo: number;
-  utca: number;
-  fakk: number;
-  manualis: boolean;
+export interface BeolvasasEvent {
+  datum?: any;
+  id?: number;
+  dolgozo?: number;
+  dolgozoNev?: string;
+
+  type: 'sztorno' | 'bala' | 'dolgozoBe' | 'dolgozoKi' | 'pantNyit' | 'pantZar';
+
+  // sztorno
+  eredetiBeolvasas?: BeolvasasEvent;
+
+  // bala
+  bala?: string;
+  utca?: number;
+  fakk?: number;
+  manualis?: boolean;
+
 }
 @Injectable()
 export class ScannerService {
@@ -38,14 +47,25 @@ export class ScannerService {
   page: BehaviorSubject<number> = new BehaviorSubject(0);
   next: Subject<null> = new Subject();
   prev: Subject<null> = new Subject();
-  newBeolvasasEvent: Subject<null> = new Subject();
+  newBeolvasasEvent: Subject<BeolvasasEvent> = new Subject();
+  newErrorEvent: Subject<{ error: string, description: string }> = new Subject();
   syncEvent: Subject<number> = new Subject();
-  syncId = 0;
+  syncId = -1;
   syncedTill = 0;
   labels = [
-    [null, { label: 'Bejelentkezés', icon: 'arrow_forward' }],
-    [{ label: 'Kilépés', icon: 'arrow_back' }, { label: 'Adatfelvitel', icon: 'arrow_forward' }],
-    [{ label: 'Utcaválasztás', icon: 'arrow_back' }, null],
+    [{ label: 'Bejelentkezés', iconright: 'navigate_next', func: 'next', color: 'accent' }],
+
+    [{ label: 'Kilépés', iconleft: 'navigate_before', func: 'prev' },
+    { label: 'Fakk', iconright: 'navigate_next', func: 'next', color: 'accent' }],
+
+    [{ label: 'Utca', iconleft: 'navigate_before', func: 'prev' },
+    { label: 'Adatfelvitel', iconright: 'navigate_next', func: 'next', color: 'accent' }],
+
+    [{ label: 'Utca', iconleft: 'navigate_before', func: 'doubleprev' },
+    { label: 'Fakk', iconleft: 'navigate_before', func: 'prev' },
+    // { label: 'Frissít', iconleft: 'refresh', func: 'refresh', color: 'accent', disabled: true }
+    { label: 'Pántolást nyit', iconright: 'add_circle_outline', func: 'refresh', color: 'accent', disabled: true }
+    ]
   ];
 
   selectedUtca: any = {};
@@ -60,15 +80,13 @@ export class ScannerService {
 
   beolvasasok: BeolvasasData = null;
 
-
-
-
   loadConfig() {
+
     this.utcak = JSON.parse(localStorage.getItem(this.JSON_UTCAK));
     this.dolgozok = JSON.parse(localStorage.getItem(this.JSON_DOLGOZOK));
     this.version = JSON.parse(localStorage.getItem(this.JSON_VERSION));
     this.syncId = JSON.parse(localStorage.getItem(this.JSON_SYNCID));
-    this.syncId = this.syncId === undefined || this.syncId === null ? 0 : this.syncId;
+    this.syncId = this.syncId === undefined || this.syncId === null ? -1 : this.syncId;
 
     this.syncedTill = JSON.parse(localStorage.getItem(this.JSON_SYNCEDTILL));
     this.syncedTill = this.syncedTill === undefined || this.syncedTill === null ? 0 : this.syncedTill;
@@ -96,28 +114,46 @@ export class ScannerService {
   getUnsyncedBeolvasasok() {
     const filteredBeolv = cloneDeep(this.beolvasasok);
     if (filteredBeolv.data) {
-      filteredBeolv.data = filteredBeolv.data.filter((beolv: Beolvasas) => {
+      filteredBeolv.data = filteredBeolv.data.filter((beolv: BeolvasasEvent) => {
         return beolv.id > this.syncedTill;
       });
     }
     return filteredBeolv;
   }
 
-  updateBeolvasas(beolvasasok, syncid) {
+  addBeolvasas(beolvasas: BeolvasasEvent) {
     // this.beolvasasok.push(value);
-    this.beolvasasok = cloneDeep(beolvasasok);
-
-    if (this.beolvasasok && this.beolvasasok.data) {
-      this.beolvasasok.version = this.version;
-      this.beolvasasok.scanner = this.scanner;
-      if (this.beolvasasok.data.length > this.beolvasasmax) {
+    if (this.syncId - this.syncedTill >= this.beolvasasmax) {
+      this.newErrorEvent.next({ error: 'Memória betelt', description: 'Kérem szinkronizáljon a szerverrel' });
+      return false;
+    } else {
+      if (this.beolvasasok.data.length >= this.beolvasasmax) {
         this.beolvasasok.data.splice(0, 1);
       }
+
+      this.syncId++;
+      beolvasas.id = this.syncId;
+      beolvasas.datum = new Date();
+      beolvasas.dolgozo = this.dolgozo.id;
+      beolvasas.dolgozoNev = this.dolgozo.nev;
+
+      if (!this.beolvasasok) {
+        this.beolvasasok = { version: this.version, scanner: this.scanner, data: [] };
+      }
+      if (!this.beolvasasok.data) {
+        this.beolvasasok.data = [];
+      }
+
+      this.beolvasasok.version = this.version;
+      this.beolvasasok.scanner = this.scanner;
+      this.beolvasasok.data.push(beolvasas);
+
+      localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
+      localStorage.setItem(this.JSON_SYNCID, JSON.stringify(this.syncId));
+      this.newBeolvasasEvent.next(beolvasas);
+      return true;
     }
 
-    localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
-    localStorage.setItem(this.JSON_SYNCID, JSON.stringify(syncid));
-    this.newBeolvasasEvent.next();
     // localStorage.setItem('beolvasas', JSON.stringify(this.JSON_BEOLVASASOK));
   }
 
@@ -135,6 +171,7 @@ export class ScannerService {
 
 
   reset() {
+    console.log("reset")
     this.selectedFakk = null;
     this.selectedUtca = null;
     this.dolgozo = null;

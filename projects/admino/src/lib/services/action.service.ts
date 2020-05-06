@@ -44,7 +44,17 @@ export class AdminoActionService {
     this.route.queryParams.subscribe(params => {
       this.currentQueryParams = decodeParams(params);
     });
-    this.backendRequest(this.cs.config.loginScreen).subscribe();
+
+
+
+    if (this.currentQueryParams && Object.keys(this.currentQueryParams).indexOf('scanner') > -1) {
+      this.backendGetRequest(this.cs.config.loginScreen).subscribe();
+    } else {
+      this.backendRequest(this.cs.config.loginScreen).subscribe();
+
+    }
+
+    // get request ha benne van scannerGetId
 
   }
 
@@ -68,7 +78,7 @@ export class AdminoActionService {
           a++;
         }
       }
-      // screenValue = this.removeNull(screenValue);
+      screenValue = this.removeNull(screenValue);
 
       // screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
       // console.log(screenValue)
@@ -115,6 +125,7 @@ export class AdminoActionService {
     a.click();
     window.URL.revokeObjectURL(url);
   }
+
   backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null, trigger: string = null, key: string = null) {
     return this.api.request(screen, requestingScreen, screenValue, schema,
       initiatedBy, trigger, key, this.currentQueryParams, this.customVars).pipe(map((response: BackendResponse) => {
@@ -123,6 +134,15 @@ export class AdminoActionService {
       }));
   }
 
+  backendGetRequest(screen) {
+    console.log("backend get")
+
+    return this.api.getRequest(screen).pipe(map((response: BackendResponse) => {
+      console.log(response)
+      this.handleResponse(response);
+      return response;
+    }));
+  }
   handleResponse(response: BackendResponse) {
     if (response.setScreen !== undefined) {
       this.activeScreenId = response.setScreen.id;

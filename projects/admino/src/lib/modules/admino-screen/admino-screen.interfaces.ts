@@ -106,6 +106,7 @@ export interface ScreenElementInput extends ScreenElement {
     readonly: boolean;
     inputType: string;
     maxLength: boolean;
+    appearance: string; // legacy, standard, fill
 
 }
 export interface ScreenElementSelect extends ScreenElement {

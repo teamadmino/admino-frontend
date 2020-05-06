@@ -47,7 +47,10 @@ import { InputviewComponent } from './elements/scanner/inputview/inputview.compo
 import { LoginviewComponent } from './elements/scanner/loginview/loginview.component';
 import { ScannerView } from './elements/scanner/scannerview';
 import { FakkviewComponent } from './elements/scanner/fakkview/fakkview.component';
-import { UtcaviewComponent } from './elements/scanner/utcafakkview/utcaview.component';
+import { UtcaviewComponent } from './elements/scanner/utcaview/utcaview.component';
+import { InfopanelComponent } from './elements/scanner/infopanel/infopanel.component';
+import { EventlistComponent } from './elements/scanner/eventlist/eventlist.component';
+import { ErroroverlayComponent } from './elements/scanner/erroroverlay/erroroverlay.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -83,7 +86,10 @@ import { UtcaviewComponent } from './elements/scanner/utcafakkview/utcaview.comp
     UtcaviewComponent,
     ScannerView,
     SuccessAnimationComponent,
-    FakkviewComponent
+    FakkviewComponent,
+    InfopanelComponent,
+    EventlistComponent,
+    ErroroverlayComponent
   ],
   imports: [
     CommonModule,
