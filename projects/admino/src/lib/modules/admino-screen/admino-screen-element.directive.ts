@@ -1,3 +1,6 @@
+import { MapeditorComponent } from './elements/mapeditor/mapeditor.component';
+import { ConfigService } from './../../services/config.service';
+import { NewmapComponent } from './elements/newmap/newmap.component';
 import { TableselectComponent } from './elements/tableselect/tableselect.component';
 import { SuperTableComponent } from './elements/super-table/super-table.component';
 import { AdminoOldTableComponent } from './../admino-old-table/admino-table/admino-table.component';
@@ -72,6 +75,8 @@ const componentMapper = {
   code: CodeComponent,
   iframe: IframeComponent,
   tableselect: TableselectComponent,
+  newmap: NewmapComponent,
+  mapeditor: MapeditorComponent,
   // supertable: SuperTableComponent,
 
 };
@@ -110,18 +115,18 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
     public ts: AdminoThemeService,
-    public chartThemeService: ThemeService, public el: ElementRef, public sanitizer: DomSanitizer, public overlay: Overlay) {
+    public chartThemeService: ThemeService, public el: ElementRef, public sanitizer: DomSanitizer, public overlay: Overlay, public config: ConfigService) {
   }
 
 
   ngOnInit() {
 
-    this.activeElementConfig = cloneDeep(this.element);
+    this.activeElementConfig = this.ts.processColorPaths(cloneDeep(this.element), this.element.colorPaths);
 
     // this.ts.themeChanged((params) => {
     // })
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-
+      console.log("UPDATEEVENT", this.element.id)
       // if (this.element.id === 'uszips') {
       //   console.log("value", this.element);
       //   // console.log(this.activeElementConfig.value && cloneDeep(this.activeElementConfig.value));

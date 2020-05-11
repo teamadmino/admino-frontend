@@ -1,1 +1,1 @@
-<iframe [src]="this.safeUrl" frameBorder="0"></iframe>
+<iframe [src]="this.safeUrl" frameBorder="0" #iframeRef (load)="iframeLoaded()"></iframe>

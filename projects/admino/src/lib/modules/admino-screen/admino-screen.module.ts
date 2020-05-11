@@ -51,6 +51,8 @@ import { UtcaviewComponent } from './elements/scanner/utcaview/utcaview.componen
 import { InfopanelComponent } from './elements/scanner/infopanel/infopanel.component';
 import { EventlistComponent } from './elements/scanner/eventlist/eventlist.component';
 import { ErroroverlayComponent } from './elements/scanner/erroroverlay/erroroverlay.component';
+import { NewmapComponent } from './elements/newmap/newmap.component';
+import { MapeditorComponent } from './elements/mapeditor/mapeditor.component';
 
 @NgModule({
   declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
@@ -89,7 +91,9 @@ import { ErroroverlayComponent } from './elements/scanner/erroroverlay/errorover
     FakkviewComponent,
     InfopanelComponent,
     EventlistComponent,
-    ErroroverlayComponent
+    ErroroverlayComponent,
+    NewmapComponent,
+    MapeditorComponent
   ],
   imports: [
     CommonModule,
@@ -139,7 +143,11 @@ import { ErroroverlayComponent } from './elements/scanner/erroroverlay/errorover
     IconButtonComponent,
     SuperTableComponent,
     TableselectComponent,
-    OverlaycontentComponent
+    OverlaycontentComponent,
+    NewmapComponent,
+    MapeditorComponent
+
+
 
 
   ]

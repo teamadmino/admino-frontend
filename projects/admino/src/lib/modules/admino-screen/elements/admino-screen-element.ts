@@ -3,12 +3,15 @@ import { AdminoAction, ActionEvent, ActionSubscription } from './../../../interf
 import { AdminoScreenComponent } from '../admino-screen.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ScreenElement } from '../admino-screen.interfaces';
-import { ViewChild, ElementRef, HostBinding } from '@angular/core';
+import { ViewChild, ElementRef, HostBinding, Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoScreenElementDirective } from '../admino-screen-element.directive';
 import { isArray } from 'util';
 import { isEqual } from 'lodash';
 
+@Component({
+    template: '',
+})
 export class AdminoScreenElement {
     // @ViewChild('focusRef', { static: true }) focusRef: any;
     @ViewChild('focusRef', { static: true, read: ElementRef }) focusElRef: ElementRef;
@@ -41,7 +44,11 @@ export class AdminoScreenElement {
     keyTriggers: { trigger: string, boundFunc: any }[] = [];
 
     shortcutTriggers: { trigger: string, boundFunc: any }[] = [];
+
+    mouseTriggers: { trigger: string, boundFunc: any }[] = [];
+
     currentShortcutKeys = [];
+    // constructor(public el: ElementRef) { }
     init() {
         if (this.focusElRef) {
 
@@ -52,6 +59,30 @@ export class AdminoScreenElement {
             this.focusElRef.nativeElement.addEventListener('blur', this.boundBlurFunction, true);
         }
         this.change(null);
+        this.createMouseTriggers();
+    }
+
+    createMouseTriggers() {
+        const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger: 'mouse' });
+        if (this.filterActions.length > 0) {
+            filteredActions.forEach((action: AdminoAction) => {
+                const mouseTrigger = {
+                    el: this.focusElRef.nativeElement,
+                    trigger: action.mouseEvent,
+                    boundFunc: (e) => {
+                        this.handleAction(action, action.mouseEvent);
+                    }
+                };
+                this.mouseTriggers.push(mouseTrigger);
+                this.focusElRef.nativeElement.addEventListener(action.mouseEvent, mouseTrigger.boundFunc);
+            });
+
+        }
+    }
+    clearMouseTriggers() {
+        this.mouseTriggers.forEach((mouseTrigger: { trigger: string, boundFunc: any }) => {
+            this.focusElRef.nativeElement.removeEventListener(mouseTrigger.trigger, mouseTrigger.boundFunc);
+        });
     }
 
     createKeyTiggers() {
@@ -310,6 +341,8 @@ export class AdminoScreenElement {
     onDestroy() {
     }
     destroy() {
+        this.clearMouseTriggers();
+        this.clearShortcutTriggers();
         this.clearKeyTriggers();
         this.onDestroy();
         this.clearSubscriptions();

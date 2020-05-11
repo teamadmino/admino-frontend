@@ -2,7 +2,7 @@
     <mat-label>Fakk</mat-label>
     <!-- [ngClass]="{'hidden-input': this.formGroup.get('utca').value===null || this.formGroup.get('utca').invalid}" -->
     <input type="number" matInput [formControl]="control" #fakkRef (blur)="onFakkChanged()"
-        [readonly]="scannerService.keyboardMode" (input)="handleInput($event, 1)">
+        [readonly]="scannerService.keyboardMode" (input)="handleInput($event,  1)">
     <!-- [matAutocomplete]="autoFakk"
         #triggerFakk="matAutocompleteTrigger" -->
     <!-- <mat-autocomplete (optionSelected)="onFakkChanged()" class="scanner-autocomplete" autoActiveFirstOption

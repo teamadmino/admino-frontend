@@ -8,7 +8,6 @@ import { ScreenElementChange } from '../../admino-screen.interfaces';
 // import { ThreeLayer } from 'maptalks.three';
 // "typescript": "~3.4.3"
 
-
 declare var maptalks: any;
 declare var THREE: any;
 @Component({
@@ -25,7 +24,6 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
     if (changes.mapElements) {
       this.drawElements(changes.mapElements.new);
     }
-    console.log(changes);
     if (changes.pitch) {
       this.map.setPitch(changes.pitch.new);
     }
@@ -113,6 +111,30 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
   ngOnInit() {
     this.map2();
 
+    
+
+    // const layer = new maptalks.VectorLayer('vector').addTo(this.map);
+
+    // var drawTool = new maptalks.DrawTool({
+    //   mode: 'Polygon'
+    // }).addTo(this.map);
+
+    // drawTool.on('drawend', function (param) {
+    //   console.log(param.geometry);
+    //   param.geometry.on('click mouseover', ((e) => {
+    //     console.log(e)
+    //     e.target.updateSymbol({
+    //       'markerFill': '#f00'
+    //     });
+    //     e.domEvent.preventDefault();
+    //     e.domEvent.stopPropagation();
+    //     e.domEvent.stopImmediatePropagation();
+    //   }));
+
+    //   layer.addGeometry(param.geometry);
+    // });
+
+
     // the ThreeLayer to draw buildings
     this.threeLayer = new maptalks.ThreeLayer('t', {
       forceRenderOnMoving: true,
@@ -131,6 +153,18 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
       // var highlightmaterial = new THREE.MeshBasicMaterial({ color: 'yellow', transparent: true });
       // this.drawPolygon([[0, 0], [0, 1], [1, 1], [0, 0]], this.directive.ts.accentColor, 1000);
       this.drawElements(this.element.mapElements);
+
+
+
+      // var items = ['Point', 'LineString', 'Polygon', 'Circle', 'Ellipse', 'Rectangle', 'FreeHandLineString', 'FreeHandPolygon'].map(function (value) {
+      //   return {
+      //     item: value,
+      //     click: function () {
+      //       drawTool.setMode(value).enable();
+      //     }
+      //   };
+      // });
+
       // var bar = threeLayer.toBar([0.5, 0.5], {
       //   height: 10000,
       //   radius: 1000,

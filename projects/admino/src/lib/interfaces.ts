@@ -71,6 +71,7 @@ export interface AdminoAction {
   trigger?: string;
   key?: string;
   shortcut?: string[];
+  mouseEvent?: string;
   overrideDefault?: boolean;
   debounce?: number;
 

@@ -163,12 +163,17 @@ export class AdminoThemeService {
 
 
   processColorPaths(element, paths) {
+    if (!paths) {
+      return element;
+    }
     for (const path of paths) {
       this.traverseByPaths(element, path.split('.'));
     }
+    return element;
   }
 
   traverseByPaths(obj, paths) {
+
     paths = paths.slice(0);
     const currentPath = paths.shift();
     const p = obj[currentPath];
@@ -193,6 +198,7 @@ export class AdminoThemeService {
       }
     } else {
       obj[currentPath] = this.getColor(p);
+      console.log("ARRAY COLP", obj[currentPath])
     }
 
   }

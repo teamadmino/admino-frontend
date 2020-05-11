@@ -19,19 +19,19 @@
 
             <div class="event-icon" [ngSwitch]="reading.type">
                 <div *ngSwitchCase="'sztorno'">
-                    <mat-icon color="warn" class="unsyncindicator">delete_outline
+                    <mat-icon color="warn">delete_outline
                     </mat-icon>
                 </div>
                 <div *ngSwitchCase="'bala'">
-                    <mat-icon *ngIf="reading.manualis" class="unsyncindicator">pan_tool
+                    <mat-icon *ngIf="reading.manualis">pan_tool
                     </mat-icon>
 
-                    <mat-icon *ngIf="!reading.manualis" class="unsyncindicator">wifi_tethering
+                    <mat-icon *ngIf="!reading.manualis">wifi_tethering
                     </mat-icon>
 
                 </div>
                 <div *ngSwitchCase="'dolgozoBe'">
-                    <mat-icon color="accent" class="unsyncindicator">accessibility_new
+                    <mat-icon color="accent">accessibility_new
                     </mat-icon>
                 </div>
             </div>

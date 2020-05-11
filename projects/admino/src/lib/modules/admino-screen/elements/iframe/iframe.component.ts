@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
@@ -9,10 +9,20 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 })
 export class IframeComponent extends AdminoScreenElement implements OnInit {
   safeUrl: SafeResourceUrl = '';
-
+  @ViewChild('iframeRef', { static: true }) iframeRef: ElementRef;
+  boundFunc;
   ngOnInit() {
     this.safeUrl = this.getSafeUrl(this.element.value);
+    console.log(this.directive.config.config.server)
+
+    this.boundFunc = (e) => {
+      if (e.data === 'hello') {
+        alert('It works!');
+      }
+    };
+    window.addEventListener('message', this.boundFunc);
   }
+
   onChange(changes: any) {
     // this.screen.update(this.element);
     if (changes.value) {
@@ -24,5 +34,18 @@ export class IframeComponent extends AdminoScreenElement implements OnInit {
   }
   getSafeUrl(val) {
     return this.directive.sanitizer.bypassSecurityTrustResourceUrl(val);
+  }
+  iframeLoaded() {
+    this.updateIframe();
+  }
+  updateIframe() {
+    this.iframeRef.nativeElement.contentWindow.postMessage('testMessage', this.directive.config.config.server);
+
+  }
+
+  onDestroy() {
+
+    window.removeEventListener('message', this.boundFunc);
+
   }
 }

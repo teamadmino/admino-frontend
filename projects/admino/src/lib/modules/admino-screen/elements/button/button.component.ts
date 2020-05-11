@@ -15,7 +15,9 @@ export class ButtonComponent extends AdminoScreenElement implements OnInit {
     this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.label);
   }
   clicked() {
-
+    if (this.element.action) {
+      this.handleAction(this.element.action);
+    }
     // if (this.field.action === 'cancel') {
     //   // this.form.cancelForm();
     // }
