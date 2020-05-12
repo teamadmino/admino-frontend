@@ -53,9 +53,12 @@ import { EventlistComponent } from './elements/scanner/eventlist/eventlist.compo
 import { ErroroverlayComponent } from './elements/scanner/erroroverlay/erroroverlay.component';
 import { NewmapComponent } from './elements/newmap/newmap.component';
 import { MapeditorComponent } from './elements/mapeditor/mapeditor.component';
+import { AdminoScreenElement } from './elements/admino-screen-element';
 
 @NgModule({
-  declarations: [AdminoScreenComponent, AdminoScreenElementDirective,
+  declarations: [
+    AdminoScreenElement,
+    AdminoScreenComponent, AdminoScreenElementDirective,
     ButtonComponent,
     InputComponent,
     TableComponent,

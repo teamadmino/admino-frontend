@@ -52,9 +52,7 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
     }
     // this.threeLayer.renderScene();
     if (changes.layers) {
-      // console.log(changes.layers);
       // console.log(deepCompare(changes.layers.old, changes.layers.new, null, true))
-
       this.redrawLayers();
 
     }
@@ -121,6 +119,7 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
         });
 
       } else {
+
         this.redrawObjects(existingLayerData, layerConfig);
       }
     }
@@ -182,10 +181,10 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
     }
 
     for (const objData of objectDatas) {
-      const existing = layerConfig.objects.find((objConfig) => {
+      const existingConfig = layerConfig.objects.find((objConfig) => {
         return objData.id === objConfig.id;
       });
-      if (!existing) {
+      if (!existingConfig) {
         // CLEAN UP
 
         // this.layer.removeLayer(layer.layer);
@@ -193,7 +192,7 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
           layer.removeMesh(objData.object);
         }
         if (layerConfig.type === 'VectorLayer') {
-          objData.object.remove();
+          this.removeVectorObject(objData)
         }
         objectDatas.splice(objectDatas.indexOf(objData), 1);
       }
@@ -232,23 +231,28 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
           }
 
           if (layerConfig.type === 'VectorLayer') {
-            if (existing.listenerFunction) {
-              existing.object.on('click dblclick shapechange editstart editend', existing.listenerFunction);
-            }
-            existing.object.remove();
+            this.removeVectorObject(existing);
             const vector = this.drawVectorObject(objConfig, existing);
             vector.addTo(layer);
             existing.object = vector;
           }
-
         } else {
-
         }
-
-
       }
     }
   }
+
+  removeVectorObject(objConfig) {
+    if (objConfig.listenerFunction) {
+      objConfig.object.off('click dblclick shapechange editstart editend', objConfig.listenerFunction);
+    }
+    objConfig.object.remove();
+    if (this.editedGeometry && objConfig.id === this.editedGeometry.getId()) {
+      this.editedGeometry = null;
+    }
+
+  }
+
 
   drawVectorObject(objConfig, objectData) {
     const obj = new maptalks.Polygon(objConfig.coordinates, {
