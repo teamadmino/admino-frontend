@@ -48,10 +48,10 @@ export class AdminoActionService {
 
 
     if (this.currentQueryParams && Object.keys(this.currentQueryParams).indexOf('scanner') > -1) {
-      this.backendGetRequest(this.cs.config.loginScreen).subscribe();
+      const params = window.location.href.substring(window.location.href.indexOf('?'));
+      this.backendGetRequest(this.cs.config.loginScreen + params).subscribe();
     } else {
       this.backendRequest(this.cs.config.loginScreen).subscribe();
-
     }
 
     // get request ha benne van scannerGetId
@@ -135,10 +135,8 @@ export class AdminoActionService {
   }
 
   backendGetRequest(screen) {
-    console.log("backend get")
 
     return this.api.getRequest(screen).pipe(map((response: BackendResponse) => {
-      console.log(response)
       this.handleResponse(response);
       return response;
     }));
