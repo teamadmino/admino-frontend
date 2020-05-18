@@ -19,6 +19,12 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   retryTime = 1000;
   maxRetryTime = 5000;
   trying = false;
+  @HostListener('mousewheel')
+  @HostListener('scroll')
+  @HostListener('keydown')
+  @HostListener('click') offline(e) {
+    this.scannerService.logActivity();
+  }
   // @HostListener('window:offline', ['$event']) offline(e) {
   //   this.scannerService.online = false;
   // }
@@ -35,6 +41,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
       this.tryUpload();
     });
 
+    this.scannerService.init();
     this.scannerService.loadConfig();
     // console.log(Object.entries(localStorage))
   }
@@ -109,6 +116,9 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     }
   }
 
-
+  onDestroy() {
+    this.scannerService.reset();
+    this.scannerService.destroy();
+  }
 
 }

@@ -26,6 +26,7 @@ export class AdminoScreenElement {
 
     public index: number;
     public controlPath: any;
+    public controlPathString: any;
     // public configChange: Subject<any> = new Subject();
     // public updateEvent: Subject<any> = new Subject();
     // public valueChanges: Subject<any> = new Subject();
@@ -49,6 +50,8 @@ export class AdminoScreenElement {
 
     currentShortcutKeys = [];
     // constructor(public el: ElementRef) { }
+    // @HostBinding('id') elId = '';
+
     init() {
         if (this.focusElRef) {
 
@@ -60,6 +63,7 @@ export class AdminoScreenElement {
         }
         this.change(null);
         this.createMouseTriggers();
+        // this.elId = 'screenElementId__' + this.controlPathString;
     }
 
     createMouseTriggers() {

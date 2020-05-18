@@ -84,9 +84,6 @@
   ::ng-deep {
 
 
-    .mat-form-field {
-      width: 100%;
-    }
 
     input:-webkit-autofill {
       -webkit-animation-delay: 1s;
@@ -112,7 +109,7 @@
     }
 
     mat-form-field {
-      font-size: 20px;
+      // font-size: 20px;
       width: 100%;
     }
   }

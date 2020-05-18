@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AdminoActionService } from './../../services/action.service';
 import { AdminoApiService } from './../../services/api.service';
 import { ScreenElementScreen, ScreenElement } from './admino-screen.interfaces';
-import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding, ViewChild, HostListener, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminoAction, ActionEvent } from '../../interfaces';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -18,9 +18,12 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
   templateUrl: './admino-screen.component.html',
   styleUrls: ['./admino-screen.component.scss']
 })
-export class AdminoScreenComponent implements OnInit, OnDestroy {
+export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   private ngUnsubscribe: Subject<null> = new Subject();
   _screenElement: ScreenElementScreen = {};
+
+  @ViewChildren('screenElementRef') screenElementRefs: QueryList<any>;
+
   @Input() public set screenElement(element: ScreenElementScreen) {
     this._screenElement = element;
   }
@@ -35,6 +38,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   @Input() rootScreenComponent: AdminoScreenComponent = this;
   @Input() parentScreenComponent: AdminoScreenComponent = this;
 
+  id = '';
   pauseValueChange = false;
 
   public pauseEvent: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -76,6 +80,15 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       this.valueChange.next(value);
     });
+
+  }
+  ngAfterViewInit() {
+
+    this.id = this.parentScreenComponent !== this ? this.parentScreenComponent.id : '';
+    if (this.screenElement.id) {
+      this.id += '.' + this.screenElement.id.toString();
+    }
+
   }
   // getStyle() {
   //   if (this.screenElement && this.screenElement.style) {
@@ -107,6 +120,9 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
     // const origValues = this.group.value;
     // const merged = deepMerge(origValues, values);
     // this.group.patchValue(merged);
+
+
+
     this.cd.detectChanges();
     this.adminoGrid.refresh();
     this.updateEvent.next();
@@ -135,6 +151,10 @@ export class AdminoScreenComponent implements OnInit, OnDestroy {
   handleAction(actionEvent: ActionEvent) {
     actionEvent.openScreens = this.allOpenScreens;
     actionEvent.screenConfig = this.mainScreenComponent.screenElement;
+    if (actionEvent.action && actionEvent.action.includeSchema) {
+      console.log(actionEvent.action.includeScreenshot)
+      console.log(this.screenElementRefs);
+    }
     return this.as.handleAction(actionEvent);
   }
 

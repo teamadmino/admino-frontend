@@ -6,7 +6,7 @@ import { AdminoApiService } from './api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AdminoAction, ActionEvent } from '../interfaces';
-import { BehaviorSubject, Observable, Subscription, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, Subject, from } from 'rxjs';
 import { ScreenElementScreen } from '../modules/admino-screen/admino-screen.interfaces';
 import { encodeParams, decodeParams } from '../utils/encodeparams';
 import { map } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { propExists } from '../utils/propExists';
 import { deepMerge } from '../utils/deepmerge';
 import { AdminoThemeService } from './theme.service';
 import { HttpResponse, HttpClient } from '@angular/common/http';
-
+declare var html2canvas: any;
 @Injectable({
   providedIn: 'root'
 })
@@ -59,6 +59,50 @@ export class AdminoActionService {
   }
 
   handleAction(actionEvent: ActionEvent): Observable<any> {
+
+    // console.log('screenElementId__' + actionEvent.action.includeScreenshot)
+    if (actionEvent.action.includeScreenshot) {
+      return from(new Promise((resolve, reject) => {
+        let el;
+        if (actionEvent.action.includeScreenshot === 'body') {
+          el = document.body;
+        } else {
+          el = document.getElementById('screenElementId__.' + actionEvent.action.includeScreenshot);
+
+        }
+
+        el.style.background = actionEvent.action.screenshotBackgroundColor ? actionEvent.action.screenshotBackgroundColor : this.ts.bgColor;
+        html2canvas(el).then(canvas => {
+          const base64image = canvas.toDataURL('image/png');
+          // const data = atob(base64image.substring("data:image/png;base64,".length));
+          // const asArray = new Uint8Array(data.length);
+          // for (let i = 0, len = data.length; i < len; i++) {
+          //   asArray[i] = data.charCodeAt(i);
+          // }
+          // const blob = new Blob([asArray.buffer], { type: "image/png" });
+          // document.body.appendChild(canvas);
+          if (actionEvent.action.openScreenshot) {
+            window.open().document.write('<img src="' + base64image + '"/>');
+          }
+
+          this.prepareAction(actionEvent, base64image).subscribe((result) => {
+            resolve(result);
+          });
+        }).catch((params) => {
+          this.prepareAction(actionEvent).subscribe((result) => {
+            resolve(result);
+          });
+        });
+      }));
+
+    } else {
+      return this.prepareAction(actionEvent);
+    }
+
+  }
+
+
+  prepareAction(actionEvent: ActionEvent, screenshotData: any = null): Observable<any> {
     if (!actionEvent.action) {
       console.warn('No action defined');
       return wrapIntoObservable(null);
@@ -79,6 +123,9 @@ export class AdminoActionService {
         }
       }
       screenValue = this.removeNull(screenValue);
+      if (screenshotData) {
+        screenValue.screenshot = screenshotData;
+      }
 
       // screenValue = this.filterScreenValue(actionEvent.action.filterValue, screenValue);
       // console.log(screenValue)
@@ -109,6 +156,9 @@ export class AdminoActionService {
     }
     return wrapIntoObservable(null);
   }
+
+
+
   openFile(data, fileName, fileType = '') {
     const file = new Blob([data], { type: fileType });
     const fileURL = URL.createObjectURL(file);
@@ -187,7 +237,7 @@ export class AdminoActionService {
       // this.user.sid = response.setSid;
     }
     if (response.setPing !== undefined) {
-      // this.pingFrequency.next(response.setPing);
+      this.pingFrequency.next(response.setPing);
     }
     if (response.setSnackbars !== undefined) {
       this.snackbarEvent.next(response.setSnackbars);

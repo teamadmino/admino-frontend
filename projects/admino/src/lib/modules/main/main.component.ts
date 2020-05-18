@@ -5,7 +5,7 @@ import { AdminoUserService } from './../../services/user.service';
 import { AdminoMenuItem, AdminoButton, ActionEvent } from './../../interfaces';
 import {
   Component, OnInit, ViewChild, Renderer2, ChangeDetectorRef,
-  ChangeDetectionStrategy, Inject, Input, OnDestroy
+  ChangeDetectionStrategy, Inject, Input, OnDestroy, HostListener
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -18,6 +18,8 @@ import { AdminoMenuEvent } from '../../interfaces';
 import { slotTransition } from './main.animation';
 import { AdminoApiService } from '../../services/api.service';
 import { AdminoPingService } from '../../services/ping.service';
+
+declare var html2canvas: any;
 
 @Component({
   selector: 'admino-main',
@@ -71,6 +73,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
 
     this.cs.loadConfig(this.configPath);
     this.cs.configLoaded.subscribe((config) => {

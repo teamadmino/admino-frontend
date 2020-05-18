@@ -75,7 +75,8 @@
             "scripts": [
               "node_modules/maptalks/dist/maptalks.min.js",
               "node_modules/three/build/three.min.js",
-              "node_modules/maptalks.three/dist/maptalks.three.js"
+              "node_modules/maptalks.three/dist/maptalks.three.js",
+              "node_modules/html2canvas/dist/html2canvas.js"
             ]
           },
           "configurations": {

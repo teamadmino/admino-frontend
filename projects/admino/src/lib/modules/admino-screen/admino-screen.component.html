@@ -17,11 +17,13 @@
                     [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1" [hidden]="element.hidden"
                     [style]="element.style?element.style:{}" [align]="element.align" [isLoading]="element.isLoading"
                     [containerStyle]="element.containerStyle?element.containerStyle:{}"
-                    *ngFor="let element of getElementsOfType('main'); let i=index;">
+                    *ngFor="let element of getElementsOfType('main'); let i=index;"
+                    [id]="'screenElementId__'+id+'.'+element.id">
 
 
                     <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
-                        [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i">
+                        [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i"
+                        #screenElementRef>
                     </ng-container>
                 </admino-grid-item>
             </admino-grid>

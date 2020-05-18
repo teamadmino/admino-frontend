@@ -1,3 +1,4 @@
+import { debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
@@ -80,6 +81,16 @@ export class ScannerService {
 
   beolvasasok: BeolvasasData = null;
 
+  logoutTimer = null;
+  maxInactivity = 9000000;
+  logoutRestartEvent: Subject<number> = new Subject();
+  logoutRestartEventSub;
+  init() {
+    this.logoutRestartEventSub = this.logoutRestartEvent.pipe(debounceTime(500)).subscribe((params) => {
+      this.restartTimer();
+    });
+  }
+
   loadConfig() {
 
     this.utcak = JSON.parse(localStorage.getItem(this.JSON_UTCAK));
@@ -109,6 +120,23 @@ export class ScannerService {
   setSyncedTill(incomingSyncedTill) {
     this.syncedTill = incomingSyncedTill;
     localStorage.setItem(this.JSON_SYNCEDTILL, JSON.stringify(incomingSyncedTill));
+  }
+
+  logActivity() {
+    this.logoutRestartEvent.next();
+  }
+  restartTimer() {
+    this.stopLogoutTimer();
+    this.logoutTimer = setTimeout((params) => {
+      this.page.next(0);
+      this.reset();
+    }, this.maxInactivity);
+  }
+  stopLogoutTimer() {
+    if (this.logoutTimer) {
+      clearTimeout(this.logoutTimer);
+    }
+    this.logoutTimer = null;
   }
 
   getUnsyncedBeolvasasok() {
@@ -171,10 +199,16 @@ export class ScannerService {
 
 
   reset() {
-    console.log("reset")
     this.selectedFakk = null;
     this.selectedUtca = null;
     this.dolgozo = null;
+  }
+  destroy() {
+    this.stopLogoutTimer();
+    if (this.logoutRestartEventSub) {
+      this.logoutRestartEventSub.unsubscribe();
+      this.logoutRestartEventSub = null;
+    }
   }
   constructor() { }
 }

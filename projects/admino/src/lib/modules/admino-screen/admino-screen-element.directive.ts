@@ -228,19 +228,21 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     this.elementComponent.rootScreenComponent = this.rootScreenComponent;
     this.elementComponent.index = this.index;
     this.elementComponent.directive = this;
-    this.elementComponent.init();
 
     if (this.element.type === 'group') {
       this.createGroup();
       this.elementComponent.group = this.group;
       this.elementComponent.controlPath = this.getControlPath(this.group);
+      // this.elementComponent.controlPathString = this.getControlPathString(this.group);
 
     } else {
       this.createControl();
       this.elementComponent.group = this.parentGroup;
       this.elementComponent.control = this.control;
       this.elementComponent.controlPath = this.getControlPath(this.control);
+      // this.elementComponent.controlPathString = this.getControlPathString(this.control);
     }
+    this.elementComponent.init();
 
   }
   destroyComponent() {
@@ -367,11 +369,11 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     return Object.keys(formGroup).find(name => c === formGroup[name]) || null;
   }
 
-  // getControlPath(c: AbstractControl, path: any = {}): string | null {
+  // getControlPathString(c: AbstractControl, path: any = ''): string | null {
   //   path = this.getControlName(c) + path;
   //   if (c.parent && this.getControlName(c.parent)) {
   //     path = '.' + path;
-  //     return this.getControlPath(c.parent, path);
+  //     return this.getControlPathString(c.parent, path);
   //   } else {
   //     return path;
   //   }

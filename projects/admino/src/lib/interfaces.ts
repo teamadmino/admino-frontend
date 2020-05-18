@@ -80,6 +80,9 @@ export interface AdminoAction {
   isBlocking?: boolean;
   // backend
   backendAction?: any;
+  includeScreenshot?: string;
+  screenshotBackgroundColor?: string;
+  openScreenshot?: boolean;
   // frontend
   frontendAction?: 'logout' | 'print';
   logoutScreen?: string;
@@ -110,7 +113,6 @@ export interface BackendRequest {
   screenValue: {};
 
   previousBackendAction?: string;
-
   backendAction?: string;
 
 
@@ -135,12 +137,7 @@ export interface BackendResponse {
   setPing: number;
   setSnackbars: AdminoSnackbar[];
   startAction: AdminoAction[];
-
   showToolbar: boolean;
-
   closePopup: boolean | string;
-
-
   setTheme: ThemeConfig;
-
 }
