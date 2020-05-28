@@ -1,15 +1,15 @@
 <!-- [displayWith]="displayWith()" -->
 <mat-form-field appearance="outline">
     <mat-label>Utca</mat-label>
-    <input type="number" matInput [formControl]="control" [matAutocomplete]="autoUtca" #utcaRef
-        #triggerUtca="matAutocompleteTrigger" (blur)="onUtcaChanged()" (input)="handleInput($event,3)"
-        (keydown)="onKeyInput($event)">
-    <mat-autocomplete (optionActivated)="onOptionActivated($event)" (optionSelected)="onUtcaChanged()"
+    <input type="number" matInput [formControl]="control" #utcaRef (blur)="onUtcaChanged()"
+        (input)="handleInput($event,3)" (keydown)="onKeyInput($event)">
+    <!-- [matAutocomplete]="autoUtca" #triggerUtca="matAutocompleteTrigger"  -->
+    <!-- <mat-autocomplete (optionActivated)="onOptionActivated($event)" (optionSelected)="onUtcaChanged()"
         class="scanner-autocomplete" autoActiveFirstOption #autoUtca="matAutocomplete">
         <mat-option *ngFor="let option of filteredUtcak | async" [value]="option.utca">
             {{option.utca}} <span class="opacity-70"> - {{option.raktar}}</span>
         </mat-option>
-    </mat-autocomplete>
+    </mat-autocomplete> -->
     <mat-error *ngIf="control.invalid">Nem létező utca</mat-error>
 </mat-form-field>
 

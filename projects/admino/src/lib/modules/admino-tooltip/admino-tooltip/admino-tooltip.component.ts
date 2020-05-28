@@ -11,10 +11,18 @@ export class AdminoTooltipComponent implements OnInit {
   @Input() posY = 0;
   @Input() width = 200;
   @Input() content = null;
+  @Input() style = null;
 
   constructor() { }
 
   ngOnInit() {
+  }
+  getStyle() {
+
+    return Object.assign({
+      transform: 'translate3d(' + this.posX + 'px,' + this.posY + 'px,0)',
+      'max-width': this.width + 'px'
+    }, this.style ? this.style : {});
   }
 
 }

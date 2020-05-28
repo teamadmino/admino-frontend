@@ -7,15 +7,17 @@ import { Injectable } from '@angular/core';
 export class AdminoTooltipService {
   currentId = null;
   currentContent = null;
+  currentStyle = null;
 
   tooltipChange: Subject<any> = new Subject();
 
   constructor() { }
 
 
-  set(id: string, content: any) {
+  set(id: string, content: any, style: any) {
     this.currentId = id;
     this.currentContent = content;
+    this.currentStyle = style;
     this.tooltipChange.next();
   }
 
@@ -23,6 +25,7 @@ export class AdminoTooltipService {
     if (this.currentId === id) {
       this.currentId = null;
       this.currentContent = null;
+      this.currentStyle = null;
       this.tooltipChange.next();
     }
   }

@@ -243,7 +243,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       // this.elementComponent.controlPathString = this.getControlPathString(this.control);
     }
     this.elementComponent.init();
-
   }
   destroyComponent() {
     if (this.themeChangeSub) {
@@ -381,7 +380,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   getControlPath(c: AbstractControl, path: any = true): string | null {
     path = { [this.getControlName(c)]: path };
-
     if (c.parent && this.getControlName(c.parent)) {
       return this.getControlPath(c.parent, path);
     } else {

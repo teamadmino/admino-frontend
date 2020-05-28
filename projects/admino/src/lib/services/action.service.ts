@@ -122,7 +122,7 @@ export class AdminoActionService {
           a++;
         }
       }
-      screenValue = this.removeNull(screenValue);
+      // screenValue = this.removeNull(screenValue);
       if (screenshotData) {
         screenValue.screenshot = screenshotData;
       }
@@ -234,14 +234,13 @@ export class AdminoActionService {
     }
     if (response.setFocus !== undefined) {
       this.setFocus.next(response.setFocus);
-      // this.user.sid = response.setSid;
     }
     if (response.setPing !== undefined) {
       this.pingFrequency.next(response.setPing);
     }
+
     if (response.setSnackbars !== undefined) {
       this.snackbarEvent.next(response.setSnackbars);
-      // this.setQueryParams(response.setQueryParams);
     }
 
     if (response.startAction !== undefined) {

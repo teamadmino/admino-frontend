@@ -1,0 +1,47 @@
+@import "../../../styles/admino-variables.scss";
+
+.admino-keyboard {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  transition: height 1s ease-in-out;
+
+  //   overflow: hidden;
+  &.closed {
+    height: 0%;
+  }
+}
+
+.keycolumn {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+
+  .keyrow {
+    overflow: hidden;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+
+    .keybutton {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      padding: 0.2rem;
+
+      // @include sm {
+      //   padding: 0.1rem;
+      // }
+
+      // @include xs {
+      //   padding: 0.0rem;
+      // }
+    }
+  }
+}

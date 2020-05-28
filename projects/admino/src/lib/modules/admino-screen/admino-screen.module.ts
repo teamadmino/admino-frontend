@@ -1,3 +1,4 @@
+import { AdminoKeyboardModule } from './../admino-keyboard/admino-keyboard.module';
 import { SuccessAnimationComponent } from './elements/scanner/inputview/success-animation/success-animation.component';
 import { AdminoOldTableModule } from './../admino-old-table/admino-table.module';
 import { SuperTableComponent } from './elements/super-table/super-table.component';
@@ -54,6 +55,7 @@ import { ErroroverlayComponent } from './elements/scanner/erroroverlay/errorover
 import { NewmapComponent } from './elements/newmap/newmap.component';
 import { MapeditorComponent } from './elements/mapeditor/mapeditor.component';
 import { AdminoScreenElement } from './elements/admino-screen-element';
+import { PopupComponent } from './elements/scanner/popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +98,8 @@ import { AdminoScreenElement } from './elements/admino-screen-element';
     EventlistComponent,
     ErroroverlayComponent,
     NewmapComponent,
-    MapeditorComponent
+    MapeditorComponent,
+    PopupComponent,
   ],
   imports: [
     CommonModule,
@@ -113,7 +116,8 @@ import { AdminoScreenElement } from './elements/admino-screen-element';
     ChartsModule,
     MonacoEditorModule,
     AdminoPreloaderModule,
-    AdminoOldTableModule
+    AdminoOldTableModule,
+    AdminoKeyboardModule
   ],
   exports: [
     AdminoScreenComponent,

@@ -25,8 +25,8 @@ export class ScannerView implements OnDestroy {
                 this.onPrev();
             }
             e.preventDefault();
-
         }
+        this.keyInput(e);
     }
     keyInput(e) {
 

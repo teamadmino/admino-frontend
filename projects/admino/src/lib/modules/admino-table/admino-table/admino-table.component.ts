@@ -169,10 +169,12 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           || this.dataSource.state.cursorpos < 0 || this.dataSource.state.cursorpos > this.dataSource.state.count - 1
         ) {
           // középre igazít
-          console.log('center');
+          console.log('arrow down center');
           if (this.isOutsideBottom()) {
+            console.log('bottom outside');
             cursorpos = this.dataSource.state.count - this.leavespace;
           } else {
+            console.log('bottom not outside');
             cursorpos = this.leavespace;
           }
 
@@ -182,7 +184,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         } else if (!this.isOutsideBottomMinusOne() && this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1) {
           // léptet egyet le csak frontenden
-
+          console.log('arrow down frontend only');
           cursorpos += 1;
           this.dataSource.cursorAbsPos++;
           this.dataSource.state.cursorpos = cursorpos;
@@ -191,11 +193,11 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
           // leshiftel
           if (this.isOutsideBottom()) {
             cursorpos -= 1;
-            console.log('shiftel1');
+            console.log('arrow down shiftel -1');
 
           } else if (this.isOutsideTop()) {
             cursorpos += 1;
-            console.log('shiftel2');
+            console.log('arrow down shiftel +1');
 
           }
           this.dataSource.state.cursorpos = cursorpos;
@@ -210,7 +212,6 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (
           (this.isViewOutsideTop() || this.isViewOutsideBottom()) && (!this.isAtStart() && !this.isAtEnd())
         ) {
-
           // cursorpos = Math.floor(this.dataSource.state.count / 2);
           if (this.isOutsideBottom()) {
             cursorpos = this.dataSource.state.count - this.leavespace;
@@ -519,7 +520,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   }
-
+  isEllipsisActive(e) {
+    // return true;
+    return (e.offsetWidth < e.scrollWidth);
+  }
   pageChange() {
 
     this.maxScrollPos = Math.floor(this.largePageSize * this.rowHeight);

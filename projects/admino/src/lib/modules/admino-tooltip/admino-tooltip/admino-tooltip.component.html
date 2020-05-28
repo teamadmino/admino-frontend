@@ -1,4 +1,2 @@
-<div class="admino-tooltip"
-    [ngStyle]="{'transform': 'translate3d('+this.posX+'px,'+this.posY+'px,0)', 'max-width':this.width+'px'}"
-    [innerHTML]="content">
+<div class="admino-tooltip" [ngStyle]="this.getStyle()" [innerHTML]="content">
 </div>
