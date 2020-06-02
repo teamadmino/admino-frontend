@@ -47,10 +47,12 @@
 
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)"
                             [innerHtml]="format(getCellContent(vrow, column),column.format)"
-                            [adminoTooltip]="format(getCellContent(vrow, column),column.format)"
-                            [adminoTooltipEnabled]="this.isEllipsisActive(cellRef)"
-                            [adminoTooltipStyle]="getStyle(column, vrow.data && vrow.data.data,i)" #cellRef>
+                            (mouseenter)="mouseEnter(column, vrow,i, cellRef)" (mouseleave)="mouseLeave(column, vrow,i)"
+                            #cellRef>
                         </div>
+                        <!-- [adminoTooltip]="format(getCellContent(vrow, column),column.format)"
+                        [adminoTooltipEnabled]="this.isEllipsisActive(cellRef)"
+                        [adminoTooltipStyle]="getStyle(column, vrow.data && vrow.data.data,i)" -->
 
                         <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)">
                         </div>

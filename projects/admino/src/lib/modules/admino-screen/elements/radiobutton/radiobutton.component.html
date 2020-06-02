@@ -1,6 +1,6 @@
 <div [formGroup]="group" class="admino-input">
     <label
-        [ngClass]="{'pt-3 d-inline-block':element.inlineLabel,'mb-3 d-block':!element.inlineLabel}">{{element.label}}:</label>
+        [ngClass]="{'pt-3 d-inline-block':element.inlineLabel,'mb-3 d-block':!element.inlineLabel}">{{element.label}}</label>
     <mat-radio-group [formControlName]="element.id">
         <mat-radio-button class="ml-3 pt-1" *ngFor="let item of element.options" [value]="item.value" #radioButtonRefs>
             {{item.label}}

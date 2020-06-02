@@ -2,9 +2,10 @@
 <mat-form-field class="admino-input" [formGroup]="group" [appearance]="element.appearance">
     <mat-label>{{element.label}}</mat-label>
 
-    <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.label" #inputRef
+    <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.placeholder" #inputRef
         #focusRef [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null"
-        [type]="element.inputType?element.inputType:'text'" [maxlength]="element.maxLength">
+        name="inputnameplaceholder" [type]="element.inputType?element.inputType:'text'" [maxlength]="element.maxLength"
+        autocomplete="new-password">
 
     <!-- *ngIf="element.value && focused===false" -->
     <!-- <div class="print-helper">
@@ -15,6 +16,6 @@
         <mat-error *ngIf="group.get(element.id).hasError(validation.name)">
             {{validation.message?validation.message:group.get(element.id).errors[validation.name]}}</mat-error>
     </ng-container>
-    <span *ngIf="element && element.prefix" matPrefix>{{element.prefix}}</span>
-    <span *ngIf="element && element.suffix" matSuffix>{{element.suffix}}</span>
+    <span *ngIf="element && element.prefix!==undefined" matPrefix [innerHtml]="element.prefix"></span>
+    <span *ngIf="element && element.suffix!==undefined" matSuffix [innerHtml]="element.suffix"></span>
 </mat-form-field>

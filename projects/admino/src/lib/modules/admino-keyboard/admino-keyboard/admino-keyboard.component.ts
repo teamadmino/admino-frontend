@@ -1,4 +1,4 @@
-import { layout1, layout2 } from './../admino-keyboard.layouts';
+import { layout2 } from './../admino-keyboard.layouts';
 import { KeyboardLayout } from './../admino-keyboard.interface';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { cloneDeep } from 'lodash';
@@ -28,11 +28,12 @@ export class AdminoKeyboardComponent implements OnInit {
 
 
   constructor() {
-    this.processedLayout = cloneDeep(this.layout);
-    this.updateAvailable();
+
   }
 
   ngOnInit() {
+    this.processedLayout = cloneDeep(this.layout);
+    this.updateAvailable();
   }
 
   keyClicked(event) {

@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./input.component.scss'],
 })
 export class InputComponent extends AdminoScreenElement implements OnInit {
-
   element: ScreenElementInput;
   ngOnInit() {
 

@@ -172,7 +172,6 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
           if (key.split('__')[1] === 'replace') {
             target[key.split('__')[0]] = source[key];
           } else if ((source[key][0] && source[key][0].id !== undefined) || key === 'elements') {
-            // console.log("ARRAY MERGE", key);
             target[key] = this.mergeArrays(target[key], source[key]);
           } else {
             target[key] = source[key];

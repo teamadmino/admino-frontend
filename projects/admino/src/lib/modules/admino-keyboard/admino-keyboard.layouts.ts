@@ -1,5 +1,5 @@
 import * as KEY from '@angular/cdk/keycodes';
-export const layout1 = {
+export const LAYOUT1 = {
     columns: [
         {
             rows: [

@@ -7,7 +7,7 @@ import { ViewChild, ElementRef, HostBinding, Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoScreenElementDirective } from '../admino-screen-element.directive';
 import { isArray } from 'util';
-import { isEqual } from 'lodash';
+import { isEqual, has } from 'lodash';
 
 @Component({
     template: '',
@@ -60,6 +60,10 @@ export class AdminoScreenElement {
 
             this.boundBlurFunction = this.blurEvent.bind(this);
             this.focusElRef.nativeElement.addEventListener('blur', this.boundBlurFunction, true);
+
+            if (has(this.element, "tabIndex")) {
+                this.focusElRef.nativeElement.setAttribute('tabindex', this.element.tabIndex);
+            }
         }
         this.change(null);
         this.createMouseTriggers();
@@ -339,6 +343,12 @@ export class AdminoScreenElement {
         this.height = this.element.height;
         if (changes && changes.actions) {
             this.createKeyTiggers();
+        }
+        if (changes && changes.tabIndex) {
+            if (this.focusElRef) {
+                this.focusElRef.nativeElement.setAttribute('tabindex', changes.tabIndex.new);
+                console.log("Tabindex")
+            }
         }
     }
 

@@ -3,7 +3,6 @@
     (submit)="onSubmit($event)" *ngIf="screenElement">
 
     <div class="scroll-area" [cdkTrapFocus]="trapFocus()">
-
         <div class="screen-container"
             [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
             [ngStyle]="screenElement.innerStyle">

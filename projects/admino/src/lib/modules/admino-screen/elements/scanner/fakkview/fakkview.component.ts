@@ -1,5 +1,5 @@
 import { AdminoKeyboardComponent } from './../../../../admino-keyboard/admino-keyboard/admino-keyboard.component';
-import { layout1 } from './../../../../admino-keyboard/admino-keyboard.layouts';
+import { layout2, LAYOUT1 } from './../../../../admino-keyboard/admino-keyboard.layouts';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormControl, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -21,7 +21,7 @@ export class FakkviewComponent extends ScannerView implements OnInit, AfterViewI
   fakkok = [];
   // filteredFakkok: Observable<any[]>;
 
-  layout1 = layout1;
+  layout1 = layout2;
   ngOnInit() {
     this.updateFakk();
     // this.filteredFakkok = this.control.valueChanges

@@ -57,6 +57,8 @@ export interface ScreenElement {
 
     isLoading?: boolean;
 
+    tabIndex?: number;
+
     col?: any;
     row?: any;
     colSpan?: any;
@@ -103,6 +105,7 @@ export interface ScreenElementInput extends ScreenElement {
     label?: string;
     prefix: string;
     suffix: string;
+    placeholder: string;
     readonly: boolean;
     inputType: string;
     maxLength: boolean;

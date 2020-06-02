@@ -46,6 +46,7 @@ import { SelectComponent } from './elements/select/select.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IconButtonComponent } from './elements/icon-button/icon-button.component';
 import { Overlay } from '@angular/cdk/overlay';
+import { DividerComponent } from './elements/divider/divider.component';
 
 
 const componentMapper = {
@@ -77,6 +78,7 @@ const componentMapper = {
   tableselect: TableselectComponent,
   newmap: NewmapComponent,
   mapeditor: MapeditorComponent,
+  divider: DividerComponent,
   // supertable: SuperTableComponent,
 
 };

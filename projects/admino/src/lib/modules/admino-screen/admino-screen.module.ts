@@ -56,6 +56,7 @@ import { NewmapComponent } from './elements/newmap/newmap.component';
 import { MapeditorComponent } from './elements/mapeditor/mapeditor.component';
 import { AdminoScreenElement } from './elements/admino-screen-element';
 import { PopupComponent } from './elements/scanner/popup/popup.component';
+import { DividerComponent } from './elements/divider/divider.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import { PopupComponent } from './elements/scanner/popup/popup.component';
     NewmapComponent,
     MapeditorComponent,
     PopupComponent,
+    DividerComponent,
   ],
   imports: [
     CommonModule,
@@ -152,7 +154,8 @@ import { PopupComponent } from './elements/scanner/popup/popup.component';
     TableselectComponent,
     OverlaycontentComponent,
     NewmapComponent,
-    MapeditorComponent
+    MapeditorComponent,
+    DividerComponent,
 
 
 

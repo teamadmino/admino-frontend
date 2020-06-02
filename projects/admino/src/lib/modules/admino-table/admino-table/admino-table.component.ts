@@ -7,6 +7,7 @@ import { FormatService } from 'admino/src/lib/services/format.service';
 import { adminoTableAnimation } from './admino-table.animation';
 import { DomSanitizer } from '@angular/platform-browser';
 import { isString } from 'util';
+import { AdminoTooltipService } from '../../admino-tooltip/admino-tooltip.service';
 
 export interface VirtualRow {
   virtualId: number;
@@ -339,7 +340,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.valueChange.next(this.dataSource.state);
   }
 
-  constructor(public cd: ChangeDetectorRef, public formatService: FormatService, private sanitizer: DomSanitizer) { }
+  constructor(public cd: ChangeDetectorRef, public formatService: FormatService, private sanitizer: DomSanitizer, private tooltip: AdminoTooltipService) { }
 
   ngOnInit() {
     this.browserMaxSize = this.calcMaxBrowserScrollSize();
@@ -844,7 +845,35 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return '';
   }
+  //////////////////////////////////////
+  mouseEnter(column, vrow, i, cellRef) {
+    if (this.isEllipsisActive(cellRef) && vrow) {
+      let style = {};
+      let content = '';
+      if (vrow.data && vrow.data.data) {
+        content = this.format(this.getCellContent(vrow, column), column.format);
+        style = this.getStyle(column, vrow.data.data, i);
+      }
+      this.tooltip.set(vrow.absoluteId + '_' + i, content, style);
+    }
 
+  }
+  mouseLeave(column, vrow, i) {
+    if (vrow && vrow.data && vrow.data.data) {
+      this.tooltip.remove(vrow.absoluteId + '_' + i);
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+  ////////////////////////////////
   trackByFn(index, item) {
     return item.absoluteId;
     //  index; // or item.id
