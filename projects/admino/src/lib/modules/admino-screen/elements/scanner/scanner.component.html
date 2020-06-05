@@ -1,5 +1,9 @@
 <div class="admino-scanner">
 
+    <div class="popups" *ngIf="this.scannerService.popups.length>0">
+        <admino-popup *ngFor="let popup of this.scannerService.popups" [popupData]="popup"></admino-popup>
+        <!-- <div class="popup" ngfor="let popup of popups"></div> -->
+    </div>
     <div class="header">
         <div class="user">
             <ng-container *ngIf="scannerService.dolgozo">

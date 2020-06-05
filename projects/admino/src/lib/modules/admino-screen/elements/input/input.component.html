@@ -4,18 +4,29 @@
 
     <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.placeholder" #inputRef
         #focusRef [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null"
-        name="inputnameplaceholder" [type]="element.inputType?element.inputType:'text'" [maxlength]="element.maxLength"
-        autocomplete="new-password">
+        name="inputnameplaceholder3" [type]="element.inputType?element.inputType:'text'" [maxlength]="element.maxLength"
+        autocomplete="new-password" (keypress)="filterInput($event)">
+    <!-- [errorStateMatcher]="matcher" -->
 
     <!-- *ngIf="element.value && focused===false" -->
     <!-- <div class="print-helper">
         {{(element.config.prefix?element.config.prefix:'')+element.value +(element.config.suffix?' '+element.config.suffix:'')}}
     </div> -->
 
-    <ng-container *ngFor="let validation of element.validators; let i=index;" ngProjectAs="mat-error">
-        <mat-error *ngIf="group.get(element.id).hasError(validation.name)">
+    <!-- <ng-container *ngFor="let validation of element.validators; let i=index;" ngProjectAs="mat-error">
+        <mat-error *ngIf="control.hasError(validation.name)">
             {{validation.message?validation.message:group.get(element.id).errors[validation.name]}}</mat-error>
+    </ng-container> -->
+
+    <ng-container ngProjectAs="mat-error">
+        <!-- <mat-error *ngIf="control.hasError(validation.name)"> -->
+        <!-- {{validation.message?validation.message:group.get(element.id).errors[validation.name]}}</mat-error> -->
+        <mat-error *ngIf="getError()">
+            {{getError()}}</mat-error>
     </ng-container>
+
+
+
     <span *ngIf="element && element.prefix!==undefined" matPrefix [innerHtml]="element.prefix"></span>
     <span *ngIf="element && element.suffix!==undefined" matSuffix [innerHtml]="element.suffix"></span>
 </mat-form-field>

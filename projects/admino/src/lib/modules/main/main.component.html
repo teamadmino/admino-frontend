@@ -1,11 +1,11 @@
 <div class="admino-wrapper" [ngClass]="{
-  'admino-sidenav-open': this.site.isSideNavOpen | async, 
+  'admino-sidenav-open':  this.as.showMenu.value && this.site.isSideNavOpen | async , 
 'admino-messages-open': this.site.isMessagesOpen | async,
   'mobile-size':this.site.screen.w<this.site.breakpoints.sm,
   'anims-enabled':!this.ts.isThemeChanging}" *ngIf="this.cs.configLoaded.value">
   <admino-theme-emitter [ngClass]="this.ts.currentTheme"></admino-theme-emitter>
 
-  <div class="admino-sidenav-wrapper admino-panel">
+  <div class="admino-sidenav-wrapper admino-panel" *ngIf="this.as.showMenu.value">
     <div class="admino-panel-inside h-100 d-flex flex-column">
 
       <div class="container-fluid account-info-wrapper d-flex align-items-center">
@@ -44,7 +44,7 @@
       <admino-messages></admino-messages>
     </div>
   </div> -->
-  <div class="admino-sidenav-backdrop" (click)='closeSidenav()'></div>
+  <div class="admino-sidenav-backdrop" (click)='closeSidenav()' *ngIf="this.as.showMenu.value"></div>
   <div class="admino-main-bg admino-main-wrapper">
     <admino-toolbar *ngIf="this.as.showToolbar.value"> </admino-toolbar>
     <div class="admino-main fill-height">

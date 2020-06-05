@@ -26,6 +26,7 @@ export class AdminoActionService {
   snackbarEvent: Subject<any> = new Subject();
 
   showToolbar: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  showMenu: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   setFocus: BehaviorSubject<string> = new BehaviorSubject('');
   currentQueryParams = null;
@@ -208,6 +209,9 @@ export class AdminoActionService {
     }
     if (response.showToolbar !== undefined) {
       this.showToolbar.next(response.showToolbar);
+    }
+    if (response.showMenu !== undefined) {
+      this.showMenu.next(response.showMenu);
     }
     if (response.setTheme !== undefined) {
       const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;

@@ -20,7 +20,7 @@ export class AdminoKeyboardComponent implements OnInit {
   // get activeFormControl() {
   //   return this._activeFormControl;
   // }
-  @Input() availableCharacters: any[] = [];
+  @Input() availableCharacters: any[];
   // availableCharacters: any[] = [];
   processedLayout: KeyboardLayout;
   opened = true;
@@ -45,7 +45,7 @@ export class AdminoKeyboardComponent implements OnInit {
       for (const row of column.rows) {
         for (const key of row.keys) {
 
-          if (this.availableCharacters.length > 0) {
+          if (this.availableCharacters) {
             if (this.availableCharacters.indexOf(key.character) > -1) {
               key.disabled = false;
             } else {

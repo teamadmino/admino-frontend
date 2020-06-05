@@ -153,7 +153,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     //   console.log(event);
     // } else if ()
     let cursorpos = this.dataSource.state.cursorpos;
-
+    console.log("cursorposbefreeee", cursorpos);
     // console.log("____")
     // console.log("isViewOutsideTop", this.isViewOutsideTop());
     // console.log("isViewOutsideBottom", this.isViewOutsideBottom());
@@ -165,6 +165,13 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const leavespace = 2;
     switch (event.key) {
       case 'ArrowDown':
+        console.log('isViewOutsideTop', this.isViewOutsideTop()); // false
+        console.log('isViewOutsideBottom', this.isViewOutsideBottom()); // false
+        console.log('isAtStart', this.isAtStart()); // false
+        console.log('isAtEnd', this.isAtEnd()); // true
+        console.log('curosorpos<0', this.dataSource.state.cursorpos < 0); // false
+        console.log('curosorpos>count-1', this.dataSource.state.cursorpos > this.dataSource.state.count - 1); // true false
+        console.log('curosorpos', this.dataSource.state.cursorpos, 'count-1', this.dataSource.state.count - 1);
         if (
           (this.isViewOutsideTop() || this.isViewOutsideBottom()) && (!this.isAtStart() && !this.isAtEnd())
           || this.dataSource.state.cursorpos < 0 || this.dataSource.state.cursorpos > this.dataSource.state.count - 1
@@ -213,6 +220,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (
           (this.isViewOutsideTop() || this.isViewOutsideBottom()) && (!this.isAtStart() && !this.isAtEnd())
         ) {
+
           // cursorpos = Math.floor(this.dataSource.state.count / 2);
           if (this.isOutsideBottom()) {
             cursorpos = this.dataSource.state.count - this.leavespace;
@@ -241,7 +249,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.gotoPos(this.dataSource.viewpos);
           });
         }
-
+        console.log("setCursorposto", this.dataSource.state.cursorpos)
         event.preventDefault();
 
         break;
@@ -259,9 +267,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case 'End':
         this.dataSource.state.keys = { '#position': 'last' };
-        this.dataSource.state.cursorpos = this.dataSource.state.count - 2;
+        // this.dataSource.state.cursorpos = this.dataSource.state.count - 2;
         this.dataSource.loadData().then(() => {
           this.gotoPos(this.dataSource.viewpos);
+          console.log("setcursorpos", this.dataSource.state.cursorpos)
         });
 
         event.preventDefault();
@@ -490,6 +499,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.manualScroll) {
       this.scrollerRef.nativeElement.scrollTop = (this.maxScrollPos + this.notfittingRowHeight) * this.scrollPercent;
     }
+
     this.updateDataSource();
     // if (this.scrollPos >= this.rowHeight * this.bufferSize) {
     //   this.tableRef.nativeElement.scrollTop = this.rowHeight;
@@ -514,7 +524,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       const count = Math.max(this.visibleRowCount - 2, rowCount - 2);
       this.dataSource.state.count = count;
 
-      this.dataSource.state.cursorpos = -(this.rowStart - this.dataSource.cursorAbsPos);
+      // this.dataSource.state.cursorpos = -(this.rowStart - this.dataSource.cursorAbsPos);
+      this.dataSource.state.cursorpos = this.dataSource.cursorAbsPos - this.rowStart;
+      console.log("updateDatasource", this.dataSource.state.cursorpos)
+      console.log("rowStart", this.rowStart, "absPos", this.dataSource.cursorAbsPos)
       this.dataSource.loadData();
       this.cd.detectChanges();
     }
@@ -652,7 +665,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   calculateWidths() {
-    console.log(this.bodyRef.nativeElement.clientWidth, this.dataSource.state.keys);
+    // console.log(this.bodyRef.nativeElement.clientWidth, this.dataSource.state.keys);
 
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
       console.log('returned');
@@ -662,7 +675,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scrollBarWidth = this.tableRef.nativeElement.offsetWidth - this.tableRef.nativeElement.clientWidth;
     this.scrollerRef.nativeElement.style.width = this.scrollBarWidth + 'px';
 
-    console.log(this.scrollBarWidth);
+    // console.log(this.scrollBarWidth);
     // const trArr = (this.bodyRef.nativeElement as HTMLElement).children[0].children;
     // console.log(this.tableRef.nativeElement.offsetWidth - this.tableRef.nativeElement.clientWidth)
     // console.log(fullWidth)

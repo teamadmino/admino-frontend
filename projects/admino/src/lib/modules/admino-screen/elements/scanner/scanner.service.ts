@@ -39,6 +39,7 @@ export class ScannerService {
   JSON_SYNCEDTILL = 'syncedTill';
   online = false;
 
+  popups: any[] = [];
 
   scanner = null;
 
@@ -83,11 +84,14 @@ export class ScannerService {
 
   logoutTimer = null;
   maxInactivity = 9000000;
+  // maxInactivity = 2000;
   logoutRestartEvent: Subject<number> = new Subject();
   logoutRestartEventSub;
   init() {
     this.logoutRestartEventSub = this.logoutRestartEvent.pipe(debounceTime(500)).subscribe((params) => {
-      this.restartTimer();
+      if (this.page.value > 0) {
+        this.restartTimer();
+      }
     });
   }
 
@@ -128,6 +132,7 @@ export class ScannerService {
   restartTimer() {
     this.stopLogoutTimer();
     this.logoutTimer = setTimeout((params) => {
+      this.popups.push({});
       this.page.next(0);
       this.reset();
     }, this.maxInactivity);

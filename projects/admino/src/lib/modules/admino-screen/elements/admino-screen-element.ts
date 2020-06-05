@@ -354,6 +354,13 @@ export class AdminoScreenElement {
 
     onDestroy() {
     }
+    getError() {
+        if (this.control.errors) {
+            return this.control.errors[Object.keys(this.control.errors)[0]];
+        } else {
+            return null;
+        }
+    }
     destroy() {
         this.clearMouseTriggers();
         this.clearShortcutTriggers();

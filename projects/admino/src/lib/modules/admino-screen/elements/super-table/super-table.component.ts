@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 import { AdminoTableDataSource } from '../../../admino-table/admino-table/admino-table.datasource';
 import { ScreenElementTable, ScreenElementChange } from '../../admino-screen.interfaces';
@@ -13,7 +13,7 @@ import { timer, Subscription } from 'rxjs';
   templateUrl: './super-table.component.html',
   styleUrls: ['./super-table.component.scss']
 })
-export class SuperTableComponent extends AdminoScreenElement implements OnInit {
+export class SuperTableComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   dataSource: AdminoTableDataSource;
   @ViewChild(AdminoTableComponent, { static: true }) table: AdminoTableComponent;
   oldVal;
@@ -29,6 +29,16 @@ export class SuperTableComponent extends AdminoScreenElement implements OnInit {
           this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after, this.element.customVars),
       }, this.directive.sanitizer
     );
+  }
+
+  ngAfterViewInit() {
+    if (this.element.value) {
+      this.dataSource.state = Object.assign(this.dataSource.state, this.element.value);
+      this.dataSource.setKeys(this.element.value.keys);
+      this.table.dataSource.loadData().then((params) => {
+        this.table.gotoPos(this.dataSource.viewpos);
+      });
+    }
   }
 
   subscribeToValueChange() {

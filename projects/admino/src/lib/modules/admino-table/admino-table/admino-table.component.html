@@ -46,10 +46,10 @@
                         <div class="rowbg" *ngIf="vrow.absoluteId%2===0" [ngStyle]="oddRowStyle"></div>
 
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)"
-                            [innerHtml]="format(getCellContent(vrow, column),column.format)"
-                            (mouseenter)="mouseEnter(column, vrow,i, cellRef)" (mouseleave)="mouseLeave(column, vrow,i)"
-                            #cellRef>
+                            [innerHtml]="format(getCellContent(vrow, column),column.format)" #cellRef>
                         </div>
+                        <!-- (mouseenter)="mouseEnter(column, vrow,i, cellRef)" (mouseleave)="mouseLeave(column, vrow,i)" -->
+
                         <!-- [adminoTooltip]="format(getCellContent(vrow, column),column.format)"
                         [adminoTooltipEnabled]="this.isEllipsisActive(cellRef)"
                         [adminoTooltipStyle]="getStyle(column, vrow.data && vrow.data.data,i)" -->

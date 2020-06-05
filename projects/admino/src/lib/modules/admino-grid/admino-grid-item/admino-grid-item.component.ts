@@ -99,7 +99,6 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
 
   }
   ngOnInit() {
-    console.log("style", this.style);
   }
   ngAfterContentInit() {
 

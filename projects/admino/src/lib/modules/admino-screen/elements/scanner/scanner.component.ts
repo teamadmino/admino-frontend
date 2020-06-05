@@ -25,6 +25,8 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   @HostListener('click') offline(e) {
     this.scannerService.logActivity();
   }
+
+
   // @HostListener('window:offline', ['$event']) offline(e) {
   //   this.scannerService.online = false;
   // }

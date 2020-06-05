@@ -14,7 +14,7 @@ export class ScannerView implements OnDestroy {
 
     @HostListener('document:keydown', ['$event'])
     onKeyInput(e) {
-
+        this.scannerService.logActivity();
         if (e.key === 'Enter') {
             if (this.isActive()) {
                 this.onNext();

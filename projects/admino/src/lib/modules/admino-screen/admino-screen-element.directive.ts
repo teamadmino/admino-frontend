@@ -128,7 +128,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // this.ts.themeChanged((params) => {
     // })
     this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      console.log("UPDATEEVENT", this.element.id)
+      // console.log("UPDATEEVENT", this.element.id)
       // if (this.element.id === 'uszips') {
       //   console.log("value", this.element);
       //   // console.log(this.activeElementConfig.value && cloneDeep(this.activeElementConfig.value));
@@ -344,7 +344,20 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       const validList = [];
       validators.forEach((valid: ScreenElementValidator) => {
         if (!valid.isAsync) {
-          validList.push(valid.validator);
+
+          // console.log(func({ value: "good" }));
+          const v = (control: AbstractControl) => {
+            let result;
+            try {
+              const func = new Function('control', 'element', valid.validator);
+              result = func(control, this.element);
+            } catch (error) {
+              console.log(error);
+              result = 'Bad validator ' + error;
+            }
+            return result ? { [valid.name]: result } : '';
+          };
+          validList.push(v);
         }
       });
       return Validators.compose(validList);

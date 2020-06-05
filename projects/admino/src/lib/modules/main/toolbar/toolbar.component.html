@@ -2,7 +2,7 @@
 
   <mat-toolbar-row>
     <button class="toolbar-button ml-2 mr-2"
-      [ngClass]="{'hide': !this.user.userLoggedIn.value, 'toolbar-button-active':this.site.isSideNavOpen | async}"
+      [ngClass]="{'hide': !this.user.userLoggedIn.value ||  this.as.showMenu.value!==true, 'toolbar-button-active':this.site.isSideNavOpen | async}"
       mat-icon-button (click)="this.site.toggleSideNav()">
       <mat-icon class="">menu</mat-icon>
     </button>

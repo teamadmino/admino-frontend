@@ -29,6 +29,8 @@ export class NewTableComponent extends AdminoScreenElement implements OnInit {
           this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after, this.element.customVars),
       }, this.directive.sanitizer
     );
+
+
   }
 
   subscribeToValueChange() {
