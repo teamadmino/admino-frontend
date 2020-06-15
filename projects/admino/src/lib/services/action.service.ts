@@ -1,3 +1,4 @@
+import { KeyService } from './key.service';
 import { cloneDeep } from 'lodash';
 import { AdminoUserService } from './user.service';
 import { ConfigService } from './config.service';
@@ -39,7 +40,7 @@ export class AdminoActionService {
 
   constructor(private router: Router, private route: ActivatedRoute,
     private user: AdminoUserService, private http: HttpClient,
-    private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService) { }
+    private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService, private key: KeyService) { }
 
   init() {
     this.route.queryParams.subscribe(params => {
@@ -179,7 +180,7 @@ export class AdminoActionService {
 
   backendRequest(screen, requestingScreen = '', schema = null, screenValue = null, initiatedBy = null, trigger: string = null, key: string = null) {
     return this.api.request(screen, requestingScreen, screenValue, schema,
-      initiatedBy, trigger, key, this.currentQueryParams, this.customVars).pipe(map((response: BackendResponse) => {
+      initiatedBy, trigger, key, this.currentQueryParams, this.customVars, this.key.activeModifierKeys).pipe(map((response: BackendResponse) => {
         this.handleResponse(response);
         return response;
       }));

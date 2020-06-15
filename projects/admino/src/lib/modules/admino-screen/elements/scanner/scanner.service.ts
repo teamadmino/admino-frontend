@@ -31,20 +31,20 @@ export class ScannerService {
 
   keyboardMode = false;
 
-  JSON_DOLGOZOK = 'dolgozok';
-  JSON_UTCAK = 'utcak';
-  JSON_VERSION = 'version';
-  JSON_BEOLVASASOK = 'beolvasasok';
-  JSON_SYNCID = 'syncid';
-  JSON_SYNCEDTILL = 'syncedTill';
+  JSON_PREFIX = 'scanner_';
+  JSON_DOLGOZOK = this.JSON_PREFIX + 'dolgozok';
+  JSON_UTCAK = this.JSON_PREFIX + 'utcak';
+  JSON_VERSION = this.JSON_PREFIX + 'version';
+  JSON_BEOLVASASOK = this.JSON_PREFIX + 'beolvasasok';
+  JSON_SYNCID = this.JSON_PREFIX + 'syncid';
+  JSON_SYNCEDTILL = this.JSON_PREFIX + 'syncedTill';
+  JSON_POS = this.JSON_PREFIX + 'beolvpos';
   online = false;
 
   popups: any[] = [];
 
   scanner = null;
 
-  // beolvasaschunk = 100;
-  beolvasasmax = 1000;
 
   page: BehaviorSubject<number> = new BehaviorSubject(0);
   next: Subject<null> = new Subject();
@@ -54,6 +54,7 @@ export class ScannerService {
   syncEvent: Subject<number> = new Subject();
   syncId = -1;
   syncedTill = 0;
+
   labels = [
     [{ label: 'Bejelentkezés', iconright: 'navigate_next', func: 'next', color: 'accent' }],
 
@@ -80,13 +81,53 @@ export class ScannerService {
   dolgozok: { id: number, nev: string }[] = [];
   utcak: { utca: number, raktar: string, fakkok: number }[] = [];
 
-  beolvasasok: BeolvasasData = null;
+  // beolvasasok: BeolvasasData = null;
+  beolvasasChunks: { [id: string]: BeolvasasEvent[] } = null;
 
   logoutTimer = null;
   maxInactivity = 9000000;
   // maxInactivity = 2000;
   logoutRestartEvent: Subject<number> = new Subject();
   logoutRestartEventSub;
+  constructor() { }
+
+  chunkSize = 10;
+  chunkNum = 50;
+  beolvasasmax = this.chunkSize * this.chunkNum;
+
+  pos = { start: 0, length: 0 };
+  // end = 0;
+
+  //   pointers
+  //   chunk0 es||||||||||
+  //   chunk1 |||||||||||
+  //   chunk2 |||||||||||
+  // const next = (this.end +1) % this.totalsize;
+  // if (next === this.start) {
+  //   // if synced
+  //   this.start = (this.start + 1) % this.totalsize;
+  // }
+
+  // asd(id) {
+
+
+  //   const next = (this.pos.start + this.pos.length) % this.beolvasasmax;
+  //   if (this.pos.length === this.beolvasasmax) {
+  //     // if synced
+  //     this.pos.start = (this.pos.start + 1) % this.beolvasasmax;
+  //     // else error
+  //   } else {
+  //     this.pos.length++;
+  //   }
+  //   localStorage.setItem(this.JSON_POS, JSON.stringify({ start: this.pos.start, length: this.pos.length }));
+  // }
+
+  // getByPos(pos) {
+  //   const id = (this.pos.start + pos) % this.beolvasasmax;
+  //   return id;
+  // }
+
+
   init() {
     this.logoutRestartEventSub = this.logoutRestartEvent.pipe(debounceTime(500)).subscribe((params) => {
       if (this.page.value > 0) {
@@ -96,7 +137,6 @@ export class ScannerService {
   }
 
   loadConfig() {
-
     this.utcak = JSON.parse(localStorage.getItem(this.JSON_UTCAK));
     this.dolgozok = JSON.parse(localStorage.getItem(this.JSON_DOLGOZOK));
     this.version = JSON.parse(localStorage.getItem(this.JSON_VERSION));
@@ -106,9 +146,34 @@ export class ScannerService {
     this.syncedTill = JSON.parse(localStorage.getItem(this.JSON_SYNCEDTILL));
     this.syncedTill = this.syncedTill === undefined || this.syncedTill === null ? 0 : this.syncedTill;
 
-    this.beolvasasok = JSON.parse(localStorage.getItem(this.JSON_BEOLVASASOK));
-    this.beolvasasok = this.beolvasasok ? this.beolvasasok : { version: this.version, scanner: this.scanner, data: [] };
+    // this.beolvasasok = JSON.parse(localStorage.getItem(this.JSON_BEOLVASASOK));
+    // this.beolvasasok = this.beolvasasok ? this.beolvasasok : { version: this.version, scanner: this.scanner, data: [] };
+
+    this.beolvasasChunks = this.createChunkArrays();
+    this.loadBeolvasasChunks();
+    this.pos = JSON.parse(localStorage.getItem(this.JSON_POS));
+    this.pos = this.pos ? this.pos : { start: 0, length: 0 };
+    // this.getAllBeolvasas();
   }
+
+  createChunkArrays() {
+    const chunks = {};
+    for (let i = 0; i < this.chunkNum; i++) {
+      chunks[this.JSON_BEOLVASASOK + '_' + i] = [];
+    }
+    return chunks;
+  }
+
+  loadBeolvasasChunks() {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith(this.JSON_BEOLVASASOK + '_')) {
+        const el = localStorage.getItem(localStorage.key(i));
+        this.beolvasasChunks[key] = this.beolvasasChunks[key].concat(JSON.parse(el));
+      }
+    }
+  }
+
 
   updateConfig(incomingVersion, utcak, dolgozok) {
     if (this.version === undefined || this.version < incomingVersion) {
@@ -144,48 +209,131 @@ export class ScannerService {
     this.logoutTimer = null;
   }
 
-  getUnsyncedBeolvasasok() {
-    const filteredBeolv = cloneDeep(this.beolvasasok);
-    if (filteredBeolv.data) {
-      filteredBeolv.data = filteredBeolv.data.filter((beolv: BeolvasasEvent) => {
-        return beolv.id > this.syncedTill;
-      });
+  getAllBeolvasas() {
+    let all = [];
+    for (const key of Object.keys(this.beolvasasChunks)) {
+      all = all.concat(this.beolvasasChunks[key]);
     }
-    return filteredBeolv;
+    all.sort((a, b) => {
+      if (a.id < b.id) {
+        return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    });
+    return all;
   }
 
-  addBeolvasas(beolvasas: BeolvasasEvent) {
-    // this.beolvasasok.push(value);
-    if (this.syncId - this.syncedTill >= this.beolvasasmax) {
-      this.newErrorEvent.next({ error: 'Memória betelt', description: 'Kérem szinkronizáljon a szerverrel' });
-      return false;
-    } else {
-      if (this.beolvasasok.data.length >= this.beolvasasmax) {
-        this.beolvasasok.data.splice(0, 1);
+  getUnsyncedBeolvasasok() {
+    const filteredData = [];
+    for (const key of Object.keys(this.beolvasasChunks)) {
+      for (const beolv of this.beolvasasChunks[key]) {
+        if (beolv.id > this.syncedTill) {
+          filteredData.push(beolv);
+        }
       }
-
-      this.syncId++;
-      beolvasas.id = this.syncId;
-      beolvasas.datum = new Date();
-      beolvasas.dolgozo = this.dolgozo.id;
-      beolvasas.dolgozoNev = this.dolgozo.nev;
-
-      if (!this.beolvasasok) {
-        this.beolvasasok = { version: this.version, scanner: this.scanner, data: [] };
-      }
-      if (!this.beolvasasok.data) {
-        this.beolvasasok.data = [];
-      }
-
-      this.beolvasasok.version = this.version;
-      this.beolvasasok.scanner = this.scanner;
-      this.beolvasasok.data.push(beolvasas);
-
-      localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
-      localStorage.setItem(this.JSON_SYNCID, JSON.stringify(this.syncId));
-      this.newBeolvasasEvent.next(beolvasas);
-      return true;
     }
+    const data = {
+      version: this.version,
+      scanner: this.scanner,
+      data: filteredData
+    };
+    console.log(data);
+    return data;
+  }
+
+
+  private add(beolvasas: BeolvasasEvent, next) {
+    this.syncId++;
+    beolvasas.id = this.syncId;
+    beolvasas.datum = new Date();
+    beolvasas.dolgozo = this.dolgozo.id;
+    beolvasas.dolgozoNev = this.dolgozo.nev;
+
+    // if (!this.beolvasasok) {
+    //   this.beolvasasok = { version: this.version, scanner: this.scanner, data: [] };
+    // }
+    // if (!this.beolvasasok.data) {
+    //   this.beolvasasok.data = [];
+    // }
+
+    const chunknum = Math.floor(next / this.chunkSize);
+    // this.beolvasasok.version = this.version;
+    // this.beolvasasok.scanner = this.scanner;
+    // this.beolvasasok.data.push(beolvasas);
+
+    const chunkId = this.JSON_BEOLVASASOK + '_' + chunknum;
+    const index = next - chunknum * this.chunkSize;
+    this.beolvasasChunks[chunkId][index] = beolvasas;
+    localStorage.setItem(chunkId, JSON.stringify(this.beolvasasChunks[chunkId]));
+
+
+    localStorage.setItem(this.JSON_POS, JSON.stringify({ start: this.pos.start, length: this.pos.length }));
+    // localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
+    localStorage.setItem(this.JSON_SYNCID, JSON.stringify(this.syncId));
+    this.newBeolvasasEvent.next(beolvasas);
+    return true;
+  }
+
+  // getByPos(pos) {
+  //   const id = (this.pos.start + pos) % this.beolvasasmax;
+  //   return id;
+  // }
+
+
+
+  addBeolvasas(beolvasas: BeolvasasEvent) {
+    const next = (this.pos.start + this.pos.length) % this.beolvasasmax;
+
+    if (this.pos.length === this.beolvasasmax) {
+      // if synced
+      if (this.syncId - this.syncedTill >= this.beolvasasmax) {
+        this.newErrorEvent.next({ error: 'Memória betelt', description: 'Kérem szinkronizáljon a szerverrel' });
+        return false;
+      } else {
+        this.pos.start = (this.pos.start + 1) % this.beolvasasmax;
+        return this.add(beolvasas, next);
+      }
+      // else error
+    } else {
+      this.pos.length++;
+      return this.add(beolvasas, next);
+    }
+
+
+    // // this.beolvasasok.push(value);
+    // if (this.syncId - this.syncedTill >= this.beolvasasmax) {
+    //   this.newErrorEvent.next({ error: 'Memória betelt', description: 'Kérem szinkronizáljon a szerverrel' });
+    //   return false;
+    // } else {
+    //   if (this.beolvasasok.data.length >= this.beolvasasmax) {
+    //     this.beolvasasok.data.splice(0, 1);
+    //   }
+
+    //   this.syncId++;
+    //   beolvasas.id = this.syncId;
+    //   beolvasas.datum = new Date();
+    //   beolvasas.dolgozo = this.dolgozo.id;
+    //   beolvasas.dolgozoNev = this.dolgozo.nev;
+
+    //   if (!this.beolvasasok) {
+    //     this.beolvasasok = { version: this.version, scanner: this.scanner, data: [] };
+    //   }
+    //   if (!this.beolvasasok.data) {
+    //     this.beolvasasok.data = [];
+    //   }
+
+    //   this.beolvasasok.version = this.version;
+    //   this.beolvasasok.scanner = this.scanner;
+    //   this.beolvasasok.data.push(beolvasas);
+
+    //   localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
+    //   localStorage.setItem(this.JSON_SYNCID, JSON.stringify(this.syncId));
+    //   this.newBeolvasasEvent.next(beolvasas);
+    //   return true;
+    // }
 
     // localStorage.setItem('beolvasas', JSON.stringify(this.JSON_BEOLVASASOK));
   }
@@ -215,5 +363,4 @@ export class ScannerService {
       this.logoutRestartEventSub = null;
     }
   }
-  constructor() { }
 }

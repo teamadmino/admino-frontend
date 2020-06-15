@@ -5,7 +5,7 @@ import { map, catchError, delay } from 'rxjs/operators';
 import { Subject, Observable, ObservableInput } from 'rxjs';
 import { AdminoUserService } from './user.service';
 import { AdminoSiteService } from './site.service';
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -23,7 +23,7 @@ export class AdminoApiService {
   BROWSER_INFO = '/browserinfo';
   REQUEST = '/request';
   PING = '/ping';
-
+  tabId = uuidv4();
   constructor(private http: HttpClient, private user: AdminoUserService, private site: AdminoSiteService) {
   }
 
@@ -32,22 +32,6 @@ export class AdminoApiService {
     this.BASE_URL = baseUrl;
   }
 
-
-  // login(body: any) {
-  //   // const body = { user: 'admin', password: 'admin' };
-  //   return this.http.post(this.BASE_URL + this.LOGIN, this.stringifyObject(body)).pipe(map((result: any) => {
-  //     this.user.sid = result.sid;
-  //     this.user.homeScreen = this.getFirstMenu(result.menu[0]);
-  //     this.user.setMenu(result.menu);
-  //     this.user.setName(result.firstname, result.lastname);
-  //     this.user.setLoginState(true);
-  //     if (this.user.requestedScreenName) {
-  //       this.nav.navigate(this.user.requestedScreenName);
-  //     } else {
-  //       this.nav.navigate(this.user.homeScreen.action);
-  //     }
-  //   }));
-  // }
   getFirstMenu(menu: AdminoMenuItem) {
     if (menu.children) {
       return (this.getFirstMenu(menu.children[0]));
@@ -155,9 +139,9 @@ export class AdminoApiService {
 
   request(requestedScreen: string, requestingScreen: string,
     screenValue: any = null, schema: any = null, initiatedBy = null, trigger = null, key = null,
-    queryParams: any = null, customVars: any = null) {
+    queryParams: any = null, customVars: any = null, activeModifierKeys = []) {
     return this.http.post(this.BASE_URL + this.REQUEST + '/' + requestedScreen,
-      { screen: requestingScreen, schema, queryParams, screenValue, initiatedBy, customVars, trigger, key })
+      { screen: requestingScreen, schema, queryParams, screenValue, initiatedBy, customVars, trigger, key, activeModifierKeys, tabId: this.tabId })
     // .pipe(delay(3000), map((val) => {
     //   // try {
     //   //   val['updateScreen']["elements"][0]['_forceRefresh'] = true;
@@ -173,7 +157,7 @@ export class AdminoApiService {
   }
 
   ping(screenName) {
-    return this.http.post(this.BASE_URL + this.PING, { screenName });
+    return this.http.post(this.BASE_URL + this.PING, { screenName, tabId: this.tabId });
   }
 
 

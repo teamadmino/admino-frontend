@@ -81,7 +81,7 @@ export class EventlistComponent implements OnInit, OnDestroy {
     }
   }
   getCodes() {
-    const val = this.scannerService.beolvasasok.data;
+    const val = this.scannerService.getAllBeolvasas();
     return val.slice().reverse();
   }
   trackByFn(index, item) {
