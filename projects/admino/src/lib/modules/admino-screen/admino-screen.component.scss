@@ -103,8 +103,12 @@ form {
   transition: opacity 0.5s;
 
   &.loading {
-    opacity: 0.5;
+    // opacity: 0.5;
     pointer-events: none;
+
+    &>* {
+      pointer-events: none;
+    }
 
   }
 

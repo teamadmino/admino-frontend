@@ -1,4 +1,4 @@
-<admino-preloader *ngIf="blockingActionRunning"></admino-preloader>
+<!-- <admino-preloader *ngIf="blockingActionRunning"></admino-preloader> -->
 <form [formGroup]="group" class="admino-screen " [ngClass]="{'loading': blockingActionRunning}"
     (submit)="onSubmit($event)" *ngIf="screenElement">
 
