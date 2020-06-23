@@ -42,6 +42,7 @@ export class ScannerService {
   online = false;
 
   popups: any[] = [];
+  popupClosedEvent: Subject<any> = new Subject();
 
   scanner = null;
 
@@ -66,8 +67,8 @@ export class ScannerService {
 
     [{ label: 'Utca', iconleft: 'navigate_before', func: 'doubleprev' },
     { label: 'Fakk', iconleft: 'navigate_before', func: 'prev' },
-    // { label: 'Frissít', iconleft: 'refresh', func: 'refresh', color: 'accent', disabled: true }
-    { label: 'Pántolást nyit', iconright: 'add_circle_outline', func: 'refresh', color: 'accent', disabled: true }
+      // { label: 'Frissít', iconleft: 'refresh', func: 'refresh', color: 'accent', disabled: true }
+      // { label: 'Pántolást nyit', iconright: 'add_circle_outline', func: 'refresh', color: 'accent', disabled: true }
     ]
   ];
 
@@ -85,7 +86,7 @@ export class ScannerService {
   beolvasasChunks: { [id: string]: BeolvasasEvent[] } = null;
 
   logoutTimer = null;
-  maxInactivity = 9000000;
+  maxInactivity = 900000;
   // maxInactivity = 2000;
   logoutRestartEvent: Subject<number> = new Subject();
   logoutRestartEventSub;

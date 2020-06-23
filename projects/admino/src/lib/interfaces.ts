@@ -141,4 +141,6 @@ export interface BackendResponse {
   showMenu: boolean;
   closePopup: boolean | string;
   setTheme: ThemeConfig;
+
+  setClipboard: string;
 }

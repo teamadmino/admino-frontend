@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { ScannerService } from './scanner.service';
-import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 import { codeAnimation } from './inputview/scanner.animation';
 import { ScreenElementChange } from '../../admino-screen.interfaces';
@@ -35,8 +35,8 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   //   this.scannerService.online = true;
   // }
 
-  constructor(public scannerService: ScannerService) {
-    super();
+  constructor(public scannerService: ScannerService, public cd: ChangeDetectorRef, public el: ElementRef) {
+    super(el, cd);
     this.scannerService.online = window.navigator.onLine;
     this.scannerService.newBeolvasasEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.control.setValue(this.scannerService.getUnsyncedBeolvasasok());
@@ -87,7 +87,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   }
 
   handleClick(button) {
-
+    this.scannerService.logActivity();
     if (button.func === 'next') {
       this.scannerService.next.next();
     } else if (button.func === 'prev') {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { ScannerView } from '../scannerview';
 import { FormControl, FormGroup, NgForm, AbstractControl, Validators } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'admino-loginview',
@@ -27,6 +28,9 @@ export class LoginviewComponent extends ScannerView implements OnInit {
     this.scannerService.reset();
     this.focusRef.nativeElement.focus();
     this.activeControl = this.formGroup.get('dolgozo');
+    this.scannerService.popupClosedEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.focusRef.nativeElement.focus();
+    });
   }
   input(e) {
     // if (this.scannerService.keyboardMode) {

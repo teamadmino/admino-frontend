@@ -18,8 +18,6 @@ export class PopupComponent implements OnInit, AfterViewInit {
       this.close();
       e.preventDefault();
     }
-
-
   }
   constructor(private scannerService: ScannerService) { }
 
@@ -36,5 +34,6 @@ export class PopupComponent implements OnInit, AfterViewInit {
   close() {
 
     this.scannerService.popups.splice(this.scannerService.popups.indexOf(this.popupData), 1);
+    this.scannerService.popupClosedEvent.next();
   }
 }

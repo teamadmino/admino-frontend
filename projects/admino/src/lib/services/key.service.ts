@@ -17,6 +17,8 @@ export class KeyService {
         this.activeModifierKeys.splice(this.activeModifierKeys.indexOf(event.code), 1);
       }
     });
+    window.addEventListener('focus', (event) => {
+      this.activeModifierKeys.splice(0, this.activeModifierKeys.length);
+    });
   }
-
 }

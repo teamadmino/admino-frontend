@@ -3,7 +3,7 @@ import { AdminoAction, ActionEvent, ActionSubscription } from './../../../interf
 import { AdminoScreenComponent } from '../admino-screen.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ScreenElement } from '../admino-screen.interfaces';
-import { ViewChild, ElementRef, HostBinding, Component } from '@angular/core';
+import { ViewChild, ElementRef, HostBinding, Component, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AdminoScreenElementDirective } from '../admino-screen-element.directive';
 import { isArray } from 'util';
@@ -49,7 +49,7 @@ export class AdminoScreenElement {
     mouseTriggers: { trigger: string, boundFunc: any }[] = [];
 
     currentShortcutKeys = [];
-    // constructor(public el: ElementRef) { }
+    constructor(public el: ElementRef, public cd: ChangeDetectorRef) { }
     // @HostBinding('id') elId = '';
 
     init() {

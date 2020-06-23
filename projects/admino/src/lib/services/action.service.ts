@@ -17,7 +17,10 @@ import { propExists } from '../utils/propExists';
 import { deepMerge } from '../utils/deepmerge';
 import { AdminoThemeService } from './theme.service';
 import { HttpResponse, HttpClient } from '@angular/common/http';
+import { ClipboardService } from './clipboard.service';
 declare var html2canvas: any;
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +43,9 @@ export class AdminoActionService {
 
   constructor(private router: Router, private route: ActivatedRoute,
     private user: AdminoUserService, private http: HttpClient,
-    private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService, private key: KeyService) { }
+    private api: AdminoApiService, private cs: ConfigService, private ts: AdminoThemeService, private key: KeyService,
+    private clipboard: ClipboardService
+  ) { }
 
   init() {
     this.route.queryParams.subscribe(params => {
@@ -246,6 +251,9 @@ export class AdminoActionService {
 
     if (response.setSnackbars !== undefined) {
       this.snackbarEvent.next(response.setSnackbars);
+    }
+    if (response.setClipboard !== undefined) {
+      this.clipboard.copy(response.setClipboard);
     }
 
     if (response.startAction !== undefined) {
