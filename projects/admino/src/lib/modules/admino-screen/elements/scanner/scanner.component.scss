@@ -33,7 +33,7 @@
 
     // height: 66px;
     .toolbarbtn {
-      margin-top: -10px;
+      margin-top: -8px;
     }
 
     .user {
@@ -43,7 +43,7 @@
       overflow: hidden;
 
       .username {
-        transform: translateY(-4px);
+        transform: translateY(-2px);
 
         overflow: hidden;
         white-space: nowrap;
@@ -59,6 +59,10 @@
     .unsyncronized {
       transform: translateY(-5px);
       display: inline-block;
+
+      h6 {
+        margin-bottom: 0;
+      }
     }
 
 

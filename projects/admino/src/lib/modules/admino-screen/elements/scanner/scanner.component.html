@@ -16,17 +16,17 @@
                 {{scannerService.dolgozo && scannerService.dolgozo.nev}}
             </h6>
         </div>
-        <div class="pr-3 toolbarbtn">
+        <div class="pr-1 toolbarbtn" *ngIf="!connectionLost">
+            <button mat-icon-button (click)='clearLocalStorage()'>
+                <mat-icon>delete_sweep</mat-icon>
+            </button>
+        </div>
+        <!-- <div class="pr-1 toolbarbtn">
             <button mat-icon-button (click)='tryUpload()'>
                 <mat-icon>refresh</mat-icon>
             </button>
-        </div>
-        <!-- <div class="pr-3 toolbarbtn" *ngIf="!connectionLost">
-            <button mat-icon-button (click)='clearLocalStorage()'>
-                <mat-icon>restore_from_trash</mat-icon>
-            </button>
         </div> -->
-        <div class="pr-3" *ngIf="connectionLost">
+        <div class="pr-1" *ngIf="connectionLost">
             <div class="unsyncronized mr-1">
                 <h6>
                     {{ scannerService.syncId-scannerService.syncedTill}}
@@ -35,9 +35,12 @@
 
             <mat-icon class="color-warn">warning</mat-icon>
         </div>
-        <div>
-            <mat-icon class="color-accent" *ngIf="scannerService.online">wifi</mat-icon>
-            <mat-icon class="color-warn" *ngIf="!scannerService.online">wifi_off </mat-icon>
+        <div class="toolbarbtn">
+            <button mat-icon-button (click)='tryUpload()'>
+                <mat-icon class="color-accent" *ngIf="scannerService.online">wifi</mat-icon>
+                <mat-icon class="color-warn" *ngIf="!scannerService.online">wifi_off </mat-icon>
+                <!-- <mat-icon>refresh</mat-icon> -->
+            </button>
         </div>
 
         <!-- <button [type]="'button'" color="accent" (click)="scannerService.next.next()" mat-flat-button>
