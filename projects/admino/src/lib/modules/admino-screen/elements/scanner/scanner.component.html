@@ -5,24 +5,28 @@
         <!-- <div class="popup" ngfor="let popup of popups"></div> -->
     </div>
     <div class="header">
+        <div class="toolbarbtn" *ngIf="scannerService.dolgozo">
+            <button *ngIf="scannerService.dolgozo" mat-icon-button (click)="logout()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+
         <div class="user">
-            <ng-container *ngIf="scannerService.dolgozo">
-                <button mat-icon-button aria-label="Kilepes" (click)="logout()">
-                    <mat-icon>arrow_back</mat-icon>
-                </button>
-                <h6 class="mb-0 mt-1 d-inline-block">
-                    {{scannerService.dolgozo && scannerService.dolgozo.nev}}
-                </h6>
-
-            </ng-container>
-
+            <h6 *ngIf="scannerService.dolgozo" class="username mb-0 mt-1 d-inline-block">
+                {{scannerService.dolgozo && scannerService.dolgozo.nev}}
+            </h6>
         </div>
-        <div class="pr-3" (click)='tryUpload()'>
-
-            <mat-icon>refresh</mat-icon>
+        <div class="pr-3 toolbarbtn">
+            <button mat-icon-button (click)='tryUpload()'>
+                <mat-icon>refresh</mat-icon>
+            </button>
         </div>
-
-        <div class="pr-3" *ngIf=" scannerService.syncId-scannerService.syncedTill >0">
+        <!-- <div class="pr-3 toolbarbtn" *ngIf="!connectionLost">
+            <button mat-icon-button (click)='clearLocalStorage()'>
+                <mat-icon>restore_from_trash</mat-icon>
+            </button>
+        </div> -->
+        <div class="pr-3" *ngIf="connectionLost">
             <div class="unsyncronized mr-1">
                 <h6>
                     {{ scannerService.syncId-scannerService.syncedTill}}

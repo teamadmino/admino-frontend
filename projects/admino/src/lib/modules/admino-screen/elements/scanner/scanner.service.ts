@@ -229,19 +229,19 @@ export class ScannerService {
 
   getUnsyncedBeolvasasok() {
     const filteredData = [];
-    for (const key of Object.keys(this.beolvasasChunks)) {
-      for (const beolv of this.beolvasasChunks[key]) {
-        if (beolv.id > this.syncedTill) {
-          filteredData.push(beolv);
-        }
+    // for (const key of Object.keys(this.beolvasasChunks)) {
+    // for (const beolv of this.beolvasasChunks[key]) {
+    this.getAllBeolvasas().forEach((beolv) => {
+      if (beolv.id > this.syncedTill) {
+        filteredData.push(beolv);
       }
-    }
+    });
+    // }
     const data = {
       version: this.version,
       scanner: this.scanner,
       data: filteredData
     };
-    console.log(data);
     return data;
   }
 

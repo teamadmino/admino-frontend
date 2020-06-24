@@ -45,20 +45,23 @@
 
                 <div class="code" *ngIf="reading.type==='bala' || reading.type==='sztorno'">
                     <h2> {{reading.bala}}
-                        <span class="ml-2 utca">{{ reading.type==='sztorno'?reading.eredetiBeolvasas.utca:reading.utca}}
+
+                    </h2>
+                    <p class="datap opacity-70 mb-0">
+
+                        <span class="utca">{{ reading.type==='sztorno'?reading.eredetiBeolvasas.utca:reading.utca}}
                             <span class="smalltext">utca</span> </span> <span class="fakk ml-2">
                             {{reading.type==='sztorno'?reading.eredetiBeolvasas.fakk:reading.fakk}} <span
                                 class="smalltext">fakk</span></span>
-                    </h2>
-                    <p class="datap opacity-70 mb-0">
-                        <span class="id opacity-50"> {{reading.datum | date:getDateFormat(reading.datum)}}
+
+                        <span class="ml-2 id"> {{reading.datum | date:getDateFormat(reading.datum)}}
                         </span>
 
-                        <span class="id ml-2 opacity-50"> #{{reading.id}}</span>
                     </p>
                     <p class="datap mb-0">
                         <span class="id mb-0 opacity-50"> {{reading.dolgozoNev}}
                         </span>
+                        <span class="id ml-2 opacity-50"> #{{reading.id}}</span>
                     </p>
                 </div>
                 <div class="code" *ngIf="reading.type==='dolgozoBe' || reading.type==='dolgozoKi'">
@@ -67,11 +70,10 @@
                     <p class=" datap opacity-70 mb-0">
                         <span class="id opacity-50"> {{reading.datum | date:getDateFormat(reading.datum)}}
                         </span>
-                        <span class="id ml-2 opacity-50"> #{{reading.id}}</span>
                     </p>
                     <p class="datap mb-0">
-                        <span class="id mb-0 opacity-50"> {{reading.dolgozoNev}}
-                        </span>
+                        <span class="id mb-0 opacity-50"> {{reading.dolgozoNev}}</span>
+                        <span class="id ml-2 opacity-50"> #{{reading.id}}</span>
                     </p>
                 </div>
 

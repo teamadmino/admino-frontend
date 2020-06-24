@@ -94,27 +94,24 @@ export class InputviewComponent extends ScannerView implements OnInit {
   onManualInput(e) {
     if (e.key === 'Backspace') {
       this.currentManualRead = this.currentManualRead.substring(0, this.currentManualRead.length - 1);
-    }
-    if (e.key === 'Home') {
-
-      // const randomcode = Math.floor(Math.random() * 1000000) + '/' + '20';
-      // this.codeDetected(sample, true);
-
-      // this.sample.forEach(sample => {
-      //   const randomcode = Math.floor(Math.random() * 1000000) + '/' + '20';
-      //   this.codeDetected(sample, true);
-      // });
-
-
+    } else if (e.key === 'End' || e.code === 'Minus') {
+      e.preventDefault();
       this.codeDetected(this.testData[this.testDataId], false);
       this.testDataId++;
       if (this.testDataId >= this.testData.length) {
         this.testDataId = 0;
       }
 
+    } else if (e.key === 'Home') {
+      for (let i = 0; i < 50; i++) {
+        this.codeDetected(this.testData[this.testDataId], false);
+        this.testDataId++;
+        if (this.testDataId >= this.testData.length) {
+          this.testDataId = 0;
+        }
+      }
       // this.scannerService.setSyncedTill(this.scannerService.syncedTill + 3);
-    }
-    if (e.key === 'Enter') {
+    } else if (e.key === 'Enter') {
       if (this.validateInput(this.currentManualRead, new Date().getFullYear() + 1)) {
         this.codeDetected(this.currentManualRead, true);
         this.currentManualRead = '';
@@ -122,8 +119,8 @@ export class InputviewComponent extends ScannerView implements OnInit {
       } else if (this.currentManualRead.length > 0) {
         this.scannerService.newErrorEvent.next(this.errorMessage);
       }
-    }
-    if (e.key === 'Escape') {
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
       this.onPrev();
     }
   }
@@ -187,6 +184,10 @@ export class InputviewComponent extends ScannerView implements OnInit {
       this.currentManualRead = '';
 
     } else {
+      if (!manualis) {
+        this.currentRead = '';
+        this.currentManualRead = '';
+      }
       this.scannerService.newErrorEvent.next(this.errorMessage);
     }
   }

@@ -4,6 +4,7 @@ import { Component, OnInit, HostListener, AfterViewInit, ChangeDetectorRef, Elem
 import { AdminoScreenElement } from '../admino-screen-element';
 import { codeAnimation } from './inputview/scanner.animation';
 import { ScreenElementChange } from '../../admino-screen.interfaces';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'admino-scanner',
@@ -16,7 +17,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
 
 
   retryTimer;
-  retryTime = 1000;
+  retryTime = 2000;
   maxRetryTime = 5000;
   trying = false;
   @HostListener('mousewheel')
@@ -26,6 +27,8 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     this.scannerService.logActivity();
   }
 
+  connectionLost = false;
+  connectionLostHelperTimeout;
 
   // @HostListener('window:offline', ['$event']) offline(e) {
   //   this.scannerService.online = false;
@@ -63,29 +66,51 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     });
     this.scannerService.dataLoaded = true;
   }
-  tryUpload() {
+  tryUpload(_currentSyncId = null) {
+    this.clearSubscriptions();
     if (this.retryTimer) {
       clearTimeout(this.retryTimer);
     }
+    const currentSyncId = _currentSyncId !== null ? _currentSyncId : this.scannerService.syncId;
     const uploadAction = this.getAction('uploadAction');
     if (uploadAction) {
       this.handleAction(uploadAction).then((response) => {
         this.retryTime = 1000;
         this.scannerService.online = true;
+        this.checkConnectionLost();
         this.directive.cd.markForCheck();
       }).catch((params) => {
-        this.retryTimer = setTimeout(() => {
-          this.tryUpload();
-        }, this.retryTime);
-        if (this.retryTime < this.maxRetryTime) {
-          this.retryTime += 1000;
+        if (currentSyncId === this.scannerService.syncId) {
+          this.retryTimer = setTimeout(() => {
+            if (currentSyncId === this.scannerService.syncId) {
+              this.tryUpload(currentSyncId);
+            }
+          }, this.retryTime);
+          if (this.retryTime < this.maxRetryTime) {
+            this.retryTime += 1000;
+          }
         }
         this.scannerService.online = false;
         this.directive.cd.markForCheck();
       });
     }
+    this.checkConnectionLost();
+
+
   }
 
+  checkConnectionLost() {
+    if (this.connectionLostHelperTimeout) {
+      clearTimeout(this.connectionLostHelperTimeout);
+    }
+    this.connectionLostHelperTimeout = setTimeout(() => {
+      this.connectionLost = this.scannerService.syncId - this.scannerService.syncedTill > 0;
+      this.cd.markForCheck();
+    }, 1000);
+  }
+  clearLocalStorage() {
+    localStorage.clear();
+  }
   handleClick(button) {
     this.scannerService.logActivity();
     if (button.func === 'next') {
