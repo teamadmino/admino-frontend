@@ -4,7 +4,6 @@ import { Component, OnInit, HostListener, AfterViewInit, ChangeDetectorRef, Elem
 import { AdminoScreenElement } from '../admino-screen-element';
 import { codeAnimation } from './inputview/scanner.animation';
 import { ScreenElementChange } from '../../admino-screen.interfaces';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'admino-scanner',
@@ -95,8 +94,6 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
       });
     }
     this.checkConnectionLost();
-
-
   }
 
   checkConnectionLost() {
