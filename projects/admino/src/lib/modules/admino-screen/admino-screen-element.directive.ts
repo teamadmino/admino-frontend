@@ -186,8 +186,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
           this.elementComponent.onChange(changes);
           this.elementComponent.change(changes);
         }
+        this.removeEventsFromConfig(this.element);
         this.removeEventsFromConfig(this.activeElementConfig);
-        // this.removeEventsFromConfig(this.element);
       }
     });
 

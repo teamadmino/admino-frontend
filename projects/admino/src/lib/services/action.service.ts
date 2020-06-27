@@ -19,6 +19,7 @@ import { AdminoThemeService } from './theme.service';
 import { HttpResponse, HttpClient } from '@angular/common/http';
 import { ClipboardService } from './clipboard.service';
 declare var html2canvas: any;
+import { v4 as uuidv4 } from 'uuid';
 
 
 @Injectable({
@@ -138,6 +139,8 @@ export class AdminoActionService {
       // console.log(screenValue)
 
       let schema = null;
+      schema = actionEvent.screenConfig;
+
       if (actionEvent.action.includeSchema) {
         schema = actionEvent.screenConfig;
       }
@@ -270,6 +273,7 @@ export class AdminoActionService {
 
   handleFrontendAction(action: AdminoAction, form = null) {
     if (action.frontendAction === 'logout') {
+      this.api.tabId = uuidv4();
       this.user.logout();
       this.redrawScreen.next({});
       const logoutScreen = action.logoutScreen !== undefined ? action.logoutScreen : this.cs.config.loginScreen;

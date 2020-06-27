@@ -128,8 +128,11 @@ export class SuperTableComponent extends AdminoScreenElement implements OnInit, 
       // this.table.pageChange();
       this.table.reinit();
     }
+    console.log("forcerefreshoutside", changes)
 
     if (changes.value || changes._forceRefresh || changes.forceRefresh) {
+      console.log("forcerefresh", changes)
+
       const shift = (propExists(changes.value) && propExists(changes.value.new) && changes.value.new.shift !== undefined) ? changes.value.new.shift : 0;
       // console.log("shift", shift)
       // console.log(this.dataSource.state)
