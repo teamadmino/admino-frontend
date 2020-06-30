@@ -1,10 +1,13 @@
 import { cloneDeep } from 'lodash';
-import { AdminoTableDataSource, VirtualDataSourceInfoColumn, DataSourceState } from './admino-table.datasource';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef, Input, OnDestroy, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { AdminoTable2DataSource, VirtualDataSourceInfoColumn, DataSourceState } from './admino-table2.datasource';
+import {
+  Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef,
+  Input, OnDestroy, EventEmitter, Output, ChangeDetectionStrategy
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormatService } from 'admino/src/lib/services/format.service';
-import { adminoTableAnimation } from './admino-table.animation';
+import { adminoTableAnimation } from './admino-table2.animation';
 import { DomSanitizer } from '@angular/platform-browser';
 import { isString } from 'util';
 import { AdminoTooltipService } from '../../admino-tooltip/admino-tooltip.service';
@@ -19,15 +22,14 @@ export interface VirtualRow {
 }
 
 @Component({
-  selector: 'admino-table',
-  templateUrl: './admino-table.component.html',
-  styleUrls: ['./admino-table.component.scss'],
+  selector: 'admino-table2',
+  templateUrl: './admino-table2.component.html',
+  styleUrls: ['./admino-table2.component.scss'],
   animations: [adminoTableAnimation],
   // changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
-
+export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
 
 
   private ngUnsubscribe: Subject<null> = new Subject();
@@ -37,7 +39,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() cellDoubleClick: EventEmitter<any> = new EventEmitter();
   @Output() headerCellClick: EventEmitter<any> = new EventEmitter();
 
-  @Input() dataSource: AdminoTableDataSource;
+  @Input() dataSource: AdminoTable2DataSource;
   _columns: any[];
   @Input() public set columns(v: any) {
     this._columns = v;
@@ -103,7 +105,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   notfittingRowHeight = 0;
   // smallPagination
   smallPage = 0;
-  visibleRowCount = 0;
+  visibleRowCount = 10;
 
   scrollPos = 0;
   maxScrollPos = 0;
@@ -127,7 +129,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   asd = 100;
   timeoutHelper;
-  leavespace = 2;
+  leavespace = 2
+
+  activeRow = 5;
+  activeRowPos = 5;
   @Input() keyOverrides: { trigger: string, key: string }[] = [];
   @Input() isFocused = false;
 
@@ -165,91 +170,12 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const leavespace = 2;
     switch (event.key) {
       case 'ArrowDown':
-        console.log('isViewOutsideTop', this.isViewOutsideTop()); // false
-        console.log('isViewOutsideBottom', this.isViewOutsideBottom()); // false
-        console.log('isAtStart', this.isAtStart()); // false
-        console.log('isAtEnd', this.isAtEnd()); // true
-        console.log('curosorpos<0', this.dataSource.state.cursorpos < 0); // false
-        console.log('curosorpos>count-1', this.dataSource.state.cursorpos > this.dataSource.state.count - 1); // true false
-        console.log('curosorpos', this.dataSource.state.cursorpos, 'count-1', this.dataSource.state.count - 1);
-        if (
-          (this.isViewOutsideTop() || this.isViewOutsideBottom()) && (!this.isAtStart() && !this.isAtEnd())
-          || this.dataSource.state.cursorpos < 0 || this.dataSource.state.cursorpos > this.dataSource.state.count - 1
-        ) {
-          // középre igazít
-          console.log('arrow down center');
-          if (this.isOutsideBottom()) {
-            console.log('bottom outside');
-            cursorpos = this.dataSource.state.count - this.leavespace;
-          } else {
-            console.log('bottom not outside');
-            cursorpos = this.leavespace;
-          }
+        this.relativeScroll(this.rowHeight);
 
-          this.dataSource.state.cursorpos = cursorpos;
-          this.dataSource.loadData().then(() => {
-            this.gotoPos(this.dataSource.viewpos);
-          });
-        } else if (!this.isOutsideBottomMinusOne() && this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1) {
-          // léptet egyet le csak frontenden
-          console.log('arrow down frontend only');
-          cursorpos += 1;
-          this.dataSource.cursorAbsPos++;
-          this.dataSource.state.cursorpos = cursorpos;
-          this.setKeys(this.getKeyAtCursor(cursorpos));
-        } else {
-          // leshiftel
-          if (this.isOutsideBottom()) {
-            cursorpos -= 1;
-            console.log('arrow down shiftel -1');
-
-          } else if (this.isOutsideTop()) {
-            cursorpos += 1;
-            console.log('arrow down shiftel +1');
-
-          }
-          this.dataSource.state.cursorpos = cursorpos;
-
-          this.dataSource.loadData(1).then(() => {
-            this.gotoPos(this.dataSource.viewpos);
-          });
-        }
         event.preventDefault();
         break;
       case 'ArrowUp':
-        if (
-          (this.isViewOutsideTop() || this.isViewOutsideBottom()) && (!this.isAtStart() && !this.isAtEnd())
-        ) {
-
-          // cursorpos = Math.floor(this.dataSource.state.count / 2);
-          if (this.isOutsideBottom()) {
-            cursorpos = this.dataSource.state.count - this.leavespace;
-          } else {
-            cursorpos = this.leavespace;
-          }
-
-          this.dataSource.state.cursorpos = cursorpos;
-          this.dataSource.loadData().then(() => {
-            this.gotoPos(this.dataSource.viewpos);
-          });
-        } else if (!this.isOutsideTopMinusOne() && this.dataSource.cursorAbsPos > 0) {
-          cursorpos -= 1;
-          this.dataSource.cursorAbsPos--;
-          this.dataSource.state.cursorpos = cursorpos;
-          this.setKeys(this.getKeyAtCursor(cursorpos));
-        } else {
-
-          if (this.isOutsideBottom()) {
-            cursorpos -= 1;
-          } else if (this.isOutsideTop()) {
-            cursorpos += 1;
-          }
-          this.dataSource.state.cursorpos = cursorpos;
-          this.dataSource.loadData(-1).then(() => {
-            this.gotoPos(this.dataSource.viewpos);
-          });
-        }
-        console.log("setCursorposto", this.dataSource.state.cursorpos)
+        this.relativeScroll(-this.rowHeight)
         event.preventDefault();
 
         break;
@@ -314,31 +240,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
     }
   }
-  isViewOutsideTop() {
-    return this.dataSource.cursorAbsPos < this.rowStart;
-  }
-  isViewOutsideBottom() {
-    return this.dataSource.cursorAbsPos > this.rowEnd;
+  relativeScroll(px) {
+    this.tableRef.nativeElement.scrollTop += px;
   }
 
-  isOutsideTop() {
-    return this.dataSource.state.cursorpos < this.leavespace;
-  }
-  isOutsideTopMinusOne() {
-    return this.dataSource.state.cursorpos <= this.leavespace;
-  }
-  isOutsideBottom() {
-    return this.dataSource.state.cursorpos > this.dataSource.state.count - this.leavespace;
-  }
-  isOutsideBottomMinusOne() {
-    return this.dataSource.state.cursorpos >= this.dataSource.state.count - this.leavespace;
-  }
-  isAtStart() {
-    return this.dataSource.cursorAbsPos < this.leavespace;
-  }
-  isAtEnd() {
-    return this.dataSource.cursorAbsPos > this.dataSource.state.totalsize - 1 - this.leavespace;
-  }
   getKeyAtCursor(cursorpos) {
     if (this.dataSource.data && this.dataSource.data.data[cursorpos]) {
       return this.dataSource.data.data[cursorpos];
@@ -811,7 +716,9 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
         Object.assign(style, this.inactiveSelectedRowStyle);
       }
     }
-
+    if (this.activeRow === vrow.absoluteId) {
+      Object.assign(style, { 'outline': '2px solid red', 'outline-offset': '-2px' });
+    }
 
     return style;
   }

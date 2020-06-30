@@ -20,7 +20,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @Input() containerStyle = {};
 
 
-  inline = false;
+  @HostBinding('class.inline') inline = false;
 
   @Input() gridComponent: AdminoGridComponent;
   @HostBinding('class.edit-mode') @Input() editMode = false;

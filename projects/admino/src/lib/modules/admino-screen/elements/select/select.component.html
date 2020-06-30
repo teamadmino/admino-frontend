@@ -1,4 +1,5 @@
-<mat-form-field [formGroup]="group" [appearance]="element.appearance" *ngIf="!element.autoselect">
+<mat-form-field [formGroup]="group" [appearance]="element.appearance" *ngIf="!element.autoselect"
+    [ngStyle]="element.innerStyle">
     <mat-label>{{element.label}}</mat-label>
     <mat-select #focusRef [multiple]="element.multiple" [disableOptionCentering]="element.disableOptionCentering"
         [formControlName]="element.id" [disabled]="element.disabled">

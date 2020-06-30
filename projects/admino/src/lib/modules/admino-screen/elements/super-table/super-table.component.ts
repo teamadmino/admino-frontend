@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
-import { AdminoTableDataSource } from '../../../admino-table/admino-table/admino-table.datasource';
 import { ScreenElementTable, ScreenElementChange } from '../../admino-screen.interfaces';
 import { AdminoTableComponent } from '../../../admino-table/admino-table/admino-table.component';
 import { takeUntil, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { isEqual, debounce, cloneDeep } from 'lodash';
 import { propExists } from '../../../../utils/propExists';
 import { timer, Subscription } from 'rxjs';
+import { AdminoTableDataSource } from '../../../admino-table/admino-table/admino-table.datasource';
 
 @Component({
   selector: 'admino-super-table',

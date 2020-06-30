@@ -35,7 +35,7 @@ import { ScreenElementValidator, ScreenElement } from './admino-screen.interface
 import { InputComponent } from './elements/input/input.component';
 import { ButtonComponent } from './elements/button/button.component';
 import { GroupComponent } from './elements/group/group.component';
-import { TableComponent } from './elements/table/table.component';
+// import { TableComponent, TableComponent } from './elements/table/table.component';
 import { TimerComponent } from './elements/timer/timer.component';
 import { takeUntil, filter, skip } from 'rxjs/operators';
 import { deepCompare } from '../../utils/deepcompare';
@@ -47,6 +47,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { IconButtonComponent } from './elements/icon-button/icon-button.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { DividerComponent } from './elements/divider/divider.component';
+import { TableComponent } from './elements/table/table.component';
+import { MenuComponent } from './elements/menu/menu.component';
 
 
 const componentMapper = {
@@ -79,6 +81,7 @@ const componentMapper = {
   newmap: NewmapComponent,
   mapeditor: MapeditorComponent,
   divider: DividerComponent,
+  menu: MenuComponent,
   // supertable: SuperTableComponent,
 
 };

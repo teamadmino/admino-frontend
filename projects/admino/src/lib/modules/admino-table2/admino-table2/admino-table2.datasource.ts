@@ -1,7 +1,7 @@
 import { cloneDeep, isEqual } from 'lodash';
 import { Observable, Subject, BehaviorSubject, of, Subscription } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
-import { AdminoTableBuffer } from './admino-table.buffer';
+import { AdminoTableBuffer } from './admino-table2.buffer';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { isString } from 'util';
 export interface AdminoTableDataSourceConfig {
@@ -56,7 +56,7 @@ export interface DataSourceState {
     selectedHeaderColumnIndex: number;
 }
 
-export class AdminoTableDataSource {
+export class AdminoTable2DataSource {
     private ngUnsubscribe: Subject<null> = new Subject();
 
     public resultSubject = new BehaviorSubject<any[]>(null);
@@ -163,9 +163,7 @@ export class AdminoTableDataSource {
 
             requestObj.subscription = this.config.listFunction(this.state.keys, cursorpos
                 , calculatedShift,
-                Math.max(this.state.count, 1),
-                this.state.index,
-                this.state.before, this.state.after).pipe(
+                Math.max(this.state.count, 1), this.state.index, this.state.before, this.state.after).pipe(
                     takeUntil(this.ngUnsubscribe),
                     catchError(() => of([])),
                     // finalize(() => {

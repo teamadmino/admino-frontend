@@ -38,6 +38,10 @@
   //   grid-column: 1 / span 12 !important;
   // }
 
+  &.inline {
+    flex: initial;
+    width: unset;
+  }
 
   .content {
     // border: 1px dotted greenyellow;

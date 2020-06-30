@@ -1,9 +1,13 @@
-<admino-virtual-table [dataSource]="this.dataSource" [tableButtons]="this.element.tableButtons"
-    [rowButtons]="this.element.rowButtons" [indexes]="this.element.indexes" [columns]="this.element.columns"
-    (actionEvent)="handleAction($event)" (valueChange)="setValue($event)"
-    [ngStyle]="{height: element.tableHeight?element.tableHeight+'px':'400px'}"
-    [itemSize]="element.tableRowHeight?element.tableRowHeight:51" [hideSideBorder]="element.hideSideBorder"
-    [hideBottomBorder]="element.hideBottomBorder" #focusRef [ngClass]="{'borderglow-primary': this.isFocused}"
-    (click)="this.focus()">
+<admino-table2 #focusRef (valueChange)="setValue($event)" [dataSource]="this.dataSource"
+    [indexes]="this.element.indexes" [columns]="this.element.columns" [autoRefresh]="this.element.autoRefresh"
+    [rowHeight]="element.rowHeight" [headerHeight]="element.headerHeight" [oddRowStyle]="element.oddRowStyle"
+    (cellClick)="handleCellClick($event)" (cellChange)="handleCellChange($event)"
+    (cellDoubleClick)="handleCellDoubleClick($event)" (headerCellClick)="handleHeaderCellClick($event)"
+    [ngClass]="{'table-focused': this.isFocused}" [hideHeader]="element.hideHeader" [debug]="element.debug" tabindex="0"
+    [selectedRowStyle]="element.selectedRowStyle" [selectedCellStyle]="element.selectedCellStyle"
+    [inactiveSelectedRowStyle]="element.inactiveSelectedRowStyle"
+    [inactiveSelectedCellStyle]="element.inactiveSelectedCellStyle" [keyOverrides]="this.getOverrideList()"
+    [isFocused]="this.isFocused">
 
-</admino-virtual-table>
+    <!-- (click)="this.focus()" -->
+</admino-table2>

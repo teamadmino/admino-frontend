@@ -1,0 +1,188 @@
+<!-- <table>
+    <tbody>
+        <tr *ngFor="let vrow of vrows">
+            <td>{{vrow}}</td>
+            <td>asd</td>
+            <td>asd</td>
+            <td>asd</td>
+        </tr>
+    </tbody>
+</table> -->
+<div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize(null)"
+    #mainRef>
+    <div class="aheader" [ngStyle]="{height: headerHeight+'px'}" #headerRef *ngIf="!hideHeader">
+        <div class="ahcell" (click)="setSelectedHeader(i)" *ngFor="let column of dataSource.columns, let i=index"
+            [ngStyle]="getHeaderContainerStyle(column,i)">
+            <div class="cell-content" [innerHTML]="column.description" [ngStyle]="getHeaderStyle(column,i)">
+
+                <!-- <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
+                    (click)="column.sortable?sortClicked(column, sorter):null;" #sorter> -->
+                <!-- {{column.label}} -->
+                <!-- </admino-admino-table-sorter> -->
+
+            </div>
+        </div>
+
+    </div>
+    <div class="awrapper">
+        <div class="scroller" [ngClass]="{'d-none': this.dataSource.totalsize<this.calculatedLargePageSize}"
+            (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
+            <div class="scrollercontent" #scrollerContentRef></div>
+        </div>
+        <div class="atable" (scroll)="scrollEvent()" #tableRef>
+            <div class="abody" #bodyRef>
+                <div class="fakecontent" #fakeContentRef></div>
+                <div class="arow"
+                    [ngClass]="{rowselected: vrow.absoluteId===this.dataSource.cursorAbsPos, 'evenrow':vrow.absoluteId%2===0, 'lastrow':vrow.absoluteId===this.dataSource.totalsize-1  }"
+                    [ngStyle]="getRowStyle(vrow)" *ngFor="let vrow of vrows; let rowIndex=index; trackBy: trackByFn"
+                    [@adminoTableRowAnimation]="vrow.data && vrow.data.data !==undefined">
+
+                    <div (click)="setSelected(vrow,i,rowIndex)" (dblclick)="cellDoubleClick.next()" class="acell"
+                        *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell" [ngClass]=" {columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos &&
+                        i===this.dataSource.state.selectedColumnIndex, first:i===0,
+                        last:i===dataSource.columns.length-1}"
+                        [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data , i, vrow)">
+
+                        <div class="rowbg" *ngIf="vrow.absoluteId%2===0" [ngStyle]="oddRowStyle"></div>
+
+                        <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)" #cellRef>
+                            <!-- [innerHtml]="format(getCellContent(vrow, column),column.format)" -->
+                            {{vrow.absoluteId}}
+                        </div>
+                        <!-- (mouseenter)="mouseEnter(column, vrow,i, cellRef)" (mouseleave)="mouseLeave(column, vrow,i)" -->
+
+                        <!-- [adminoTooltip]="format(getCellContent(vrow, column),column.format)"
+                        [adminoTooltipEnabled]="this.isEllipsisActive(cellRef)"
+                        [adminoTooltipStyle]="getStyle(column, vrow.data && vrow.data.data,i)" -->
+
+                        <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)">
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <ng-container *ngIf="debug">
+        <div class="row">
+            <div class="col-6">
+                <table>
+                    <tr>
+                        <td>datasource abs position</td>
+                        <td>{{this.dataSource.cursorAbsPos}}</td>
+                    </tr>
+                    <tr>
+                        <td>not fitting rowheight</td>
+                        <td>{{this.notfittingRowHeight}}</td>
+                    </tr>
+                    <tr>
+                        <td>rowStart - rowEnd</td>
+                        <td>{{this.rowStart}} - {{this.rowEnd}}</td>
+                    </tr>
+                    <tr>
+                        <td> totalsize</td>
+                        <td> {{this.totalsize | number}}</td>
+                    </tr>
+                    <tr>
+                        <td>visibleRowCount </td>
+                        <td>{{this.visibleRowCount}} </td>
+                    </tr>
+                    <tr>
+                        <td class="color-accent">scrollPosCoeff </td>
+                        <td>{{this.scrollPosCoeff}} </td>
+                    </tr>
+                    <tr>
+                        <td class="color-accent">smallPage </td>
+                        <td>{{this.smallPage}} </td>
+                    </tr>
+                    <tr>
+                        <td class="color-accent">scrollPosCoeffNormal </td>
+                        <td>{{this.scrollPosCoeffNormal}} </td>
+                    </tr>
+                    <tr>
+                        <td>scrollTop </td>
+                        <td>{{this.scrollPos}} </td>
+                    </tr>
+                    <tr>
+                        <td>maxScrollPos </td>
+                        <td>{{this.maxScrollPos | number}} </td>
+                    </tr>
+                    <tr>
+                        <td> fakeScrollerHeight</td>
+                        <td>{{this.fakeScrollerHeight | number}}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="col-6">
+                <table>
+                    <tr>
+                        <td>largePage </td>
+                        <td>{{this.largePage | number}} </td>
+                    </tr>
+                    <tr>
+                        <td>largePageSize</td>
+                        <td>{{this.largePageSize}} </td>
+                    </tr>
+                    <tr>
+                        <td>largePageCoeff</td>
+                        <td>{{this.largePageCoeff}} </td>
+                    </tr>
+                    <tr>
+                        <td>lastLargePage</td>
+                        <td>{{this.lastLargePage}} </td>
+                    </tr>
+                    <tr>
+                        <td>adjustedTotalsize</td>
+                        <td>{{this.adjustedTotalsize }} </td>
+                    </tr>
+                    <tr>
+                        <td>rowCountOnLastLargePage</td>
+                        <td>{{this.rowCountOnLastLargePage | number}} </td>
+                    </tr>
+                    <tr>
+                        <td>rowHeight</td>
+                        <td>{{this.rowHeight | number}} </td>
+                    </tr>
+
+                    <tr>
+                        <td>numOfRowSlots</td>
+                        <td>{{this.viewportSize/this.rowHeight | number}} </td>
+                    </tr>
+                    <tr>
+                        <td>viewportHeight</td>
+                        <td>{{this.viewportSize | number}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </ng-container>
+
+
+
+
+
+
+</div>
+
+
+
+<!-- <p>scrollTop:{{this.scrollPos }}</p>
+<p>maxScrollPos:{{this.maxScrollPos | number}}</p>
+<p>fakeScrollerHeight:{{this.fakeScrollerHeight | number}}</p> -->
+<!-- 
+<p class="color-primary">largePage:{{this.largePage | number}}</p>
+<p class="color-primary">largePageSize:{{this.largePageSize | number}}</p>
+<p class="color-primary">lastPage:{{this.lastLargePage | number}}</p> -->
+<!-- <p>adjustedTotalsize:{{this.adjustedTotalsize | number}}</p>
+<p>rowCountOnLastLargePage:{{this.rowCountOnLastLargePage | number}}</p>
+<p>rowHeight:{{this.rowHeight | number}}</p> -->
+<!-- 
+<p>roundedRowHeight:{{this.roundedRowHeight | number}}</p>
+<p>numOfRowSlots:{{this.viewportSize/this.roundedRowHeight | number}}</p>
+<p>viewportHeight:{{this.viewportSize | number}}</p> -->

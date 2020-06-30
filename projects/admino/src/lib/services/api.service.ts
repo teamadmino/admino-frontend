@@ -117,11 +117,11 @@ export class AdminoApiService {
 
 
 
-      // setTimeout((params) => {
-      dummySubject.next(response);
-      dummySubject.complete();
-      return response;
-      // }, 300 + Math.random() * 1000);
+      setTimeout((params) => {
+        dummySubject.next(response);
+        dummySubject.complete();
+        return response;
+      }, 300 + Math.random() * 1000);
     })).subscribe((params) => {
 
     }, (err) => {

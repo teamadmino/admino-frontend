@@ -3,7 +3,7 @@ import { SuccessAnimationComponent } from './elements/scanner/inputview/success-
 import { AdminoOldTableModule } from './../admino-old-table/admino-table.module';
 import { SuperTableComponent } from './elements/super-table/super-table.component';
 import { AdminoPreloaderModule } from './../admino-preloader/admino-preloader.module';
-import { AdminoTableModule } from './../admino-table/admino-table.module';
+import { AdminoTable2Module } from './../admino-table2/admino-table2.module';
 import { AdminoModalModule } from './../admino-modal/admino-modal.module';
 import { AdminoDragModule } from './../../directives/admino-drag/admino-drag.module';
 import { AdminoGridModule } from './../admino-grid/admino-grid.module';
@@ -57,6 +57,8 @@ import { MapeditorComponent } from './elements/mapeditor/mapeditor.component';
 import { AdminoScreenElement } from './elements/admino-screen-element';
 import { PopupComponent } from './elements/scanner/popup/popup.component';
 import { DividerComponent } from './elements/divider/divider.component';
+import { AdminoTableModule } from '../admino-table/admino-table.module';
+import { MenuComponent } from './elements/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import { DividerComponent } from './elements/divider/divider.component';
     MapeditorComponent,
     PopupComponent,
     DividerComponent,
+    MenuComponent,
   ],
   imports: [
     CommonModule,
@@ -114,6 +117,7 @@ import { DividerComponent } from './elements/divider/divider.component';
     AdminoGridModule,
     AdminoDragModule,
     AdminoModalModule,
+    AdminoTable2Module,
     AdminoTableModule,
     ChartsModule,
     MonacoEditorModule,
@@ -156,6 +160,7 @@ import { DividerComponent } from './elements/divider/divider.component';
     NewmapComponent,
     MapeditorComponent,
     DividerComponent,
+    MenuComponent,
 
 
 
