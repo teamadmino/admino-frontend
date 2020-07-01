@@ -32,7 +32,6 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
   startTimeout() {
     this.clearTimeout();
     if (this.element.frequency > 0) {
-
       if (this.control.value === undefined || this.control.value === null || this.control.value < 0 || this.control.value > 0) {
         this.timeoutHelper = setTimeout(() => {
           this.handleAction(this.element.action).then(() => {
@@ -50,8 +49,6 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
           // this.handleAction(this.element.config.action).pipe(takeUntil(this.ngUnsubscribe));
         }, this.element.frequency);
       }
-
-
     }
   }
 
