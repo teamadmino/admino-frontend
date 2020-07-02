@@ -36,16 +36,24 @@
                     [ngClass]="{rowselected: vrow.absoluteId===this.dataSource.cursorAbsPos, 'evenrow':vrow.absoluteId%2===0, 'lastrow':vrow.absoluteId===this.dataSource.totalsize-1  }"
                     [ngStyle]="getRowStyle(vrow)" *ngFor="let vrow of vrows; let rowIndex=index; trackBy: trackByFn"
                     [@adminoTableRowAnimation]="vrow.data && vrow.data.data !==undefined">
-
-                    <div (click)="setSelected(vrow,i,rowIndex)" (dblclick)="cellDoubleClick.next()" class="acell"
-                        *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell" [ngClass]=" {columnselected: vrow.absoluteId===this.dataSource.cursorAbsPos &&
+                    <div class="rowindicator highlight-primary color-background"
+                        *ngIf="this.activeRow === vrow.absoluteId  && (!vrow.data || (vrow.data && vrow.data.data ===undefined))">
+                        {{this.activeRow}}
+                        <!-- -(this.largePage*(this.largePageSize)*this.rowHeight) -->
+                    </div>
+                    <div (click)="setSelected(vrow.data,i,'cellClick')"
+                        (dblclick)="setSelected(vrow.data, i, 'cellDoubleClick')" class="acell"
+                        *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell" [ngClass]=" {columnselected:this.activeRow === vrow.absoluteId  &&
                         i===this.dataSource.state.selectedColumnIndex, first:i===0,
                         last:i===dataSource.columns.length-1}"
                         [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data , i, vrow)">
 
+
+
                         <div class="rowbg" *ngIf="vrow.absoluteId%2===0" [ngStyle]="oddRowStyle"></div>
 
-                        <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)" #cellRef>
+                        <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)" #cellRef
+                            [innerHtml]="format(getCellContent(vrow, column),column.format)">
                             <!-- [innerHtml]="format(getCellContent(vrow, column),column.format)" -->
                             {{vrow.absoluteId}}
                         </div>
@@ -71,6 +79,10 @@
         <div class="row">
             <div class="col-6">
                 <table>
+                    <tr>
+                        <td>notfittingRowHeight</td>
+                        <td>{{this.notfittingRowHeight}}</td>
+                    </tr>
                     <tr>
                         <td>datasource abs position</td>
                         <td>{{this.dataSource.cursorAbsPos}}</td>
@@ -121,6 +133,14 @@
 
             <div class="col-6">
                 <table>
+                    <tr>
+                        <td>cursorpos</td>
+                        <td>{{this.dataSource.state.cursorpos}}</td>
+                    </tr>
+                    <tr>
+                        <td>activeRow</td>
+                        <td>{{this.activeRow}}</td>
+                    </tr>
                     <tr>
                         <td>largePage </td>
                         <td>{{this.largePage | number}} </td>

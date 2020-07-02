@@ -1,6 +1,6 @@
 import { cloneDeep, isEqual } from 'lodash';
 import { Observable, Subject, BehaviorSubject, of, Subscription } from 'rxjs';
-import { takeUntil, catchError } from 'rxjs/operators';
+import { takeUntil, catchError, debounceTime } from 'rxjs/operators';
 import { AdminoTableBuffer } from './admino-table2.buffer';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { isString } from 'util';
@@ -63,6 +63,7 @@ export class AdminoTable2DataSource {
     public result$ = this.resultSubject.asObservable();
 
     public loadDataStart = new Subject<any>();
+    public triggerLoadData = new Subject<any>();
 
     currentRequests: { subscription: Subscription, shift: number, resolvePromise: () => void, rejectPromise: () => void }[] = [];
 
@@ -109,6 +110,9 @@ export class AdminoTable2DataSource {
     counter = 0;
     keyChangedByFrontend = false;
     constructor(public config: AdminoTableDataSourceConfig, public sanitizer: DomSanitizer) {
+        this.triggerLoadData.pipe(takeUntil(this.ngUnsubscribe), debounceTime(100)).subscribe((params) => {
+            this.loadData();
+        });
     }
     connect(): Observable<any[]> {
         return this.resultSubject.asObservable();
@@ -165,7 +169,7 @@ export class AdminoTable2DataSource {
                 , calculatedShift,
                 Math.max(this.state.count, 1), this.state.index, this.state.before, this.state.after).pipe(
                     takeUntil(this.ngUnsubscribe),
-                    catchError(() => of([])),
+                    catchError(() => of([]))
                     // finalize(() => {
                     // })
                 ).subscribe((data: any) => {

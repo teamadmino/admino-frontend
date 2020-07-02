@@ -160,35 +160,79 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     const leavespace = 2;
     switch (event.key) {
       case 'ArrowDown':
-        this.goDownBy(1);
+        this.goDownBy(1)
         event.preventDefault();
         break;
       case 'ArrowUp':
-        this.goUpBy(1);
+        if (this.activeRow < this.rowStart) {
+          // this.activeRow = this.rowStart;
+          // this.setToExactRow(-1);
+          this.gotoPos(this.activeRow);
+        } else if (this.activeRow > this.rowEnd && this.rowEnd !== this.totalsize - 1) {
+          // this.activeRow = this.rowEnd - 1;
+          // this.setToExactRow(-1);
+          this.gotoPos(this.activeRow - this.visibleRowCount + 2, true);
+        } else {
+          if (this.activeRow > 0) {
+            this.activeRow--;
+          }
+          if (this.activeRow <= this.rowStart) {
+            if (this.activeRow === this.rowStart && this.rowEnd === this.totalsize - 1) {
+              this.setToExactRow(1);
+            } else if (this.rowEnd === this.totalsize - 1) {
+              this.setToExactRow(-1);
+            } else {
+              this.setToExactRow(1);
+            }
+          }
+          if (this.activeRow < this.rowStart) {
+            this.gotoPos(this.activeRow);
+            // this.relativeScroll(-this.rowHeight);
+          }
+        }
+
         event.preventDefault();
 
         break;
       case 'Home':
-        // this.dataSource.state.keys = { '#position': 'first' };
-        // this.dataSource.state.cursorpos = 0;
-        // this.dataSource.loadData().then(() => {
-        //   this.gotoPos(this.dataSource.viewpos);
-        // });
+        this.dataSource.state.keys = { '#position': 'first' };
+        this.dataSource.state.cursorpos = 0;
+        this.dataSource.loadData().then(() => {
+          this.gotoPos(this.dataSource.viewpos);
+
+          console.log(this.dataSource.data);
+          console.log(this.vrows);
+        });
         event.preventDefault();
+
         break;
       case 'End':
-        // this.dataSource.state.keys = { '#position': 'last' };
-        // this.dataSource.loadData().then(() => {
-        //   this.gotoPos(this.dataSource.viewpos);
-        // });
+        this.dataSource.state.keys = { '#position': 'last' };
+        // this.dataSource.state.cursorpos = this.dataSource.state.count - 2;
+        this.dataSource.loadData().then(() => {
+          this.gotoPos(this.dataSource.viewpos);
+          console.log("setcursorpos", this.dataSource.state.cursorpos)
+        });
+
         event.preventDefault();
+
         break;
       case 'PageUp':
-        this.goUpBy(this.visibleRowCount - 2);
+        let goalUp = this.activeRow - this.visibleRowCount + (this.activeRow - this.rowStart);
+        if (goalUp < 0) {
+          goalUp = 0;
+        }
+        this.gotoPos(goalUp);
+        this.activeRow = goalUp;
         event.preventDefault();
         break;
       case 'PageDown':
-        this.goDownBy(this.visibleRowCount - 2);
+        let goalDown = this.activeRow + this.visibleRowCount + (this.activeRow - this.rowStart);
+        if (goalDown > this.totalsize - 1) {
+          goalDown = this.totalsize - 1;
+        }
+        this.gotoPos(goalDown);
+        this.activeRow = goalDown;
         event.preventDefault();
         break;
       case 'Enter':
@@ -222,44 +266,27 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   }
   goDownBy(num: number) {
     if (this.activeRow < this.rowStart) {
+      // this.activeRow = this.rowStart;
+      // this.setToExactRow(1);
       this.gotoPos(this.activeRow);
+
     } else if (this.activeRow > this.rowEnd && this.rowEnd !== this.totalsize - 1) {
+      // this.activeRow = this.rowEnd - 1;
+      // this.setToExactRow(1);
       this.gotoPos(this.activeRow - this.visibleRowCount + 2, true);
     } else {
       if (this.activeRow + num < this.totalsize) {
         this.activeRow += num;
-      } else {
-        this.activeRow = this.totalsize - 1;
       }
+      // if (this.activeRow >= this.rowEnd - 1) {
+      //   this.setToExactRow(1);
+      // }
       if (this.activeRow > this.rowEnd - 1) {
         this.gotoPos(this.activeRow - this.visibleRowCount + 2, true);
+        // this.relativeScroll(this.rowHeight);
       }
     }
-  }
-  goUpBy(num: number) {
-    if (this.activeRow < this.rowStart) {
-      this.gotoPos(this.activeRow);
-    } else if (this.activeRow > this.rowEnd && this.rowEnd !== this.totalsize - 1) {
-      this.gotoPos(this.activeRow - this.visibleRowCount + 2, true);
-    } else {
-      if (this.activeRow - num >= 0) {
-        this.activeRow -= num;
-      } else {
-        this.activeRow = 0;
-      }
-      if (this.activeRow <= this.rowStart) {
-        if (this.activeRow === this.rowStart && this.rowEnd === this.totalsize - 1) {
-          this.setToExactRow(1);
-        } else if (this.rowEnd === this.totalsize - 1) {
-          this.setToExactRow(-1);
-        } else {
-          this.setToExactRow(1);
-        }
-      }
-      if (this.activeRow < this.rowStart) {
-        this.gotoPos(this.activeRow);
-      }
-    }
+
   }
 
 
@@ -328,6 +355,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
         this.updateRows();
         this.refreshVrows();
         this.cd.detectChanges();
+
       }
       this.valueChange.next(this.dataSource.state);
     });
@@ -395,8 +423,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     this.cellChange.next();
   }
   gotoPos(absoluteId = 0, bottomFixed = false) {
-
-    console.log("goto", absoluteId, bottomFixed);
+    // console.log("goto", absoluteId);
     let lastRowFix = 0;
     if (absoluteId >= this.adjustedTotalsize) {
       absoluteId = this.adjustedTotalsize - 0.0001;
@@ -431,28 +458,26 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
 
 
     this.scrollPos = this.tableRef.nativeElement.scrollTop;
-    console.log("this.tableRef.nativeElement.scrollTop", this.tableRef.nativeElement.scrollTop)
     // console.log(this.largePage, this.lastLargePage)
     // console.log((this.rowCountOnLastLargePage + 1) * this.rowHeight - 1)
     const scrollmax = (this.rowCountOnLastLargePage + 1) * this.rowHeight + this.notfittingRowHeight - 1;
     if (this.largePage === this.lastLargePage && this.scrollPos >= scrollmax) {
-      console.log("scrollmaxoverride")
       this.scrollPos = this.tableRef.nativeElement.scrollTop = scrollmax;
     }
 
     // && this.adjustedTotalsize > (this.lpage + 1) * this.lpageSize
-    console.log("scrollpos", this.scrollPos, "maxscrollpos", this.maxScrollPos)
+    // console.log(this.scrollPos, this.maxScrollPos)
     if (this.scrollPos >= this.maxScrollPos && this.largePage < this.lastLargePage) {
-      const overshoot = Math.abs(this.maxScrollPos - this.scrollPos) + 1;
+      const overshoot = Math.abs(this.maxScrollPos - this.scrollPos);
       this.largePage++;
       this.pageChange();
-      console.log('pageChange up', overshoot);
-      this.scrollPos = this.tableRef.nativeElement.scrollTop = this.largePage <= 1 ? this.rowHeight : overshoot + 1;
+      console.log('pageChange up');
+      this.scrollPos = this.tableRef.nativeElement.scrollTop = this.largePage <= 1 ? this.rowHeight : overshoot;
     } else if (this.scrollPos <= 0 && this.largePage > 0) {
       const undershoot = Math.abs(this.scrollPos);
       this.largePage--;
       this.pageChange();
-      console.log('pageChange down', undershoot);
+      console.log('pageChange down');
       this.scrollPos = this.tableRef.nativeElement.scrollTop = this.largePage >= 1 ? this.maxScrollPos - 1 : this.maxScrollPos - this.rowHeight - undershoot;
     }
 
@@ -480,9 +505,6 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     if (this.headerRef) {
       this.headerRef.nativeElement.style.marginLeft = - this.tableRef.nativeElement.scrollLeft + 'px';
     }
-
-    console.log("scrollpos after", this.scrollPos, "maxscrollpos", this.maxScrollPos)
-
   }
 
   updateDataSource(force = false) {
@@ -499,8 +521,9 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
 
       // this.dataSource.state.cursorpos = -(this.rowStart - this.dataSource.cursorAbsPos);
       this.dataSource.state.cursorpos = this.dataSource.cursorAbsPos - this.rowStart;
-      // this.dataSource.loadData();
-      this.dataSource.triggerLoadData.next();
+      console.log("updateDatasource", this.dataSource.state.cursorpos)
+      console.log("rowStart", this.rowStart, "absPos", this.dataSource.cursorAbsPos)
+      this.dataSource.loadData();
       this.cd.detectChanges();
     }
 
@@ -545,7 +568,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     this.notfittingRowHeight = this.rowHeight - (this.viewportSize % this.rowHeight);
 
     this.calculatedLargePageSize = Math.floor((this.browserMaxSize * 0.5) / this.rowHeight);
-    this.calculatedLargePageSize = 15000;
+    this.calculatedLargePageSize = 15;
     this.adjustedTotalsize = this.totalsize - (this.visibleRowCount - 1);
     this.lastLargePage = Math.floor(this.adjustedTotalsize / this.calculatedLargePageSize);
     this.rowCountOnLastLargePage = this.adjustedTotalsize % this.calculatedLargePageSize;

@@ -914,7 +914,7 @@
         .arow {
           &.rowselected {
             // background-color: lighten(mat-color($background, card), 8%) !important;
-            box-shadow: inset 0px 0px 1px 1px rgba(mat-color($foreground, disabled), 0.3);
+            // box-shadow: inset 0px 0px 1px 1px rgba(mat-color($foreground, disabled), 0.3);
 
           }
 

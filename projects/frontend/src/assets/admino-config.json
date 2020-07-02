@@ -1,12 +1,13 @@
 {
     "server141": "http://localhost:4080",
-    "server": "http://192.168.0.105:4080",
+    "server": "http://localhost:4080",
     "company": "CompanyName",
     "theme": {
         "themeColor": "gold",
         "isDark": true
     },
     "loginScreen": "_test:t4/test4",
+    "loginScreen3": "_test:t9/test7",
     "loginScreen77": "_test:t1/tabledesign",
     "loginScreen555": "_admino:system/fbzlogin",
     "loginScreen44": "_test:t1/a_techno",
