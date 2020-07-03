@@ -38,7 +38,7 @@
                     [@adminoTableRowAnimation]="vrow.data && vrow.data.data !==undefined">
                     <div class="rowindicator highlight-primary color-background"
                         *ngIf="this.activeRow === vrow.absoluteId  && (!vrow.data || (vrow.data && vrow.data.data ===undefined))">
-                        {{this.activeRow}}
+                        {{this.activeRow+1}}
                         <!-- -(this.largePage*(this.largePageSize)*this.rowHeight) -->
                     </div>
                     <div (click)="setSelected(vrow.data,i,'cellClick')"
@@ -55,7 +55,8 @@
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)" #cellRef
                             [innerHtml]="format(getCellContent(vrow, column),column.format)">
                             <!-- [innerHtml]="format(getCellContent(vrow, column),column.format)" -->
-                            {{vrow.absoluteId}}
+                            <!-- {{vrow.absoluteId}} -
+                            {{vrow.virtualId}} - {{format(getCellContent(vrow, column),column.format)}} -->
                         </div>
                         <!-- (mouseenter)="mouseEnter(column, vrow,i, cellRef)" (mouseleave)="mouseLeave(column, vrow,i)" -->
 
@@ -76,7 +77,7 @@
 
 
     <ng-container *ngIf="debug">
-        <div class="row">
+        <div class="row debug">
             <div class="col-6">
                 <table>
                     <tr>

@@ -5,6 +5,10 @@
   display: inline-block;
 }
 
+.debug {
+  height: 400px;
+}
+
 // table {
 //   height: 500px;
 //   max-height: 500px;
@@ -114,7 +118,7 @@
       // display: inline-block;
       height: 100%;
       width: 100%;
-      width: calc(100% - 10px);
+      // width: calc(100% - 10px);
       // overflow: hidden;
       overflow-x: auto;
       overflow-y: auto;

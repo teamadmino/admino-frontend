@@ -132,8 +132,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   timeoutHelper;
   leavespace = 2
 
-  activeRow = 5;
-  activeRowPos = 5;
+  activeRow = 0;
+  activeRowPos = 0;
   @Input() keyOverrides: { trigger: string, key: string }[] = [];
   @Input() isFocused = false;
 
@@ -232,6 +232,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
         this.activeRow = this.totalsize - 1;
       }
       if (this.activeRow > this.rowEnd - 1) {
+
         this.gotoPos(this.activeRow - this.visibleRowCount + 2, true);
       }
     }
@@ -309,7 +310,10 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
 
   }
   ngAfterViewInit() {
-
+    // setTimeout((params) => {
+    //   this.gotoPos(29);
+    //   this.setActiveRow(37)
+    // }, 1000)
     this.dataSource.loadDataStart.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       this.valueChange.next(value);
     });
@@ -407,11 +411,11 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     this.largePage = targetPage;
     this.pageChange();
     // + this.notfittingRowHeight
-
+    console.log(this.notfittingRowHeight)
     const remainder = this.largePageSize > 0 ? absoluteId % (this.largePageSize) : 0;
     this.scrollPos = this.tableRef.nativeElement.scrollTop = (remainder + this.largePageCoeff) * this.rowHeight + lastRowFix
-      + (bottomFixed ? this.notfittingRowHeight : 0);
-
+      + (bottomFixed && this.notfittingRowHeight !== this.rowHeight ? this.notfittingRowHeight : 0);
+    // && absoluteId > this.adjustedTotalsize - 1 
     this.updateRows();
     this.refreshVrows();
   }
@@ -434,7 +438,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     console.log("this.tableRef.nativeElement.scrollTop", this.tableRef.nativeElement.scrollTop)
     // console.log(this.largePage, this.lastLargePage)
     // console.log((this.rowCountOnLastLargePage + 1) * this.rowHeight - 1)
-    const scrollmax = (this.rowCountOnLastLargePage + 1) * this.rowHeight + this.notfittingRowHeight - 1;
+    const scrollmax = (this.rowCountOnLastLargePage + 1) * this.rowHeight + (this.notfittingRowHeight !== this.rowHeight ? this.notfittingRowHeight - 1 : 0);
     if (this.largePage === this.lastLargePage && this.scrollPos >= scrollmax) {
       console.log("scrollmaxoverride")
       this.scrollPos = this.tableRef.nativeElement.scrollTop = scrollmax;
@@ -443,7 +447,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     // && this.adjustedTotalsize > (this.lpage + 1) * this.lpageSize
     console.log("scrollpos", this.scrollPos, "maxscrollpos", this.maxScrollPos)
     if (this.scrollPos >= this.maxScrollPos && this.largePage < this.lastLargePage) {
-      const overshoot = Math.abs(this.maxScrollPos - this.scrollPos) + 1;
+      const overshoot = Math.abs(this.maxScrollPos - this.scrollPos);
       this.largePage++;
       this.pageChange();
       console.log('pageChange up', overshoot);
@@ -526,10 +530,15 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
 
   }
   updateSize() {
+    if (this.activeRow > this.totalsize - 1) {
+      this.activeRow = this.totalsize - 1;
+    } else if (this.activeRow < 0) {
+      this.activeRow = 0;
+    }
     // this.calculateWidths();
     // this.cd.detectChanges();
     // this.tableRef.nativeElement.style.paddingRight = this.scrollBarWidth + 'px';
-    this.viewportSize = this.tableRef.nativeElement.offsetHeight;
+    this.viewportSize = this.tableRef.nativeElement.clientHeight;
     // const count = Math.floor(this.viewportSize / this.rowHeight);
     // this.rowHeight = Math.ceil(this.viewportSize / (count * this.rowHeight) * this.rowHeight);
 
@@ -606,6 +615,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     for (const vrow of this.vrows) {
       this.updateRow(vrow);
     }
+    // this.refreshVrows();
+
   }
   updateRow(vrow: VirtualRow) {
     // const possibleAbsId = vrow.virtualId + this.visibleRowCount + ((this.visibleRowCount) * this.smallPage)
@@ -635,6 +646,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   refreshVrows() {
+    console.log("refreshVrows_____________________")
     for (const vrow of this.vrows) {
       const d = this.dataSource.buffer.get(vrow.absoluteId);
       vrow.data = d;
