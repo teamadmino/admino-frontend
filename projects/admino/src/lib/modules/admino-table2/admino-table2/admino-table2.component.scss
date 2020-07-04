@@ -94,6 +94,11 @@
     flex: 1;
     position: relative;
 
+    &.hidetable {
+      opacity: 0;
+      background-color: red;
+    }
+
     // height: calc(100% - 51px);
 
     .scroller {
@@ -122,6 +127,8 @@
       // overflow: hidden;
       overflow-x: auto;
       overflow-y: auto;
+
+
 
       &::-webkit-scrollbar {
         width: 10px;

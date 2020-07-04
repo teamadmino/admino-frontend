@@ -46,7 +46,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     if (this.valueChangeSub) {
       this.valueChangeSub.unsubscribe();
     }
-    const keyChangeAction = this.getAction('keyChange');
+    const keyChangeAction = this.getAction('keyChange_offffffffffffff');
     const dt = keyChangeAction && keyChangeAction.debounce ? keyChangeAction.debounce : 50;
     this.valueChangeSub = this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe),
       debounceTime(dt),
@@ -97,6 +97,9 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
       this.table.indexes = changes.indexes.new;
     }
     if (changes.viewName) {
+      this.dataSource.clearRequests();
+      this.dataSource.buffer.clearAll();
+      this.dataSource.initialBrowseRequestHappend = false;
       this.dataSource.config.listFunction =
         (keys, cursor, shift, count, index, before, after) =>
           this.screenComponent.api.list(changes.viewName.new, keys, cursor, shift, count, index, before, after);
@@ -129,11 +132,12 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
       // this.table.pageChange();
       this.table.reinit();
     }
-    console.log("forcerefreshoutside", changes)
+    if (changes._clearCache) {
+      this.dataSource.buffer.clearAll();
+      reinitNeeded = true;
+    }
 
     if (changes.value || changes._forceRefresh || changes.forceRefresh) {
-      console.log("forcerefresh", changes)
-
       const shift = (propExists(changes.value) && propExists(changes.value.new) && changes.value.new.shift !== undefined) ? changes.value.new.shift : 0;
       // console.log("shift", shift)
       // console.log(this.dataSource.state)
@@ -142,7 +146,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
         // if (shift !== 0) {
         // }
         this.table.gotoPos(this.dataSource.viewpos);
-
+        this.table.setActiveRow(this.dataSource.cursorAbsPos);
 
         // this.table.prevRowStart = -1;
         // this.table.prevRowEnd = -1;

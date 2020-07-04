@@ -51,6 +51,17 @@ export class AdminoTableBuffer {
             }
         }
     }
+    clearAll() {
+        this.container.forEach((bdata) => {
+            const bufferdata = bdata;
+            if (bufferdata) {
+                bufferdata.index = -1;
+                for (const key of Object.keys(bufferdata)) {
+                    delete bufferdata[key];
+                }
+            }
+        });
+    }
     // // get element at index 11 (you want the 11th item in the array)
     // eleventh = container[(index + 11) % maxlen];
 

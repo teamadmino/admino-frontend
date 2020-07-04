@@ -931,7 +931,10 @@
 
             &.columnselected {
               box-shadow: inset 0px 0px 1px 1px mat-color($foreground, disabled);
+            }
 
+            &.columnnavigation {
+              box-shadow: inset 0px 0px 1px 1px mat-color($foreground, disabled);
             }
           }
         }

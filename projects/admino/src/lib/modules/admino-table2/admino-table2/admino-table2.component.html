@@ -24,7 +24,7 @@
         </div>
 
     </div>
-    <div class="awrapper">
+    <div class="awrapper" [ngClass]="{'hidetable':!dataSource.initialBrowseRequestHappend}">
         <div class="scroller" [ngClass]="{'d-none': this.dataSource.totalsize<this.calculatedLargePageSize}"
             (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
             <div class="scrollercontent" #scrollerContentRef></div>
@@ -43,8 +43,11 @@
                     </div>
                     <div (click)="setSelected(vrow.data,i,'cellClick')"
                         (dblclick)="setSelected(vrow.data, i, 'cellDoubleClick')" class="acell"
-                        *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell" [ngClass]=" {columnselected:this.activeRow === vrow.absoluteId  &&
-                        i===this.dataSource.state.selectedColumnIndex, first:i===0,
+                        *ngFor="let column of dataSource.columns; let i=index; trackBy: trackByFnCell" [ngClass]=" {columnselected:this.dataSource.cursorAbsPos === vrow.absoluteId  &&
+                        i===this.dataSource.state.selectedColumnIndex,
+                        columnnavigation:this.activeRow === vrow.absoluteId  &&
+                        i===this.dataSource.state.navigationColumnIndex
+                        , first:i===0,
                         last:i===dataSource.columns.length-1}"
                         [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data , i, vrow)">
 

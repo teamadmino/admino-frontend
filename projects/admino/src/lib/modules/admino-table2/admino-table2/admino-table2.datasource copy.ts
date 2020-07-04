@@ -1,5 +1,5 @@
 import { cloneDeep, isEqual } from 'lodash';
-import { Subject, BehaviorSubject, of, Subscription, Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, of, Subscription } from 'rxjs';
 import { takeUntil, catchError, debounceTime } from 'rxjs/operators';
 import { AdminoTableBuffer } from './admino-table2.buffer';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
@@ -57,14 +57,7 @@ export interface DataSourceState {
     navigationColumnIndex: number;
     navigationRowIndex: number;
 }
-export interface BrowseRequest {
-    subscription: Subscription;
-    shift: number;
-    resolvePromise: (...args) => void;
-    rejectPromise: () => void;
-    observable: Observable<any>;
-    timeout: any;
-}
+
 export class AdminoTable2DataSource {
     private ngUnsubscribe: Subject<null> = new Subject();
 
@@ -74,7 +67,7 @@ export class AdminoTable2DataSource {
     public loadDataStart = new Subject<any>();
     public triggerLoadData = new Subject<any>();
 
-    currentRequests: BrowseRequest[] = [];
+    currentRequests: { subscription: Subscription, shift: number, resolvePromise: () => void, rejectPromise: () => void }[] = [];
 
     columns: VirtualDataSourceInfoColumn[] = [];
     displayedColumns = [];
@@ -121,7 +114,7 @@ export class AdminoTable2DataSource {
     counter = 0;
     keyChangedByFrontend = false;
     constructor(public config: AdminoTableDataSourceConfig, public sanitizer: DomSanitizer) {
-        this.triggerLoadData.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => {
+        this.triggerLoadData.pipe(takeUntil(this.ngUnsubscribe), debounceTime(100)).subscribe((params) => {
             this.loadData();
         });
     }
@@ -159,7 +152,7 @@ export class AdminoTable2DataSource {
         this.counter++;
         return new Promise((resolve, reject) => {
 
-            const requestObj: BrowseRequest = { subscription: null, observable: null, shift, timeout: null, resolvePromise: resolve, rejectPromise: reject };
+            const requestObj: any = { subscription: null, shift, resolvePromise: resolve, rejectPromise: reject };
             // const state = {
             //     keys: this.state.keys,
             //     cursor: this.state.cursor,
@@ -177,42 +170,36 @@ export class AdminoTable2DataSource {
             const cursorpos = isNaN(this.state.cursorpos) ? 0 : this.state.cursorpos;
 
             requestObj.timeout = setTimeout(() => {
-                if (this.currentRequests[this.currentRequests.length - 1] !== requestObj) {
-                    this.clearRequest(requestObj);
-                    this.startLatestRequest();
-                }
-            }, 1000);
-            requestObj.observable = this.config.listFunction(this.state.keys, cursorpos, calculatedShift,
-                Math.max(this.state.count, 1), this.state.index, this.state.before, this.state.after);
+                requestObj.subscription.unsubscribe();
+            });
+            requestObj.subscription = this.config.listFunction(this.state.keys, cursorpos
+                , calculatedShift,
+                Math.max(this.state.count, 1), this.state.index, this.state.before, this.state.after).pipe(
+                    takeUntil(this.ngUnsubscribe),
+                    catchError(() => of([]))
+                    // finalize(() => {
+                    // })
+                ).subscribe((data: any) => {
+                    const index = this.currentRequests.indexOf(requestObj);
+                    // console.log("INDEX", index);
+                    for (let i = 0; i <= index; i++) {
+                        const req = this.currentRequests[0];
+                        // if (req !== requestObj) {
+                        //     req.rejectPromise();
+                        // }
+                        // console.log(req.rejectPromise)
+                        // req.resolvePromise();
+                        req.subscription.unsubscribe();
+                        req.subscription = null;
+                        this.currentRequests.shift();
+                    }
+                    this.updateData(data);
+                    this.initialBrowseRequestHappend = true;
+                    resolve(data);
+                }, (err) => {
+                    reject();
+                });
             this.currentRequests.push(requestObj);
-            if (this.currentRequests.length <= 1) {
-                this.startLatestRequest();
-            }
-
-        });
-    }
-    startLatestRequest() {
-        const latestReq = this.currentRequests[this.currentRequests.length - 1];
-        if (latestReq && !latestReq.subscription) {
-            latestReq.subscription = this.subscribeTo(latestReq);
-        }
-    }
-    subscribeTo(requestObj: BrowseRequest) {
-
-        return requestObj.observable.pipe(
-            takeUntil(this.ngUnsubscribe),
-            catchError(() => of([]))
-        ).subscribe((data: any) => {
-            this.updateData(data);
-            this.clearRequest(requestObj);
-            this.startLatestRequest();
-            this.initialBrowseRequestHappend = true;
-            requestObj.resolvePromise(data);
-        }, (err) => {
-            this.clearRequest(requestObj);
-            this.startLatestRequest();
-
-            requestObj.rejectPromise();
         });
     }
 
@@ -235,27 +222,11 @@ export class AdminoTable2DataSource {
         // if (this.currentRequests.length !== 0) {
         // }
     }
-    clearRequest(requestObj: BrowseRequest) {
-        const index = this.currentRequests.indexOf(requestObj);
-        for (let i = 0; i <= index; i++) {
-            const req = this.currentRequests[0];
-            if (req.subscription) {
-                req.subscription.unsubscribe();
-            }
-            if (req.timeout) {
-                clearTimeout(req.timeout);
-            }
-            req.subscription = null;
-            this.currentRequests.shift();
-        }
-    }
     clearRequests() {
         const len = this.currentRequests.length;
         for (let i = 0; i < len; i++) {
             const req = this.currentRequests[0];
-            if (req.subscription) {
-                req.subscription.unsubscribe();
-            }
+            req.subscription.unsubscribe();
             if (req.timeout) {
                 clearTimeout(req.timeout);
             }

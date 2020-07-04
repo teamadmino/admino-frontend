@@ -23,7 +23,8 @@ export class AdminoApiService {
   BROWSER_INFO = '/browserinfo';
   REQUEST = '/request';
   PING = '/ping';
-  tabId = uuidv4();
+  tabId = 1;
+  // tabId = uuidv4();
   constructor(private http: HttpClient, private user: AdminoUserService, private site: AdminoSiteService) {
   }
 
@@ -45,7 +46,7 @@ export class AdminoApiService {
   }
 
   list(view: string, keys: any, cursorpos: number, shift: number, count: number, index: number, before: number = 0, after: number = 0, customVars: any = {}) {
-    const dummySubject = new Subject();
+    // const dummySubject = new Subject();
     const body = {
       cursor: cursorpos.toString(),
       count: count.toString(),
@@ -59,78 +60,80 @@ export class AdminoApiService {
     };
     // this.http.post(this.BASE_URL + '/v2ping',
     //   JSON.stringify({ test: 'áÁíÍóÓöÖőŐúÚüÜűŰéÉ' })).pipe(map((response: any) => { })).subscribe();
-    this.http.post(this.BASE_URL + this.BROWSE, body).pipe(map((response: any) => {
-      // response.data.splice(Math.floor(Math.random() * response.data.length), 0, { id: Math.random().toString() });
+    return this.http.post(this.BASE_URL + this.BROWSE, body);
 
-      // response.predefinedStyles = [
-      //   { background: 'yellow' },
-      //   { opacity: 1 },
-      //   { opacity: 0.2 },
-      // ];
-      // // response.colorPaths = [
-      // //   'predefinedStyles.background',
-      // //   'data.oszlop1def.style.background',
-      // // ];
-      // const fun = (row) => {
-      //   row.oszlop1def = {
-      //     predefinedStyleId: 0,
-      //     predefinedContainerStyleId: 1,
-      //     style: {
-      //       // border: '2px solid yellow'
-      //     },
-      //     containerStyle: {
-      //       // 'border-color': 'red',
-      //       background: "rgba(255,255,0,0.1)"
-      //     },
-      //   };
+    //  .pipe(map((response: any) => {
+    //     // response.data.splice(Math.floor(Math.random() * response.data.length), 0, { id: Math.random().toString() });
 
-      //   row.oszlop2def = {
-      //     predefinedStyleId: 0,
-      //     style: {
-      //       border: '2px solid lightgreen'
-      //     },
+    //     // response.predefinedStyles = [
+    //     //   { background: 'yellow' },
+    //     //   { opacity: 1 },
+    //     //   { opacity: 0.2 },
+    //     // ];
+    //     // // response.colorPaths = [
+    //     // //   'predefinedStyles.background',
+    //     // //   'data.oszlop1def.style.background',
+    //     // // ];
+    //     // const fun = (row) => {
+    //     //   row.oszlop1def = {
+    //     //     predefinedStyleId: 0,
+    //     //     predefinedContainerStyleId: 1,
+    //     //     style: {
+    //     //       // border: '2px solid yellow'
+    //     //     },
+    //     //     containerStyle: {
+    //     //       // 'border-color': 'red',
+    //     //       background: "rgba(255,255,0,0.1)"
+    //     //     },
+    //     //   };
 
-      //     predefinedBarStyleId: 2,
-      //     bar: {
-      //       display: 'block', // csak akkor jelenik meg ha ez meg van határozva
-      //       width: Math.random() * 100 + '%',
-      //       height: "50%",
-      //       top: "25%",
-      //       "border-bottom-left-radius": "30px",
-      //       'background-color': 'green',
-      //       opacity: 0.5,
-      //       right: 0,
-      //       "transition-duration": "0.25s"
-      //     }
-      //   };
-      // };
+    //     //   row.oszlop2def = {
+    //     //     predefinedStyleId: 0,
+    //     //     style: {
+    //     //       border: '2px solid lightgreen'
+    //     //     },
 
-      // response.data.forEach(row => {
-      //   row.city = "6,65<span style='background:#888888;color:#FFFF00'>0.0</span>";
-      // });
-      // response.after.forEach(row => {
-      //   fun(row);
-      // });
-      // response.before.forEach(row => {
-      //   fun(row);
-      // });
+    //     //     predefinedBarStyleId: 2,
+    //     //     bar: {
+    //     //       display: 'block', // csak akkor jelenik meg ha ez meg van határozva
+    //     //       width: Math.random() * 100 + '%',
+    //     //       height: "50%",
+    //     //       top: "25%",
+    //     //       "border-bottom-left-radius": "30px",
+    //     //       'background-color': 'green',
+    //     //       opacity: 0.5,
+    //     //       right: 0,
+    //     //       "transition-duration": "0.25s"
+    //     //     }
+    //     //   };
+    //     // };
+
+    //     // response.data.forEach(row => {
+    //     //   row.city = "6,65<span style='background:#888888;color:#FFFF00'>0.0</span>";
+    //     // });
+    //     // response.after.forEach(row => {
+    //     //   fun(row);
+    //     // });
+    //     // response.before.forEach(row => {
+    //     //   fun(row);
+    //     // });
 
 
 
-      // setTimeout((params) => {
-      dummySubject.next(response);
-      dummySubject.complete();
-      return response;
-      // }, 300 + Math.random() * 1000);
-    })).subscribe((params) => {
+    //     // setTimeout((params) => {
+    //     dummySubject.next(response);
+    //     dummySubject.complete();
+    //     return response;
+    //     // }, 300 + Math.random() * 1000);
+    //   })).subscribe((params) => {
 
-    }, (err) => {
-      dummySubject.error(err);
-      // dummySubject.complete();
-      // return response;
-    });
+    //   }, (err) => {
+    //     dummySubject.error(err);
+    //     // dummySubject.complete();
+    //     // return response;
+    //   });
 
-    return dummySubject;
+    //   return dummySubject;
   }
   getInfo(view: string) {
     return this.http.post(this.BASE_URL + this.BROWSER_INFO, { view });

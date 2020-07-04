@@ -6,7 +6,8 @@
     [ngClass]="{'table-focused': this.isFocused}" [hideHeader]="element.hideHeader" [debug]="element.debug" tabindex="0"
     [selectedRowStyle]="element.selectedRowStyle" [selectedCellStyle]="element.selectedCellStyle"
     [inactiveSelectedRowStyle]="element.inactiveSelectedRowStyle"
-    [inactiveSelectedCellStyle]="element.inactiveSelectedCellStyle" [keyOverrides]="this.getOverrideList()"
+    [inactiveSelectedCellStyle]="element.inactiveSelectedCellStyle" [navigationCellStyle]="element.navigationCellStyle"
+    [inactiveNavigationCellStyle]="element.inactiveNavigationCellStyle" [keyOverrides]="this.getOverrideList()"
     [isFocused]="this.isFocused">
 
     <!-- (click)="this.focus()" -->
