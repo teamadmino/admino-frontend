@@ -46,7 +46,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     if (this.valueChangeSub) {
       this.valueChangeSub.unsubscribe();
     }
-    const keyChangeAction = this.getAction('keyChange_offffffffffffff');
+    const keyChangeAction = this.getAction('keyChange');
     const dt = keyChangeAction && keyChangeAction.debounce ? keyChangeAction.debounce : 50;
     this.valueChangeSub = this.directive.valueChangeEvent.pipe(takeUntil(this.ngUnsubscribe),
       debounceTime(dt),
