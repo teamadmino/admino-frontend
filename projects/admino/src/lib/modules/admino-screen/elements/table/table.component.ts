@@ -38,6 +38,8 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
       this.dataSource.setKeys(this.element.value.keys);
       this.table.dataSource.loadData().then((params) => {
         this.table.gotoPos(this.dataSource.viewpos);
+        this.table.setActiveRow(this.dataSource.cursorAbsPos);
+
       });
     }
   }

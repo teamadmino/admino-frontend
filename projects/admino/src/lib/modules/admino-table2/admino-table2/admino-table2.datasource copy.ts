@@ -202,6 +202,7 @@ export class AdminoTable2DataSource {
             this.currentRequests.push(requestObj);
         });
     }
+    subscribeTo(obs: Observable)
 
     calculateShift(shift) {
         let calculatedShift = shift;

@@ -170,6 +170,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
 
         break;
       case 'Home':
+        this.gotoPos(0);
+        this.setActiveRow(0);
         // this.dataSource.state.keys = { '#position': 'first' };
         // this.dataSource.state.cursorpos = 0;
         // this.dataSource.loadData().then(() => {
@@ -178,6 +180,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
         event.preventDefault();
         break;
       case 'End':
+        this.gotoPos(this.adjustedTotalsize);
+        this.setActiveRow(this.totalsize - 1);
         // this.dataSource.state.keys = { '#position': 'last' };
         // this.dataSource.loadData().then(() => {
         //   this.gotoPos(this.dataSource.viewpos);
@@ -185,11 +189,19 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
         event.preventDefault();
         break;
       case 'PageUp':
-        this.goUpBy(this.visibleRowCount - 2);
+        if (this.activeRow > this.rowStart && this.activeRow < this.rowEnd) {
+          this.goUpBy(this.activeRow - this.rowStart);
+        } else {
+          this.goUpBy(this.visibleRowCount - 2);
+        }
         event.preventDefault();
         break;
       case 'PageDown':
-        this.goDownBy(this.visibleRowCount - 2);
+        if (this.activeRow > this.rowStart && this.activeRow < this.rowEnd) {
+          this.goDownBy(this.rowEnd - this.activeRow);
+        } else {
+          this.goDownBy(this.visibleRowCount - 2);
+        }
         event.preventDefault();
         break;
       case 'Enter':
