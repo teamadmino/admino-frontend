@@ -249,7 +249,7 @@ export class AdminoActionService {
       this.setFocus.next(response.setFocus);
     }
     if (response.setPing !== undefined) {
-      // this.pingFrequency.next(response.setPing);
+      this.pingFrequency.next(response.setPing);
     }
 
     if (response.setSnackbars !== undefined) {
