@@ -119,6 +119,30 @@
 
     }
 
+    .rowindicator {
+      position: absolute;
+      background-color: red;
+      border-radius: 7px;
+      padding: 1px 7px;
+      z-index: 4;
+      font-size: 12px;
+      font-weight: 600;
+      top: 10px;
+      left: 10px;
+      // transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.5s;
+
+      &.bottom {
+        top: auto;
+        bottom: 10px;
+      }
+
+      &.show {
+        opacity: 1;
+      }
+    }
+
     .atable {
       // display: inline-block;
       height: 100%;
@@ -174,18 +198,7 @@
           // left: 0;
           min-width: 100%;
 
-          .rowindicator {
-            position: absolute;
-            background-color: red;
-            border-radius: 7px;
-            padding: 1px 7px;
-            z-index: 4;
-            font-size: 12px;
-            font-weight: 600;
-            top: 50%;
-            left: 10px;
-            transform: translateY(-50%);
-          }
+
 
           &.rowselected {
             background-color: rgba(0, 0, 0, 0.3);

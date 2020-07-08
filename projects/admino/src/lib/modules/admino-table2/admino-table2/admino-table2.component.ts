@@ -138,6 +138,9 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   @Input() keyOverrides: { trigger: string, key: string }[] = [];
   @Input() isFocused = false;
 
+
+  scrollDirection;
+
   // @HostListener('window:resize', ['$event'])
   resize(event: MouseEvent) {
     // this.updateSize();
@@ -390,11 +393,12 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource.cursorAbsPos = bufferdata.index;
       this.activeRow = bufferdata.index;
       this.dataSource.state.navigationRowIndex = this.activeRow;
+      this.setPrevValues();
       this.setKeys(bufferdata.data.origData);
-      this.dataSource.state.cursorpos = bufferdata.index - this.rowStart;
+      // this.dataSource.state.keys = bufferdata.index - this.rowStart;
       if (columnIndex !== null) {
-        this.dataSource.state.navigationColumnIndex = columnIndex;
         this.dataSource.state.selectedColumnIndex = columnIndex;
+        this.dataSource.state.navigationColumnIndex = columnIndex;
       }
       if (fireEvent === 'cellClick') {
         this.cellClick.next();
@@ -405,6 +409,10 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     this.handleCellChange();
     this.cd.detectChanges();
   }
+  setPrevValues() {
+    this.dataSource.state.prevKeys = this.dataSource.state.keys;
+    this.dataSource.state.prevSelectedColumnIndex = this.dataSource.state.selectedColumnIndex;
+  }
   handleCellChange() {
     const col = this.dataSource.state.navigationColumnIndex;
     const getpos = this.columnWidths.reduce((prev, curr, i) => i < col ? prev + curr : prev, 0);
@@ -412,7 +420,6 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     const getwpos = getpos + getw;
     const vpw = this.tableRef.nativeElement.clientWidth;
     const sp = this.tableRef.nativeElement.scrollLeft;
-
 
     if (getwpos > sp + vpw) {
       this.tableRef.nativeElement.scrollLeft = getpos - (vpw - getw);
@@ -424,7 +431,6 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   }
   gotoPos(absoluteId = 0, bottomFixed = false) {
 
-    console.log("goto", absoluteId, bottomFixed);
     let lastRowFix = 0;
     if (absoluteId >= this.adjustedTotalsize) {
       absoluteId = this.adjustedTotalsize - 0.0001;
@@ -435,13 +441,20 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     this.largePage = targetPage;
     this.pageChange();
     // + this.notfittingRowHeight
-    console.log(this.notfittingRowHeight)
     const remainder = this.largePageSize > 0 ? absoluteId % (this.largePageSize) : 0;
     this.scrollPos = this.tableRef.nativeElement.scrollTop = (remainder + this.largePageCoeff) * this.rowHeight + lastRowFix
       + (bottomFixed && this.notfittingRowHeight !== this.rowHeight ? this.notfittingRowHeight : 0);
-    // && absoluteId > this.adjustedTotalsize - 1 
-    this.updateRows();
-    this.refreshVrows();
+    // && absoluteId > this.adjustedTotalsize - 1;
+    // this.updateRows();
+    // this.refreshVrows();
+  }
+  showIndicator() {
+    // this.vrows.push({ virtualId: this.vrows.length, absoluteId: this.vrows.length, pos: 0 });
+    const searchRowId = this.scrollDirection >= 1 ? this.rowEnd : this.rowStart;
+    const found = this.vrows.find((vrow) => {
+      return vrow.absoluteId === searchRowId;
+    })
+    return (found && found.data && found.data.data && found.data.data.origData) || this.dataSource.totalsize <= 0 ? false : true;
   }
   scrollbarMouseDown() {
     this.manualScroll = true;
@@ -457,8 +470,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   scrollEvent() {
 
 
-
     this.scrollPos = this.tableRef.nativeElement.scrollTop;
+    this.scrollDirection = this.prevScrollPos > this.scrollPos ? -1 : 1;
     // console.log("this.tableRef.nativeElement.scrollTop", this.tableRef.nativeElement.scrollTop)
     // console.log(this.largePage, this.lastLargePage)
     // console.log((this.rowCountOnLastLargePage + 1) * this.rowHeight - 1)
@@ -677,6 +690,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   calculateWidths() {
+
+
     // console.log(this.bodyRef.nativeElement.clientWidth, this.dataSource.state.keys);
 
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {

@@ -58,6 +58,7 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     ).subscribe((newVal) => {
       if (this.element.value !== undefined) {
         if (keyChangeAction) {
+          this.table.setPrevValues();
           this.handleAction(keyChangeAction);
         }
       }

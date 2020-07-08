@@ -405,7 +405,9 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.headerCellClick.next();
   }
   setSelected(vrow: VirtualRow, columnIndex, rowIndex) {
+
     if (vrow.data && vrow.data.data && vrow.data.data.processedData) {
+      this.setPrevValues();
       this.dataSource.cursorAbsPos = vrow.absoluteId;
       this.setKeys(vrow.data.data.origData);
       this.dataSource.state.cursorpos = vrow.absoluteId - this.rowStart;
@@ -413,6 +415,10 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cellClick.next();
     }
     this.handleCellChange();
+  }
+  setPrevValues() {
+    this.dataSource.state.prevKeys = this.dataSource.state.keys;
+    this.dataSource.state.prevSelectedColumnIndex = this.dataSource.state.selectedColumnIndex;
   }
   handleCellChange() {
     const col = this.dataSource.state.selectedColumnIndex;

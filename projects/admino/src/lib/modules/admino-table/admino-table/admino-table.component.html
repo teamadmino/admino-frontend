@@ -54,7 +54,8 @@
                         [adminoTooltipEnabled]="this.isEllipsisActive(cellRef)"
                         [adminoTooltipStyle]="getStyle(column, vrow.data && vrow.data.data,i)" -->
 
-                        <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)">
+                        <div class="bar" *ngIf=" vrow.data &&  vrow.data.data.styles[column.id].barStyle"
+                            [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)">
                         </div>
 
                     </div>

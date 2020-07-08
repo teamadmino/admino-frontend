@@ -45,6 +45,8 @@ export interface VirtualDataSourceInfoColumn {
 export interface DataSourceState {
     keys: any;
     cursor: number;
+    prevKeys: any;
+    prevSelectedColumnIndex: number;
     count: number;
     index: number;
     before: number;
@@ -89,6 +91,8 @@ export class AdminoTableDataSource {
 
     state: DataSourceState = {
         keys: { '#position': 'first' },
+        prevKeys: null,
+        prevSelectedColumnIndex: null,
         cursor: 0,
         count: 1,
         index: 1,
