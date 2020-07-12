@@ -1,8 +1,8 @@
 <div [formGroup]="group">
     <mat-label>{{element.label}}</mat-label>
 
-    <mat-slider [formControlName]="element.id" [disabled]="element.disabled" [color]="'primary'"
-        [invert]="element.invert" [max]="element.max" [min]="element.min" [step]="element.step"
-        [thumbLabel]="element.thumbLabel" [tickInterval]="element.tickInterval" [vertical]="element.vertical">
+    <mat-slider [formControlName]="element.id" [color]="'primary'" [invert]="element.invert" [max]="element.max"
+        [min]="element.min" [step]="element.step" [thumbLabel]="element.thumbLabel"
+        [tickInterval]="element.tickInterval" [vertical]="element.vertical">
     </mat-slider>
 </div>

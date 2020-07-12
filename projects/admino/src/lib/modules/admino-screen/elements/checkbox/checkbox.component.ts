@@ -13,7 +13,6 @@ export class CheckboxComponent extends AdminoScreenElement implements OnInit {
   }
   focusEvent() {
     super.focusEvent();
-    console.log(this.focusRef)
     this.focusRef.focus();
   }
 }

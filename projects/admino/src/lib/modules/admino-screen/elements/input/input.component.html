@@ -3,9 +3,9 @@
     <mat-label>{{element.label}}</mat-label>
 
     <input matInput class="adminoKeyFocus" [formControlName]="element.id" [placeholder]="element.placeholder" #inputRef
-        #focusRef [readonly]="element.readonly" [attr.disabled]="element.disabled ? '' : null"
-        name="inputnameplaceholder3" [type]="element.inputType?element.inputType:'text'" [maxlength]="element.maxLength"
-        autocomplete="new-password" (keypress)="filterInput($event)">
+        #focusRef [readonly]="element.readonly" name="inputnameplaceholder3"
+        [type]="element.inputType?element.inputType:'text'" [maxlength]="element.maxLength" autocomplete="new-password"
+        (keypress)="filterInput($event)">
     <!-- [errorStateMatcher]="matcher" -->
 
     <!-- *ngIf="element.value && focused===false" -->

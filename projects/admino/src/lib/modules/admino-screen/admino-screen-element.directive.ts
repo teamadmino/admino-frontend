@@ -136,6 +136,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       //   console.log("value", this.element);
       //   // console.log(this.activeElementConfig.value && cloneDeep(this.activeElementConfig.value));
       // }
+      console.log("UPDATE EVET", this.element.id)
       if (this.componentRef && this.element) {
 
         // Destroy
@@ -157,9 +158,18 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
         }
         // Value change
         const control = this.parentGroup.get(this.element.id);
-        if (this.element.value !== undefined && !isEqual(this.element.value, this.activeElementConfig.value)) {
+        if (this.element.value !== undefined && !isEqual(this.element.value, control.value)) {
           if (control) {
             control.setValue(this.element.value, { emitEvent: false });
+          }
+        }
+        if (this.element.disabled !== undefined && !isEqual(this.element.disabled, this.activeElementConfig.disabled)) {
+          if (control) {
+            if (this.element.disabled) {
+              control.disable();
+            } else {
+              control.enable();
+            }
           }
         }
 
@@ -181,8 +191,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
         this.activeElementConfig = cloneDeep(this.element);
 
-
-        if (Object.keys(changes).length > 0) {
+        // || this.element.value !== undefined
+        if (Object.keys(changes).length > 0 || this.element.type === 'group') {
           // if (this.element.id === 'uszips') {
           //   console.log("ONCHANGE")
           // }
@@ -314,7 +324,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   createControl() {
     const control = this.screenComponent.fb.control(
-      this.element.value, {
+      { value: this.element.value, disabled: this.element.disabled }, {
       validators: this.bindValidations(this.element.validators || []),
       asyncValidators: this.getAsyncValidations(this.element.validators || []),
       // updateOn: this.element.updateOn
