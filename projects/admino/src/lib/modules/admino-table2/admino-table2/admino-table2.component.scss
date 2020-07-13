@@ -152,7 +152,9 @@
       overflow-x: auto;
       overflow-y: auto;
 
-
+      // &::-webkit-scrollbar-track {
+      //   background-color: yellow;
+      // }
 
       &::-webkit-scrollbar {
         width: 10px;

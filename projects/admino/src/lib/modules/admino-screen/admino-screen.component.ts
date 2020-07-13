@@ -12,6 +12,8 @@ import { AdminoAction, ActionEvent } from '../../interfaces';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { isObject } from '../../utils/isobject';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'admino-screen',
@@ -52,6 +54,8 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() mainScreenComponent: AdminoScreenComponent = this;
   @Input() editMode = false;
 
+  popups = [];
+
   @ViewChild(AdminoGridComponent, { static: false }) adminoGrid: AdminoGridComponent;
 
   @HostListener('dblclick', ['$event'])
@@ -74,7 +78,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(public fb: FormBuilder, public api: AdminoApiService,
     public as: AdminoActionService,
-    private cd: ChangeDetectorRef, public ts: AdminoThemeService, private sanitizer: DomSanitizer) { }
+    private cd: ChangeDetectorRef, public ts: AdminoThemeService, private sanitizer: DomSanitizer, private overlay: Overlay) { }
 
   ngOnInit() {
     this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
@@ -121,7 +125,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     // const merged = deepMerge(origValues, values);
     // this.group.patchValue(merged);
 
-
+    // this.updatePopups();
 
     this.cd.detectChanges();
     this.adminoGrid.refresh();
@@ -130,16 +134,18 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   focusElement(el) {
     this.focusEvent.next(el);
   }
-  getElementsOfType(type: 'main' | 'popup' | 'timer') {
+  getElementsOfType(type: 'main' | 'popup' | 'popup2' | 'timer') {
     if (!this.screenElement || !this.screenElement.elements) {
       return [];
     }
     return this.screenElement.elements.filter((el: any) => {
 
       if (type === 'main') {
-        return !el.isPopup && el.type !== 'timer';
+        return !el.isPopup && el.type !== 'timer' && !el.popup;
       } else if (type === 'popup') {
         return el.type === 'group' && el.isPopup;
+      } else if (type === 'popup2') {
+        return el.type === 'group' && el.popup;
       } else if (type === 'timer') {
         return el.type === 'timer';
       }
@@ -254,6 +260,60 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
       return false;
     }
   }
+
+
+  updatePopups() {
+    const popups = this.getElementsOfType('popup2');
+    popups.forEach((popupDef: ScreenElementScreen) => {
+      const existing = this.popups.find((popup) => {
+        return popup.popupDef.id === popupDef.id;
+      })
+      if (existing) {
+
+      } else {
+        const popupRef = this.createPopupRef(popupDef.popup);
+        this.popups.push({ popupDef, popupRef })
+      }
+    })
+  }
+
+  createPopupRef(popupOptions: any) {
+    const positionStrategy = this.overlay.position();
+    const connectedTo = null;
+    // const connectedTo = this.getConnectedToElementRef(popupOptions);
+    // if (connectedTo) {
+    //   positionStrategy.flexibleConnectedTo(connectedTo);
+    // } else {
+    // }
+
+
+    const overlayRef = this.overlay.create({
+      width: '200px',
+      height: '300px',
+      positionStrategy: this.overlay.position().flexibleConnectedTo(connectedTo).withPositions([{
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+      }, {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+      }]).withPush(popupOptions.enablePush),
+      hasBackdrop: true
+    }
+    );
+    overlayRef.backdropClick().subscribe((params) => {
+      overlayRef.detach();
+      overlayRef.dispose();
+    })
+    const userProfilePortal = new ComponentPortal(null);
+    return overlayRef.attach(userProfilePortal);
+  }
+
+
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

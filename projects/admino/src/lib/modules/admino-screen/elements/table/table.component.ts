@@ -92,13 +92,6 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
   }
   onChange(changes: { [id: string]: ScreenElementChange; }) {
     let reinitNeeded = false;
-    if (changes.columns) {
-      reinitNeeded = true;
-      this.table.columns = changes.columns.new;
-    }
-    if (changes.indexes) {
-      this.table.indexes = changes.indexes.new;
-    }
     if (changes.viewName) {
       this.dataSource.clearRequests();
       this.dataSource.buffer.clearAll();
@@ -106,7 +99,21 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
       this.dataSource.config.listFunction =
         (keys, cursor, shift, count, index, before, after) =>
           this.screenComponent.api.list(changes.viewName.new, keys, cursor, shift, count, index, before, after);
+      reinitNeeded = true;
     }
+    if (changes._clearCache) {
+      this.dataSource.buffer.clearAll();
+      reinitNeeded = true;
+    }
+
+    if (changes.columns) {
+      reinitNeeded = true;
+      this.table.columns = changes.columns.new;
+    }
+    if (changes.indexes) {
+      this.table.indexes = changes.indexes.new;
+    }
+
     if (changes.rowHeight) {
       reinitNeeded = true;
     }
@@ -120,10 +127,8 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
     }
 
     if (propExists(changes.value)) {
-
       this.dataSource.state = Object.assign(this.dataSource.state, this.element.value);
       this.dataSource.setKeys(this.element.value.keys);
-
     }
     if (changes.hidden) {
       reinitNeeded = true;
@@ -131,15 +136,10 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
 
     if (reinitNeeded) {
       // this.table.updateSize();
-      // this.table.scrollEvent();
       // this.table.pageChange();
       this.table.reinit();
+      // this.table.scrollEvent();
     }
-    if (changes._clearCache) {
-      this.dataSource.buffer.clearAll();
-      reinitNeeded = true;
-    }
-
     if (changes.value || changes._forceRefresh || changes.forceRefresh) {
       const shift = (propExists(changes.value) && propExists(changes.value.new) && changes.value.new.shift !== undefined) ? changes.value.new.shift : 0;
       // console.log("shift", shift)
@@ -150,6 +150,9 @@ export class TableComponent extends AdminoScreenElement implements OnInit, After
         // }
         this.table.gotoPos(this.dataSource.viewpos);
         this.table.setActiveRow(this.dataSource.cursorAbsPos);
+        this.table.scrollEvent();
+        this.table.updateRows();
+        this.table.refreshVrows();
 
         // this.table.prevRowStart = -1;
         // this.table.prevRowEnd = -1;

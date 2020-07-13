@@ -8,6 +8,8 @@
         </tr>
     </tbody>
 </table> -->
+<!-- {{this.cumulatedColumnWidth}}
+{{this.tableRef && this.tableRef.nativeElement.clientWidth}} -->
 <div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize(null)"
     #mainRef>
     <div class="aheader" [ngStyle]="{height: headerHeight+'px'}" #headerRef *ngIf="!hideHeader">
@@ -35,7 +37,7 @@
             {{this.scrollDirection?this.rowEnd+1:this.rowStart+1}}
             <!-- -(this.largePage*(this.largePageSize)*this.rowHeight) -->
         </div>
-        <div class=" atable" (scroll)="scrollEvent()" #tableRef>
+        <div class=" atable" (scroll)="scrollEvent()" #tableRef [ngStyle]="calculateScrollers()">
             <div class="abody" #bodyRef>
                 <div class="fakecontent" #fakeContentRef></div>
                 <div class="arow"
@@ -54,7 +56,6 @@
                         [ngStyle]="getContainerStyle(column,vrow.data && vrow.data.data , i, vrow)">
 
 
-
                         <div class="rowbg" *ngIf="vrow.absoluteId%2===0" [ngStyle]="oddRowStyle"></div>
 
                         <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data,i)" #cellRef
@@ -69,7 +70,9 @@
                         [adminoTooltipEnabled]="this.isEllipsisActive(cellRef)"
                         [adminoTooltipStyle]="getStyle(column, vrow.data && vrow.data.data,i)" -->
 
-                        <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)">
+                        <div class="bar"
+                            *ngIf="vrow.data && vrow.data.data && vrow.data.data.styles && vrow.data.data.styles[column.id] &&  vrow.data.data.styles[column.id].barStyle"
+                            [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data,i)">
                         </div>
 
                     </div>

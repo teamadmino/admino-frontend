@@ -1,6 +1,6 @@
 <div class="d-block " [formGroup]="group">
   <button [ngStyle]="element.innerStyle" [type]="'button'" (click)="clicked()" mat-flat-button #focusRef
-    [color]="element.color?element.color:'primary'"
+    [color]="element.color?element.color:'primary'" [disabled]="element.disabled"
     [ngClass]="['focusinnerglow-'+(element.color?element.color:'primary')]">
     <mat-icon class="" *ngIf="element.icon"> {{element.icon}}</mat-icon>
     <span [innerHTML]="sanitizedLabel"></span>

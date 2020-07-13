@@ -94,6 +94,7 @@ export interface ScreenElementScreen extends ScreenElement {
     nopadding?: boolean;
     allowClose?: boolean;
     gridTemplateRows?: any;
+    popup?: any;
 }
 
 export interface ScreenElementTimer extends ScreenElement {

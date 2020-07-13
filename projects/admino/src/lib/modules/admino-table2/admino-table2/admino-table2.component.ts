@@ -78,6 +78,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mainRef', { static: true }) mainRef: ElementRef;
 
   columnWidths = [];
+  cumulatedColumnWidth = 0;
   sortedColumn;
 
 
@@ -261,11 +262,14 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
 
   }
   goUpBy(num: number) {
+    console.log("up");
     if (this.activeRow < this.rowStart) {
       this.gotoPos(this.activeRow);
     } else if (this.activeRow > this.rowEnd && this.rowEnd !== this.totalsize - 1) {
+      console.log(this.activeRow, this.totalsize, this.rowEnd)
       this.gotoPos(this.activeRow - this.visibleRowCount + 2, true);
     } else {
+
       if (this.activeRow - num >= 0) {
         this.activeRow -= num;
       } else {
@@ -446,14 +450,16 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
       + (bottomFixed && this.notfittingRowHeight !== this.rowHeight ? this.notfittingRowHeight : 0);
     // && absoluteId > this.adjustedTotalsize - 1;
     // this.updateRows();
+    this.updateRowStartEnd();
     // this.refreshVrows();
   }
   showIndicator() {
     // this.vrows.push({ virtualId: this.vrows.length, absoluteId: this.vrows.length, pos: 0 });
-    const searchRowId = this.scrollDirection >= 1 ? this.rowEnd : this.rowStart;
+    const rowend = this.rowEnd > this.totalsize - 1 ? this.totalsize - 1 : this.rowEnd;
+    const searchRowId = this.scrollDirection >= 1 ? rowend : this.rowStart;
     const found = this.vrows.find((vrow) => {
       return vrow.absoluteId === searchRowId;
-    })
+    });
     return (found && found.data && found.data.data && found.data.data.origData) || this.dataSource.totalsize <= 0 ? false : true;
   }
   scrollbarMouseDown() {
@@ -469,7 +475,6 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   }
   scrollEvent() {
 
-
     this.scrollPos = this.tableRef.nativeElement.scrollTop;
     this.scrollDirection = this.prevScrollPos > this.scrollPos ? -1 : 1;
     // console.log("this.tableRef.nativeElement.scrollTop", this.tableRef.nativeElement.scrollTop)
@@ -477,8 +482,9 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     // console.log((this.rowCountOnLastLargePage + 1) * this.rowHeight - 1)
     const scrollmax = (this.rowCountOnLastLargePage + 1) * this.rowHeight + (this.notfittingRowHeight !== this.rowHeight ? this.notfittingRowHeight - 1 : 0);
     if (this.largePage === this.lastLargePage && this.scrollPos >= scrollmax) {
-      // console.log("scrollmaxoverride")
       this.scrollPos = this.tableRef.nativeElement.scrollTop = scrollmax;
+      // console.log("scrollmaxoverride")
+
     }
 
     // && this.adjustedTotalsize > (this.lpage + 1) * this.lpageSize
@@ -638,17 +644,16 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     // this.calculateWidths();
   }
 
-
-  updateRows() {
+  updateRowStartEnd() {
     this.scrollPosCoeff = Math.floor(this.scrollPos / this.rowHeight);
-
-    // this.scrollPosCoeff = this.scrollPosCoeff >= this.adjustedTotalsize - this.lpage * this.lpageSize ? this.adjustedTotalsize - this.lpage * this.lpageSize - 1 : this.scrollPosCoeff;
     this.smallPage = Math.floor(this.scrollPosCoeff / (this.visibleRowCount));
     this.scrollPosCoeffNormal = this.scrollPosCoeff - this.smallPage * (this.visibleRowCount);
 
     this.rowStart = this.scrollPosCoeff + (this.largePage * this.largePageSize) - this.largePageCoeff;
     this.rowEnd = Math.max(this.rowStart + this.visibleRowCount - 1 - 1, this.rowStart);
-
+  }
+  updateRows() {
+    this.updateRowStartEnd();
     for (const vrow of this.vrows) {
       this.updateRow(vrow);
     }
@@ -689,11 +694,19 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  calculateScrollers() {
+
+    let showX = 'hidden';
+    if (this.tableRef && this.tableRef.nativeElement) {
+      showX = this.cumulatedColumnWidth > this.tableRef.nativeElement.clientWidth ? 'scroll' : 'hidden';
+    }
+    return {
+      'overflow-x': showX
+    };
+  }
+
   calculateWidths() {
-
-
     // console.log(this.bodyRef.nativeElement.clientWidth, this.dataSource.state.keys);
-
     if (!(this.bodyRef.nativeElement as HTMLElement).children[0]) {
       console.log('returned');
       return;
@@ -708,6 +721,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     // console.log(fullWidth)
     // const actionsWidth = trArr[trArr.length - 1].clientWidth;
     // const availableWidth = fullWidth - actionsWidth - this.scrollBarWidth;
+    this.cumulatedColumnWidth = 0;
     const availableWidth = fullWidth;
     let max = 0;
     this.dataSource.columns.forEach((col) => {
@@ -719,6 +733,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
       if (this.columnWidths[i] < col.length * 10) {
         this.columnWidths[i] = col.length * 10;
       }
+      this.cumulatedColumnWidth += this.columnWidths[i];
     }
 
   }

@@ -136,7 +136,6 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       //   console.log("value", this.element);
       //   // console.log(this.activeElementConfig.value && cloneDeep(this.activeElementConfig.value));
       // }
-      console.log("UPDATE EVET", this.element.id)
       if (this.componentRef && this.element) {
 
         // Destroy

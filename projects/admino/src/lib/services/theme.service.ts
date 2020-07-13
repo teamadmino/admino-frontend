@@ -198,7 +198,6 @@ export class AdminoThemeService {
       }
     } else {
       obj[currentPath] = this.getColor(p);
-      console.log("ARRAY COLP", obj[currentPath])
     }
 
   }
