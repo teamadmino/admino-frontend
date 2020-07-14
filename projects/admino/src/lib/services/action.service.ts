@@ -139,7 +139,7 @@ export class AdminoActionService {
       // console.log(screenValue)
 
       let schema = null;
-      schema = actionEvent.screenConfig;
+      // schema = actionEvent.screenConfig;
 
       if (actionEvent.action.includeSchema) {
         schema = actionEvent.screenConfig;

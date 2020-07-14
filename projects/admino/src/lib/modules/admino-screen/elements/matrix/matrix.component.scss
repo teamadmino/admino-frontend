@@ -1,0 +1,71 @@
+:host {
+  //   min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.info {
+  //   display: none;
+}
+
+.wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  .fakescroller {
+    width: 70px;
+    height: 100%;
+    // background: black;
+    right: 0;
+    position: absolute;
+    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: auto;
+
+    // &::-webkit-scrollbar-track {
+    //   background-color: yellow;
+    // }
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      //   background-color: transparent;
+      z-index: 2;
+    }
+
+    // &::-webkit-scrollbar-thumb {
+    //   background-color: red;
+    // }
+
+    .fakecontent {
+      height: 1889px;
+    }
+  }
+
+  //   border: 1px solid red;
+}
+
+.testdiv {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  background-color: red;
+  right: -25px;
+  top: -25px;
+}
+
+.matrix {
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
+// .cell {
+//   position: absolute;
+//   background: #999999;
+// }

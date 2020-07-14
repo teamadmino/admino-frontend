@@ -59,6 +59,8 @@ import { PopupComponent } from './elements/scanner/popup/popup.component';
 import { DividerComponent } from './elements/divider/divider.component';
 import { AdminoTableModule } from '../admino-table/admino-table.module';
 import { MenuComponent } from './elements/menu/menu.component';
+import { MatrixComponent } from './elements/matrix/matrix.component';
+import { AdminoResizeModule } from '../../directives/admino-resize/admino-resize.module';
 
 @NgModule({
   declarations: [
@@ -105,6 +107,7 @@ import { MenuComponent } from './elements/menu/menu.component';
     PopupComponent,
     DividerComponent,
     MenuComponent,
+    MatrixComponent,
   ],
   imports: [
     CommonModule,
@@ -123,7 +126,8 @@ import { MenuComponent } from './elements/menu/menu.component';
     MonacoEditorModule,
     AdminoPreloaderModule,
     AdminoOldTableModule,
-    AdminoKeyboardModule
+    AdminoKeyboardModule,
+    AdminoResizeModule
   ],
   exports: [
     AdminoScreenComponent,
@@ -161,6 +165,7 @@ import { MenuComponent } from './elements/menu/menu.component';
     MapeditorComponent,
     DividerComponent,
     MenuComponent,
+    MatrixComponent,
 
 
 

@@ -325,15 +325,19 @@ export class AdminoScreenElement {
         this.createShortcutTriggers();
         this.isFocused = true;
         this.directive.cd.markForCheck();
-
+        this.onFocus();
     }
+    onFocus() { };
     blurEvent() {
-
         this.clearKeyTriggers();
         this.clearShortcutTriggers();
         this.isFocused = false;
         this.directive.cd.markForCheck();
+        this.onBlur();
+
     }
+    onBlur() { };
+
     setValue(value) {
         this.control.setValue(value);
     }

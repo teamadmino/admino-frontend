@@ -49,6 +49,8 @@ import { Overlay } from '@angular/cdk/overlay';
 import { DividerComponent } from './elements/divider/divider.component';
 import { TableComponent } from './elements/table/table.component';
 import { MenuComponent } from './elements/menu/menu.component';
+import { MatrixComponent } from './elements/matrix/matrix.component';
+import { HttpClient } from '@angular/common/http';
 
 
 const componentMapper = {
@@ -82,6 +84,7 @@ const componentMapper = {
   mapeditor: MapeditorComponent,
   divider: DividerComponent,
   menu: MenuComponent,
+  matrix: MatrixComponent,
   // supertable: SuperTableComponent,
 
 };
@@ -120,7 +123,10 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   constructor(private resolver: ComponentFactoryResolver, private container: ViewContainerRef, public cd: ChangeDetectorRef,
     public ts: AdminoThemeService,
-    public chartThemeService: ThemeService, public el: ElementRef, public sanitizer: DomSanitizer, public overlay: Overlay, public config: ConfigService) {
+    public chartThemeService: ThemeService, public el: ElementRef,
+    public sanitizer: DomSanitizer,
+    public overlay: Overlay,
+    public config: ConfigService, public http: HttpClient) {
   }
 
 

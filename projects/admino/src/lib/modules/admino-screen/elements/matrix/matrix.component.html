@@ -1,0 +1,23 @@
+<div class="info">
+    <p [id]="this.idPrefix+'timer1'">timer1</p>
+    <p [id]="this.idPrefix+'log1'">log1</p>
+    <p [id]="this.idPrefix+'log2'">log2</p>
+    <p [id]="this.idPrefix+'log3'" id="this.idPrefix">log3</p>
+
+    <p>{{this.viewportHeight}}</p>
+    <p>{{this.viewportWidth}}</p>
+    <p>{{this.isFocused}}</p>
+</div>
+
+<!-- <div class="testdiv"></div> -->
+<div class="wrapper" [ngClass]="{'matrix-focused': this.isFocused}" adminoResizeObserver [debounceAdminoResize]="100"
+    (adminoResize)="onResize()" tabindex="0" #focusRef (mousewheel)="mouseWheelEvent($event)">
+
+    <div class="fakescroller" (scroll)="scrollEvent($event)" #fakeScrollerRef>
+        <div class="fakecontent"></div>
+    </div>
+
+    <div [id]="this.idPrefix+'matrixdiv'" class="matrix">
+    </div>
+
+</div>
