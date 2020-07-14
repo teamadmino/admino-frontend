@@ -145,7 +145,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   mouseWheelEvent(evt) {
-    this.fakeScrollerRef.nativeElement.scrollTop += evt.deltaY;
+    //this.fakeScrollerRef.nativeElement.scrollTop += evt.deltaY;
   }
 
   /////////////////////////////////////////
