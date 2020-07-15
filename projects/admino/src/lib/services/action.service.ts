@@ -122,11 +122,16 @@ export class AdminoActionService {
       let screenValue: any = {};
       // screenValue = actionEvent.openScreens ? cloneDeep(actionEvent.openScreens[0].group.value) : null;
       let a = 0;
+
+      // needed for keeping undefined values
+      const replacer = (key, value) =>
+        typeof value === 'undefined' ? null : value;
+
       if (actionEvent.openScreens) {
         for (const scr of actionEvent.openScreens) {
           const id = scr.screenElement.id ? scr.screenElement.id : 'ID_WAS_NOT_PROVIDED_' + a.toString();
           // console.log(JSON.stringify(scr.group.value))
-          screenValue[id] = JSON.parse(JSON.stringify(this.addTypesToValueKeys(scr.group.value, scr.screenElement)));
+          screenValue[id] = JSON.parse(JSON.stringify(this.addTypesToValueKeys(scr.group.getRawValue(), scr.screenElement), replacer));
           a++;
         }
       }
