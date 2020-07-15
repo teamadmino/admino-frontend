@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AdminoScreenElement } from '../admino-screen-element';
-import { HttpResponse } from '@angular/common/http';
-import { v4 as uuidv4 } from 'uuid';
-import { takeUntil, timeout } from 'rxjs/operators';
-import { ScreenElementChange } from '../../admino-screen.interfaces';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {AdminoScreenElement} from '../admino-screen-element';
+import {HttpResponse} from '@angular/common/http';
+import {v4 as uuidv4} from 'uuid';
+import {takeUntil, timeout} from 'rxjs/operators';
+import {ScreenElementChange} from '../../admino-screen.interfaces';
 
 @Component({
   selector: 'admino-matrix',
@@ -11,7 +11,8 @@ import { ScreenElementChange } from '../../admino-screen.interfaces';
   styleUrls: ['./matrix.component.scss']
 })
 export class MatrixComponent extends AdminoScreenElement implements OnInit {
-  @ViewChild('fakeScrollerRef', { static: true }) fakeScrollerRef: ElementRef;
+
+  @ViewChild('fakeScrollerRef', {static: true}) fakeScrollerRef: ElementRef;
 
   idPrefix;
   defaultSetup = {
@@ -80,8 +81,6 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   timeouts = [];
 
 
-
-
   // Hooks
   ngOnInit() {
     this.idPrefix = 'admino_' + this.element.id + '_' + uuidv4() + '_';
@@ -102,9 +101,11 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     this.initializeWorkerCells();
   }
 
-  onFocus() { }
+  onFocus() {
+  }
 
-  onBlur() { }
+  onBlur() {
+  }
 
   onChange(changes: { [id: string]: ScreenElementChange; }) {
     if (changes.setup) {
@@ -138,12 +139,15 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     this.viewportHeight = this.focusElRef.nativeElement.clientHeight;
 
   }
+
   scrollEvent(evt) {
     // console.log(evt);
   }
+
   mouseWheelEvent(evt) {
-    this.fakeScrollerRef.nativeElement.scrollTop += evt.deltaY;
+    //this.fakeScrollerRef.nativeElement.scrollTop += evt.deltaY;
   }
+
   /////////////////////////////////////////
   clearTimeouts() {
     this.timeouts.forEach((timeout) => {
@@ -151,6 +155,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     });
     this.timeouts = [];
   }
+
   updateVariables() {
     this.visibleRow = this.setup.visibleRow;
     this.visibleCol = this.setup.visibleCol;
@@ -166,11 +171,13 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   timer1() {
-    const today = new Date();
-    document.getElementById(this.idPrefix + 'timer1').innerHTML = Date.now() + ' - ' + this.format05d(this.global) + ' cell/sec'
-      + ' / cellWrite ' + this.writeCellCounter;
+    // document.getElementById(this.idPrefix + 'timer1').innerHTML = Date.now() + ' - ' + this.format05d(this.global) + ' cell/sec'
+    //   + ' / cellWrite ' + this.writeCellCounter;
+    console.log(Date.now() + ' - ' + this.format05d(this.global) + ' cell/sec'
+      + ' / cellWrite ' + this.writeCellCounter);
     this.global = 0;
   }
+
   setupMatrix() {
     const matrixdiv = document.getElementById(this.idPrefix + 'matrixdiv');
     matrixdiv.style.background = '#7777BB';
@@ -195,6 +202,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     }
     matrixdiv.innerHTML = m;
   }
+
   setupListeners() {
     this.focusElRef.nativeElement.addEventListener('keydown', this.boundKeydownHandler);
     // this.focusElRef.nativeElement.addEventListener('mouseover', this.boundKeydownHandler);
@@ -268,7 +276,6 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   };
 
 
-
   initializeWorkerCells() {
     for (let r = 0; r < this.visibleRow; r++) {
       this.workerCellStatus[r] = new Array(this.visibleCol);
@@ -304,7 +311,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
       size: this.totalRow
     };
     const requestJson = JSON.stringify(request);
-    const subscription = this.directive.http.post(this.backend, request, { headers: { 'Content-Type': 'application/json; charset=utf-8' } })
+    const subscription = this.directive.http.post(this.backend, request, {headers: {'Content-Type': 'application/json; charset=utf-8'}})
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (response: any) => {
@@ -321,11 +328,11 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
                 this.cellData[r + ':' + c] = data[index++];
               }
             }
-            document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received: ' + response.area;
-            console.log('Response received');
+            //document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received: ' + response.area;
+            console.log('Response received' + response.area);
           } catch (e) {
             this.cellData = {};
-            document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received, error: ' + e;
+            //document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received, error: ' + e;
             console.log('Response received, error: ' + e);
           }
           this.pendingRequest = false;
@@ -342,7 +349,8 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     // }, 1000);
     // this.timeouts.push(timeout);
 
-    document.getElementById(this.idPrefix + 'log2').innerHTML = 'Request sent: ' + requestJson;
+    //document.getElementById(this.idPrefix + 'log2').innerHTML = 'Request sent: ' + requestJson;
+    console.log('Request sent: ' + requestJson);
   }
 
   writeCell(r, c) {
@@ -448,7 +456,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     } else if (this.navigationRow < this.visibleRow - 1 - this.distance) {
       const fromNavigationRow = this.navigationRow;
       this.navigationRow = this.visibleRow - 1 - this.distance;
-      if (this.navigationRow + this.frameRow > this.totalRow) { this.navigationRow = this.totalRow - this.frameRow; }
+      if (this.navigationRow + this.frameRow > this.totalRow) {
+        this.navigationRow = this.totalRow - this.frameRow;
+      }
       this.writeCell(fromNavigationRow, this.navigationCol);
     } else if (this.frameRow + this.visibleRow - 1 + this.visibleRow - 1 <= this.totalRow) {
       this.frameRow += this.visibleRow - 1;
@@ -456,7 +466,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     } else {
       const fromNavigationRow = this.navigationRow;
       let newPos = this.navigationRow + this.frameRow + this.visibleRow - 1;
-      if (newPos > this.totalRow) { newPos = this.totalRow; }
+      if (newPos > this.totalRow) {
+        newPos = this.totalRow;
+      }
       this.frameRow = this.totalRow - this.visibleRow + 1;
       this.navigationRow = newPos - this.frameRow;
       this.writeCell(fromNavigationRow, this.navigationCol);
@@ -466,14 +478,18 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellAltPageDown() {
-    if (this.navigationCol + this.frameCol === this.totalCol) { return; }
+    if (this.navigationCol + this.frameCol === this.totalCol) {
+      return;
+    }
     if (this.navigationCol + this.frameCol + this.visibleCol - 1 >= this.totalCol) {
       this.navigationCellAltEnd();
       return;
     } else if (this.navigationCol < this.visibleCol - 1 - this.distance) {
       const fromNavigationCol = this.navigationCol;
       this.navigationCol = this.visibleCol - 1 - this.distance;
-      if (this.navigationCol + this.frameCol > this.totalCol) { this.navigationCol = this.totalCol - this.frameCol; }
+      if (this.navigationCol + this.frameCol > this.totalCol) {
+        this.navigationCol = this.totalCol - this.frameCol;
+      }
       this.writeCell(this.navigationRow, fromNavigationCol);
     } else if (this.frameCol + this.visibleCol - 1 + this.visibleCol - 1 <= this.totalCol) {
       this.frameCol += this.visibleCol - 1;
@@ -481,7 +497,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     } else {
       const fromNavigationCol = this.navigationCol;
       let newPos = this.navigationCol + this.frameCol + this.visibleCol - 1;
-      if (newPos > this.totalCol) { newPos = this.totalCol; }
+      if (newPos > this.totalCol) {
+        newPos = this.totalCol;
+      }
       this.frameCol = this.totalCol - this.visibleCol + 1;
       this.navigationCol = newPos - this.frameCol;
       this.writeCell(this.navigationRow, fromNavigationCol);
@@ -491,7 +509,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellUp() {
-    if (this.navigationRow + this.frameRow === 1) { return; }
+    if (this.navigationRow + this.frameRow === 1) {
+      return;
+    }
     if (this.navigationRow > this.distance || this.frameRow === 1) {
       this.navigationRow--;
       this.writeCell(this.navigationRow + 1, this.navigationCol);
@@ -503,14 +523,18 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellAltUp() {
-    if (this.frameRow === 1) { return; }
+    if (this.frameRow === 1) {
+      return;
+    }
     this.frameRow--;
     this.invalidateAll();
     this.writeCell(this.navigationRow, this.navigationCol);
   }
 
   navigationCellPageUp() {
-    if (this.navigationRow + this.frameRow === 1) { return; }
+    if (this.navigationRow + this.frameRow === 1) {
+      return;
+    }
     if (this.navigationRow + this.frameRow - (this.visibleRow - 1) <= 1) {
       this.navigationCellHome();
       return;
@@ -524,7 +548,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     } else {
       const fromNavigationRow = this.navigationRow;
       let newPos = this.navigationRow + this.frameRow - (this.visibleRow - 1);
-      if (newPos < 0) { newPos = 0; }
+      if (newPos < 0) {
+        newPos = 0;
+      }
       this.frameRow = 1;
       this.navigationRow = newPos - this.frameRow;
       this.writeCell(fromNavigationRow, this.navigationCol);
@@ -534,7 +560,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellAltPageUp() {
-    if (this.navigationCol + this.frameCol === 1) { return; }
+    if (this.navigationCol + this.frameCol === 1) {
+      return;
+    }
     if (this.navigationCol + this.frameCol - (this.visibleCol - 1) <= 1) {
       this.navigationCellAltHome();
       return;
@@ -548,7 +576,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     } else {
       const fromNavigationCol = this.navigationCol;
       let newPos = this.navigationCol + this.frameCol - (this.visibleCol - 1);
-      if (newPos < 0) { newPos = 0; }
+      if (newPos < 0) {
+        newPos = 0;
+      }
       this.frameCol = 1;
       this.navigationCol = newPos - this.frameCol;
       this.writeCell(this.navigationRow, fromNavigationCol);
@@ -558,7 +588,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellRight() {
-    if (this.navigationCol + this.frameCol === this.totalCol) { return; }
+    if (this.navigationCol + this.frameCol === this.totalCol) {
+      return;
+    }
     if (this.navigationCol < this.visibleCol - 1 - this.distance || this.frameCol + this.visibleCol > this.totalCol) {
       this.navigationCol++;
       this.writeCell(this.navigationRow, this.navigationCol - 1);
@@ -570,14 +602,18 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellAltRight() {
-    if (this.frameCol + this.visibleCol > this.totalCol) { return; }
+    if (this.frameCol + this.visibleCol > this.totalCol) {
+      return;
+    }
     this.frameCol++;
     this.invalidateAll();
     this.writeCell(this.navigationRow, this.navigationCol);
   }
 
   navigationCellLeft() {
-    if (this.navigationCol + this.frameCol === 1) { return; }
+    if (this.navigationCol + this.frameCol === 1) {
+      return;
+    }
     if (this.navigationCol > this.distance || this.frameCol === 1) {
       this.navigationCol--;
       this.writeCell(this.navigationRow, this.navigationCol + 1);
@@ -589,14 +625,18 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellAltLeft() {
-    if (this.frameCol === 1) { return; }
+    if (this.frameCol === 1) {
+      return;
+    }
     this.frameCol--;
     this.invalidateAll();
     this.writeCell(this.navigationRow, this.navigationCol);
   }
 
   navigationCellHome() {
-    if (this.frameRow + this.navigationRow === 1) { return; }
+    if (this.frameRow + this.navigationRow === 1) {
+      return;
+    }
     const fromNavigationRow = this.navigationRow;
     if (this.frameRow !== 1) {
       this.navigationRow = 0;
@@ -610,7 +650,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellAltHome() {
-    if (this.frameCol + this.navigationCol === 1) { return; }
+    if (this.frameCol + this.navigationCol === 1) {
+      return;
+    }
     const fromNavigationCol = this.navigationCol;
     if (this.frameCol !== 1) {
       this.navigationCol = 0;
@@ -624,13 +666,17 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellEnd() {
-    if (this.frameRow + this.navigationRow === this.totalRow) { return; }
+    if (this.frameRow + this.navigationRow === this.totalRow) {
+      return;
+    }
     const fromNavigationRow = this.navigationRow;
     if (this.frameRow + this.visibleRow - 1 >= this.totalRow) {
       this.navigationRow = this.totalRow - this.frameRow;
     } else {
       this.frameRow = this.totalRow - this.visibleRow + 1;
-      if (this.frameRow < 1) { this.frameRow = 1; }
+      if (this.frameRow < 1) {
+        this.frameRow = 1;
+      }
       this.navigationRow = this.totalRow - this.frameRow;
       this.invalidateAll();
     }
@@ -639,13 +685,17 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   }
 
   navigationCellAltEnd() {
-    if (this.frameCol + this.navigationCol === this.totalCol) { return; }
+    if (this.frameCol + this.navigationCol === this.totalCol) {
+      return;
+    }
     const fromNavigationCol = this.navigationCol;
     if (this.frameCol + this.visibleCol - 1 >= this.totalCol) {
       this.navigationCol = this.totalCol - this.frameCol;
     } else {
       this.frameCol = this.totalCol - this.visibleCol + 1;
-      if (this.frameCol < 1) { this.frameCol = 1; }
+      if (this.frameCol < 1) {
+        this.frameCol = 1;
+      }
       this.navigationCol = this.totalCol - this.frameCol;
       this.invalidateAll();
     }
@@ -657,7 +707,9 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     // click to navigation cell, accepted only if content is valid
     if (this.workerCellStatus[this.navigationRow][this.navigationCol] === this.STATUS_VALID) {
       // return if no changes
-      if (this.selectedRow === this.navigationRow + this.frameRow && this.selectedCol === this.navigationCol + this.frameCol) { return; }
+      if (this.selectedRow === this.navigationRow + this.frameRow && this.selectedCol === this.navigationCol + this.frameCol) {
+        return;
+      }
       // is selectedRow changed?
       if (this.selectedRow !== this.navigationRow + this.frameRow) {
         if (this.frameRow <= this.selectedRow && this.selectedRow < this.frameRow + this.visibleRow) {    // is old selectedRow visible?
@@ -742,12 +794,8 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
       }
     } while (Date.now() - now < 5);
 
-    document.getElementById(this.idPrefix + 'log1').innerHTML = this.format05d(count) + ' cell/microtask';
+    //document.getElementById(this.idPrefix + 'log1').innerHTML = this.format05d(count) + ' cell/microtask';
     this.pendingUpdate = true;
-
-
-
-
 
     const timeout = setTimeout(() => {
       this.asyncRefreshMatrix();
@@ -755,10 +803,5 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     }, 0);
     this.timeouts.push(timeout);
   }
-
-
-
-
-
 
 }

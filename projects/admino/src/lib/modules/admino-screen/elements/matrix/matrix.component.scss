@@ -31,20 +31,22 @@
     //   background-color: yellow;
     // }
 
-    &::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-      //   background-color: transparent;
-      z-index: 2;
-    }
-
     // &::-webkit-scrollbar-thumb {
     //   background-color: red;
     // }
 
-    .fakecontent {
-      height: 1889px;
-    }
+    //-----------------
+    //&::-webkit-scrollbar {
+    //  width: 10px;
+    //  height: 10px;
+    //  //   background-color: transparent;
+    //  z-index: 2;
+    //}
+    //
+    //.fakecontent {
+    //  height: 1889px;
+    //}
+
   }
 
   //   border: 1px solid red;
