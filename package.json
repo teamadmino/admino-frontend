@@ -37,7 +37,7 @@
     "chartjs-plugin-annotation": "^0.5.7",
     "hammerjs": "^2.0.8",
     "html2canvas": "^1.0.0-rc.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "maptalks": "^1.0.0-alpha.6",
     "maptalks.three": "^0.7.1",
     "material-icons": "^0.3.1",
