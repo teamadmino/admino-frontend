@@ -5,6 +5,7 @@ import { map, catchError, delay } from 'rxjs/operators';
 import { Subject, Observable, ObservableInput } from 'rxjs';
 import { AdminoUserService } from './user.service';
 import { AdminoSiteService } from './site.service';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -22,8 +23,8 @@ export class AdminoApiService {
   BROWSER_INFO = '/browserinfo';
   REQUEST = '/request';
   PING = '/ping';
-  tabId = 1;
-  // tabId = uuidv4();
+  // tabId = 1;
+  tabId = uuidv4();
   constructor(private http: HttpClient, private user: AdminoUserService, private site: AdminoSiteService) {
   }
 
