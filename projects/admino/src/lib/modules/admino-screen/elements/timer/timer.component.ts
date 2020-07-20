@@ -5,6 +5,7 @@ import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { AdminoScreenElement } from '../admino-screen-element';
 import { Subject } from 'rxjs';
 
+var globalIncrement = 0;
 @Component({
   selector: 'admino-timer',
   templateUrl: './timer.component.html',
@@ -12,7 +13,7 @@ import { Subject } from 'rxjs';
 })
 export class TimerComponent extends AdminoScreenElement implements OnInit {
 
-  rand = Math.floor(Math.random() * 1000);
+  rand = globalIncrement++;
   count = 0;
   timeoutHelper;
   ngOnInit() {
