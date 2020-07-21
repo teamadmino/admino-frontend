@@ -255,7 +255,11 @@ export class AdminoScreenElement {
     }
 
     handleAction(action: AdminoAction, overrideKey: any = null) {
+
         return new Promise((resolve, reject) => {
+            if (this.rootScreenComponent.blockingActionRunning) {
+                return;
+            }
             const actionSub: ActionSubscription = {};
             this.activeActionSubscriptions.push(actionSub);
             actionSub.actionEvent = {

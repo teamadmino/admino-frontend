@@ -231,7 +231,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   removeEventsFromConfig(config) {
     for (const key of Object.keys(config)) {
       // || key === 'value' 
-      if (key.startsWith('_') || key === 'forceRefresh') {
+      if (key.startsWith('_') || key === 'forceRefresh' || key === 'value') {
         delete config[key];
       }
     }
@@ -285,8 +285,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // needs to solve group
     this.valueChangeTimeout = setTimeout(() => {
       this.valueChangeEvent.next(value);
-      this.element.value = cloneDeep(value);
-      this.activeElementConfig.value = cloneDeep(value);
+      // this.element.value = cloneDeep(value);
+      // this.activeElementConfig.value = cloneDeep(value);
       if (this.activeElementConfig.changeAction) {
         if (this.activeElementConfig.changeAction.filterValue === undefined) {
           const action = cloneDeep(this.activeElementConfig.changeAction);
