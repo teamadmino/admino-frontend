@@ -1,5 +1,9 @@
 <div class="admino-menu">
-    <admino-menu-item [rootComponent]="this" (clickEvent)="this.clicked($event)"
-        *ngFor="let menu of menus; trackBy:trackByFn" [menuItem]="menu">
-    </admino-menu-item>
+  <admino-menu-item
+    [rootComponent]="this"
+    (clickEvent)="this.clicked($event)"
+    *ngFor="let menu of menus; trackBy: trackByFn"
+    [menuItem]="menu"
+  >
+  </admino-menu-item>
 </div>

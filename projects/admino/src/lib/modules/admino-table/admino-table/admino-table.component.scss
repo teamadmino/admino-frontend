@@ -72,7 +72,6 @@
     }
   }
 
-
   // &::-webkit-scrollbar-track {
   //   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   //   // background-color: mat-color($primary, card);
@@ -92,7 +91,6 @@
     // height: calc(100% - 51px);
 
     .scroller {
-
       // background: green !important;
       width: 10px;
       height: 100%;
@@ -106,7 +104,6 @@
         width: 10px;
         height: 10px;
       }
-
     }
 
     .atable {
@@ -161,12 +158,13 @@
           // left: 0;
           min-width: 100%;
 
-          &.rowselected {}
+          &.rowselected {
+          }
 
           &.evenrow {
             .acell {
               .rowbg {
-                content: '';
+                content: "";
                 width: 100%;
                 height: 100%;
                 position: absolute;
@@ -207,7 +205,8 @@
               height: 100%;
               width: 100%;
               background: red;
-              transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+              transition: width 0.3s ease-in-out,
+                background-color 0.3s ease-in-out;
             }
 
             &.first {
@@ -231,12 +230,11 @@
               white-space: pre;
             }
 
-            &.columnselected {}
+            &.columnselected {
+            }
           }
         }
-
       }
-
     }
   }
 }

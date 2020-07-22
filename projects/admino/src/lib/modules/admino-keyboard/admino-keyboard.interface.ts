@@ -8,9 +8,7 @@ export interface KeyboardColumn {
 export interface KeyboardRow {
   keys: KeyboardKey[];
   height?: number;
-
 }
-
 
 export interface KeyboardKey {
   label?: string;

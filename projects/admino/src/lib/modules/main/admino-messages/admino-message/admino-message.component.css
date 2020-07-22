@@ -1,13 +1,8 @@
 .admino-message {
-
   border-bottom: 1px solid red;
   box-shadow: none !important;
   cursor: pointer;
 }
-
-
-
-
 
 mat-card-title {
   font-size: 14px;

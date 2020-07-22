@@ -1,30 +1,44 @@
-import { AdminoThemeService } from './../../services/theme.service';
-import { FormatService } from './../../services/format.service';
-import { AdminoGridComponent } from './../admino-grid/admino-grid/admino-grid.component';
-import { cloneDeep } from 'lodash';
-import { takeUntil } from 'rxjs/operators';
-import { AdminoActionService } from './../../services/action.service';
-import { AdminoApiService } from './../../services/api.service';
-import { ScreenElementScreen, ScreenElement } from './admino-screen.interfaces';
-import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, OnDestroy, HostBinding, ViewChild, HostListener, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AdminoAction, ActionEvent } from '../../interfaces';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { isObject } from '../../utils/isobject';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { AdminoThemeService } from "./../../services/theme.service";
+import { FormatService } from "./../../services/format.service";
+import { AdminoGridComponent } from "./../admino-grid/admino-grid/admino-grid.component";
+import { cloneDeep } from "lodash";
+import { takeUntil } from "rxjs/operators";
+import { AdminoActionService } from "./../../services/action.service";
+import { AdminoApiService } from "./../../services/api.service";
+import { ScreenElementScreen, ScreenElement } from "./admino-screen.interfaces";
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectorRef,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  HostBinding,
+  ViewChild,
+  HostListener,
+  QueryList,
+  ViewChildren,
+  AfterViewInit,
+} from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { AdminoAction, ActionEvent } from "../../interfaces";
+import { Subject, BehaviorSubject } from "rxjs";
+import { isObject } from "../../utils/isobject";
+import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
+import { Overlay } from "@angular/cdk/overlay";
+import { ComponentPortal } from "@angular/cdk/portal";
 
 @Component({
-  selector: 'admino-screen',
-  templateUrl: './admino-screen.component.html',
-  styleUrls: ['./admino-screen.component.scss']
+  selector: "admino-screen",
+  templateUrl: "./admino-screen.component.html",
+  styleUrls: ["./admino-screen.component.scss"],
 })
 export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   private ngUnsubscribe: Subject<null> = new Subject();
   _screenElement: ScreenElementScreen = {};
 
-  @ViewChildren('screenElementRef') screenElementRefs: QueryList<any>;
+  @ViewChildren("screenElementRef") screenElementRefs: QueryList<any>;
 
   @Input() public set screenElement(element: ScreenElementScreen) {
     this._screenElement = element;
@@ -40,11 +54,11 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() rootScreenComponent: AdminoScreenComponent = this;
   @Input() parentScreenComponent: AdminoScreenComponent = this;
 
-  id = '';
+  id = "";
   pauseValueChange = false;
 
   public pauseEvent: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public focusEvent: BehaviorSubject<string> = new BehaviorSubject('');
+  public focusEvent: BehaviorSubject<string> = new BehaviorSubject("");
 
   _blockingActionRunning = 0;
   @Input() public set blockingActionRunning(val: number) {
@@ -62,11 +76,10 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
 
   popups = [];
 
-  @ViewChild(AdminoGridComponent, { static: false }) adminoGrid: AdminoGridComponent;
+  @ViewChild(AdminoGridComponent, { static: false })
+  adminoGrid: AdminoGridComponent;
 
-
-
-  @HostListener('dblclick', ['$event'])
+  @HostListener("dblclick", ["$event"])
   dblclck(e: MouseEvent) {
     if (this.screenElement.allowEdit) {
       this.editMode = !this.editMode;
@@ -83,26 +96,30 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   //   return this.sanitizer.bypassSecurityTrustStyle(this.getStyle());
   // }
 
-  constructor(public fb: FormBuilder, public api: AdminoApiService,
+  constructor(
+    public fb: FormBuilder,
+    public api: AdminoApiService,
     public as: AdminoActionService,
-    private cd: ChangeDetectorRef, public ts: AdminoThemeService, private sanitizer: DomSanitizer, private overlay: Overlay) { }
+    private cd: ChangeDetectorRef,
+    public ts: AdminoThemeService,
+    private sanitizer: DomSanitizer,
+    private overlay: Overlay
+  ) {}
 
   ngOnInit() {
-    this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
-      this.valueChange.next(value);
-    });
-
+    this.group.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((value) => {
+        this.valueChange.next(value);
+      });
   }
 
-
-
-
   ngAfterViewInit() {
-    this.id = this.parentScreenComponent !== this ? this.parentScreenComponent.id : '';
+    this.id =
+      this.parentScreenComponent !== this ? this.parentScreenComponent.id : "";
     if (this.screenElement.id) {
-      this.id += '.' + this.screenElement.id.toString();
+      this.id += "." + this.screenElement.id.toString();
     }
-
   }
   // getStyle() {
   //   if (this.screenElement && this.screenElement.style) {
@@ -115,8 +132,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   //   }
   //   return '';
   // }
-  onSubmit(event) {
-  }
+  onSubmit(event) {}
 
   update(element: ScreenElementScreen, replace: boolean = false) {
     // console.log(config);
@@ -144,31 +160,30 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   focusElement(el) {
     this.focusEvent.next(el);
   }
-  getElementsOfType(type: 'main' | 'popup' | 'popup2' | 'timer') {
+  getElementsOfType(type: "main" | "popup" | "popup2" | "timer") {
     if (!this.screenElement || !this.screenElement.elements) {
       return [];
     }
-    return this.screenElement.elements.filter((el: any) => {
-
-      if (type === 'main') {
-        return !el.isPopup && el.type !== 'timer' && !el.popup;
-      } else if (type === 'popup') {
-        return el.type === 'group' && el.isPopup;
-      } else if (type === 'popup2') {
-        return el.type === 'group' && el.popup;
-      } else if (type === 'timer') {
-        return el.type === 'timer';
-      }
-
-    }) || [];
+    return (
+      this.screenElement.elements.filter((el: any) => {
+        if (type === "main") {
+          return !el.isPopup && el.type !== "timer" && !el.popup;
+        } else if (type === "popup") {
+          return el.type === "group" && el.isPopup;
+        } else if (type === "popup2") {
+          return el.type === "group" && el.popup;
+        } else if (type === "timer") {
+          return el.type === "timer";
+        }
+      }) || []
+    );
   }
-
 
   handleAction(actionEvent: ActionEvent) {
     actionEvent.openScreens = this.allOpenScreens;
     actionEvent.screenConfig = this.mainScreenComponent.screenElement;
     if (actionEvent.action && actionEvent.action.includeSchema) {
-      console.log(actionEvent.action.includeScreenshot)
+      console.log(actionEvent.action.includeScreenshot);
       console.log(this.screenElementRefs);
     }
     return this.as.handleAction(actionEvent);
@@ -178,16 +193,21 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     if (isObject(target) && isObject(source)) {
       for (const key in source) {
         if (isObject(source[key])) {
-          if (key === 'value' || key.split('__')[1] === 'replace') {
+          if (key === "value" || key.split("__")[1] === "replace") {
             target[key] = source[key];
           } else {
-            if (!target[key]) { Object.assign(target, { [key]: {} }); }
+            if (!target[key]) {
+              Object.assign(target, { [key]: {} });
+            }
             target[key] = this.mergeConfig(target[key], source[key]);
           }
         } else if (Array.isArray(source[key])) {
-          if (key.split('__')[1] === 'replace') {
-            target[key.split('__')[0]] = source[key];
-          } else if ((source[key][0] && source[key][0].id !== undefined) || key === 'elements') {
+          if (key.split("__")[1] === "replace") {
+            target[key.split("__")[0]] = source[key];
+          } else if (
+            (source[key][0] && source[key][0].id !== undefined) ||
+            key === "elements"
+          ) {
             target[key] = this.mergeArrays(target[key], source[key]);
           } else {
             target[key] = source[key];
@@ -231,16 +251,19 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   getPopupClasses(el) {
     const arr = [];
     if (el.verticalPosition) {
-      arr.push('vertical-' + el.verticalPosition);
+      arr.push("vertical-" + el.verticalPosition);
     }
     if (el.horizontalPosition) {
-      arr.push('horizontal-' + el.horizontalPosition);
+      arr.push("horizontal-" + el.horizontalPosition);
     }
     return arr;
   }
   closePopup(e: ScreenElementScreen) {
     if (e.allowClose) {
-      this.screenElement.elements.splice(this.screenElement.elements.indexOf(e), 1);
+      this.screenElement.elements.splice(
+        this.screenElement.elements.indexOf(e),
+        1
+      );
       this.update(this.screenElement);
     }
   }
@@ -248,15 +271,19 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.screenElement.isFluidContainer !== undefined) {
       return this.screenElement.isFluidContainer;
     } else {
-
-      if (this.parentScreenComponent.screenElement.isFluidContainer !== undefined) {
+      if (
+        this.parentScreenComponent.screenElement.isFluidContainer !== undefined
+      ) {
         return this.parentScreenComponent.screenElement.isFluidContainer;
       }
       return false;
     }
   }
   trapFocus() {
-    if (this.screenElement.allowTabOut !== undefined && this.screenElement.allowTabOut === false) {
+    if (
+      this.screenElement.allowTabOut !== undefined &&
+      this.screenElement.allowTabOut === false
+    ) {
       return true;
     }
     if (this.screenElement.allowTabOut) {
@@ -271,20 +298,18 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
   updatePopups() {
-    const popups = this.getElementsOfType('popup2');
+    const popups = this.getElementsOfType("popup2");
     popups.forEach((popupDef: ScreenElementScreen) => {
       const existing = this.popups.find((popup) => {
         return popup.popupDef.id === popupDef.id;
-      })
+      });
       if (existing) {
-
       } else {
         const popupRef = this.createPopupRef(popupDef.popup);
-        this.popups.push({ popupDef, popupRef })
+        this.popups.push({ popupDef, popupRef });
       }
-    })
+    });
   }
 
   createPopupRef(popupOptions: any) {
@@ -296,33 +321,36 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     // } else {
     // }
 
-
     const overlayRef = this.overlay.create({
-      width: '200px',
-      height: '300px',
-      positionStrategy: this.overlay.position().flexibleConnectedTo(connectedTo).withPositions([{
-        originX: 'start',
-        originY: 'bottom',
-        overlayX: 'start',
-        overlayY: 'top',
-      }, {
-        originX: 'start',
-        originY: 'top',
-        overlayX: 'start',
-        overlayY: 'bottom',
-      }]).withPush(popupOptions.enablePush),
-      hasBackdrop: true
-    }
-    );
+      width: "200px",
+      height: "300px",
+      positionStrategy: this.overlay
+        .position()
+        .flexibleConnectedTo(connectedTo)
+        .withPositions([
+          {
+            originX: "start",
+            originY: "bottom",
+            overlayX: "start",
+            overlayY: "top",
+          },
+          {
+            originX: "start",
+            originY: "top",
+            overlayX: "start",
+            overlayY: "bottom",
+          },
+        ])
+        .withPush(popupOptions.enablePush),
+      hasBackdrop: true,
+    });
     overlayRef.backdropClick().subscribe((params) => {
       overlayRef.detach();
       overlayRef.dispose();
-    })
+    });
     const userProfilePortal = new ComponentPortal(null);
     return overlayRef.attach(userProfilePortal);
   }
-
-
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();

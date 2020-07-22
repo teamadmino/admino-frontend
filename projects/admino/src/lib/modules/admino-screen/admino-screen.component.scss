@@ -23,7 +23,6 @@ admino-preloader {
       pointer-events: none;
     }
 
-
     position: absolute;
     overflow: hidden;
     overflow-y: auto;
@@ -73,13 +72,12 @@ admino-preloader {
 
     &::before {
       opacity: 0.5;
-      content: '';
+      content: "";
       width: 100%;
       height: 100%;
       position: fixed;
       top: 0;
     }
-
   }
 }
 
@@ -111,10 +109,9 @@ form {
     pointer-events: none !important;
     user-select: none !important;
 
-    &>* {
+    & > * {
       pointer-events: none !important;
       user-select: none !important;
-
     }
   }
 

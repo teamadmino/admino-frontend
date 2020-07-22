@@ -1,8 +1,8 @@
-import { Subject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Subject } from "rxjs";
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AdminoTooltipService {
   currentId = null;
@@ -11,8 +11,7 @@ export class AdminoTooltipService {
 
   tooltipChange: Subject<any> = new Subject();
 
-  constructor() { }
-
+  constructor() {}
 
   set(id: string, content: any, style: any) {
     this.currentId = id;
@@ -29,5 +28,4 @@ export class AdminoTooltipService {
       this.tooltipChange.next();
     }
   }
-
 }

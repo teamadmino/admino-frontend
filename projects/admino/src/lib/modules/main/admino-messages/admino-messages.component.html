@@ -1,21 +1,20 @@
 <!-- (click)="this.playAnim=!this.playAnim" -->
 <div class="d-flex flex-column h-100">
-    <div class="container-fluid account-info-wrapper d-flex align-items-center">
-        <div class="title-row w-100 d-flex align-items-center">
-            <h6 class="c-primary d-inline-block">
-                Értesítések
-            </h6>
-            <div class="fill-space"></div>
-            <button mat-icon-button>
-                <mat-icon class=" c-fg-secondary-text" [inline]='true'>edit</mat-icon>
-            </button>
-        </div>
+  <div class="container-fluid account-info-wrapper d-flex align-items-center">
+    <div class="title-row w-100 d-flex align-items-center">
+      <h6 class="c-primary d-inline-block">
+        Értesítések
+      </h6>
+      <div class="fill-space"></div>
+      <button mat-icon-button>
+        <mat-icon class="c-fg-secondary-text" [inline]="true">edit</mat-icon>
+      </button>
     </div>
-    <div class="messages-wrapper h-100  flex-grow-1 d-flex flex-column pt-4">
-
-        <admino-message [message]='message' *ngFor="let message of messages"></admino-message>
-
-    </div>
-
-
+  </div>
+  <div class="messages-wrapper h-100 flex-grow-1 d-flex flex-column pt-4">
+    <admino-message
+      [message]="message"
+      *ngFor="let message of messages"
+    ></admino-message>
+  </div>
 </div>

@@ -1,17 +1,28 @@
 <div class="login">
-    <!-- <img class="logo" src="assets/fbzlogo.png" alt=""> -->
-    <form [formGroup]="formGroup" #form novalidate>
-        <mat-form-field appearance="outline">
-            <mat-label>Dolgozó kód</mat-label>
-            <input matInput [type]="'number'" formControlName="dolgozo" (input)="input($event)" #focusRef
-                [readonly]="scannerService.keyboardMode">
-            <mat-error
-                *ngIf="this.formGroup.get('dolgozo').hasError('validDolgozo') && this.formSubmitted && !this.formGroup.get('dolgozo').hasError('minlength')">
-                Hibás
-                azonosító
-            </mat-error>
-            <mat-error *ngIf="this.formGroup.get('dolgozo').hasError('minlength') ">Minimum 6 karakter
-            </mat-error>
-        </mat-form-field>
-    </form>
+  <!-- <img class="logo" src="assets/fbzlogo.png" alt=""> -->
+  <form [formGroup]="formGroup" #form novalidate>
+    <mat-form-field appearance="outline">
+      <mat-label>Dolgozó kód</mat-label>
+      <input
+        matInput
+        [type]="'number'"
+        formControlName="dolgozo"
+        (input)="input($event)"
+        #focusRef
+        [readonly]="scannerService.keyboardMode"
+      />
+      <mat-error
+        *ngIf="
+          this.formGroup.get('dolgozo').hasError('validDolgozo') &&
+          this.formSubmitted &&
+          !this.formGroup.get('dolgozo').hasError('minlength')
+        "
+      >
+        Hibás azonosító
+      </mat-error>
+      <mat-error *ngIf="this.formGroup.get('dolgozo').hasError('minlength')"
+        >Minimum 6 karakter
+      </mat-error>
+    </mat-form-field>
+  </form>
 </div>

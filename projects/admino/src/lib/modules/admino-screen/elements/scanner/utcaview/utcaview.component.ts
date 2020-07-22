@@ -1,22 +1,32 @@
-import { AdminoKeyboardComponent } from './../../../../admino-keyboard/admino-keyboard/admino-keyboard.component';
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
-import { FormControl, FormGroup, AbstractControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
-import { ScannerView } from '../scannerview';
-import { MatAutocompleteTrigger } from '@angular/material';
-import { layout2 } from './../../../../admino-keyboard/admino-keyboard.layouts';
+import { AdminoKeyboardComponent } from "./../../../../admino-keyboard/admino-keyboard/admino-keyboard.component";
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  HostListener,
+} from "@angular/core";
+import { FormControl, FormGroup, AbstractControl } from "@angular/forms";
+import { Observable } from "rxjs";
+import { startWith, map } from "rxjs/operators";
+import { ScannerView } from "../scannerview";
+import { MatAutocompleteTrigger } from "@angular/material";
+import { layout2 } from "./../../../../admino-keyboard/admino-keyboard.layouts";
 
 @Component({
-  selector: 'admino-utcaview',
-  templateUrl: './utcaview.component.html',
-  styleUrls: ['./utcaview.component.scss']
+  selector: "admino-utcaview",
+  templateUrl: "./utcaview.component.html",
+  styleUrls: ["./utcaview.component.scss"],
 })
-export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewInit {
+export class UtcaviewComponent extends ScannerView
+  implements OnInit, AfterViewInit {
   // @ViewChild('utcaRef', { static: true, read: ElementRef }) utcaRef: ElementRef;
   // @ViewChild('triggerUtca', { static: true, read: MatAutocompleteTrigger }) triggerUtcaRef: MatAutocompleteTrigger;
   control = new FormControl(null, this.validateUtca.bind(this));
-  @ViewChild('keyboardRef', { static: true, read: AdminoKeyboardComponent }) keyboardRef: AdminoKeyboardComponent;
+  @ViewChild("keyboardRef", { static: true, read: AdminoKeyboardComponent })
+  keyboardRef: AdminoKeyboardComponent;
 
   filteredUtcak: Observable<any[]>;
 
@@ -49,10 +59,13 @@ export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewI
   }
   keyEvent(char) {
     this.scannerService.logActivity();
-    const currentval = this.control.value !== null ? this.control.value.toString() : '';
-    if (char === 'Backspace') {
+    const currentval =
+      this.control.value !== null ? this.control.value.toString() : "";
+    if (char === "Backspace") {
       if (currentval !== null && currentval.toString().length > 0) {
-        this.control.setValue(currentval.toString().slice(0, currentval.toString().length - 1));
+        this.control.setValue(
+          currentval.toString().slice(0, currentval.toString().length - 1)
+        );
       }
     } else if (this.isNumber(char)) {
       // if (this.getAvailableCharaters().indexOf(parseInt(char, 10)) > -1) {
@@ -63,11 +76,9 @@ export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewI
       } else {
         this.control.setValue(char);
       }
-
     }
     this.onUtcaChanged();
   }
-
 
   // handleInput(e, maxlength) {
   //   if (e.target.value !== undefined && e.target.value !== null &&
@@ -77,7 +88,6 @@ export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewI
   //   }
   //   this.onUtcaChanged();
   // }
-
 
   ngAfterViewInit() {
     // this.utcaRef.nativeElement.focus();
@@ -104,31 +114,35 @@ export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewI
     this.keyboardRef.availableCharacters = this.availableCharacters;
     this.keyboardRef.updateAvailable();
     this.scannerService.selectedFakk = null;
-
   }
 
   getAvailableCharaters() {
-    const nextCharNum = this.control.value !== undefined && this.control.value !== null ? this.control.value.length : 0;
+    const nextCharNum =
+      this.control.value !== undefined && this.control.value !== null
+        ? this.control.value.length
+        : 0;
     const possibleValues = [];
 
-    this.scannerService.utcak.filter((utca) => {
-      if (this.control.value !== undefined && this.control.value !== null) {
-        return utca.utca.toString().startsWith(this.control.value.toString());
-      } else {
-        return true;
-      }
-    }).forEach((utca) => {
-      // if(utca.utca[nextCharNum]);
-      if (utca.utca !== undefined) {
-        const char = utca.utca.toString()[nextCharNum];
-        if (char !== undefined) {
-          const parsedChar = parseInt(char, 10);
-          if (possibleValues.indexOf(parsedChar) < 0) {
-            possibleValues.push(parsedChar);
+    this.scannerService.utcak
+      .filter((utca) => {
+        if (this.control.value !== undefined && this.control.value !== null) {
+          return utca.utca.toString().startsWith(this.control.value.toString());
+        } else {
+          return true;
+        }
+      })
+      .forEach((utca) => {
+        // if(utca.utca[nextCharNum]);
+        if (utca.utca !== undefined) {
+          const char = utca.utca.toString()[nextCharNum];
+          if (char !== undefined) {
+            const parsedChar = parseInt(char, 10);
+            if (possibleValues.indexOf(parsedChar) < 0) {
+              possibleValues.push(parsedChar);
+            }
           }
         }
-      }
-    });
+      });
     return possibleValues;
   }
 
@@ -136,9 +150,15 @@ export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewI
     if (utca === undefined || utca === null) {
       return false;
     }
-    const found = this.scannerService.utcak && this.scannerService.utcak.find((_utca) => {
-      return _utca.utca !== null && _utca.utca !== undefined && _utca.utca.toString() === utca.toString();
-    });
+    const found =
+      this.scannerService.utcak &&
+      this.scannerService.utcak.find((_utca) => {
+        return (
+          _utca.utca !== null &&
+          _utca.utca !== undefined &&
+          _utca.utca.toString() === utca.toString()
+        );
+      });
     return found;
   }
 
@@ -159,19 +179,19 @@ export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewI
       return [];
     }
     const filterValue = value;
-    return this.scannerService.utcak.filter(option => option.utca.toString().includes(filterValue.toString()));
+    return this.scannerService.utcak.filter((option) =>
+      option.utca.toString().includes(filterValue.toString())
+    );
   }
   // displayWith(value) {
   //   return (value) => { return value + 100000 }
   // }
 
   validateUtca(control: AbstractControl) {
-
     if (this.utcaExist(control.value)) {
       return null;
     } else {
-      return { validUtca: true }
+      return { validUtca: true };
     }
   }
-
 }

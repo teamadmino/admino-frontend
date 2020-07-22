@@ -1,60 +1,111 @@
-<admino-preloader *ngIf=" blockingActionRunning===2"></admino-preloader>
-<form [formGroup]="group" class="admino-screen "
-    [ngClass]="{'blocked': blockingActionRunning===1 || blockingActionRunning===2, 'loading':blockingActionRunning===2}"
-    (submit)="onSubmit($event)" *ngIf="screenElement">
-
-    <div class="scroll-area" [cdkTrapFocus]="trapFocus()">
-        <div class="screen-container"
-            [ngClass]="{'container-fluid': isFluidContainer(), 'container':!isFluidContainer()}"
-            [ngStyle]="screenElement.innerStyle">
-
-            <admino-grid [allowEdit]="_screenElement.allowEdit" [editMode]="this.editMode" adminoTrapFocus
-                [adminoTrapFocus]="this.rootScreenComponent===this"
-                [colnum]="_screenElement.colNum!==undefined?_screenElement.colNum:12" [inline]="screenElement.inline"
-                [gridTemplateRows]="screenElement.gridTemplateRows">
-                <admino-grid-item [colSpan]="element.colSpan!==undefined?element.colSpan:12"
-                    [col]="element.col!==undefined?element.col:1" [row]="element.row!==undefined?element.row:i+1"
-                    [rowSpan]="element.rowSpan!==undefined?element.rowSpan:1" [hidden]="element.hidden"
-                    [style]="element.style?element.style:{}" [align]="element.align" [isLoading]="element.isLoading"
-                    [containerStyle]="element.containerStyle?element.containerStyle:{}"
-                    *ngFor="let element of getElementsOfType('main'); let i=index;"
-                    [id]="'screenElementId__'+id+'.'+element.id">
-
-
-                    <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent"
-                        [element]="element" [parentGroup]="group" [screenComponent]='this' [index]="i"
-                        #screenElementRef>
-                    </ng-container>
-                </admino-grid-item>
-            </admino-grid>
-        </div>
-
+<admino-preloader *ngIf="blockingActionRunning === 2"></admino-preloader>
+<form
+  [formGroup]="group"
+  class="admino-screen"
+  [ngClass]="{
+    blocked: blockingActionRunning === 1 || blockingActionRunning === 2,
+    loading: blockingActionRunning === 2
+  }"
+  (submit)="onSubmit($event)"
+  *ngIf="screenElement"
+>
+  <div class="scroll-area" [cdkTrapFocus]="trapFocus()">
+    <div
+      class="screen-container"
+      [ngClass]="{
+        'container-fluid': isFluidContainer(),
+        container: !isFluidContainer()
+      }"
+      [ngStyle]="screenElement.innerStyle"
+    >
+      <admino-grid
+        [allowEdit]="_screenElement.allowEdit"
+        [editMode]="this.editMode"
+        adminoTrapFocus
+        [adminoTrapFocus]="this.rootScreenComponent===this"
+        [colnum]="
+          _screenElement.colNum !== undefined ? _screenElement.colNum : 12
+        "
+        [inline]="screenElement.inline"
+        [gridTemplateRows]="screenElement.gridTemplateRows"
+      >
+        <admino-grid-item
+          [colSpan]="element.colSpan !== undefined ? element.colSpan : 12"
+          [col]="element.col !== undefined ? element.col : 1"
+          [row]="element.row !== undefined ? element.row : i + 1"
+          [rowSpan]="element.rowSpan !== undefined ? element.rowSpan : 1"
+          [hidden]="element.hidden"
+          [style]="element.style ? element.style : {}"
+          [align]="element.align"
+          [isLoading]="element.isLoading"
+          [containerStyle]="
+            element.containerStyle ? element.containerStyle : {}
+          "
+          *ngFor="let element of getElementsOfType('main'); let i = index"
+          [id]="'screenElementId__' + id + '.' + element.id"
+        >
+          <ng-container
+            adminoScreenElement
+            [rootScreenComponent]="this.rootScreenComponent"
+            [element]="element"
+            [parentGroup]="group"
+            [screenComponent]="this"
+            [index]="i"
+            #screenElementRef
+          >
+          </ng-container>
+        </admino-grid-item>
+      </admino-grid>
     </div>
+  </div>
 
-
-
-    <div class="admino-screen-modals" *ngIf="getElementsOfType('popup').length>0">
-        <div class="admino-screen-modal" [ngStyle]="{'z-index':i}"
-            [ngClass]="{hidden: element.hidden && !this.editMode}"
-            *ngFor="let element of getElementsOfType('popup'); let i=index;" (click)="closePopup(element)">
-            <div class="admino-screen-modal-content" [ngClass]="this.getPopupClasses(element)" [ngStyle]="element.style"
-                (click)="$event.stopPropagation()">
-                <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent" [element]="element"
-                    [parentGroup]="group" [screenComponent]='this' [index]="i">
-                </ng-container>
-            </div>
-        </div>
+  <div
+    class="admino-screen-modals"
+    *ngIf="getElementsOfType('popup').length > 0"
+  >
+    <div
+      class="admino-screen-modal"
+      [ngStyle]="{ 'z-index': i }"
+      [ngClass]="{ hidden: element.hidden && !this.editMode }"
+      *ngFor="let element of getElementsOfType('popup'); let i = index"
+      (click)="closePopup(element)"
+    >
+      <div
+        class="admino-screen-modal-content"
+        [ngClass]="this.getPopupClasses(element)"
+        [ngStyle]="element.style"
+        (click)="$event.stopPropagation()"
+      >
+        <ng-container
+          adminoScreenElement
+          [rootScreenComponent]="this.rootScreenComponent"
+          [element]="element"
+          [parentGroup]="group"
+          [screenComponent]="this"
+          [index]="i"
+        >
+        </ng-container>
+      </div>
     </div>
+  </div>
 
-    <div class="timers d-none">
-        <div class="timer" *ngFor="let element of getElementsOfType('timer'); let i=index;">
-            <ng-container adminoScreenElement [rootScreenComponent]="this.rootScreenComponent" [element]="element"
-                [parentGroup]="group" [screenComponent]='this' [index]="i">
-            </ng-container>
-        </div>
+  <div class="timers d-none">
+    <div
+      class="timer"
+      *ngFor="let element of getElementsOfType('timer'); let i = index"
+    >
+      <ng-container
+        adminoScreenElement
+        [rootScreenComponent]="this.rootScreenComponent"
+        [element]="element"
+        [parentGroup]="group"
+        [screenComponent]="this"
+        [index]="i"
+      >
+      </ng-container>
     </div>
+  </div>
 
-
-    <!-- <ng-template *ngFor="let element of getElementsOfType('popup2'); let i=index;" #popupRef></ng-template> -->
-    <!-- <admino-modal-container></admino-modal-container> -->
+  <!-- <ng-template *ngFor="let element of getElementsOfType('popup2'); let i=index;" #popupRef></ng-template> -->
+  <!-- <admino-modal-container></admino-modal-container> -->
 </form>

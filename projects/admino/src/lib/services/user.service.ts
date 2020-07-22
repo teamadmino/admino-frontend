@@ -1,35 +1,30 @@
-import { AdminoButton } from './../interfaces';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { AdminoSiteService } from './site.service';
-import { AdminoMenuItem } from '../interfaces';
+import { AdminoButton } from "./../interfaces";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Subject } from "rxjs";
+import { AdminoSiteService } from "./site.service";
+import { AdminoMenuItem } from "../interfaces";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AdminoUserService {
   userLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   requestedRouteOnInit;
 
-  private _sid = '';
-  firstname = '';
-  lastname = '';
+  private _sid = "";
+  firstname = "";
+  lastname = "";
   homeScreen: AdminoMenuItem;
   requestedScreenName: string;
-
-
 
   menu: BehaviorSubject<AdminoMenuItem[]> = new BehaviorSubject([]);
   bottomButtons: BehaviorSubject<AdminoButton[]> = new BehaviorSubject([]);
 
-
-
-  constructor(private site: AdminoSiteService) {
-  }
+  constructor(private site: AdminoSiteService) {}
 
   init() {
-    const storedSid = localStorage.getItem('sid');
+    const storedSid = localStorage.getItem("sid");
     if (storedSid) {
       this.sid = storedSid;
     }
@@ -38,7 +33,7 @@ export class AdminoUserService {
   public set sid(v: string) {
     this._sid = v;
     if (this.sid) {
-      localStorage.setItem('sid', this.sid);
+      localStorage.setItem("sid", this.sid);
       this.setLoginState(true);
     } else {
       this.logout();
@@ -70,12 +65,11 @@ export class AdminoUserService {
     this.lastname = lastname;
   }
   logout() {
-    this._sid = '';
-    localStorage.removeItem('sid');
-    this.setName('', '');
+    this._sid = "";
+    localStorage.removeItem("sid");
+    this.setName("", "");
     this.site.closeSideNav();
     this.site.closeMessages();
     this.userLoggedIn.next(false);
   }
-
 }

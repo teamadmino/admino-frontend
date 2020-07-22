@@ -1,37 +1,50 @@
-import { slotTransition } from './../../main/main.animation';
-import { AdminoActionService } from './../../../services/action.service';
-import { AdminoApiService } from './../../../services/api.service';
-import { ScreenElementScreen, ScreenPopup } from './../../admino-screen/admino-screen.interfaces';
-import { AdminoModalService, AdminoModalRef } from './../../admino-modal/admino-modal.service';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { AdminoScreenComponent } from '../../admino-screen/admino-screen.component';
-import { AdminoUniversalEditorPopupComponent } from '../admino-universal-editor-popup/admino-universal-editor-popup.component';
-import { isObject } from '../../../utils/isobject';
-import { map } from 'rxjs/operators';
+import { slotTransition } from "./../../main/main.animation";
+import { AdminoActionService } from "./../../../services/action.service";
+import { AdminoApiService } from "./../../../services/api.service";
+import {
+  ScreenElementScreen,
+  ScreenPopup,
+} from "./../../admino-screen/admino-screen.interfaces";
+import {
+  AdminoModalService,
+  AdminoModalRef,
+} from "./../../admino-modal/admino-modal.service";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  ViewChild,
+  HostListener,
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Subject } from "rxjs";
+import { AdminoScreenComponent } from "../../admino-screen/admino-screen.component";
+import { AdminoUniversalEditorPopupComponent } from "../admino-universal-editor-popup/admino-universal-editor-popup.component";
+import { isObject } from "../../../utils/isobject";
+import { map } from "rxjs/operators";
 
 @Component({
-  selector: 'admino-universal-editor',
-  templateUrl: './admino-universal-editor.component.html',
-  styleUrls: ['./admino-universal-editor.component.scss'],
-  animations: [slotTransition]
+  selector: "admino-universal-editor",
+  templateUrl: "./admino-universal-editor.component.html",
+  styleUrls: ["./admino-universal-editor.component.scss"],
+  animations: [slotTransition],
 })
 export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
-  @ViewChild(AdminoScreenComponent, { static: false }) screen: AdminoScreenComponent;
+  @ViewChild(AdminoScreenComponent, { static: false })
+  screen: AdminoScreenComponent;
   screenElement: ScreenElementScreen;
 
-  openPopups: { popup: ScreenPopup, ref: AdminoModalRef }[] = [];
+  openPopups: { popup: ScreenPopup; ref: AdminoModalRef }[] = [];
   // // dataSource;
   animTrigger = true;
 
   // activeScreenId = 0;
 
-
-  @HostListener('document:click', ['$event'])
-  @HostListener('document:keyup', ['$event'])
-  @HostListener('document:keydown', ['$event'])
+  @HostListener("document:click", ["$event"])
+  @HostListener("document:keyup", ["$event"])
+  @HostListener("document:keydown", ["$event"])
   keydown(e: any) {
     if (this.screen.blockingActionRunning) {
       e.preventDefault();
@@ -41,10 +54,13 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private route: ActivatedRoute, public as: AdminoActionService,
-    private ms: AdminoModalService, private api: AdminoApiService, private cd: ChangeDetectorRef) {
-
-  }
+  constructor(
+    private route: ActivatedRoute,
+    public as: AdminoActionService,
+    private ms: AdminoModalService,
+    private api: AdminoApiService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   redrawScreen(screen: ScreenElementScreen, reset = false) {
     if (reset) {
@@ -68,13 +84,12 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
           found.ref.modal.setData({
             popup,
             universalEditor: this,
-            mainScreenComponent: this.screen
+            mainScreenComponent: this.screen,
           });
           if (popup.destroy) {
             found.ref.modal.close();
           }
         } else {
-
           const ref = this.ms.open(AdminoUniversalEditorPopupComponent, {
             width: popup.width ? popup.width : undefined,
             height: popup.height,
@@ -83,8 +98,8 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
             data: {
               popup,
               universalEditor: this,
-              mainScreenComponent: this.screen
-            }
+              mainScreenComponent: this.screen,
+            },
           });
           const pref = { popup, ref };
           ref.modal.closeEvent.subscribe((ev) => {
@@ -119,16 +134,13 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
       } else {
         this.screenElement = null;
       }
-
     });
 
     this.as.updateScreen.subscribe((updatedScreen: ScreenElementScreen) => {
       if (updatedScreen) {
         this.redrawScreen(updatedScreen);
       }
-
     });
-
 
     this.as.setFocus.subscribe((focusedEl: any) => {
       // console.log(focusedEl);
@@ -139,14 +151,10 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
       //   this.redrawScreen(updatedScreen);
       // }
     });
-
   }
 
-
   ngOnDestroy() {
-
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-
   }
 }

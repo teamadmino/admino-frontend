@@ -1,11 +1,10 @@
-@import '~@angular/material/theming';
-@import '../component-themes';
+@import "~@angular/material/theming";
+@import "../component-themes";
 
-@import '../palettes/gold.scss';
-@import '../palettes/purple.scss';
-@import '../palettes/darkbg.scss';
-@import '../palettes/pink.scss';
-
+@import "../palettes/gold.scss";
+@import "../palettes/purple.scss";
+@import "../palettes/darkbg.scss";
+@import "../palettes/pink.scss";
 
 // $primary: mat-palette($mat-indigo);
 // $accent: mat-palette($mat-pink, A200, A100, A400);
@@ -36,7 +35,6 @@
   // $accent: mat-palette($mat-amber, 300);
   // $warn: mat-palette($mat-pink, 400, 500, 600);
 
-
   // $primary: mat-palette($mat-purple, A200, A100, A400);
   // $accent: mat-palette($mat-pink, A200, A100, A400);
   // $warn: mat-palette($mat-red, A200, A100, A400);
@@ -45,47 +43,175 @@
   // $accent: mat-palette($md-gold3, 300, 400, 500);
   // $warn: mat-palette($md-goldpalette);
 
-
   $purple-dark-theme: mat-dark-theme($primary, $accent, $warn);
-
-
-
 
   $background-color: $md-mcgpalette0;
   $background: map-get($purple-dark-theme, background);
-  $background: map_merge($background, (status-bar: map_get($background-color, 900)));
-  $background: map_merge($background, (app-bar: map_get($background-color, 700)));
-  $background: map_merge($background, (background: map_get($background-color, 600)));
-  $background: map_merge($background, (hover:map_get($background-color, 900)));
-  $background: map_merge($background, (dialog:map_get($background-color, 600)));
-  $background: map_merge($background, (card:map_get($background-color, 800)));
-  $background: map_merge($background, (disabled-button:map_get($background-color, 800)));
-  $background: map_merge($background, (raised-button:map_get($background-color, 700)));
-  $background: map_merge($background, (focused-button:map_get($background-color, 750)));
-  $background: map_merge($background, (selected-button:map_get($background-color, 650)));
-  $background: map_merge($background, (selected-disabled-button:map_get($background-color, 650)));
-  $background: map_merge($background, (disabled-button-toggle:map_get($background-color, 650)));
-  $purple-dark-theme: map_merge($purple-dark-theme, (background: $background));
-
+  $background: map_merge(
+    $background,
+    (
+      status-bar: map_get($background-color, 900),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      app-bar: map_get($background-color, 700),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      background: map_get($background-color, 600),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      hover: map_get($background-color, 900),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      dialog: map_get($background-color, 600),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      card: map_get($background-color, 800),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      disabled-button: map_get($background-color, 800),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      raised-button: map_get($background-color, 700),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      focused-button: map_get($background-color, 750),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      selected-button: map_get($background-color, 650),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      selected-disabled-button: map_get($background-color, 650),
+    )
+  );
+  $background: map_merge(
+    $background,
+    (
+      disabled-button-toggle: map_get($background-color, 650),
+    )
+  );
+  $purple-dark-theme: map_merge(
+    $purple-dark-theme,
+    (
+      background: $background,
+    )
+  );
 
   $foreground-color: $mat-grey;
   $foreground: map-get($purple-dark-theme, foreground);
-  $foreground: map_merge($foreground, (base: map_get($foreground-color, 50)));
-  $foreground: map_merge($foreground, (divider: rgba(map_get($foreground-color, 50), 0.1)));
-  $foreground: map_merge($foreground, (dividers:rgba(map_get($foreground-color, 50), 0.2)));
-  $foreground: map_merge($foreground, (disabled:rgba(map_get($foreground-color, 50), 0.38)));
-  $foreground: map_merge($foreground, (disabled-button:rgba(map_get($foreground-color, 50), 0.38)));
-  $foreground: map_merge($foreground, (disabled-text:rgba(map_get($foreground-color, 50), 0.38)));
-  $foreground: map_merge($foreground, (hint-text:rgba(map_get($foreground-color, 50), 0.38)));
-  $foreground: map_merge($foreground, (secondary-text:rgba(map_get($foreground-color, 50), 0.38)));
-  $foreground: map_merge($foreground, (icon:rgba(map_get($foreground-color, 50), 0.54)));
-  $foreground: map_merge($foreground, (icons:rgba(map_get($foreground-color, 50), 0.54)));
-  $foreground: map_merge($foreground, (text:rgba(map_get($foreground-color, 50), 0.87)));
-  $foreground: map_merge($foreground, (slider-off:rgba(map_get($foreground-color, 50), 0.38)));
-  $foreground: map_merge($foreground, (slider-off-active:rgba(map_get($foreground-color, 50), 0.38)));
-  $purple-dark-theme: map_merge($purple-dark-theme, (foreground: $foreground));
-
-
+  $foreground: map_merge(
+    $foreground,
+    (
+      base: map_get($foreground-color, 50),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      divider: rgba(map_get($foreground-color, 50), 0.1),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      dividers: rgba(map_get($foreground-color, 50), 0.2),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      disabled: rgba(map_get($foreground-color, 50), 0.38),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      disabled-button: rgba(map_get($foreground-color, 50), 0.38),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      disabled-text: rgba(map_get($foreground-color, 50), 0.38),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      hint-text: rgba(map_get($foreground-color, 50), 0.38),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      secondary-text: rgba(map_get($foreground-color, 50), 0.38),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      icon: rgba(map_get($foreground-color, 50), 0.54),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      icons: rgba(map_get($foreground-color, 50), 0.54),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      text: rgba(map_get($foreground-color, 50), 0.87),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      slider-off: rgba(map_get($foreground-color, 50), 0.38),
+    )
+  );
+  $foreground: map_merge(
+    $foreground,
+    (
+      slider-off-active: rgba(map_get($foreground-color, 50), 0.38),
+    )
+  );
+  $purple-dark-theme: map_merge(
+    $purple-dark-theme,
+    (
+      foreground: $foreground,
+    )
+  );
 
   // .admino-main-bg {
   //   background-color: mat-color($primary) !important;
@@ -104,8 +230,6 @@
 
   // }
 
-
   @include angular-material-theme($purple-dark-theme);
   @include component-themes($purple-dark-theme);
-
 }

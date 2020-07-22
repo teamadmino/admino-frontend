@@ -1,8 +1,8 @@
-import { ScreenElementInput } from './../../admino-screen.interfaces';
-import { AdminoScreenElement } from '../admino-screen-element';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material';
+import { ScreenElementInput } from "./../../admino-screen.interfaces";
+import { AdminoScreenElement } from "../admino-screen-element";
+import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
+import { ErrorStateMatcher } from "@angular/material";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -13,21 +13,17 @@ import { ErrorStateMatcher } from '@angular/material';
 // }
 
 @Component({
-  selector: 'admino-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  selector: "admino-input",
+  templateUrl: "./input.component.html",
+  styleUrls: ["./input.component.scss"],
 })
 export class InputComponent extends AdminoScreenElement implements OnInit {
   element: ScreenElementInput;
   // matcher = new MyErrorStateMatcher();
 
-  ngOnInit() {
-
-  }
-  onChange(changes: any) {
-  }
+  ngOnInit() {}
+  onChange(changes: any) {}
   filterInput(e) {
     // console.log(e);
   }
-
 }

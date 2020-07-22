@@ -1,10 +1,21 @@
 <div [formGroup]="group" class="admino-input">
-    <label
-        [ngClass]="{'pt-3 d-inline-block':element.inlineLabel,'mb-3 d-block':!element.inlineLabel}">{{element.label}}</label>
-    <mat-radio-group [formControlName]="element.id">
-        <mat-radio-button class="ml-3 pt-1 " [ngClass]="{'d-block': !element.allowInline}" [ngStyle]="item.style"
-            *ngFor="let item of element.options" [value]="item.value" #radioButtonRefs>
-            <div [innerHtml]='this.sanitizeHtml(item.label)'></div>
-        </mat-radio-button>
-    </mat-radio-group>
+  <label
+    [ngClass]="{
+      'pt-3 d-inline-block': element.inlineLabel,
+      'mb-3 d-block': !element.inlineLabel
+    }"
+    >{{ element.label }}</label
+  >
+  <mat-radio-group [formControlName]="element.id">
+    <mat-radio-button
+      class="ml-3 pt-1"
+      [ngClass]="{ 'd-block': !element.allowInline }"
+      [ngStyle]="item.style"
+      *ngFor="let item of element.options"
+      [value]="item.value"
+      #radioButtonRefs
+    >
+      <div [innerHtml]="this.sanitizeHtml(item.label)"></div>
+    </mat-radio-button>
+  </mat-radio-group>
 </div>

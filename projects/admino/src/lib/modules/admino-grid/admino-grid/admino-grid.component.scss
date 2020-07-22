@@ -7,10 +7,9 @@
   display: inline-block;
 
   .grid::ng-deep {
-    &>* {
+    & > * {
       z-index: 2;
     }
-
   }
 
   &.inline {
@@ -23,14 +22,12 @@
   }
 }
 
-
 .grid-row-helper {
   opacity: 0.3;
 
   &:last-of-type {
     opacity: 0;
   }
-
 
   grid-row: 1;
   border-bottom: 1px dotted red;
@@ -40,7 +37,6 @@
   margin-top: calc(-0.5em + 2px);
   // transform: translateX(1em);
   z-index: 1 !important;
-
 }
 
 .grid-column-helper {
@@ -55,10 +51,7 @@
   margin-right: calc(-0.5em + 2px);
   margin-top: calc(-0.5em + 2px);
   z-index: 1 !important;
-
 }
-
-
 
 .grid {
   position: relative;
@@ -67,14 +60,11 @@
   gap: 0;
   grid-gap: 0;
 
-
-
   &.edit-mode {
     border: 1px dotted greenyellow;
     border-radius: 2px;
     padding: 5px;
     grid-gap: 1em;
-
   }
 
   //   grid-column-gap: 1em;

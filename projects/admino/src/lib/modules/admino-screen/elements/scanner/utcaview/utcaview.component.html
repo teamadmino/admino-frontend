@@ -14,11 +14,13 @@
         </mat-option>
     </mat-autocomplete> -->
 
-
-<admino-keyboard [layout]="layout1" [availableCharacters]="availableCharacters" #keyboardRef
-    (keyEvent)="keyEvent($event.character)">
+<admino-keyboard
+  [layout]="layout1"
+  [availableCharacters]="availableCharacters"
+  #keyboardRef
+  (keyEvent)="keyEvent($event.character)"
+>
 </admino-keyboard>
-
 
 <!-- <button [type]="'button'" color="accent" mat-flat-button [disabled]="this.formGroup.invalid">
         Tovább

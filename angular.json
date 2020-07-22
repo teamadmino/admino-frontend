@@ -31,9 +31,7 @@
               "projects/admino/tsconfig.lib.json",
               "projects/admino/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -142,9 +140,7 @@
               "projects/frontend/src/assets",
               "projects/frontend/src/manifest.webmanifest"
             ],
-            "styles": [
-              "projects/frontend/src/styles.scss"
-            ],
+            "styles": ["projects/frontend/src/styles.scss"],
             "scripts": []
           }
         },
@@ -156,9 +152,7 @@
               "projects/frontend/tsconfig.spec.json",
               "projects/frontend/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

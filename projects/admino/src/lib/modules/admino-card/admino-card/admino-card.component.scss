@@ -12,9 +12,7 @@
   background: purple;
 }
 
-
 :host {
-
   mat-card {
     &.hide-bg {
       background: none !important;
@@ -29,7 +27,6 @@
 
       button {
         pointer-events: all;
-
       }
     }
 
@@ -51,8 +48,5 @@
       // margin-right: -16px;
       // width: auto;
     }
-
   }
-
-
 }

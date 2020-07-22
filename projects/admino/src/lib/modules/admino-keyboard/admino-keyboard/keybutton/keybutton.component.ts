@@ -1,28 +1,36 @@
-import { KeyboardKey } from './../../admino-keyboard.interface';
-import { Component, OnInit, Input, Output, EventEmitter, HostBinding, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { KeyboardKey } from "./../../admino-keyboard.interface";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  HostBinding,
+  ChangeDetectorRef,
+  OnDestroy,
+} from "@angular/core";
 
 @Component({
-  selector: 'admino-keybutton',
-  templateUrl: './keybutton.component.html',
-  styleUrls: ['./keybutton.component.scss']
+  selector: "admino-keybutton",
+  templateUrl: "./keybutton.component.html",
+  styleUrls: ["./keybutton.component.scss"],
 })
 export class KeybuttonComponent implements OnInit, OnDestroy {
-
   @Input() config: KeyboardKey;
   @Output() clickEvent: EventEmitter<KeyboardKey> = new EventEmitter();
 
   _manualClick = false;
 
-  @HostBinding('style.font-size') private fontSize = '1rem';
+  @HostBinding("style.font-size") private fontSize = "1rem";
 
   timeoutHelper;
 
-  constructor(private cd: ChangeDetectorRef) {
-
-  }
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.fontSize = this.config.labelSize ? this.config.labelSize + 'rem' : '1rem';
+    this.fontSize = this.config.labelSize
+      ? this.config.labelSize + "rem"
+      : "1rem";
   }
 
   manualClick() {
@@ -31,7 +39,7 @@ export class KeybuttonComponent implements OnInit, OnDestroy {
     this.timeoutHelper = setTimeout((params) => {
       this._manualClick = false;
       this.cd.detectChanges();
-    }, 10)
+    }, 10);
   }
 
   clicked() {
@@ -43,5 +51,4 @@ export class KeybuttonComponent implements OnInit, OnDestroy {
       clearTimeout(this.timeoutHelper);
     }
   }
-
 }

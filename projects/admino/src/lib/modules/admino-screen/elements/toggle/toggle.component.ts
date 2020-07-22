@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminoScreenElement } from '../admino-screen-element';
+import { Component, OnInit } from "@angular/core";
+import { AdminoScreenElement } from "../admino-screen-element";
 
 @Component({
-  selector: 'admino-toggle',
-  templateUrl: './toggle.component.html',
-  styleUrls: ['./toggle.component.scss']
+  selector: "admino-toggle",
+  templateUrl: "./toggle.component.html",
+  styleUrls: ["./toggle.component.scss"],
 })
 export class ToggleComponent extends AdminoScreenElement implements OnInit {
-
   selectedValue = 0;
   ngOnInit() {
     this.onChange();

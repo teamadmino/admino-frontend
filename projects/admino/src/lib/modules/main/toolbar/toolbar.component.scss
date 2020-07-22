@@ -1,7 +1,7 @@
 // @import "variables.scss";
 @import "../../../styles/admino-variables.scss";
 
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 
 .admino-toolbar {
   .logo-component {
@@ -26,7 +26,6 @@
   $foreground: map-get($theme, foreground);
   $background-color-scrolling: mat-color($background, card);
   $background-color: mat-color($background, background);
-
 
   mat-toolbar {
     -webkit-app-region: drag;
@@ -53,9 +52,6 @@
         pointer-events: none;
         margin: 0 !important;
       }
-
-
-
     }
 
     // &.fullwindow {
@@ -79,6 +75,5 @@
     .nodrag {
       -webkit-app-region: no-drag;
     }
-
   }
 }

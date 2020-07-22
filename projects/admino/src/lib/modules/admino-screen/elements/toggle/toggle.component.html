@@ -1,8 +1,13 @@
-<mat-button-toggle-group [appearance]="element.appearance?element.appearance:'standard'" [value]="this.selectedValue"
-    (change)="toggled($event)">
-    <mat-button-toggle *ngFor="let option of element.options" [disabled]="option.disabled" [value]="option.value">
-        <div class="content" [innerHTML]="option.label">
-
-        </div>
-    </mat-button-toggle>
+<mat-button-toggle-group
+  [appearance]="element.appearance ? element.appearance : 'standard'"
+  [value]="this.selectedValue"
+  (change)="toggled($event)"
+>
+  <mat-button-toggle
+    *ngFor="let option of element.options"
+    [disabled]="option.disabled"
+    [value]="option.value"
+  >
+    <div class="content" [innerHTML]="option.label"></div>
+  </mat-button-toggle>
 </mat-button-toggle-group>

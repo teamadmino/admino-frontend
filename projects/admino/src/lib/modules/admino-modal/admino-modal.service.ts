@@ -1,7 +1,24 @@
-import { AdminoModalComponent, AdminoModalConfig } from './admino-modal/admino-modal.component';
-import { Injectable, Injector, ViewContainerRef, ComponentFactoryResolver, ViewRef, ComponentRef, ChangeDetectorRef } from '@angular/core';
-import { Portal, CdkPortalOutlet, ComponentPortal, PortalInjector, ComponentType } from '@angular/cdk/portal';
-import { Component } from '@angular/compiler/src/core';
+import {
+  AdminoModalComponent,
+  AdminoModalConfig,
+} from "./admino-modal/admino-modal.component";
+import {
+  Injectable,
+  Injector,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  ViewRef,
+  ComponentRef,
+  ChangeDetectorRef,
+} from "@angular/core";
+import {
+  Portal,
+  CdkPortalOutlet,
+  ComponentPortal,
+  PortalInjector,
+  ComponentType,
+} from "@angular/cdk/portal";
+import { Component } from "@angular/compiler/src/core";
 
 export interface AdminoModalRef {
   modal: AdminoModalComponent;
@@ -9,9 +26,8 @@ export interface AdminoModalRef {
 }
 
 // {  providedIn: 'root'}
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AdminoModalService {
-
   id = 0;
   modalStack = [];
   portalOutlet = null;
@@ -29,14 +45,25 @@ export class AdminoModalService {
     // console.log(this.viewContainerRef);
     // console.log(componentType);
 
-    const factory = this.componentResolverFactory.resolveComponentFactory(AdminoModalComponent);
-    const component: ComponentRef<AdminoModalComponent> = factory.create(this.injector);
+    const factory = this.componentResolverFactory.resolveComponentFactory(
+      AdminoModalComponent
+    );
+    const component: ComponentRef<AdminoModalComponent> = factory.create(
+      this.injector
+    );
     const viewRef = this.viewContainerRef.insert(component.hostView);
     component.instance.component = componentType;
-    component.instance.componentResolver = config.resolver ? config.resolver : this.componentResolverFactory;
-    component.instance.injector = config.injector ? config.injector : this.injector;
+    component.instance.componentResolver = config.resolver
+      ? config.resolver
+      : this.componentResolverFactory;
+    component.instance.injector = config.injector
+      ? config.injector
+      : this.injector;
     component.instance.data = config.data;
-    component.instance.config = Object.assign(component.instance.config, config);
+    component.instance.config = Object.assign(
+      component.instance.config,
+      config
+    );
     component.instance.create();
 
     const modalData = { viewRef };
@@ -53,7 +80,7 @@ export class AdminoModalService {
 
     return {
       modal: component.instance,
-      component: component.instance.componentInstance
+      component: component.instance.componentInstance,
     };
     // injectorTokens.set(MODULE_DATA, dataToPass);
     // const componentPortal = new ComponentPortal(component, null, this.injector, this.componentResolverFactory);

@@ -1,20 +1,30 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, Inject } from '@angular/core';
-import { Subject, BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable, Inject } from "@angular/core";
+import { Subject, BehaviorSubject, Observable } from "rxjs";
 // import { DOCUMENT } from '@angular/common';
-import { DeviceDetectorService } from 'ngx-device-detector';
+import { DeviceDetectorService } from "ngx-device-detector";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AdminoSiteService {
   private aspectBaseW = 320;
   private aspectBaseH = 240;
-  screenSizeChange: Subject<{ w: number, h: number, aspect: number, orientation: string }> = new Subject();
+  screenSizeChange: Subject<{
+    w: number;
+    h: number;
+    aspect: number;
+    orientation: string;
+  }> = new Subject();
   zoomInArea: Subject<any> = new Subject();
   navigationEvent: Subject<any> = new Subject();
   screenOrientationChange: Subject<string> = new Subject();
-  screen: { w: number, h: number, aspect: number, orientation: string } = { w: 0, h: 0, aspect: 1, orientation: 'landscape' };
+  screen: { w: number; h: number; aspect: number; orientation: string } = {
+    w: 0,
+    h: 0,
+    aspect: 1,
+    orientation: "landscape",
+  };
   isElectron = false;
   isMaximized = false;
 
@@ -24,7 +34,6 @@ export class AdminoSiteService {
   scrollPosition = 0;
 
   documentElement;
-
 
   deviceInfo = null;
   isMobile = false;
@@ -44,11 +53,13 @@ export class AdminoSiteService {
     lg: 1200,
   };
 
-
   // private es: ElectronService,@Inject(DOCUMENT) private document: any, private deviceService: DeviceDetectorService
   // private es: ElectronService,
-  constructor(private deviceService: DeviceDetectorService, private http: HttpClient) {
-    window.addEventListener('resize', () => {
+  constructor(
+    private deviceService: DeviceDetectorService,
+    private http: HttpClient
+  ) {
+    window.addEventListener("resize", () => {
       this.refreshScreenSize();
     });
     // if (this.es.isElectronApp) {
@@ -59,11 +70,7 @@ export class AdminoSiteService {
     setTimeout((params) => {
       this.refreshScreenSize();
     });
-
-
   }
-
-
 
   toggleSideNav() {
     if (this.isSideNavOpen.value) {
@@ -99,11 +106,8 @@ export class AdminoSiteService {
     this.isMessagesOpen.next(false);
   }
 
-
-
-
   registerScrollListener(nativeEl) {
-    nativeEl.addEventListener('scroll', (e) => {
+    nativeEl.addEventListener("scroll", (e) => {
       this.refreshScroll(e);
     });
   }
@@ -115,7 +119,6 @@ export class AdminoSiteService {
     } else {
       this.isScrollAtTop = true;
       this.isScrolling = false;
-
     }
     this.scrollEvent.next(this.scrollPosition);
   }
@@ -125,9 +128,9 @@ export class AdminoSiteService {
     this.screen.aspect = this.screen.h / this.screen.w;
     let temp_orientation;
     if (this.screen.w * (this.aspectBaseH / this.aspectBaseW) > this.screen.h) {
-      temp_orientation = 'landscape';
+      temp_orientation = "landscape";
     } else {
-      temp_orientation = 'portrait';
+      temp_orientation = "portrait";
     }
     if (temp_orientation !== this.screen.orientation) {
       this.screen.orientation = temp_orientation;
@@ -135,7 +138,6 @@ export class AdminoSiteService {
     }
     this.screenSizeChange.next(this.screen);
   }
-
 
   maximize() {
     // if (this.es.isElectronApp) {
@@ -188,5 +190,4 @@ export class AdminoSiteService {
     this.isTablet = this.deviceService.isTablet();
     this.isDesktop = this.deviceService.isDesktop();
   }
-
 }

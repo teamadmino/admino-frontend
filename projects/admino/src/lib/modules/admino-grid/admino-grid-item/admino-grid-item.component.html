@@ -1,28 +1,54 @@
 <!-- (mousedown)="dragStart($event)" -->
-<div *ngIf="editMode" class="admino-grid-item-buttons "
-    [ngClass]="{show: this.isMouseOver || dragging || resizing, 'other-active': this.isOtherActive, resizing:resizing}">
-    <div class="top" (mousedown)="$event.stopPropagation()">
-        <button type="button" mat-mini-fab color="warn" class="mini-button">
-            <mat-icon>delete</mat-icon>
-        </button>
-        <button type="button" mat-mini-fab color="accent" class="mini-button">
-            <mat-icon>edit</mat-icon>
-        </button>
-        <button type="button" mat-mini-fab color="primary" (mousedown)="dragStart($event)" #dragRef class="mini-button">
-            <mat-icon>drag_indicator</mat-icon>
-        </button>
-    </div>
-    <div class="bottom" (mousedown)="$event.stopPropagation()">
-        <button type="button" mat-mini-fab adminoDrag (adminoDragStart)="resizeStart($event)"
-            (adminoDragMove)="resizeEl($event)" (adminoDragEnd)="resizeEnd($event)" #resizeRef class="mini-button"
-            #resizeRef>
-            <mat-icon class="mirror">transit_enterexit </mat-icon>
-        </button>
-    </div>
+<div
+  *ngIf="editMode"
+  class="admino-grid-item-buttons"
+  [ngClass]="{
+    show: this.isMouseOver || dragging || resizing,
+    'other-active': this.isOtherActive,
+    resizing: resizing
+  }"
+>
+  <div class="top" (mousedown)="$event.stopPropagation()">
+    <button type="button" mat-mini-fab color="warn" class="mini-button">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button type="button" mat-mini-fab color="accent" class="mini-button">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button
+      type="button"
+      mat-mini-fab
+      color="primary"
+      (mousedown)="dragStart($event)"
+      #dragRef
+      class="mini-button"
+    >
+      <mat-icon>drag_indicator</mat-icon>
+    </button>
+  </div>
+  <div class="bottom" (mousedown)="$event.stopPropagation()">
+    <button
+      type="button"
+      mat-mini-fab
+      adminoDrag
+      (adminoDragStart)="resizeStart($event)"
+      (adminoDragMove)="resizeEl($event)"
+      (adminoDragEnd)="resizeEnd($event)"
+      #resizeRef
+      class="mini-button"
+      #resizeRef
+    >
+      <mat-icon class="mirror">transit_enterexit </mat-icon>
+    </button>
+  </div>
 </div>
 
 <admino-preloader *ngIf="isLoading"></admino-preloader>
 
-<div class="content" [ngClass]="{inline:inline,firstrow: this.row===1, loading:isLoading}" [ngStyle]="this.style">
-    <ng-content></ng-content>
+<div
+  class="content"
+  [ngClass]="{ inline: inline, firstrow: this.row === 1, loading: isLoading }"
+  [ngStyle]="this.style"
+>
+  <ng-content></ng-content>
 </div>

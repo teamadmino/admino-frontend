@@ -1,12 +1,11 @@
-import { Directive, HostListener } from '@angular/core';
+import { Directive, HostListener } from "@angular/core";
 
 @Directive({
-  selector: '[adminoDisableDefaultKeyEvents]'
+  selector: "[adminoDisableDefaultKeyEvents]",
 })
 export class DisableDefaultKeyEventsDirective {
-
-  constructor() { }
-  @HostListener('keydown', ['$event'])
+  constructor() {}
+  @HostListener("keydown", ["$event"])
   onKeyDown(event: KeyboardEvent): boolean {
     console.log(event);
     event.preventDefault();
@@ -14,5 +13,4 @@ export class DisableDefaultKeyEventsDirective {
     event.stopImmediatePropagation();
     return false;
   }
-
 }

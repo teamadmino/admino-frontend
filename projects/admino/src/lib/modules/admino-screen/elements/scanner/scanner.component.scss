@@ -37,7 +37,6 @@
     }
 
     .user {
-
       flex: 1;
       position: relative;
       overflow: hidden;
@@ -52,7 +51,6 @@
 
       h6 {
         transform: translateY(2px);
-
       }
     }
 
@@ -64,7 +62,6 @@
         margin-bottom: 0;
       }
     }
-
 
     display: flex;
   }
@@ -96,7 +93,8 @@
       transform: translateY(-1px);
     }
 
-    .prevbutton {}
+    .prevbutton {
+    }
 
     button {
       border-radius: 0;
@@ -110,9 +108,6 @@
 
 :host {
   ::ng-deep {
-
-
-
     input:-webkit-autofill {
       -webkit-animation-delay: 1s;
       /* Safari support - any positive time runs instantly */
@@ -132,7 +127,7 @@
     }
 
     /* Firefox */
-    input[type=number] {
+    input[type="number"] {
       -moz-appearance: textfield;
     }
 
@@ -144,7 +139,6 @@
 }
 
 @-webkit-keyframes autofill {
-
   0%,
   100% {
     color: #666;

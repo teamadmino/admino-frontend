@@ -1,14 +1,13 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
-import { AdminoScreenElement } from '../admino-screen-element';
-import { ScreenElementChange } from '../../admino-screen.interfaces';
+import { Component, OnInit, HostBinding } from "@angular/core";
+import { AdminoScreenElement } from "../admino-screen-element";
+import { ScreenElementChange } from "../../admino-screen.interfaces";
 
 @Component({
-  selector: 'admino-text',
-  templateUrl: './text.component.html',
-  styleUrls: ['./text.component.scss']
+  selector: "admino-text",
+  templateUrl: "./text.component.html",
+  styleUrls: ["./text.component.scss"],
 })
 export class TextComponent extends AdminoScreenElement implements OnInit {
-
   // @HostBinding('style.color') color = '';
   // @HostBinding('style.font-size') size = '';
   // @HostBinding('style.text-align') align = '';
@@ -17,10 +16,11 @@ export class TextComponent extends AdminoScreenElement implements OnInit {
   sanitizedVal;
   ngOnInit() {
     this.onChange(null);
-    this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.value);
+    this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(
+      this.element.value
+    );
   }
-  onChange(changes: { [id: string]: ScreenElementChange; }) {
-
+  onChange(changes: { [id: string]: ScreenElementChange }) {
     // this.size = this.element.size;
     // if (this.element.color !== undefined) {
     //   this.color = this.directive.ts.getColor(this.element.color);
@@ -32,8 +32,9 @@ export class TextComponent extends AdminoScreenElement implements OnInit {
     //   this.weight = this.element.weight;
     // }
     if (changes && changes.value) {
-      this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.value);
+      this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(
+        this.element.value
+      );
     }
   }
-
 }

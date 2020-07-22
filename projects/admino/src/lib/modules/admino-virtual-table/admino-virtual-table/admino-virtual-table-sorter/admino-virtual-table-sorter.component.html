@@ -1,5 +1,10 @@
 <ng-content></ng-content>
 <div class="sorticon" *ngIf="active && enabled">
-    <mat-icon [ngClass]="{flip: direction>0}" aria-hidden="false" aria-label="Example home icon">
-        arrow_downward</mat-icon>
+  <mat-icon
+    [ngClass]="{ flip: direction > 0 }"
+    aria-hidden="false"
+    aria-label="Example home icon"
+  >
+    arrow_downward</mat-icon
+  >
 </div>

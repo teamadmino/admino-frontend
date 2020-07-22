@@ -1,7 +1,7 @@
-$material-icons-font-path: '~material-icons/iconfont/';
-@import '~material-icons/iconfont/material-icons.scss';
-@import '~typeface-roboto-multilang/latin-ext.css';
-@import '~typeface-roboto-mono/index.css';
+$material-icons-font-path: "~material-icons/iconfont/";
+@import "~material-icons/iconfont/material-icons.scss";
+@import "~typeface-roboto-multilang/latin-ext.css";
+@import "~typeface-roboto-mono/index.css";
 
 @import "./themes/purple-light-theme.scss";
 @import "./themes/purple-dark-theme.scss";
@@ -10,8 +10,6 @@ $material-icons-font-path: '~material-icons/iconfont/';
 @import "./themes/blue-dark-theme.scss";
 @import "./themes/blue-light-theme.scss";
 @include mat-core();
-
-
 
 html,
 body {
@@ -31,7 +29,7 @@ body {
   flex: 1 1 auto;
 }
 
-mat-card:not([class*=mat-elevation-z]) {
+mat-card:not([class*="mat-elevation-z"]) {
   box-shadow: $soft-shadow !important;
 }
 
@@ -46,7 +44,6 @@ mat-card:not([class*=mat-elevation-z]) {
 button {
   outline: none !important;
   -moz-outline-style: none !important;
-
 }
 
 .mh-100 {
@@ -142,8 +139,6 @@ button {
   }
 }
 
-
-
 // @mixin make-col($size, $columns: $grid-columns) {
 //   flex: 0 0 percentage($size / $columns);
 //   // Add a `max-width` to ensure content within each column does not blow out
@@ -156,14 +151,12 @@ button {
 
 .app-sm,
 .app-xs {
-
   .col-6 {
     flex: 0 0 100%;
     max-width: 100%;
   }
 
   // @include make-grid-columns();
-
 }
 
 .pointer-events-all {
@@ -175,14 +168,13 @@ button {
 }
 
 .font-primary {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .font-mono {
   //  font-family: 'Roboto Mono', monospace;
   font-family: "Lucida Console", Monaco, monospace;
 }
-
 
 .italic {
   font-style: italic;
@@ -214,9 +206,6 @@ $_weight: 300 500 700 900;
   }
 }
 
-
-
-
 .mini-button {
   &.mat-mini-fab {
     height: 20px;
@@ -236,5 +225,4 @@ $_weight: 300 500 700 900;
       line-height: 20px;
     }
   }
-
 }

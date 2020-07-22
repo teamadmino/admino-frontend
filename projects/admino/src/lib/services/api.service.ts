@@ -1,33 +1,32 @@
-import { AdminoMenuItem, BackendResponse } from './../interfaces';
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, catchError, delay } from 'rxjs/operators';
-import { Subject, Observable, ObservableInput } from 'rxjs';
-import { AdminoUserService } from './user.service';
-import { AdminoSiteService } from './site.service';
-import { v4 as uuidv4 } from 'uuid';
-
-
+import { AdminoMenuItem, BackendResponse } from "./../interfaces";
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { map, catchError, delay } from "rxjs/operators";
+import { Subject, Observable, ObservableInput } from "rxjs";
+import { AdminoUserService } from "./user.service";
+import { AdminoSiteService } from "./site.service";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AdminoApiService {
-
   // BASE_URL = 'http://127.0.0.1:4080';
   // BASE_URL = 'http://192.168.0.101:4080';
-  BASE_URL = 'http://localhost:4080';
-  LOGIN = '/login';
-  BROWSE = '/browse';
-  DOWNLOAD = '/download';
-  BROWSER_INFO = '/browserinfo';
-  REQUEST = '/request';
-  PING = '/ping';
+  BASE_URL = "http://localhost:4080";
+  LOGIN = "/login";
+  BROWSE = "/browse";
+  DOWNLOAD = "/download";
+  BROWSER_INFO = "/browserinfo";
+  REQUEST = "/request";
+  PING = "/ping";
   // tabId = 1;
   tabId = uuidv4();
-  constructor(private http: HttpClient, private user: AdminoUserService, private site: AdminoSiteService) {
-  }
-
+  constructor(
+    private http: HttpClient,
+    private user: AdminoUserService,
+    private site: AdminoSiteService
+  ) {}
 
   init(baseUrl: string) {
     this.BASE_URL = baseUrl;
@@ -35,17 +34,30 @@ export class AdminoApiService {
 
   getFirstMenu(menu: AdminoMenuItem) {
     if (menu.children) {
-      return (this.getFirstMenu(menu.children[0]));
+      return this.getFirstMenu(menu.children[0]);
     } else {
       return menu;
     }
   }
   downloadFile(downloadid: string): Observable<any> {
-    return this.http.post(this.BASE_URL + this.DOWNLOAD,
-      { downloadid }, { responseType: 'blob' });
+    return this.http.post(
+      this.BASE_URL + this.DOWNLOAD,
+      { downloadid },
+      { responseType: "blob" }
+    );
   }
 
-  list(view: string, keys: any, cursorpos: number, shift: number, count: number, index: number, before: number = 0, after: number = 0, customVars: any = {}) {
+  list(
+    view: string,
+    keys: any,
+    cursorpos: number,
+    shift: number,
+    count: number,
+    index: number,
+    before: number = 0,
+    after: number = 0,
+    customVars: any = {}
+  ) {
     // const dummySubject = new Subject();
     const body = {
       cursor: cursorpos.toString(),
@@ -56,7 +68,7 @@ export class AdminoApiService {
       table: view,
       before: before.toString(),
       after: after.toString(),
-      customVars
+      customVars,
     };
     // this.http.post(this.BASE_URL + '/v2ping',
     //   JSON.stringify({ test: 'áÁíÍóÓöÖőŐúÚüÜűŰéÉ' })).pipe(map((response: any) => { })).subscribe();
@@ -118,8 +130,6 @@ export class AdminoApiService {
     //     //   fun(row);
     //     // });
 
-
-
     //     // setTimeout((params) => {
     //     dummySubject.next(response);
     //     dummySubject.complete();
@@ -139,12 +149,33 @@ export class AdminoApiService {
     return this.http.post(this.BASE_URL + this.BROWSER_INFO, { view });
   }
 
-
-  request(requestedScreen: string, requestingScreen: string,
-    screenValue: any = null, schema: any = null, initiatedBy = null, trigger = null, key = null,
-    queryParams: any = null, customVars: any = null, activeModifierKeys = []) {
-    return this.http.post(this.BASE_URL + this.REQUEST + '/' + requestedScreen,
-      { screen: requestingScreen, schema, queryParams, screenValue, initiatedBy, customVars, trigger, key, activeModifierKeys, tabId: this.tabId })
+  request(
+    requestedScreen: string,
+    requestingScreen: string,
+    screenValue: any = null,
+    schema: any = null,
+    initiatedBy = null,
+    trigger = null,
+    key = null,
+    queryParams: any = null,
+    customVars: any = null,
+    activeModifierKeys = []
+  ) {
+    return this.http.post(
+      this.BASE_URL + this.REQUEST + "/" + requestedScreen,
+      {
+        screen: requestingScreen,
+        schema,
+        queryParams,
+        screenValue,
+        initiatedBy,
+        customVars,
+        trigger,
+        key,
+        activeModifierKeys,
+        tabId: this.tabId,
+      }
+    );
     // .pipe(delay(3000), map((val) => {
     //   // try {
     //   //   val['updateScreen']["elements"][0]['_forceRefresh'] = true;
@@ -156,21 +187,21 @@ export class AdminoApiService {
     // }));
   }
   getRequest(requestedScreen: string) {
-    return this.http.get(this.BASE_URL + this.REQUEST + '/' + requestedScreen);
+    return this.http.get(this.BASE_URL + this.REQUEST + "/" + requestedScreen);
   }
 
   ping(screenName) {
-    return this.http.post(this.BASE_URL + this.PING, { screenName, tabId: this.tabId });
+    return this.http.post(this.BASE_URL + this.PING, {
+      screenName,
+      tabId: this.tabId,
+    });
   }
-
 
   stringifyObject(obj: any) {
     const json = JSON.stringify(obj);
-    const withStrings = JSON.parse(json, (key, val) => (
-      typeof val !== 'object' && val !== null ? String(val) : val
-    ));
+    const withStrings = JSON.parse(json, (key, val) =>
+      typeof val !== "object" && val !== null ? String(val) : val
+    );
     return withStrings;
   }
-
-
 }

@@ -10,14 +10,19 @@
 <!--</div>-->
 
 <!-- <div class="testdiv"></div> -->
-<div class="wrapper" [ngClass]="{'matrix-focused': this.isFocused}" adminoResizeObserver [debounceAdminoResize]="100"
-    (adminoResize)="onResize()" tabindex="0" #focusRef (mousewheel)="mouseWheelEvent($event)">
+<div
+  class="wrapper"
+  [ngClass]="{ 'matrix-focused': this.isFocused }"
+  adminoResizeObserver
+  [debounceAdminoResize]="100"
+  (adminoResize)="onResize()"
+  tabindex="0"
+  #focusRef
+  (mousewheel)="mouseWheelEvent($event)"
+>
+  <!--    <div class="fakescroller" (scroll)="scrollEvent($event)" #fakeScrollerRef>-->
+  <!--        <div class="fakecontent"></div>-->
+  <!--    </div>-->
 
-<!--    <div class="fakescroller" (scroll)="scrollEvent($event)" #fakeScrollerRef>-->
-<!--        <div class="fakecontent"></div>-->
-<!--    </div>-->
-
-    <div [id]="this.idPrefix+'matrixdiv'" class="matrix">
-    </div>
-
+  <div [id]="this.idPrefix + 'matrixdiv'" class="matrix"></div>
 </div>

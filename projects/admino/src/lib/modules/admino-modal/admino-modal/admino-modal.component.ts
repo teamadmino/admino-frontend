@@ -1,9 +1,25 @@
-import { Subject, BehaviorSubject } from 'rxjs';
-import { ESCAPE } from '@angular/cdk/keycodes';
-import { Component, OnInit, ViewChild, Injector, InjectionToken, ComponentFactoryResolver, Output, EventEmitter, HostListener, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { CdkPortalOutlet, PortalInjector, ComponentPortal } from '@angular/cdk/portal';
-export const MODAL_DATA = new InjectionToken<{}>('MODAL_DATA');
-export const MODAL_REF = new InjectionToken<{}>('MODAL_REF');
+import { Subject, BehaviorSubject } from "rxjs";
+import { ESCAPE } from "@angular/cdk/keycodes";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Injector,
+  InjectionToken,
+  ComponentFactoryResolver,
+  Output,
+  EventEmitter,
+  HostListener,
+  ChangeDetectorRef,
+  OnDestroy,
+} from "@angular/core";
+import {
+  CdkPortalOutlet,
+  PortalInjector,
+  ComponentPortal,
+} from "@angular/cdk/portal";
+export const MODAL_DATA = new InjectionToken<{}>("MODAL_DATA");
+export const MODAL_REF = new InjectionToken<{}>("MODAL_REF");
 
 export interface AdminoModalConfig {
   width?: string;
@@ -18,12 +34,13 @@ export interface AdminoModalConfig {
 }
 
 @Component({
-  selector: 'admino-modal',
-  templateUrl: './admino-modal.component.html',
-  styleUrls: ['./admino-modal.component.scss']
+  selector: "admino-modal",
+  templateUrl: "./admino-modal.component.html",
+  styleUrls: ["./admino-modal.component.scss"],
 })
 export class AdminoModalComponent implements OnInit, OnDestroy {
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutletRef: CdkPortalOutlet;
+  @ViewChild(CdkPortalOutlet, { static: true })
+  portalOutletRef: CdkPortalOutlet;
 
   component: any;
   componentResolver: any;
@@ -31,7 +48,7 @@ export class AdminoModalComponent implements OnInit, OnDestroy {
   injector: Injector;
   componentInstance;
   config: AdminoModalConfig = {
-    width: 600 + 'px',
+    width: 600 + "px",
     // height: 100 + '%',
     nopadding: true,
   };
@@ -43,15 +60,13 @@ export class AdminoModalComponent implements OnInit, OnDestroy {
 
   dataChange: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  @HostListener('keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+  @HostListener("keydown", ["$event"]) onKeydownHandler(event: KeyboardEvent) {
     if (event.keyCode === ESCAPE) {
       this.close();
     }
   }
 
-
-  constructor(private cd: ChangeDetectorRef) {
-  }
+  constructor(private cd: ChangeDetectorRef) {}
   createInjector(): PortalInjector {
     const injectorTokens = new WeakMap();
     injectorTokens.set(MODAL_DATA, this.dataChange);
@@ -60,7 +75,12 @@ export class AdminoModalComponent implements OnInit, OnDestroy {
   }
   create() {
     this.dataChange.next(this.data);
-    const componentPortal = new ComponentPortal(this.component, null, this.createInjector(), this.componentResolver);
+    const componentPortal = new ComponentPortal(
+      this.component,
+      null,
+      this.createInjector(),
+      this.componentResolver
+    );
     this.componentInstance = componentPortal.attach(this.portalOutletRef);
     this.cd.markForCheck();
   }
@@ -87,13 +107,13 @@ export class AdminoModalComponent implements OnInit, OnDestroy {
   getClasses() {
     const arr = [];
     if (this.config.nopadding) {
-      arr.push('nopadding');
+      arr.push("nopadding");
     }
     if (this.config.verticalPosition) {
-      arr.push('vertical-' + this.config.verticalPosition);
+      arr.push("vertical-" + this.config.verticalPosition);
     }
     if (this.config.horizontalPosition) {
-      arr.push('horizontal-' + this.config.horizontalPosition);
+      arr.push("horizontal-" + this.config.horizontalPosition);
     }
     return arr;
   }

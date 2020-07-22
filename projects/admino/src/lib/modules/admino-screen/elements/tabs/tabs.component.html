@@ -1,8 +1,14 @@
 <mat-tab-group>
-    <mat-tab [label]="tab.label" *ngFor="let tab of element.tabs">
-        <admino-screen class="admino-input" [editMode]="this.rootScreenComponent.editMode"
-            [rootScreenComponent]="this.rootScreenComponent" [parentScreenComponent]="this.screenComponent"
-            [group]="this.group" [screenElement]="tab" #screen>
-        </admino-screen>
-    </mat-tab>
+  <mat-tab [label]="tab.label" *ngFor="let tab of element.tabs">
+    <admino-screen
+      class="admino-input"
+      [editMode]="this.rootScreenComponent.editMode"
+      [rootScreenComponent]="this.rootScreenComponent"
+      [parentScreenComponent]="this.screenComponent"
+      [group]="this.group"
+      [screenElement]="tab"
+      #screen
+    >
+    </admino-screen>
+  </mat-tab>
 </mat-tab-group>

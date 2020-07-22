@@ -1,15 +1,27 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PortalModule } from '@angular/cdk/portal';
-import { DragDropModule, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { PortalModule } from "@angular/cdk/portal";
+import { DragDropModule, CdkDropListGroup } from "@angular/cdk/drag-drop";
 
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatIconModule } from '@angular/material/icon';
-import { CdkTableModule } from '@angular/cdk/table';
-import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { LayoutModule } from "@angular/cdk/layout";
+import { MatIconModule } from "@angular/material/icon";
+import { CdkTableModule } from "@angular/cdk/table";
 import {
-  MatFormFieldModule, MatSelectModule, MatInputModule,
-  MatOptionModule, MatToolbarModule, MatSlideToggleModule, MatSidenavModule, MatCheckboxModule, MatGridListModule,
+  MatMomentDateModule,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MAT_MOMENT_DATE_FORMATS,
+} from "@angular/material-moment-adapter";
+import {
+  MatFormFieldModule,
+  MatSelectModule,
+  MatInputModule,
+  MatOptionModule,
+  MatToolbarModule,
+  MatSlideToggleModule,
+  MatSidenavModule,
+  MatCheckboxModule,
+  MatGridListModule,
   MatButtonModule,
   MatCardModule,
   MatAutocompleteModule,
@@ -36,18 +48,16 @@ import {
   DateAdapter,
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS,
-
-} from '@angular/material';
-import { A11yModule } from '@angular/cdk/a11y';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { OverlayModule } from '@angular/cdk/overlay';
-
+} from "@angular/material";
+import { A11yModule } from "@angular/cdk/a11y";
+import { ScrollingModule } from "@angular/cdk/scrolling";
+import { OverlayModule } from "@angular/cdk/overlay";
 
 @NgModule({
   providers: [
     // The locale would typically be provided on the root module of your application. We do it at
     // the component level here, due to limitations of our example generation script.
-    { provide: MAT_DATE_LOCALE, useValue: 'hu-HU' },
+    { provide: MAT_DATE_LOCALE, useValue: "hu-HU" },
 
     // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
     // `MatMomentDateModule` in your applications root module. We provide it at the component level
@@ -104,7 +114,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     CdkTableModule,
     DragDropModule,
     ScrollingModule,
-    OverlayModule
+    OverlayModule,
   ],
   exports: [
     CommonModule,
@@ -150,8 +160,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     CdkTableModule,
     DragDropModule,
     ScrollingModule,
-    OverlayModule
+    OverlayModule,
   ],
-
 })
-export class MaterialModulesModule { }
+export class MaterialModulesModule {}

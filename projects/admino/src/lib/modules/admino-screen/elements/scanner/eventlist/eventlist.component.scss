@@ -6,8 +6,6 @@
   width: 100%;
 }
 
-
-
 .codes-wrapper {
   .anim {
     position: absolute;
@@ -150,9 +148,7 @@
         display: none;
       }
 
-
       &.synced {
-
         .unsyncindicator {
           display: none;
         }
@@ -164,7 +160,6 @@
 
       .unsyncindicator {
         // animation: rotate 0.5s linear 0s infinite alternate;
-
       }
     }
 
@@ -177,8 +172,6 @@
       z-index: 10;
       top: 0;
     }
-
-
   }
 }
 
@@ -206,8 +199,6 @@
   100% {
     transform: scale(1);
     opacity: 1;
-
-
   }
 }
 

@@ -1,11 +1,9 @@
-import { AdminoResizeModule } from './../../directives/admino-resize/admino-resize.module';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AdminoTableComponent } from './admino-table/admino-table.component';
-import { AdminoTooltipModule } from '../admino-tooltip/admino-tooltip.module';
-import { MaterialModulesModule } from '../material-modules/material-modules.module';
-
-
+import { AdminoResizeModule } from "./../../directives/admino-resize/admino-resize.module";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { AdminoTableComponent } from "./admino-table/admino-table.component";
+import { AdminoTooltipModule } from "../admino-tooltip/admino-tooltip.module";
+import { MaterialModulesModule } from "../material-modules/material-modules.module";
 
 @NgModule({
   declarations: [AdminoTableComponent],
@@ -13,11 +11,8 @@ import { MaterialModulesModule } from '../material-modules/material-modules.modu
     CommonModule,
     MaterialModulesModule,
     AdminoTooltipModule,
-    AdminoResizeModule
-
+    AdminoResizeModule,
   ],
-  exports: [
-    AdminoTableComponent
-  ]
+  exports: [AdminoTableComponent],
 })
-export class AdminoTableModule { }
+export class AdminoTableModule {}

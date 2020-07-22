@@ -1,16 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
-  selector: 'admino-message',
-  templateUrl: './admino-message.component.html',
-  styleUrls: ['./admino-message.component.css']
+  selector: "admino-message",
+  templateUrl: "./admino-message.component.html",
+  styleUrls: ["./admino-message.component.css"],
 })
 export class AdminoMessageComponent implements OnInit {
-
   @Input() message: any;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

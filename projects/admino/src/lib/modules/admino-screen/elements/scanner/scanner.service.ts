@@ -1,7 +1,7 @@
-import { debounceTime } from 'rxjs/operators';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { cloneDeep } from 'lodash';
+import { debounceTime } from "rxjs/operators";
+import { BehaviorSubject, Subject } from "rxjs";
+import { Injectable } from "@angular/core";
+import { cloneDeep } from "lodash";
 
 export interface BeolvasasData {
   version: number;
@@ -14,7 +14,7 @@ export interface BeolvasasEvent {
   dolgozo?: number;
   dolgozoNev?: string;
 
-  type: 'sztorno' | 'bala' | 'dolgozoBe' | 'dolgozoKi' | 'pantNyit' | 'pantZar';
+  type: "sztorno" | "bala" | "dolgozoBe" | "dolgozoKi" | "pantNyit" | "pantZar";
 
   // sztorno
   eredetiBeolvasas?: BeolvasasEvent;
@@ -24,21 +24,19 @@ export interface BeolvasasEvent {
   utca?: number;
   fakk?: number;
   manualis?: boolean;
-
 }
 @Injectable()
 export class ScannerService {
-
   keyboardMode = false;
 
-  JSON_PREFIX = 'scanner_';
-  JSON_DOLGOZOK = this.JSON_PREFIX + 'dolgozok';
-  JSON_UTCAK = this.JSON_PREFIX + 'utcak';
-  JSON_VERSION = this.JSON_PREFIX + 'version';
-  JSON_BEOLVASASOK = this.JSON_PREFIX + 'beolvasasok';
-  JSON_SYNCID = this.JSON_PREFIX + 'syncid';
-  JSON_SYNCEDTILL = this.JSON_PREFIX + 'syncedTill';
-  JSON_POS = this.JSON_PREFIX + 'beolvpos';
+  JSON_PREFIX = "scanner_";
+  JSON_DOLGOZOK = this.JSON_PREFIX + "dolgozok";
+  JSON_UTCAK = this.JSON_PREFIX + "utcak";
+  JSON_VERSION = this.JSON_PREFIX + "version";
+  JSON_BEOLVASASOK = this.JSON_PREFIX + "beolvasasok";
+  JSON_SYNCID = this.JSON_PREFIX + "syncid";
+  JSON_SYNCEDTILL = this.JSON_PREFIX + "syncedTill";
+  JSON_POS = this.JSON_PREFIX + "beolvpos";
   online = false;
 
   popups: any[] = [];
@@ -46,30 +44,54 @@ export class ScannerService {
 
   scanner = null;
 
-
   page: BehaviorSubject<number> = new BehaviorSubject(0);
   next: Subject<null> = new Subject();
   prev: Subject<null> = new Subject();
   newBeolvasasEvent: Subject<BeolvasasEvent> = new Subject();
-  newErrorEvent: Subject<{ error: string, description: string }> = new Subject();
+  newErrorEvent: Subject<{
+    error: string;
+    description: string;
+  }> = new Subject();
   syncEvent: Subject<number> = new Subject();
   syncId = -1;
   syncedTill = 0;
 
   labels = [
-    [{ label: 'Bejelentkezés', iconright: 'navigate_next', func: 'next', color: 'accent' }],
+    [
+      {
+        label: "Bejelentkezés",
+        iconright: "navigate_next",
+        func: "next",
+        color: "accent",
+      },
+    ],
 
-    [{ label: 'Kilépés', iconleft: 'navigate_before', func: 'prev' },
-    { label: 'Fakk', iconright: 'navigate_next', func: 'next', color: 'accent' }],
+    [
+      { label: "Kilépés", iconleft: "navigate_before", func: "prev" },
+      {
+        label: "Fakk",
+        iconright: "navigate_next",
+        func: "next",
+        color: "accent",
+      },
+    ],
 
-    [{ label: 'Utca', iconleft: 'navigate_before', func: 'prev' },
-    { label: 'Adatfelvitel', iconright: 'navigate_next', func: 'next', color: 'accent' }],
+    [
+      { label: "Utca", iconleft: "navigate_before", func: "prev" },
+      {
+        label: "Adatfelvitel",
+        iconright: "navigate_next",
+        func: "next",
+        color: "accent",
+      },
+    ],
 
-    [{ label: 'Utca', iconleft: 'navigate_before', func: 'doubleprev' },
-    { label: 'Fakk', iconleft: 'navigate_before', func: 'prev' },
+    [
+      { label: "Utca", iconleft: "navigate_before", func: "doubleprev" },
+      { label: "Fakk", iconleft: "navigate_before", func: "prev" },
       // { label: 'Frissít', iconleft: 'refresh', func: 'refresh', color: 'accent', disabled: true }
       // { label: 'Pántolást nyit', iconright: 'add_circle_outline', func: 'refresh', color: 'accent', disabled: true }
-    ]
+    ],
   ];
 
   selectedUtca: any = {};
@@ -79,8 +101,8 @@ export class ScannerService {
   dataLoaded = false;
 
   version = null;
-  dolgozok: { id: number, nev: string }[] = [];
-  utcak: { utca: number, raktar: string, fakkok: number }[] = [];
+  dolgozok: { id: number; nev: string }[] = [];
+  utcak: { utca: number; raktar: string; fakkok: number }[] = [];
 
   // beolvasasok: BeolvasasData = null;
   beolvasasChunks: { [id: string]: BeolvasasEvent[] } = null;
@@ -90,7 +112,7 @@ export class ScannerService {
   // maxInactivity = 2000;
   logoutRestartEvent: Subject<number> = new Subject();
   logoutRestartEventSub;
-  constructor() { }
+  constructor() {}
 
   chunkSize = 10;
   chunkNum = 50;
@@ -111,7 +133,6 @@ export class ScannerService {
 
   // asd(id) {
 
-
   //   const next = (this.pos.start + this.pos.length) % this.beolvasasmax;
   //   if (this.pos.length === this.beolvasasmax) {
   //     // if synced
@@ -128,13 +149,14 @@ export class ScannerService {
   //   return id;
   // }
 
-
   init() {
-    this.logoutRestartEventSub = this.logoutRestartEvent.pipe(debounceTime(500)).subscribe((params) => {
-      if (this.page.value > 0) {
-        this.restartTimer();
-      }
-    });
+    this.logoutRestartEventSub = this.logoutRestartEvent
+      .pipe(debounceTime(500))
+      .subscribe((params) => {
+        if (this.page.value > 0) {
+          this.restartTimer();
+        }
+      });
   }
 
   loadConfig() {
@@ -142,10 +164,14 @@ export class ScannerService {
     this.dolgozok = JSON.parse(localStorage.getItem(this.JSON_DOLGOZOK));
     this.version = JSON.parse(localStorage.getItem(this.JSON_VERSION));
     this.syncId = JSON.parse(localStorage.getItem(this.JSON_SYNCID));
-    this.syncId = this.syncId === undefined || this.syncId === null ? -1 : this.syncId;
+    this.syncId =
+      this.syncId === undefined || this.syncId === null ? -1 : this.syncId;
 
     this.syncedTill = JSON.parse(localStorage.getItem(this.JSON_SYNCEDTILL));
-    this.syncedTill = this.syncedTill === undefined || this.syncedTill === null ? 0 : this.syncedTill;
+    this.syncedTill =
+      this.syncedTill === undefined || this.syncedTill === null
+        ? 0
+        : this.syncedTill;
 
     // this.beolvasasok = JSON.parse(localStorage.getItem(this.JSON_BEOLVASASOK));
     // this.beolvasasok = this.beolvasasok ? this.beolvasasok : { version: this.version, scanner: this.scanner, data: [] };
@@ -160,7 +186,7 @@ export class ScannerService {
   createChunkArrays() {
     const chunks = {};
     for (let i = 0; i < this.chunkNum; i++) {
-      chunks[this.JSON_BEOLVASASOK + '_' + i] = [];
+      chunks[this.JSON_BEOLVASASOK + "_" + i] = [];
     }
     return chunks;
   }
@@ -168,13 +194,14 @@ export class ScannerService {
   loadBeolvasasChunks() {
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key.startsWith(this.JSON_BEOLVASASOK + '_')) {
+      if (key.startsWith(this.JSON_BEOLVASASOK + "_")) {
         const el = localStorage.getItem(localStorage.key(i));
-        this.beolvasasChunks[key] = this.beolvasasChunks[key].concat(JSON.parse(el));
+        this.beolvasasChunks[key] = this.beolvasasChunks[key].concat(
+          JSON.parse(el)
+        );
       }
     }
   }
-
 
   updateConfig(incomingVersion, utcak, dolgozok) {
     if (this.version === undefined || this.version < incomingVersion) {
@@ -189,7 +216,10 @@ export class ScannerService {
 
   setSyncedTill(incomingSyncedTill) {
     this.syncedTill = incomingSyncedTill;
-    localStorage.setItem(this.JSON_SYNCEDTILL, JSON.stringify(incomingSyncedTill));
+    localStorage.setItem(
+      this.JSON_SYNCEDTILL,
+      JSON.stringify(incomingSyncedTill)
+    );
   }
 
   logActivity() {
@@ -240,11 +270,10 @@ export class ScannerService {
     const data = {
       version: this.version,
       scanner: this.scanner,
-      data: filteredData
+      data: filteredData,
     };
     return data;
   }
-
 
   private add(beolvasas: BeolvasasEvent, next) {
     this.syncId++;
@@ -265,13 +294,18 @@ export class ScannerService {
     // this.beolvasasok.scanner = this.scanner;
     // this.beolvasasok.data.push(beolvasas);
 
-    const chunkId = this.JSON_BEOLVASASOK + '_' + chunknum;
+    const chunkId = this.JSON_BEOLVASASOK + "_" + chunknum;
     const index = next - chunknum * this.chunkSize;
     this.beolvasasChunks[chunkId][index] = beolvasas;
-    localStorage.setItem(chunkId, JSON.stringify(this.beolvasasChunks[chunkId]));
+    localStorage.setItem(
+      chunkId,
+      JSON.stringify(this.beolvasasChunks[chunkId])
+    );
 
-
-    localStorage.setItem(this.JSON_POS, JSON.stringify({ start: this.pos.start, length: this.pos.length }));
+    localStorage.setItem(
+      this.JSON_POS,
+      JSON.stringify({ start: this.pos.start, length: this.pos.length })
+    );
     // localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
     localStorage.setItem(this.JSON_SYNCID, JSON.stringify(this.syncId));
     this.newBeolvasasEvent.next(beolvasas);
@@ -283,15 +317,16 @@ export class ScannerService {
   //   return id;
   // }
 
-
-
   addBeolvasas(beolvasas: BeolvasasEvent) {
     const next = (this.pos.start + this.pos.length) % this.beolvasasmax;
 
     if (this.pos.length === this.beolvasasmax) {
       // if synced
       if (this.syncId - this.syncedTill >= this.beolvasasmax) {
-        this.newErrorEvent.next({ error: 'Memória betelt', description: 'Kérem szinkronizáljon a szerverrel' });
+        this.newErrorEvent.next({
+          error: "Memória betelt",
+          description: "Kérem szinkronizáljon a szerverrel",
+        });
         return false;
       } else {
         this.pos.start = (this.pos.start + 1) % this.beolvasasmax;
@@ -302,7 +337,6 @@ export class ScannerService {
       this.pos.length++;
       return this.add(beolvasas, next);
     }
-
 
     // // this.beolvasasok.push(value);
     // if (this.syncId - this.syncedTill >= this.beolvasasmax) {
@@ -350,7 +384,6 @@ export class ScannerService {
   //   localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
   //   this.syncEvent.next(this.syncedTill);
   // }
-
 
   reset() {
     this.selectedFakk = null;

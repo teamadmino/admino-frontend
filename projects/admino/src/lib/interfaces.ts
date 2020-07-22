@@ -1,9 +1,8 @@
-import { AdminoScreenElement } from './modules/admino-screen/elements/admino-screen-element';
-import { AdminoScreenComponent } from './modules/admino-screen/admino-screen.component';
-import { Subscription } from 'rxjs';
-import { ScreenElementScreen } from './modules/admino-screen/admino-screen.interfaces';
-import { FormGroup } from '@angular/forms';
-
+import { AdminoScreenElement } from "./modules/admino-screen/elements/admino-screen-element";
+import { AdminoScreenComponent } from "./modules/admino-screen/admino-screen.component";
+import { Subscription } from "rxjs";
+import { ScreenElementScreen } from "./modules/admino-screen/admino-screen.interfaces";
+import { FormGroup } from "@angular/forms";
 
 export interface AdminoMenuItem {
   id: string;
@@ -23,11 +22,11 @@ export interface AdminoButton {
   label: string;
   action?: AdminoAction;
   icon?: string;
-  color: 'primary' | 'accent' | 'warn';
+  color: "primary" | "accent" | "warn";
 }
 
 export interface ThemeConfig {
-  themeColor: 'gold' | 'purple' | 'blue';
+  themeColor: "gold" | "purple" | "blue";
   isDark?: boolean;
 }
 
@@ -67,7 +66,6 @@ export interface ActionSubscription {
 }
 ////////////
 export interface AdminoAction {
-
   trigger?: string;
   key?: string;
   shortcut?: string[];
@@ -75,8 +73,8 @@ export interface AdminoAction {
   overrideDefault?: boolean;
   debounce?: number;
 
-  type: 'backend' | 'frontend' | 'url' | 'download';
-  // 
+  type: "backend" | "frontend" | "url" | "download";
+  //
   isBlocking?: 0 | 1 | 2;
   // backend
   backendAction?: any;
@@ -84,11 +82,11 @@ export interface AdminoAction {
   screenshotBackgroundColor?: string;
   openScreenshot?: boolean;
   // frontend
-  frontendAction?: 'logout' | 'print';
+  frontendAction?: "logout" | "print";
   logoutScreen?: string;
   // url config
   url?: string;
-  target?: '_blank' | '_self';
+  target?: "_blank" | "_self";
   // download config
   downloadId?: string;
   fileName?: string;
@@ -104,23 +102,17 @@ export interface AdminoAction {
   // isBlocking?: boolean;
 }
 
-
-
 export interface BackendRequest {
-
   isFirstRequest: boolean;
   queryParams: {};
   screenValue: {};
 
   previousBackendAction?: string;
   backendAction?: string;
-
-
 }
 
 //////////////
 export interface BackendResponse {
-
   setScreen: any;
   updateScreen: any;
 
@@ -131,7 +123,7 @@ export interface BackendResponse {
   setFirstName: string;
   setLastname: string;
   setMenu: AdminoMenuItem[];
-  setQueryParams: { [id: string]: string; };
+  setQueryParams: { [id: string]: string };
   setBottomButtons: AdminoButton[];
   setFocus: any;
   setPing: number;

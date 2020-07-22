@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminoScreenElement } from '../admino-screen-element';
-import { ScreenElementChange } from '../../admino-screen.interfaces';
+import { Component, OnInit } from "@angular/core";
+import { AdminoScreenElement } from "../admino-screen-element";
+import { ScreenElementChange } from "../../admino-screen.interfaces";
 
 @Component({
-  selector: 'admino-code',
-  templateUrl: './code.component.html',
-  styleUrls: ['./code.component.scss']
+  selector: "admino-code",
+  templateUrl: "./code.component.html",
+  styleUrls: ["./code.component.scss"],
 })
 export class CodeComponent extends AdminoScreenElement implements OnInit {
-  editorOptions = { theme: 'vs-dark', language: 'javascript' };
+  editorOptions = { theme: "vs-dark", language: "javascript" };
 
   ngOnInit() {
     this.onChange(null);
@@ -23,7 +23,7 @@ export class CodeComponent extends AdminoScreenElement implements OnInit {
   //   // const func = eval(this.element.value);
   //   console.log(func(6))
   // }
-  onChange(changes: { [id: string]: ScreenElementChange; }) {
+  onChange(changes: { [id: string]: ScreenElementChange }) {
     // if (changes.value) {
     //   this.control.setValue(this.element.value);
     // }

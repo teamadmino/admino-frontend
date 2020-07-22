@@ -1,22 +1,19 @@
-import { Subscription } from 'rxjs';
-import { AdminoApiService } from './api.service';
-import { Injectable } from '@angular/core';
-import { AdminoActionService } from './action.service';
-import { BackendResponse } from '../interfaces';
+import { Subscription } from "rxjs";
+import { AdminoApiService } from "./api.service";
+import { Injectable } from "@angular/core";
+import { AdminoActionService } from "./action.service";
+import { BackendResponse } from "../interfaces";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AdminoPingService {
-
   pingFailed;
 
   pingTimeout;
   pingSub: Subscription;
 
-  constructor(private api: AdminoApiService, private as: AdminoActionService) {
-
-  }
+  constructor(private api: AdminoApiService, private as: AdminoActionService) {}
 
   init() {
     this.startTimeout();
@@ -31,12 +28,15 @@ export class AdminoPingService {
       return;
     }
     this.pingTimeout = setTimeout(() => {
-      this.pingSub = this.api.ping(this.as.activeScreenId).subscribe((response: BackendResponse) => {
-        this.as.handleResponse(response);
-        this.startTimeout();
-      }, (err) => {
-        this.startTimeout();
-      });
+      this.pingSub = this.api.ping(this.as.activeScreenId).subscribe(
+        (response: BackendResponse) => {
+          this.as.handleResponse(response);
+          this.startTimeout();
+        },
+        (err) => {
+          this.startTimeout();
+        }
+      );
     }, this.as.pingFrequency.value);
   }
   clearPing() {
@@ -47,5 +47,4 @@ export class AdminoPingService {
       this.pingSub.unsubscribe();
     }
   }
-
 }

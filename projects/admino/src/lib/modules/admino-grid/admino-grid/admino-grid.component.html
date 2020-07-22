@@ -1,24 +1,39 @@
-<div class="grid border-color-accent" [ngClass]="{'edit-mode': this.editMode}" [ngStyle]="this.getStyle()" #gridRef
-    (drop)="drop($event)" (dragover)="allowDrop($event)">
-    <!-- {{this.getStyle()['grid-template-rows']}} -->
-    <!-- <admino-grid-item [col]="10" [colnum]="colnum"></admino-grid-item> -->
-    <ng-content></ng-content>
+<div
+  class="grid border-color-accent"
+  [ngClass]="{ 'edit-mode': this.editMode }"
+  [ngStyle]="this.getStyle()"
+  #gridRef
+  (drop)="drop($event)"
+  (dragover)="allowDrop($event)"
+>
+  <!-- {{this.getStyle()['grid-template-rows']}} -->
+  <!-- <admino-grid-item [col]="10" [colnum]="colnum"></admino-grid-item> -->
+  <ng-content></ng-content>
 
-    <ng-container *ngIf="this.editMode">
-        <div class="grid-column-helper border-color-accent"
-            [ngStyle]="{'grid-column': (i+1)+' / span 1', 'grid-row': '1 / span '+this.rownum}"
-            *ngFor="let helper of getColumnHelpers(); let i=index;">
-            <!-- {{i+1}} -->
-        </div>
-        <div class="grid-row-helper border-color-accent" [ngStyle]="{
-            'grid-row': i+1, 
-            'grid-column': '1 / span ' + this.colnum}
-            " *ngFor="let helper of getRowHelpers(); let i=index;" #rowsRef>
-            <!-- {{i+1}} -->
-        </div>
-    </ng-container>
+  <ng-container *ngIf="this.editMode">
+    <div
+      class="grid-column-helper border-color-accent"
+      [ngStyle]="{
+        'grid-column': i + 1 + ' / span 1',
+        'grid-row': '1 / span ' + this.rownum
+      }"
+      *ngFor="let helper of getColumnHelpers(); let i = index"
+    >
+      <!-- {{i+1}} -->
+    </div>
+    <div
+      class="grid-row-helper border-color-accent"
+      [ngStyle]="{
+        'grid-row': i + 1,
+        'grid-column': '1 / span ' + this.colnum
+      }"
+      *ngFor="let helper of getRowHelpers(); let i = index"
+      #rowsRef
+    >
+      <!-- {{i+1}} -->
+    </div>
+  </ng-container>
 </div>
-
 
 <!-- <div class="gridrow displaygrid" *ngIf="displayGrid">
     <admino-grid-item *ngFor="let item of getArray()" [col]="1" [colnum]="colnum"></admino-grid-item>

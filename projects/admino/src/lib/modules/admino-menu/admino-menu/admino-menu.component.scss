@@ -2,11 +2,10 @@
 
 .admino-menu {
   .level0 {
-    >.admino-menu-button {
+    > .admino-menu-button {
       padding-left: 1rem !important;
     }
   }
-
 }
 
 @mixin admino-menu-theme($theme) {
@@ -16,8 +15,8 @@
   $foreground: map-get($theme, foreground);
   $foreground-color: mat-color($foreground, slider-off);
 
-
-  .admino-menu-button {}
+  .admino-menu-button {
+  }
 
   //   mat-expansion-panel {
   //     // color: mat-color($primary, default-contrast) !important;
@@ -32,7 +31,6 @@
   //     .mat-expansion-panel-header.mat-expanded {
   //       background: none !important;
   //     }
-
 
   //     .mat-expansion-panel-header:hover {
   //       // background: mat-color($background, hover) !important;
@@ -66,9 +64,9 @@
   //   }
 
   .level0 {
-    >.admino-menu-button {
+    > .admino-menu-button {
       &::before {
-        content: '';
+        content: "";
         width: 10px;
         height: 20px;
         left: -10px;
@@ -85,7 +83,6 @@
   }
 
   .admino-menu-button {
-
     .anims-enabled & {
       transition: color $anim;
     }
@@ -98,17 +95,13 @@
 
     position: relative;
 
-
-
     &.routeActive {
       &::before {
         left: 0;
         opacity: 1;
-
       }
     }
   }
-
 
   .admino-menu-button {
     &.routeActive {
@@ -131,10 +124,7 @@
 
     //   color: mat-color($primary) !important;
     // }
-
   }
-
-
 
   // mat-expansion-panel-header:hover,
   // .mat-expanded {
@@ -154,5 +144,4 @@
   //     color: mat-color($foreground, divider) !important;
   //   }
   // }
-
 }

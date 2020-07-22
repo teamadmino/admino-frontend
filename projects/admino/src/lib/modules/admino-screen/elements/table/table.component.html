@@ -1,14 +1,29 @@
-<admino-table2 #focusRef (valueChange)="setValue($event)" [dataSource]="this.dataSource"
-    [indexes]="this.element.indexes" [columns]="this.element.columns" [autoRefresh]="this.element.autoRefresh"
-    [rowHeight]="element.rowHeight" [headerHeight]="element.headerHeight" [oddRowStyle]="element.oddRowStyle"
-    (cellClick)="handleCellClick($event)" (cellChange)="handleCellChange($event)"
-    (cellDoubleClick)="handleCellDoubleClick($event)" (headerCellClick)="handleHeaderCellClick($event)"
-    [ngClass]="{'table-focused': this.isFocused}" [hideHeader]="element.hideHeader" [debug]="element.debug" tabindex="0"
-    [selectedRowStyle]="element.selectedRowStyle" [selectedCellStyle]="element.selectedCellStyle"
-    [inactiveSelectedRowStyle]="element.inactiveSelectedRowStyle"
-    [inactiveSelectedCellStyle]="element.inactiveSelectedCellStyle" [navigationCellStyle]="element.navigationCellStyle"
-    [inactiveNavigationCellStyle]="element.inactiveNavigationCellStyle" [keyOverrides]="this.getOverrideList()"
-    [isFocused]="this.isFocused">
-
-    <!-- (click)="this.focus()" -->
+<admino-table2
+  #focusRef
+  (valueChange)="setValue($event)"
+  [dataSource]="this.dataSource"
+  [indexes]="this.element.indexes"
+  [columns]="this.element.columns"
+  [autoRefresh]="this.element.autoRefresh"
+  [rowHeight]="element.rowHeight"
+  [headerHeight]="element.headerHeight"
+  [oddRowStyle]="element.oddRowStyle"
+  (cellClick)="handleCellClick($event)"
+  (cellChange)="handleCellChange($event)"
+  (cellDoubleClick)="handleCellDoubleClick($event)"
+  (headerCellClick)="handleHeaderCellClick($event)"
+  [ngClass]="{ 'table-focused': this.isFocused }"
+  [hideHeader]="element.hideHeader"
+  [debug]="element.debug"
+  tabindex="0"
+  [selectedRowStyle]="element.selectedRowStyle"
+  [selectedCellStyle]="element.selectedCellStyle"
+  [inactiveSelectedRowStyle]="element.inactiveSelectedRowStyle"
+  [inactiveSelectedCellStyle]="element.inactiveSelectedCellStyle"
+  [navigationCellStyle]="element.navigationCellStyle"
+  [inactiveNavigationCellStyle]="element.inactiveNavigationCellStyle"
+  [keyOverrides]="this.getOverrideList()"
+  [isFocused]="this.isFocused"
+>
+  <!-- (click)="this.focus()" -->
 </admino-table2>

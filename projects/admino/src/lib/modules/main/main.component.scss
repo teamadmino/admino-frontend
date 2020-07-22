@@ -1,4 +1,4 @@
-$anim: .3s ease-in-out;
+$anim: 0.3s ease-in-out;
 
 .admino-wrapper {
   width: 100%;
@@ -9,9 +9,7 @@ $anim: .3s ease-in-out;
   admino-tooltip-container {
     z-index: 1003;
   }
-
 }
-
 
 admino-menu {
   overflow-y: auto;
@@ -25,7 +23,7 @@ admino-menu {
   width: 100%;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: -50px;
     left: 0;
@@ -35,7 +33,6 @@ admino-menu {
 }
 
 .account-info-wrapper {
-
   height: 64px;
   min-height: 64px;
 
@@ -63,20 +60,15 @@ admino-menu {
       margin: 0;
       position: relative;
     }
-
-
   }
 }
-
-
 
 // .sidenav-container {
 //   height: 100%;
 // }
 
-
-$left-panel-size:250px;
-$right-panel-size:350px;
+$left-panel-size: 250px;
+$right-panel-size: 350px;
 
 .admino-panel {
   position: absolute;
@@ -130,7 +122,6 @@ $right-panel-size:350px;
       transform-origin: 0% 0%;
     }
 
-
     .admino-messages-open & {
       right: 0px;
       opacity: 1;
@@ -142,10 +133,7 @@ $right-panel-size:350px;
       }
     }
   }
-
 }
-
-
 
 .admino-sidenav-backdrop {
   position: absolute;
@@ -172,7 +160,6 @@ $right-panel-size:350px;
 .admino-main-wrapper {
   padding-left: 0px;
 
-
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -192,7 +179,6 @@ $right-panel-size:350px;
     padding-right: 0px !important;
   }
 
-
   // admino-toolbar {
   //   position: absolute;
   //   top: 0;
@@ -200,7 +186,6 @@ $right-panel-size:350px;
   //   left: 0;
   //   padding: inherit;
   // }
-
 
   // .admino-main {
   //   height: 100%;
@@ -216,7 +201,6 @@ $right-panel-size:350px;
 
   //   }
   // }
-
 
   .fill-height {
     flex: 1;

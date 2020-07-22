@@ -1,9 +1,16 @@
-<div class="admino-keyboard" [ngClass]="{closed: !opened}">
-    <div class="keycolumn" *ngFor="let column of processedLayout.columns">
-        <div class="keyrow" *ngFor="let row of column.rows">
-            <div class="keybutton" [ngStyle]="{flex: key.width?key.width:''}" *ngFor="let key of row.keys">
-                <admino-keybutton [config]="key" (clickEvent)="keyClicked($event)"></admino-keybutton>
-            </div>
-        </div>
+<div class="admino-keyboard" [ngClass]="{ closed: !opened }">
+  <div class="keycolumn" *ngFor="let column of processedLayout.columns">
+    <div class="keyrow" *ngFor="let row of column.rows">
+      <div
+        class="keybutton"
+        [ngStyle]="{ flex: key.width ? key.width : '' }"
+        *ngFor="let key of row.keys"
+      >
+        <admino-keybutton
+          [config]="key"
+          (clickEvent)="keyClicked($event)"
+        ></admino-keybutton>
+      </div>
     </div>
+  </div>
 </div>

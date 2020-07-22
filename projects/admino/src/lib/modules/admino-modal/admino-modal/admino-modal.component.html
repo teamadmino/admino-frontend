@@ -1,13 +1,17 @@
 <div class="admino-modal" [ngClass]="getClasses()">
-    <div class="admino-modal-bg"></div>
-    <div class="admino-modal-content-wrapper" (click)="closeByClick()">
-        <div class="admino-modal-content" (click)="$event.stopPropagation()" [ngStyle]="{
-            width:config.width ,
-            height:config.height
-        }">
-            <div class="admino-modal-content-bg">
-                <ng-template cdkPortalOutlet></ng-template>
-            </div>
-        </div>
+  <div class="admino-modal-bg"></div>
+  <div class="admino-modal-content-wrapper" (click)="closeByClick()">
+    <div
+      class="admino-modal-content"
+      (click)="$event.stopPropagation()"
+      [ngStyle]="{
+        width: config.width,
+        height: config.height
+      }"
+    >
+      <div class="admino-modal-content-bg">
+        <ng-template cdkPortalOutlet></ng-template>
+      </div>
     </div>
+  </div>
 </div>

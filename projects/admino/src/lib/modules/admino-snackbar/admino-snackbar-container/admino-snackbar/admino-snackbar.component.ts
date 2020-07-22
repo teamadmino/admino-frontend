@@ -1,36 +1,55 @@
-import { AdminoScreenComponent } from './../../../admino-screen/admino-screen.component';
-import { AdminoSnackbarContainerComponent } from './../admino-snackbar-container.component';
-import { AdminoSnackbar } from './../../../../interfaces';
-import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef, AfterViewInit, ViewChild } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { AdminoThemeService } from '../../../../services/theme.service';
+import { AdminoScreenComponent } from "./../../../admino-screen/admino-screen.component";
+import { AdminoSnackbarContainerComponent } from "./../admino-snackbar-container.component";
+import { AdminoSnackbar } from "./../../../../interfaces";
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  ChangeDetectorRef,
+  AfterViewInit,
+  ViewChild,
+} from "@angular/core";
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from "@angular/animations";
+import { AdminoThemeService } from "../../../../services/theme.service";
 
 @Component({
-  selector: 'admino-snackbar',
-  templateUrl: './admino-snackbar.component.html',
-  styleUrls: ['./admino-snackbar.component.scss'],
-  animations: [[
-    trigger('openClose', [
-      // ...
-      state('open', style({
-        height: '*',
-        opacity: 1
-      })),
-      state('closed', style({
-        height: '0px',
-        opacity: 0,
-        marginBottom: 0
-
-      })),
-      transition('open <=> closed', [
-        animate('0.5s ease-in')
+  selector: "admino-snackbar",
+  templateUrl: "./admino-snackbar.component.html",
+  styleUrls: ["./admino-snackbar.component.scss"],
+  animations: [
+    [
+      trigger("openClose", [
+        // ...
+        state(
+          "open",
+          style({
+            height: "*",
+            opacity: 1,
+          })
+        ),
+        state(
+          "closed",
+          style({
+            height: "0px",
+            opacity: 0,
+            marginBottom: 0,
+          })
+        ),
+        transition("open <=> closed", [animate("0.5s ease-in")]),
       ]),
-
-    ]),
-  ],]
+    ],
+  ],
 })
-export class AdminoSnackbarComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('screenRef', { static: true }) screenRef: AdminoScreenComponent;
+export class AdminoSnackbarComponent
+  implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild("screenRef", { static: true }) screenRef: AdminoScreenComponent;
 
   @Input() snackbarContainer: AdminoSnackbarContainerComponent;
   @Input() snackbarData: AdminoSnackbar;
@@ -38,7 +57,7 @@ export class AdminoSnackbarComponent implements OnInit, OnDestroy, AfterViewInit
   timeout2;
   isOpen = false;
   transition = false;
-  constructor(private cd: ChangeDetectorRef, public ts: AdminoThemeService) { }
+  constructor(private cd: ChangeDetectorRef, public ts: AdminoThemeService) {}
 
   ngOnInit() {
     // [screenElement]="snackbarData.screen"
@@ -61,7 +80,6 @@ export class AdminoSnackbarComponent implements OnInit, OnDestroy, AfterViewInit
     this.isOpen = true;
     this.transition = true;
     this.cd.detectChanges();
-
   }
 
   ngOnDestroy() {
@@ -72,5 +90,4 @@ export class AdminoSnackbarComponent implements OnInit, OnDestroy, AfterViewInit
       clearTimeout(this.timeout2);
     }
   }
-
 }

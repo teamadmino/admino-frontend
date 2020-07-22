@@ -4,9 +4,7 @@
   "dataGroups": [
     {
       "name": "api-performance",
-      "urls": [
-        "/request/scanner/**"
-      ],
+      "urls": ["/request/scanner/**"],
       "cacheConfig": {
         "strategy": "freshness",
         "maxSize": 100,

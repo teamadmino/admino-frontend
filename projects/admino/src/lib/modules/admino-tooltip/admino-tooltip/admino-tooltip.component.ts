@@ -1,28 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
-  selector: 'admino-tooltip',
-  templateUrl: './admino-tooltip.component.html',
-  styleUrls: ['./admino-tooltip.component.scss']
+  selector: "admino-tooltip",
+  templateUrl: "./admino-tooltip.component.html",
+  styleUrls: ["./admino-tooltip.component.scss"],
 })
 export class AdminoTooltipComponent implements OnInit {
-
   @Input() posX = 0;
   @Input() posY = 0;
   @Input() width = 200;
   @Input() content = null;
   @Input() style = null;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   getStyle() {
-
-    return Object.assign({
-      transform: 'translate3d(' + this.posX + 'px,' + this.posY + 'px,0)',
-      'max-width': this.width + 'px'
-    }, this.style ? this.style : {});
+    return Object.assign(
+      {
+        transform: "translate3d(" + this.posX + "px," + this.posY + "px,0)",
+        "max-width": this.width + "px",
+      },
+      this.style ? this.style : {}
+    );
   }
-
 }

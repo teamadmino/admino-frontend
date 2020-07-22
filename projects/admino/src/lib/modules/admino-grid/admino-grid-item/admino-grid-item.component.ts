@@ -1,38 +1,51 @@
-import { AdminoDragDirective } from './../../../directives/admino-drag/admino-drag.directive';
-import { AdminoGridComponent } from './../admino-grid/admino-grid.component';
-import { Component, OnInit, Input, HostBinding, EventEmitter, Output, ElementRef, HostListener, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { AdminoDragDirective } from "./../../../directives/admino-drag/admino-drag.directive";
+import { AdminoGridComponent } from "./../admino-grid/admino-grid.component";
+import {
+  Component,
+  OnInit,
+  Input,
+  HostBinding,
+  EventEmitter,
+  Output,
+  ElementRef,
+  HostListener,
+  ViewChild,
+  AfterViewInit,
+  AfterContentInit,
+} from "@angular/core";
+import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
 
 @Component({
-  selector: 'admino-grid-item',
-  templateUrl: './admino-grid-item.component.html',
-  styleUrls: ['./admino-grid-item.component.scss']
+  selector: "admino-grid-item",
+  templateUrl: "./admino-grid-item.component.html",
+  styleUrls: ["./admino-grid-item.component.scss"],
 })
 export class AdminoGridItemComponent implements OnInit, AfterContentInit {
-
   @Input() colSpan: any = 1;
   @Input() rowSpan: any = 1;
   @Input() row: any = 1;
   @Input() col: any = 1;
-  @Input() align = 'left';
+  @Input() align = "left";
   @Input() style = {};
   @Input() isLoading = false;
   @Input() containerStyle = {};
 
-
-  @HostBinding('class.inline') inline = false;
+  @HostBinding("class.inline") inline = false;
 
   @Input() gridComponent: AdminoGridComponent;
-  @HostBinding('class.edit-mode') @Input() editMode = false;
-  @HostBinding('class.border-color-primary') bcolor = false;
-  @HostBinding('attr.draggable') dragging = false;
+  @HostBinding("class.edit-mode") @Input() editMode = false;
+  @HostBinding("class.border-color-primary") bcolor = false;
+  @HostBinding("attr.draggable") dragging = false;
 
-  @ViewChild('dragRef', { static: false, read: AdminoDragDirective }) dragRef: AdminoDragDirective;
-  @ViewChild('resizeRef', { static: false, read: ElementRef }) resizeRef: ElementRef;
-  @ViewChild('dragRef', { static: false, read: ElementRef }) dragElRef: ElementRef;
+  @ViewChild("dragRef", { static: false, read: AdminoDragDirective })
+  dragRef: AdminoDragDirective;
+  @ViewChild("resizeRef", { static: false, read: ElementRef })
+  resizeRef: ElementRef;
+  @ViewChild("dragRef", { static: false, read: ElementRef })
+  dragElRef: ElementRef;
 
   @Input() colnum = 12;
-  @HostBinding('class.hidden') @Input() hidden = false;
+  @HostBinding("class.hidden") @Input() hidden = false;
 
   prevOffsetLeft;
   prevOffsetTop;
@@ -44,7 +57,6 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   dragStartY = 0;
   prevDragFunc;
 
-
   isMouseOver = false;
   resizing = false;
   inited = false;
@@ -52,21 +64,18 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   isActive = false;
   isOtherActive = false;
 
-
-
-  @HostBinding('style')
+  @HostBinding("style")
   get myStyle(): SafeStyle {
     return this.sanitizer.bypassSecurityTrustStyle(this.getStyle());
   }
-  @HostListener('mouseenter', ['$event']) mouseEnter(e) {
+  @HostListener("mouseenter", ["$event"]) mouseEnter(e) {
     if (!this.editMode) {
       return;
     }
     this.isMouseOver = true;
     this.setActive();
-
   }
-  @HostListener('mouseleave', ['$event']) mouseLeave(e) {
+  @HostListener("mouseleave", ["$event"]) mouseLeave(e) {
     if (!this.editMode) {
       return;
     }
@@ -74,30 +83,22 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     this.removeActive();
   }
 
-
-
-  @HostListener('click', ['$event'])
-  @HostListener('keyup', ['$event'])
-  @HostListener('keydown', ['$event'])
+  @HostListener("click", ["$event"])
+  @HostListener("keyup", ["$event"])
+  @HostListener("keydown", ["$event"])
   keydown(e: any) {
     if (this.isLoading) {
       e.preventDefault();
       e.stopPropagation();
       e.stopImmediatePropagation();
       return false;
-
     }
   }
 
-
-  constructor(private sanitizer: DomSanitizer, private elRef: ElementRef) {
-
-
-  }
+  constructor(private sanitizer: DomSanitizer, private elRef: ElementRef) {}
 
   init() {
     if (this.inited === false) {
-
       this.inited = true;
       this.gridComponent.activeItem.subscribe((activeItem) => {
         if (this.gridComponent.activeItem.value === this) {
@@ -112,13 +113,9 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
         }
       });
     }
-
   }
-  ngOnInit() {
-  }
-  ngAfterContentInit() {
-
-  }
+  ngOnInit() {}
+  ngAfterContentInit() {}
   // getStyle() {
   //   let s = '';
   //   const ratio = 100 / (this.colnum / this.col);
@@ -132,19 +129,19 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   //   return s;
   // }
   getStyle() {
-    let s = '';
-    s += 'text-align:' + this.align + ';';
+    let s = "";
+    s += "text-align:" + this.align + ";";
 
     // const ratio = 100 / (this.colnum / this.col);
     if (this.colSpan) {
-      if (this.colSpan === 'auto') {
-        s += `grid-column: ${(this.col)} / auto; `;
+      if (this.colSpan === "auto") {
+        s += `grid-column: ${this.col} / auto; `;
       } else {
-        s += `grid-column:  ${(this.col)} / span ${(this.colSpan)}; `;
+        s += `grid-column:  ${this.col} / span ${this.colSpan}; `;
       }
     }
     if (this.row) {
-      s += `grid-row: ${(this.row)} / span ${(this.rowSpan)}; `;
+      s += `grid-row: ${this.row} / span ${this.rowSpan}; `;
     }
     // if (this.row === 1 || this.editMode) {
     //   s += 'margin-top: 0em;';
@@ -154,7 +151,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     // s += `grid-row: span ${(1)};`;
 
     if (this.rowSpan > 1) {
-      s += 'align-self: stretch;';
+      s += "align-self: stretch;";
       // s += 'grid-row: fr1;';
     }
     s += this.convert(this.containerStyle);
@@ -162,12 +159,13 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   }
 
   convert(style) {
-    return Object.entries(style).reduce((styleString, [propName, propValue]) => {
-      return `${styleString}${propName}:${propValue};`;
-    }, '');
+    return Object.entries(style).reduce(
+      (styleString, [propName, propValue]) => {
+        return `${styleString}${propName}:${propValue};`;
+      },
+      ""
+    );
   }
-
-
 
   // dragStart(dragEvent) {
   //   this.dragging = true;
@@ -176,7 +174,6 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   // }
   // dragMove(dragEvent) {
   //   const rect = this.elRef.nativeElement.getBoundingClientRect();
-
 
   //   const posX = this.elRef.nativeElement.offsetLeft + dragEvent.delta.x - (this.elRef.nativeElement.offsetLeft - this.prevOffsetLeft);
   //   const posY = this.elRef.nativeElement.offsetTop + dragEvent.delta.y - (this.elRef.nativeElement.offsetTop - this.prevOffsetTop);
@@ -191,15 +188,18 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   //   this.gridComponent.refresh();
   // }
 
-
   setActive() {
     this.gridComponent.activeItem.next(this);
   }
   removeActive() {
-    if (this.gridComponent.activeItem.value === this && !this.dragging && !this.resizing && !this.isMouseOver) {
+    if (
+      this.gridComponent.activeItem.value === this &&
+      !this.dragging &&
+      !this.resizing &&
+      !this.isMouseOver
+    ) {
       this.gridComponent.activeItem.next(null);
     }
-
   }
 
   dragStart(e) {
@@ -214,14 +214,12 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     this.prevOffsetLeft = this.elRef.nativeElement.offsetLeft;
     this.prevOffsetTop = this.elRef.nativeElement.offsetTop;
     this.prevDragFunc = null;
-
   }
-  @HostListener('dragstart', ['$event']) dragStartEvent(e) {
+  @HostListener("dragstart", ["$event"]) dragStartEvent(e) {
     // e.dataTransfer.setData('text', this.elRef.nativeElement);
-
   }
 
-  @HostListener('drag', ['$event']) dragMoveEvent(e) {
+  @HostListener("drag", ["$event"]) dragMoveEvent(e) {
     if (!this.editMode) {
       return;
     }
@@ -234,26 +232,36 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
       const deltaY = e.clientY - this.dragStartY;
       const deltaX = e.clientX - this.dragStartX;
 
-      const posX = this.elRef.nativeElement.offsetLeft + deltaX - (this.elRef.nativeElement.offsetLeft - this.prevOffsetLeft);
-      const posY = this.elRef.nativeElement.offsetTop + deltaY - (this.elRef.nativeElement.offsetTop - this.prevOffsetTop);
+      const posX =
+        this.elRef.nativeElement.offsetLeft +
+        deltaX -
+        (this.elRef.nativeElement.offsetLeft - this.prevOffsetLeft);
+      const posY =
+        this.elRef.nativeElement.offsetTop +
+        deltaY -
+        (this.elRef.nativeElement.offsetTop - this.prevOffsetTop);
 
-      const coord = this.gridComponent.calcCoordinates(posX + this.dragElRef.nativeElement.offsetLeft, posY);
+      const coord = this.gridComponent.calcCoordinates(
+        posX + this.dragElRef.nativeElement.offsetLeft,
+        posY
+      );
 
       const newCol = coord.col;
-      this.col = newCol < 1 ? 1 : newCol > this.colnum - this.colSpan + 1 ? this.colnum - this.colSpan + 1 : newCol;
+      this.col =
+        newCol < 1
+          ? 1
+          : newCol > this.colnum - this.colSpan + 1
+          ? this.colnum - this.colSpan + 1
+          : newCol;
 
       const newRow = coord.row;
       this.row = newRow < 1 ? 1 : newRow;
       this.gridComponent.refresh();
-
-
-
     };
-
   }
   // dragEnd(dragEvent) {
   // }
-  @HostListener('dragend', ['$event']) dragEndEvent(e) {
+  @HostListener("dragend", ["$event"]) dragEndEvent(e) {
     if (!this.editMode) {
       return;
     }
@@ -262,11 +270,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     this.removeActive();
   }
 
-
-
-
   resizeStart(dragEvent) {
-
     this.setActive();
     this.resizing = true;
     this.prevColSpan = this.colSpan;
@@ -294,7 +298,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     const pY = dragEvent.start.y - rect.top + el.offsetTop;
     const posX = pX + dragEvent.delta.x - (pX - this.prevOffsetLeft);
     const posY = pY + dragEvent.delta.y - (pY - this.prevOffsetTop);
-    console.log('posY', Math.round(posY));
+    console.log("posY", Math.round(posY));
     // const deltaX = dragEvent.delta.x;
     // const deltaY = dragEvent.delta.y;
     // const posX = this.elRef.nativeElement.offsetLeft + deltaX - (this.elRef.nativeElement.offsetLeft - this.prevOffsetLeft);
@@ -303,9 +307,12 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     const coord = this.gridComponent.calcCoordinates(posX, posY);
     const newColSize = coord.col - this.col + 1;
 
-
-    this.colSpan = newColSize < 1 ? 1 :
-      newColSize > this.gridComponent.colnum - this.col + 1 ? this.gridComponent.colnum - this.col + 1 : newColSize;
+    this.colSpan =
+      newColSize < 1
+        ? 1
+        : newColSize > this.gridComponent.colnum - this.col + 1
+        ? this.gridComponent.colnum - this.col + 1
+        : newColSize;
 
     // const yd = dragEvent.delta.y;
     // const rowsize = this.gridComponent.rowSizePx;
@@ -318,6 +325,5 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   resizeEnd(dragEvent) {
     this.resizing = false;
     this.removeActive();
-
   }
 }

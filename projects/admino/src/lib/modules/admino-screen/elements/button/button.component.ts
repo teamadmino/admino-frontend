@@ -1,18 +1,20 @@
-import { ActionEvent } from './../../../../interfaces';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AdminoScreenElement } from '../admino-screen-element';
-import { ScreenElementChange } from '../../admino-screen.interfaces';
+import { ActionEvent } from "./../../../../interfaces";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { AdminoScreenElement } from "../admino-screen-element";
+import { ScreenElementChange } from "../../admino-screen.interfaces";
 
 @Component({
-  selector: 'admino-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  selector: "admino-button",
+  templateUrl: "./button.component.html",
+  styleUrls: ["./button.component.scss"],
 })
 export class ButtonComponent extends AdminoScreenElement implements OnInit {
-  @ViewChild('focusRef', { static: true }) focusRef: any;
+  @ViewChild("focusRef", { static: true }) focusRef: any;
   sanitizedLabel;
   ngOnInit() {
-    this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.label);
+    this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(
+      this.element.label
+    );
   }
   clicked() {
     if (this.element.action) {
@@ -25,12 +27,12 @@ export class ButtonComponent extends AdminoScreenElement implements OnInit {
     // // this.form.formRef.nativeElement.submit();
     // this.form.formRef.onSubmit(undefined);
     // this.form.formRef.ngSubmit.emit();
-
   }
-  onChange(changes: { [id: string]: ScreenElementChange; }) {
-
+  onChange(changes: { [id: string]: ScreenElementChange }) {
     if (changes && changes.label) {
-      this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.label);
+      this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(
+        this.element.label
+      );
     }
   }
   focusEvent() {

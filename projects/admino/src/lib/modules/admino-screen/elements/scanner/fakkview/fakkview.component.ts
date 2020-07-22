@@ -1,21 +1,33 @@
-import { AdminoKeyboardComponent } from './../../../../admino-keyboard/admino-keyboard/admino-keyboard.component';
-import { layout2, LAYOUT1 } from './../../../../admino-keyboard/admino-keyboard.layouts';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { FormControl, AbstractControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { ScannerView } from '../scannerview';
-import { map } from 'rxjs/operators';
-import { MatAutocompleteTrigger } from '@angular/material';
+import { AdminoKeyboardComponent } from "./../../../../admino-keyboard/admino-keyboard/admino-keyboard.component";
+import {
+  layout2,
+  LAYOUT1,
+} from "./../../../../admino-keyboard/admino-keyboard.layouts";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+} from "@angular/core";
+import { FormControl, AbstractControl } from "@angular/forms";
+import { Observable } from "rxjs";
+import { ScannerView } from "../scannerview";
+import { map } from "rxjs/operators";
+import { MatAutocompleteTrigger } from "@angular/material";
 
 @Component({
-  selector: 'admino-fakkview',
-  templateUrl: './fakkview.component.html',
-  styleUrls: ['./fakkview.component.scss']
+  selector: "admino-fakkview",
+  templateUrl: "./fakkview.component.html",
+  styleUrls: ["./fakkview.component.scss"],
 })
-export class FakkviewComponent extends ScannerView implements OnInit, AfterViewInit {
+export class FakkviewComponent extends ScannerView
+  implements OnInit, AfterViewInit {
   // @ViewChild('fakkRef', { static: true, read: ElementRef }) fakkRef: ElementRef;
-  @ViewChild('triggerFakk', { static: true, read: MatAutocompleteTrigger }) triggerFakkRef: MatAutocompleteTrigger;
-  @ViewChild('keyboardRef', { static: true, read: AdminoKeyboardComponent }) keyboardRef: AdminoKeyboardComponent;
+  @ViewChild("triggerFakk", { static: true, read: MatAutocompleteTrigger })
+  triggerFakkRef: MatAutocompleteTrigger;
+  @ViewChild("keyboardRef", { static: true, read: AdminoKeyboardComponent })
+  keyboardRef: AdminoKeyboardComponent;
 
   control = new FormControl(null, this.validateFakk.bind(this));
   fakkok = [];
@@ -31,13 +43,12 @@ export class FakkviewComponent extends ScannerView implements OnInit, AfterViewI
     //       return this._filterFakk(value);
     //     })
     //   );
-
   }
   keyInput(e) {
-    this.keyEvent(e.key)
+    this.keyEvent(e.key);
   }
   keyEvent(char) {
-    const currentval = this.control.value !== null ? this.control.value : '';
+    const currentval = this.control.value !== null ? this.control.value : "";
     if (this.isNumber(char) && this.fakkExists(char)) {
       if (currentval.length < 1) {
         this.control.setValue(currentval + char);
@@ -75,7 +86,7 @@ export class FakkviewComponent extends ScannerView implements OnInit, AfterViewI
     if (found) {
       if (found.fakkok === 0) {
         this.fakkok = Array.from(Array(1).keys());
-        console.log(this.fakkok)
+        console.log(this.fakkok);
       } else {
         this.fakkok = Array.from(Array(found.fakkok + 1).keys());
         this.fakkok.shift();
@@ -91,13 +102,11 @@ export class FakkviewComponent extends ScannerView implements OnInit, AfterViewI
     }
     this.cd.detectChanges();
     this.keyboardRef.updateAvailable();
-
   }
   onFakkChanged() {
     this.scannerService.selectedFakk = this.control.value;
   }
   validateFakk(control: AbstractControl) {
-
     if (this.fakkExists(control.value)) {
       return null;
     } else {
@@ -109,9 +118,11 @@ export class FakkviewComponent extends ScannerView implements OnInit, AfterViewI
     if (val === undefined || val === null) {
       return false;
     }
-    const found = this.fakkok && this.fakkok.find((fakk) => {
-      return fakk.toString() === val.toString();
-    });
+    const found =
+      this.fakkok &&
+      this.fakkok.find((fakk) => {
+        return fakk.toString() === val.toString();
+      });
 
     return found === undefined || found === null ? false : true;
   }
@@ -130,5 +141,4 @@ export class FakkviewComponent extends ScannerView implements OnInit, AfterViewI
   //   const filterValue = value;
   //   return this.fakkok.filter(option => option.toString().includes(filterValue.toString()));
   // }
-
 }

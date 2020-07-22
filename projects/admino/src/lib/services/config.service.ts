@@ -1,27 +1,27 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from "@angular/common/http";
 
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { AdminoConfig } from '../interfaces';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { AdminoConfig } from "../interfaces";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: "root",
 })
 export class ConfigService {
-    configLoaded: BehaviorSubject<AdminoConfig> = new BehaviorSubject(null);
+  configLoaded: BehaviorSubject<AdminoConfig> = new BehaviorSubject(null);
 
-    config: AdminoConfig;
-    constructor(private http: HttpClient) {
-        this.configLoaded.subscribe((config) => {
-            if (config) {
-                this.config = config;
-            }
-        });
-    }
+  config: AdminoConfig;
+  constructor(private http: HttpClient) {
+    this.configLoaded.subscribe((config) => {
+      if (config) {
+        this.config = config;
+      }
+    });
+  }
 
-    loadConfig(configPath: string) {
-        this.http.get(configPath).subscribe((result: AdminoConfig) => {
-            this.configLoaded.next(result);
-        });
-    }
+  loadConfig(configPath: string) {
+    this.http.get(configPath).subscribe((result: AdminoConfig) => {
+      this.configLoaded.next(result);
+    });
+  }
 }

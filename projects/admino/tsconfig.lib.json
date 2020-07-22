@@ -5,15 +5,8 @@
     "target": "es2015",
     "declaration": true,
     "inlineSources": true,
-    "types": [
-      "node",
-      "webgl2",
-      "offscreencanvas"
-    ],
-    "lib": [
-      "dom",
-      "es2018"
-    ],
+    "types": ["node", "webgl2", "offscreencanvas"],
+    "lib": ["dom", "es2018"],
     "resolveJsonModule": true
   },
   "angularCompilerOptions": {
@@ -24,8 +17,5 @@
     "strictInjectionParameters": true,
     "enableResourceInlining": true
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts"
-  ]
+  "exclude": ["src/test.ts", "**/*.spec.ts"]
 }

@@ -1,21 +1,33 @@
-<div class="admino-wrapper" [ngClass]="{
-  'admino-sidenav-open':  this.as.showMenu.value && this.site.isSideNavOpen | async , 
-'admino-messages-open': this.site.isMessagesOpen | async,
-  'mobile-size':this.site.screen.w<this.site.breakpoints.sm,
-  'anims-enabled':!this.ts.isThemeChanging}" *ngIf="this.cs.configLoaded.value">
+<div
+  class="admino-wrapper"
+  [ngClass]="{
+    'admino-sidenav-open':
+      this.as.showMenu.value && this.site.isSideNavOpen | async,
+    'admino-messages-open': this.site.isMessagesOpen | async,
+    'mobile-size': this.site.screen.w < this.site.breakpoints.sm,
+    'anims-enabled': !this.ts.isThemeChanging
+  }"
+  *ngIf="this.cs.configLoaded.value"
+>
   <admino-theme-emitter [ngClass]="this.ts.currentTheme"></admino-theme-emitter>
 
-  <div class="admino-sidenav-wrapper admino-panel" *ngIf="this.as.showMenu.value">
+  <div
+    class="admino-sidenav-wrapper admino-panel"
+    *ngIf="this.as.showMenu.value"
+  >
     <div class="admino-panel-inside h-100 d-flex flex-column">
-
-      <div class="container-fluid account-info-wrapper d-flex align-items-center">
+      <div
+        class="container-fluid account-info-wrapper d-flex align-items-center"
+      >
         <div class="account-info w-100">
           <div class="account-avatar grad-primary">
-            {{this.user.firstname.slice(0,1) + this.user.lastname.slice(0,1)}}
+            {{
+              this.user.firstname.slice(0, 1) + this.user.lastname.slice(0, 1)
+            }}
           </div>
-          <div class="avatar-name ">
-            <h6 class="name w-100 c-primary ">
-              {{this.user.firstname +' '+ this.user.lastname}}
+          <div class="avatar-name">
+            <h6 class="name w-100 c-primary">
+              {{ this.user.firstname + " " + this.user.lastname }}
             </h6>
           </div>
           <div class="fill-space"></div>
@@ -26,16 +38,25 @@
           </div>
         </div>
       </div>
-      <admino-menu [menus]="this.menu" (clickEvent)="this.menuClicked($event)"></admino-menu>
+      <admino-menu
+        [menus]="this.menu"
+        (clickEvent)="this.menuClicked($event)"
+      ></admino-menu>
       <div class="flex-grow-1"></div>
       <div class="text-center">
         <div *ngFor="let bbutton of this.bottomButtons" class="d-block">
-          <button (click)="this.bottomMenuClicked(bbutton)" class="  mb-3" mat-flat-button
-            [color]="bbutton.color?bbutton.color:'primary'">
-            <mat-icon class="" *ngIf="bbutton.icon"> {{bbutton.icon}}</mat-icon> {{bbutton.label}}
+          <button
+            (click)="this.bottomMenuClicked(bbutton)"
+            class="mb-3"
+            mat-flat-button
+            [color]="bbutton.color ? bbutton.color : 'primary'"
+          >
+            <mat-icon class="" *ngIf="bbutton.icon">
+              {{ bbutton.icon }}</mat-icon
+            >
+            {{ bbutton.label }}
           </button>
         </div>
-
       </div>
     </div>
   </div>
@@ -44,7 +65,11 @@
       <admino-messages></admino-messages>
     </div>
   </div> -->
-  <div class="admino-sidenav-backdrop" (click)='closeSidenav()' *ngIf="this.as.showMenu.value"></div>
+  <div
+    class="admino-sidenav-backdrop"
+    (click)="closeSidenav()"
+    *ngIf="this.as.showMenu.value"
+  ></div>
   <div class="admino-main-bg admino-main-wrapper">
     <admino-toolbar *ngIf="this.as.showToolbar.value"> </admino-toolbar>
     <div class="admino-main fill-height">
@@ -65,5 +90,4 @@
   </div>
 
   <admino-tooltip-container></admino-tooltip-container>
-
 </div>

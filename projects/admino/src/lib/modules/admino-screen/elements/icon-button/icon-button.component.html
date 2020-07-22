@@ -1,6 +1,13 @@
-<div class="d-block " [formGroup]="group">
-    <button [ngStyle]="element.innerStyle" [type]="'button'" (click)="handleAction(this.element.action)" mat-icon-button
-        [disabled]="element.disabled" [color]="element.color" #focusRef>
-        <mat-icon>{{element.icon}}</mat-icon>
-    </button>
+<div class="d-block" [formGroup]="group">
+  <button
+    [ngStyle]="element.innerStyle"
+    [type]="'button'"
+    (click)="handleAction(this.element.action)"
+    mat-icon-button
+    [disabled]="element.disabled"
+    [color]="element.color"
+    #focusRef
+  >
+    <mat-icon>{{ element.icon }}</mat-icon>
+  </button>
 </div>

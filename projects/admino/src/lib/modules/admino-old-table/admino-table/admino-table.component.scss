@@ -78,7 +78,6 @@
     // height: calc(100% - 51px);
 
     .scroller {
-
       // background: green;
       width: 10px;
       height: 100%;
@@ -148,12 +147,13 @@
           // left: 0;
           min-width: 100%;
 
-          &.rowselected {}
+          &.rowselected {
+          }
 
           &.evenrow {
             .acell {
               .rowbg {
-                content: '';
+                content: "";
                 width: 100%;
                 height: 100%;
                 position: absolute;
@@ -194,7 +194,8 @@
               height: 100%;
               width: 100%;
               background: red;
-              transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+              transition: width 0.3s ease-in-out,
+                background-color 0.3s ease-in-out;
             }
 
             &.first {
@@ -217,12 +218,11 @@
               padding-right: 10px;
             }
 
-            &.columnselected {}
+            &.columnselected {
+            }
           }
         }
-
       }
-
     }
   }
 }

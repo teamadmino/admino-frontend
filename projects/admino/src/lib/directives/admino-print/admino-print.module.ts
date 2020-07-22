@@ -1,16 +1,10 @@
-import { AdminoPrintDirective } from './admino-print.directive';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AdminoPrintDirective } from "./admino-print.directive";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
-  declarations: [
-    AdminoPrintDirective,
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    AdminoPrintDirective
-  ],
+  declarations: [AdminoPrintDirective],
+  imports: [CommonModule],
+  exports: [AdminoPrintDirective],
 })
-export class AdminoPrintModule { }
+export class AdminoPrintModule {}

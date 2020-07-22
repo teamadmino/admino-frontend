@@ -1,18 +1,36 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
-import { ScannerView } from '../scannerview';
-import { FormControl, FormGroup, NgForm, AbstractControl, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
+import { ScannerView } from "../scannerview";
+import {
+  FormControl,
+  FormGroup,
+  NgForm,
+  AbstractControl,
+  Validators,
+} from "@angular/forms";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
-  selector: 'admino-loginview',
-  templateUrl: './loginview.component.html',
-  styleUrls: ['./loginview.component.scss']
+  selector: "admino-loginview",
+  templateUrl: "./loginview.component.html",
+  styleUrls: ["./loginview.component.scss"],
 })
 export class LoginviewComponent extends ScannerView implements OnInit {
-  @ViewChild('focusRef', { static: true, read: ElementRef }) focusRef: ElementRef;
+  @ViewChild("focusRef", { static: true, read: ElementRef })
+  focusRef: ElementRef;
 
   formGroup = new FormGroup({
-    dolgozo: new FormControl(null, [Validators.minLength(6), this.validateDolgozo.bind(this)])
+    dolgozo: new FormControl(null, [
+      Validators.minLength(6),
+      this.validateDolgozo.bind(this),
+    ]),
   });
 
   // @ViewChild('form', { static: true }) form: ElementRef;
@@ -20,51 +38,58 @@ export class LoginviewComponent extends ScannerView implements OnInit {
   maxAzonositoLength = 6;
   keyInput(e) {
     this.formSubmitted = false;
-    this.formGroup.get('dolgozo').markAsPristine();
-    this.formGroup.get('dolgozo').markAsUntouched();
-
+    this.formGroup.get("dolgozo").markAsPristine();
+    this.formGroup.get("dolgozo").markAsUntouched();
   }
   ngOnInit() {
     this.scannerService.reset();
     this.focusRef.nativeElement.focus();
-    this.activeControl = this.formGroup.get('dolgozo');
-    this.scannerService.popupClosedEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      this.focusRef.nativeElement.focus();
-    });
+    this.activeControl = this.formGroup.get("dolgozo");
+    this.scannerService.popupClosedEvent
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.focusRef.nativeElement.focus();
+      });
   }
   input(e) {
     // if (this.scannerService.keyboardMode) {
     //   e.preventDefault();
     // }
-    if (e.target.value !== undefined && e.target.value !== null && e.target.value.toString().length > this.maxAzonositoLength) {
-      e.target.value = e.target.value.toString().substring(0, this.maxAzonositoLength);
-      this.formGroup.get('dolgozo').setValue(e.target.value);
+    if (
+      e.target.value !== undefined &&
+      e.target.value !== null &&
+      e.target.value.toString().length > this.maxAzonositoLength
+    ) {
+      e.target.value = e.target.value
+        .toString()
+        .substring(0, this.maxAzonositoLength);
+      this.formGroup.get("dolgozo").setValue(e.target.value);
     }
     this.formSubmitted = false;
-    this.formGroup.get('dolgozo').markAsPristine();
-    this.formGroup.get('dolgozo').markAsUntouched();
-
+    this.formGroup.get("dolgozo").markAsPristine();
+    this.formGroup.get("dolgozo").markAsUntouched();
   }
   onNext() {
     this.formGroup.updateValueAndValidity();
     this.formGroup.markAllAsTouched();
     // this.form.nativeElement.submit();
     const found = this.scannerService.dolgozok.find((el) => {
-      return this.formGroup.get('dolgozo').value !== null && el.id === this.formGroup.get('dolgozo').value.toString();
+      return (
+        this.formGroup.get("dolgozo").value !== null &&
+        el.id === this.formGroup.get("dolgozo").value.toString()
+      );
     });
     this.formSubmitted = true;
     if (found) {
       this.scannerService.dolgozo = found;
 
-
       const success = this.scannerService.addBeolvasas({
-        type: 'dolgozoBe'
+        type: "dolgozoBe",
       });
 
       if (success) {
         this.scannerService.page.next(1);
       }
-
     } else {
     }
   }
@@ -74,10 +99,8 @@ export class LoginviewComponent extends ScannerView implements OnInit {
     });
     if (found) {
       return null;
-
     } else {
-      return { validDolgozo: true }
+      return { validDolgozo: true };
     }
   }
-
 }

@@ -35,10 +35,8 @@
 //   overflow-y: auto;
 // }
 
-
 :host {
   height: 100%;
-
 }
 
 // .secondrow {
@@ -52,7 +50,6 @@
 }
 
 .admino-virtual-table-footer {
-
   display: flex;
   // justify-content: center;
   align-items: center;
@@ -62,7 +59,6 @@
   .actions {
     text-align: right;
   }
-
 }
 
 thead,
@@ -80,7 +76,6 @@ tbody {
   table-layout: fixed;
   margin-bottom: 0px;
   // border-collapse: collapse;
-
 }
 
 .header-container {
@@ -110,11 +105,9 @@ th {
 }
 
 td {
-
   .hide-bottom-border & {
     border-top: none !important;
   }
-
 }
 
 th,
@@ -132,7 +125,6 @@ td {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
   }
 
   padding: 0;
