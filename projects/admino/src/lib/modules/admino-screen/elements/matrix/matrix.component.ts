@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {AdminoScreenElement} from '../admino-screen-element';
-import {HttpResponse} from '@angular/common/http';
-import {v4 as uuidv4} from 'uuid';
-import {takeUntil, timeout} from 'rxjs/operators';
-import {ScreenElementChange} from '../../admino-screen.interfaces';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { AdminoScreenElement } from '../admino-screen-element';
+import { HttpResponse } from '@angular/common/http';
+import { v4 as uuidv4 } from 'uuid';
+import { takeUntil, timeout } from 'rxjs/operators';
+import { ScreenElementChange } from '../../admino-screen.interfaces';
 
 @Component({
   selector: 'admino-matrix',
@@ -70,10 +70,10 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   viewportHeight;
 
 
-  //setup visual containers
-  now = Date.now();
+  // setup visual containers
+  // now = Date.now();
   // matrixdiv = document.getElementById('matrixdiv');
-  cells = [];
+  // cells = [];
 
   boundKeydownHandler = this.keydownHandler.bind(this);
 
@@ -140,18 +140,18 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
 
   }
 
-  scrollEvent(evt) {
-    // console.log(evt);
-  }
-
-  mouseWheelEvent(evt) {
-    //this.fakeScrollerRef.nativeElement.scrollTop += evt.deltaY;
-  }
+  // scrollEvent(evt) {
+  //   // console.log(evt);
+  // }
+  //
+  // mouseWheelEvent(evt) {
+  //   // this.fakeScrollerRef.nativeElement.scrollTop += evt.deltaY;
+  // }
 
   /////////////////////////////////////////
   clearTimeouts() {
-    this.timeouts.forEach((timeout) => {
-      clearTimeout(timeout);
+    this.timeouts.forEach((timeout1) => {
+      clearTimeout(timeout1);
     });
     this.timeouts = [];
   }
@@ -273,7 +273,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
           break;
       }
     }
-  };
+  }
 
 
   initializeWorkerCells() {
@@ -311,7 +311,8 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
       size: this.totalRow
     };
     const requestJson = JSON.stringify(request);
-    const subscription = this.directive.http.post(this.backend, request, {headers: {'Content-Type': 'application/json; charset=utf-8'}})
+    /* const subscription = */
+    this.directive.http.post(this.backend, request, {headers: {'Content-Type': 'application/json; charset=utf-8'}})
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (response: any) => {
@@ -328,16 +329,17 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
                 this.cellData[r + ':' + c] = data[index++];
               }
             }
-            //document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received: ' + response.area;
+            // document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received: ' + response.area;
             console.log('Response received' + response.area);
           } catch (e) {
             this.cellData = {};
-            //document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received, error: ' + e;
+            // document.getElementById(this.idPrefix + 'log3').innerHTML = 'Response received, error: ' + e;
             console.log('Response received, error: ' + e);
           }
           this.pendingRequest = false;
         },
         (error: any) => {
+          console.log(error);
           this.pendingRequest = false;
         });
 
@@ -349,7 +351,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     // }, 1000);
     // this.timeouts.push(timeout);
 
-    //document.getElementById(this.idPrefix + 'log2').innerHTML = 'Request sent: ' + requestJson;
+    // document.getElementById(this.idPrefix + 'log2').innerHTML = 'Request sent: ' + requestJson;
     console.log('Request sent: ' + requestJson);
   }
 
@@ -762,11 +764,11 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
     if (!this.pendingUpdate) {
       this.pendingUpdate = true;
 
-      const timeout = setTimeout(() => {
+      const timeout1 = setTimeout(() => {
         this.asyncRefreshMatrix();
-        this.timeouts.splice(this.timeouts.indexOf(timeout), 1);
+        this.timeouts.splice(this.timeouts.indexOf(timeout1), 1);
       }, 0);
-      this.timeouts.push(timeout);
+      this.timeouts.push(timeout1);
     }
   }
 
@@ -794,14 +796,14 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
       }
     } while (Date.now() - now < 5);
 
-    //document.getElementById(this.idPrefix + 'log1').innerHTML = this.format05d(count) + ' cell/microtask';
+    // document.getElementById(this.idPrefix + 'log1').innerHTML = this.format05d(count) + ' cell/microtask';
     this.pendingUpdate = true;
 
-    const timeout = setTimeout(() => {
+    const timeout1 = setTimeout(() => {
       this.asyncRefreshMatrix();
-      this.timeouts.splice(this.timeouts.indexOf(timeout), 1);
+      this.timeouts.splice(this.timeouts.indexOf(timeout1), 1);
     }, 0);
-    this.timeouts.push(timeout);
+    this.timeouts.push(timeout1);
   }
 
 }
