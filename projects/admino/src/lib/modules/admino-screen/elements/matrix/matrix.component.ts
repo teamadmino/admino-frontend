@@ -70,7 +70,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   viewportHeight;
 
 
-  //setup visual containers
+  // setup visual containers
   now = Date.now();
   // matrixdiv = document.getElementById('matrixdiv');
   cells = [];
@@ -107,7 +107,7 @@ export class MatrixComponent extends AdminoScreenElement implements OnInit {
   onBlur() {
   }
 
-  onChange(changes: { [id: string]: ScreenElementChange; }) {
+  onChange(changes: {[id: string]: ScreenElementChange;}) {
     if (changes.setup) {
       Object.assign(this.setup, this.element.setup);
     }
