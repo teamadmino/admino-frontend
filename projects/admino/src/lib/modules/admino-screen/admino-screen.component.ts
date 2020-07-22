@@ -46,8 +46,14 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   public pauseEvent: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public focusEvent: BehaviorSubject<string> = new BehaviorSubject('');
 
-  blockingActionRunning = false;
-
+  _blockingActionRunning = 0;
+  @Input() public set blockingActionRunning(val: number) {
+    this._blockingActionRunning = val;
+    this.cd.detectChanges();
+  }
+  public get blockingActionRunning(): number {
+    return this._blockingActionRunning;
+  }
 
   @Input() isPopup = false;
   @Input() allOpenScreens: AdminoScreenComponent[] = [];
@@ -58,11 +64,12 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(AdminoGridComponent, { static: false }) adminoGrid: AdminoGridComponent;
 
+
+
   @HostListener('dblclick', ['$event'])
   dblclck(e: MouseEvent) {
     if (this.screenElement.allowEdit) {
       this.editMode = !this.editMode;
-
       // if (this.screenElement.editMode) {
       //   this.screenElement.editMode = false;
       // } else {
@@ -86,8 +93,11 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
-  ngAfterViewInit() {
 
+
+
+
+  ngAfterViewInit() {
     this.id = this.parentScreenComponent !== this ? this.parentScreenComponent.id : '';
     if (this.screenElement.id) {
       this.id += '.' + this.screenElement.id.toString();

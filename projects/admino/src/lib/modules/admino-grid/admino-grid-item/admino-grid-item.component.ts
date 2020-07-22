@@ -74,6 +74,22 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     this.removeActive();
   }
 
+
+
+  @HostListener('click', ['$event'])
+  @HostListener('keyup', ['$event'])
+  @HostListener('keydown', ['$event'])
+  keydown(e: any) {
+    if (this.isLoading) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return false;
+
+    }
+  }
+
+
   constructor(private sanitizer: DomSanitizer, private elRef: ElementRef) {
 
 

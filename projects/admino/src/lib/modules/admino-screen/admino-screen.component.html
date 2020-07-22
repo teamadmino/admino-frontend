@@ -1,5 +1,6 @@
-<!-- <admino-preloader *ngIf="blockingActionRunning"></admino-preloader> -->
-<form [formGroup]="group" class="admino-screen " [ngClass]="{'loading': blockingActionRunning}"
+<admino-preloader *ngIf=" blockingActionRunning===2"></admino-preloader>
+<form [formGroup]="group" class="admino-screen "
+    [ngClass]="{'blocked': blockingActionRunning===1 || blockingActionRunning===2, 'loading':blockingActionRunning===2}"
     (submit)="onSubmit($event)" *ngIf="screenElement">
 
     <div class="scroll-area" [cdkTrapFocus]="trapFocus()">

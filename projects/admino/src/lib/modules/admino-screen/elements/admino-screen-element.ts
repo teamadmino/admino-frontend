@@ -271,23 +271,23 @@ export class AdminoScreenElement {
                 key: overrideKey ? overrideKey : action.key
             };
             if (action.isBlocking) {
-                this.rootScreenComponent.blockingActionRunning = true;
+                this.rootScreenComponent.blockingActionRunning = +action.isBlocking;
             }
             actionSub.subscription = this.rootScreenComponent.handleAction(actionSub.actionEvent).subscribe((result) => {
                 this.activeActionSubscriptions.slice(this.activeActionSubscriptions.indexOf(actionSub), 1);
-                if (action.isBlocking) {
-                    this.rootScreenComponent.blockingActionRunning = false;
-                }
+                // if (action.isBlocking) {
+                this.rootScreenComponent.blockingActionRunning = 0;
+                // }
                 resolve(result);
             }, (error) => {
                 this.activeActionSubscriptions.slice(this.activeActionSubscriptions.indexOf(actionSub), 1);
                 if (action.isBlocking) {
-                    this.rootScreenComponent.blockingActionRunning = false;
+                    this.rootScreenComponent.blockingActionRunning = 0;
                 }
                 reject(error);
             }, () => {
                 if (action.isBlocking) {
-                    this.rootScreenComponent.blockingActionRunning = false;
+                    this.rootScreenComponent.blockingActionRunning = 0;
                 }
             });
         });
@@ -297,7 +297,7 @@ export class AdminoScreenElement {
         for (const actionSub of this.activeActionSubscriptions) {
             if (actionSub.subscription) {
                 if (actionSub.actionEvent.action.isBlocking) {
-                    this.rootScreenComponent.blockingActionRunning = false;
+                    this.rootScreenComponent.blockingActionRunning = 0;
                 }
                 actionSub.subscription.unsubscribe();
             }

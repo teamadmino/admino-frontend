@@ -77,7 +77,7 @@ export interface AdminoAction {
 
   type: 'backend' | 'frontend' | 'url' | 'download';
   // 
-  isBlocking?: boolean;
+  isBlocking?: 0 | 1 | 2;
   // backend
   backendAction?: any;
   includeScreenshot?: string;
@@ -141,6 +141,8 @@ export interface BackendResponse {
   showMenu: boolean;
   closePopup: boolean | string;
   setTheme: ThemeConfig;
+
+  setBlocking: boolean;
 
   setClipboard: string;
 }

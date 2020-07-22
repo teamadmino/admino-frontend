@@ -29,6 +29,18 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
   // activeScreenId = 0;
 
 
+  @HostListener('document:click', ['$event'])
+  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keydown', ['$event'])
+  keydown(e: any) {
+    if (this.screen.blockingActionRunning) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return false;
+    }
+  }
+
   constructor(private route: ActivatedRoute, public as: AdminoActionService,
     private ms: AdminoModalService, private api: AdminoApiService, private cd: ChangeDetectorRef) {
 
