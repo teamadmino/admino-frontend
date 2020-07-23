@@ -79,21 +79,21 @@
           >
             <div class="rowbg" *ngIf="vrow.absoluteId % 2 === 0" [ngStyle]="oddRowStyle"></div>
 
+            <!-- *ngIf="!column.menuColumn; else elseBlock" -->
             <div
               class="cell-content"
               [ngStyle]="getStyle(column, vrow.data && vrow.data.data, i)"
               [innerHtml]="format(getCellContent(vrow, column), column.format)"
               #cellRef
-            >
-              <!-- [innerHtml]="format(getCellContent(vrow, column), column.format)" -->
-              <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
-                <mat-icon>menu</mat-icon>
-              </button> -->
+            ></div>
+            <!-- <ng-template #elseBlock>
+              <div class="cell-content" [ngStyle]="getStyle(column, vrow.data && vrow.data.data, i)" #cellRef>
+                <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{ menus: element.rowMenu }">
+                  <mat-icon>menu</mat-icon>
+                </button>
+              </div>
+            </ng-template> -->
 
-              <!-- [innerHtml]="format(getCellContent(vrow, column),column.format)" -->
-              <!-- {{vrow.absoluteId}} -
-                            {{vrow.virtualId}} - {{format(getCellContent(vrow, column),column.format)}} -->
-            </div>
             <!-- (mouseenter)="mouseEnter(column, vrow,i, cellRef)" (mouseleave)="mouseLeave(column, vrow,i)" -->
 
             <!-- [adminoTooltip]="format(getCellContent(vrow, column),column.format)"
@@ -116,20 +116,22 @@
       </div>
     </div>
   </div>
-  <!-- <mat-menu #menu="matMenu">
-    <button mat-menu-item>
-      <mat-icon>home</mat-icon>
-      <span>Label</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>home</mat-icon>
-      <span>Label</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>home</mat-icon>
-      <span>Label</span>
-    </button>
-  </mat-menu> -->
+  <mat-menu #menu="matMenu">
+    <ng-template matMenuContent>
+      <button mat-menu-item>
+        <mat-icon>home</mat-icon>
+        <span>Label</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>home</mat-icon>
+        <span>Label</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>home</mat-icon>
+        <span>Label</span>
+      </button>
+    </ng-template>
+  </mat-menu>
   <ng-container *ngIf="debug">
     <div class="row debug">
       <div class="col-6">

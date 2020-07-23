@@ -22,6 +22,8 @@ export interface VirtualDataSourceInfoColumn {
   extraCellDefinitions: any;
 
   length: number;
+  sticky: boolean;
+  // menuColumn: boolean;
 
   // source?: string;
   description: any;

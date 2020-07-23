@@ -22,6 +22,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { isString } from "util";
 import { AdminoTooltipService } from "../../admino-tooltip/admino-tooltip.service";
 import { AdminoTableBufferData } from "./admino-table2.buffer";
+import { AdminoThemeService } from "admino/src/lib/services/theme.service";
 
 export interface VirtualRow {
   virtualId: number;
@@ -85,6 +86,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("mainRef", { static: true }) mainRef: ElementRef;
 
   columnWidths = [];
+  colPositions = [];
+  stickyBreakpoints = [];
   cumulatedColumnWidth = 0;
   sortedColumn;
 
@@ -96,6 +99,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   @Input() debug = false;
   @Input() selectedRowStyle = {};
   @Input() selectedCellStyle = {};
+  @Input() rowMenu = {};
   @Input() inactiveSelectedRowStyle = {};
   @Input() inactiveSelectedCellStyle = {};
   @Input() navigationCellStyle = {};
@@ -332,7 +336,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     public cd: ChangeDetectorRef,
     public formatService: FormatService,
     private sanitizer: DomSanitizer,
-    private tooltip: AdminoTooltipService
+    private tooltip: AdminoTooltipService,
+    private ts: AdminoThemeService
   ) {}
 
   ngOnInit() {
@@ -723,11 +728,23 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.columns.forEach((col) => {
       max += col.length;
     });
+
+    let prevStickies = 0;
+
     for (let i = 0; i < this.dataSource.columns.length; i++) {
       const col = this.dataSource.columns[i];
       this.columnWidths[i] = (availableWidth / max) * col.length;
       if (this.columnWidths[i] < col.length * 10) {
         this.columnWidths[i] = col.length * 10;
+      }
+      if (i > 0) {
+        this.colPositions[i] = this.colPositions[i - 1] + this.columnWidths[i - 1];
+      } else {
+        this.colPositions[i] = 0;
+      }
+      this.stickyBreakpoints[i] = prevStickies;
+      if (col.sticky) {
+        prevStickies += this.columnWidths[i];
       }
       this.cumulatedColumnWidth += this.columnWidths[i];
     }
@@ -803,12 +820,15 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.columns = [];
     // this.dataSource.displayedColumns = [];
     this.dataSource.keyIds = [];
+    let a = 0;
     this._columns.forEach((col: VirtualDataSourceInfoColumn) => {
       const column = {
         description: this.sanitizer.bypassSecurityTrustHtml(col.description),
         length: col.length,
         id: col.id,
         style: col.style,
+        // menuColumn: a === 2 || a === 0 ? false : false,
+        sticky: a === 2 || a === 0 ? true : false,
         containerStyle: col.containerStyle,
         headerStyle: col.headerStyle,
         headerContainerStyle: col.headerContainerStyle,
@@ -819,6 +839,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
       this.dataSource.columns.push(column);
       // this.dataSource.displayedColumns.push(column);
       this.dataSource.keyIds.push(col.id);
+      a++;
     });
   }
 
@@ -829,7 +850,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   getHeaderContainerStyle(column, i) {
     const lastColumnFix = i === this.dataSource.columns.length - 1 ? this.scrollBarWidth : 0;
     const w = this.columnWidths[i] + lastColumnFix;
-    return Object.assign(
+
+    let style = Object.assign(
       {
         width: w + "px",
         "max-width": w + "px",
@@ -838,6 +860,8 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
       },
       column.headerContainerStyle
     );
+    style = this.handleSticky(cloneDeep(style), column, i);
+    return style;
   }
   getHeaderStyle(column, i) {
     return column.headerStyle;
@@ -847,6 +871,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     const style = {
       height: this.rowHeight + "px",
       transform: "translateY(" + vrow.pos + "px)",
+      width: this.cumulatedColumnWidth + "px",
     };
 
     if (vrow.absoluteId === this.dataSource.cursorAbsPos && this.selectedRowStyle) {
@@ -860,7 +885,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
     return style;
   }
   getContainerStyle(column, data, i, vrow) {
-    const containerStyle = Object.assign(
+    let containerStyle = Object.assign(
       {
         width: this.columnWidths[i] + "px",
         "max-width": this.columnWidths[i] + "px",
@@ -891,7 +916,32 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
+    containerStyle = this.handleSticky(containerStyle, column, i, vrow);
+
     return containerStyle;
+  }
+  handleSticky(styleObj, column, i, vrow = null) {
+    let left = this.colPositions[i];
+    if (column.sticky) {
+      const scrollLeft = this.tableRef.nativeElement.scrollLeft;
+      const breakpoint = left - this.stickyBreakpoints[i];
+      if (scrollLeft > breakpoint) {
+        left += scrollLeft - breakpoint;
+        styleObj["background"] = this.ts.bgColor;
+        // styleObj["transition"] = "background-color .3s, box-shadow .3s";
+        if (vrow && vrow.absoluteId === this.dataSource.cursorAbsPos && this.selectedRowStyle) {
+          if (this.isFocused) {
+            Object.assign(styleObj, this.selectedRowStyle);
+          } else {
+            Object.assign(styleObj, this.inactiveSelectedRowStyle);
+          }
+        }
+        styleObj["box-shadow"] = "3px 0px 2px 2px #00000040";
+        styleObj["z-index"] = 2;
+      }
+    }
+    styleObj.left = left + "px";
+    return styleObj;
   }
   getStyle(column, data, i) {
     return data && data.styles && data.styles[column.id] && data.styles[column.id].style;

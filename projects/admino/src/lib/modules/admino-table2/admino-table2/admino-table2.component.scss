@@ -42,12 +42,14 @@
     // min-height: 51px;
     min-width: 100%;
     display: flex;
+    z-index: -1;
     // align-items: center;
     border-bottom: 1px solid red;
     overflow: hidden;
-
+    position: relative;
     .ahcell {
-      position: relative;
+      position: absolute;
+      height: 100%;
       max-width: 100%;
       min-width: 1px;
       white-space: nowrap;
@@ -196,7 +198,7 @@
           position: absolute;
           // left: 0;
           min-width: 100%;
-
+          overflow: hidden;
           &.rowselected {
             background-color: rgba(0, 0, 0, 0.3);
           }
@@ -237,6 +239,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: flex;
+            position: absolute;
 
             .bar {
               display: none;
