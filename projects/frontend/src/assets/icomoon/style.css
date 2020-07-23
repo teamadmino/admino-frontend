@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'admino';
   src:
-    url('fonts/admino.ttf?aoomrh') format('truetype'),
-    url('fonts/admino.woff?aoomrh') format('woff'),
-    url('fonts/admino.svg?aoomrh#admino') format('svg');
+    url('fonts/admino.ttf?9zjwqz') format('truetype'),
+    url('fonts/admino.woff?9zjwqz') format('woff'),
+    url('fonts/admino.svg?9zjwqz#admino') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.admino-icon-file-csv:before {
+  content: "\e909";
+}
 .admino-icon-pencil:before {
   content: "\e900";
 }
@@ -96,22 +99,22 @@
 .admino-icon-sort-numeric-desc:before {
   content: "\f163";
 }
-.admino-icon-file-pdf-o:before {
+.admino-icon-file-pdf:before {
   content: "\f1c1";
 }
-.admino-icon-file-word-o:before {
+.admino-icon-file-word:before {
   content: "\f1c2";
 }
-.admino-icon-file-excel-o:before {
+.admino-icon-file-excel:before {
   content: "\f1c3";
 }
-.admino-icon-file-powerpoint-o:before {
+.admino-icon-file-powerpoint:before {
   content: "\f1c4";
 }
-.admino-icon-file-image-o:before {
+.admino-icon-file-image:before {
   content: "\f1c5";
 }
-.admino-icon-commenting-o:before {
+.admino-icon-commenting:before {
   content: "\f27b";
 }
 .admino-icon-wifi-off:before {
