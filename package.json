@@ -82,7 +82,8 @@
     "ts-node": "~7.0.0",
     "tsickle": "^0.35.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.4.3"
+    "typescript": "~3.4.3",
+    "prettier": "^2.0.5"
   },
   "browserslist": [
     "> 0.5%",
