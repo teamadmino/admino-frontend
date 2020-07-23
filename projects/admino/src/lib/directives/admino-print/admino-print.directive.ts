@@ -14,9 +14,7 @@ export class AdminoPrintDirective {
   set printStyle(values: { [key: string]: { [key: string]: string } }) {
     for (const key in values) {
       if (values.hasOwnProperty(key)) {
-        this._printStyle.push(
-          (key + JSON.stringify(values[key])).replace(/['"]+/g, "")
-        );
+        this._printStyle.push((key + JSON.stringify(values[key])).replace(/['"]+/g, ""));
       }
     }
     this.returnStyleValues();
@@ -50,8 +48,7 @@ export class AdminoPrintDirective {
    */
   @Input()
   set styleSheetFile(cssList: string) {
-    let linkTagFn = (cssFileName) =>
-      `<link rel="stylesheet" type="text/css" href="${cssFileName}">`;
+    let linkTagFn = (cssFileName) => `<link rel="stylesheet" type="text/css" href="${cssFileName}">`;
     if (cssList.indexOf(",") !== -1) {
       const valueArr = cssList.split(",");
       for (let val of valueArr) {

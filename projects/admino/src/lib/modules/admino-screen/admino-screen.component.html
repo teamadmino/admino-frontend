@@ -23,9 +23,7 @@
         [editMode]="this.editMode"
         adminoTrapFocus
         [adminoTrapFocus]="this.rootScreenComponent===this"
-        [colnum]="
-          _screenElement.colNum !== undefined ? _screenElement.colNum : 12
-        "
+        [colnum]="_screenElement.colNum !== undefined ? _screenElement.colNum : 12"
         [inline]="screenElement.inline"
         [gridTemplateRows]="screenElement.gridTemplateRows"
       >
@@ -38,9 +36,7 @@
           [style]="element.style ? element.style : {}"
           [align]="element.align"
           [isLoading]="element.isLoading"
-          [containerStyle]="
-            element.containerStyle ? element.containerStyle : {}
-          "
+          [containerStyle]="element.containerStyle ? element.containerStyle : {}"
           *ngFor="let element of getElementsOfType('main'); let i = index"
           [id]="'screenElementId__' + id + '.' + element.id"
         >
@@ -59,10 +55,7 @@
     </div>
   </div>
 
-  <div
-    class="admino-screen-modals"
-    *ngIf="getElementsOfType('popup').length > 0"
-  >
+  <div class="admino-screen-modals" *ngIf="getElementsOfType('popup').length > 0">
     <div
       class="admino-screen-modal"
       [ngStyle]="{ 'z-index': i }"
@@ -90,10 +83,7 @@
   </div>
 
   <div class="timers d-none">
-    <div
-      class="timer"
-      *ngFor="let element of getElementsOfType('timer'); let i = index"
-    >
+    <div class="timer" *ngFor="let element of getElementsOfType('timer'); let i = index">
       <ng-container
         adminoScreenElement
         [rootScreenComponent]="this.rootScreenComponent"

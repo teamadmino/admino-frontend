@@ -10,30 +10,16 @@
 </table> -->
 <!-- {{this.cumulatedColumnWidth}}
 {{this.tableRef && this.tableRef.nativeElement.clientWidth}} -->
-<div
-  class="mainwrapper admino-table"
-  adminoResizeObserver
-  [debounceAdminoResize]="100"
-  (adminoResize)="resize(null)"
-  #mainRef
->
-  <div
-    class="aheader"
-    [ngStyle]="{ height: headerHeight + 'px' }"
-    #headerRef
-    *ngIf="!hideHeader"
-  >
+
+<div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize(null)" #mainRef>
+  <div class="aheader" [ngStyle]="{ height: headerHeight + 'px' }" #headerRef *ngIf="!hideHeader">
     <div
       class="ahcell"
       (click)="setSelectedHeader(i)"
       *ngFor="let column of dataSource.columns; let i = index"
       [ngStyle]="getHeaderContainerStyle(column, i)"
     >
-      <div
-        class="cell-content"
-        [innerHTML]="column.description"
-        [ngStyle]="getHeaderStyle(column, i)"
-      >
+      <div class="cell-content" [innerHTML]="column.description" [ngStyle]="getHeaderStyle(column, i)">
         <!-- <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
                     (click)="column.sortable?sortClicked(column, sorter):null;" #sorter> -->
         <!-- {{column.label}} -->
@@ -41,10 +27,7 @@
       </div>
     </div>
   </div>
-  <div
-    class="awrapper"
-    [ngClass]="{ hidetable: !dataSource.initialBrowseRequestHappend }"
-  >
+  <div class="awrapper" [ngClass]="{ hidetable: !dataSource.initialBrowseRequestHappend }">
     <div
       class="scroller"
       [ngClass]="{
@@ -67,12 +50,7 @@
       {{ this.scrollDirection ? this.rowEnd + 1 : this.rowStart + 1 }}
       <!-- -(this.largePage*(this.largePageSize)*this.rowHeight) -->
     </div>
-    <div
-      class="atable"
-      (scroll)="scrollEvent()"
-      #tableRef
-      [ngStyle]="calculateScrollers()"
-    >
+    <div class="atable" (scroll)="scrollEvent()" #tableRef [ngStyle]="calculateScrollers()">
       <div class="abody" #bodyRef>
         <div class="fakecontent" #fakeContentRef></div>
         <div
@@ -90,37 +68,28 @@
             (click)="setSelected(vrow.data, i, 'cellClick')"
             (dblclick)="setSelected(vrow.data, i, 'cellDoubleClick')"
             class="acell"
-            *ngFor="
-              let column of dataSource.columns;
-              let i = index;
-              trackBy: trackByFnCell
-            "
+            *ngFor="let column of dataSource.columns; let i = index; trackBy: trackByFnCell"
             [ngClass]="{
-              columnselected:
-                this.dataSource.cursorAbsPos === vrow.absoluteId &&
-                i === this.dataSource.state.selectedColumnIndex,
-              columnnavigation:
-                this.activeRow === vrow.absoluteId &&
-                i === this.dataSource.state.navigationColumnIndex,
+              columnselected: this.dataSource.cursorAbsPos === vrow.absoluteId && i === this.dataSource.state.selectedColumnIndex,
+              columnnavigation: this.activeRow === vrow.absoluteId && i === this.dataSource.state.navigationColumnIndex,
               first: i === 0,
               last: i === dataSource.columns.length - 1
             }"
-            [ngStyle]="
-              getContainerStyle(column, vrow.data && vrow.data.data, i, vrow)
-            "
+            [ngStyle]="getContainerStyle(column, vrow.data && vrow.data.data, i, vrow)"
           >
-            <div
-              class="rowbg"
-              *ngIf="vrow.absoluteId % 2 === 0"
-              [ngStyle]="oddRowStyle"
-            ></div>
+            <div class="rowbg" *ngIf="vrow.absoluteId % 2 === 0" [ngStyle]="oddRowStyle"></div>
 
             <div
               class="cell-content"
               [ngStyle]="getStyle(column, vrow.data && vrow.data.data, i)"
-              #cellRef
               [innerHtml]="format(getCellContent(vrow, column), column.format)"
+              #cellRef
             >
+              <!-- [innerHtml]="format(getCellContent(vrow, column), column.format)" -->
+              <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>menu</mat-icon>
+              </button> -->
+
               <!-- [innerHtml]="format(getCellContent(vrow, column),column.format)" -->
               <!-- {{vrow.absoluteId}} -
                             {{vrow.virtualId}} - {{format(getCellContent(vrow, column),column.format)}} -->
@@ -147,7 +116,20 @@
       </div>
     </div>
   </div>
-
+  <!-- <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>home</mat-icon>
+      <span>Label</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>home</mat-icon>
+      <span>Label</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>home</mat-icon>
+      <span>Label</span>
+    </button>
+  </mat-menu> -->
   <ng-container *ngIf="debug">
     <div class="row debug">
       <div class="col-6">

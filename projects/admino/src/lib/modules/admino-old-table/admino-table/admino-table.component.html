@@ -8,30 +8,15 @@
         </tr>
     </tbody>
 </table> -->
-<div
-  class="mainwrapper admino-table"
-  adminoResizeObserver
-  [debounceAdminoResize]="100"
-  (adminoResize)="resize(null)"
-  #mainRef
->
-  <div
-    class="aheader"
-    [ngStyle]="{ height: headerHeight + 'px' }"
-    #headerRef
-    *ngIf="!hideHeader"
-  >
+<div class="mainwrapper admino-table" adminoResizeObserver [debounceAdminoResize]="100" (adminoResize)="resize(null)" #mainRef>
+  <div class="aheader" [ngStyle]="{ height: headerHeight + 'px' }" #headerRef *ngIf="!hideHeader">
     <div
       class="ahcell"
       (click)="setSelectedHeader(i)"
       *ngFor="let column of dataSource.columns; let i = index"
       [ngStyle]="getHeaderContainerStyle(column, i)"
     >
-      <div
-        class="cell-content"
-        [innerHTML]="column.description"
-        [ngStyle]="getHeaderStyle(column, i)"
-      >
+      <div class="cell-content" [innerHTML]="column.description" [ngStyle]="getHeaderStyle(column, i)">
         <!-- <admino-admino-table-sorter [enabled]="column.sortable" [active]="column===this.sortedColumn?true:false"
                     (click)="column.sortable?sortClicked(column, sorter):null;" #sorter> -->
         <!-- {{column.label}} -->
@@ -40,12 +25,7 @@
     </div>
   </div>
   <div class="awrapper">
-    <div
-      class="scroller"
-      (mousedown)="scrollbarMouseDown()"
-      (scroll)="scrollbarScroll($event)"
-      #scrollerRef
-    >
+    <div class="scroller" (mousedown)="scrollbarMouseDown()" (scroll)="scrollbarScroll($event)" #scrollerRef>
       <div class="scrollercontent" #scrollerContentRef></div>
     </div>
     <div class="atable" (scroll)="scrollEvent()" #tableRef>
@@ -72,41 +52,24 @@
           <div
             (click)="setSelected(vrow, i, rowIndex)"
             class="acell"
-            *ngFor="
-              let column of dataSource.columns;
-              let i = index;
-              trackBy: trackByFnCell
-            "
+            *ngFor="let column of dataSource.columns; let i = index; trackBy: trackByFnCell"
             [ngClass]="{
-              columnselected:
-                vrow.absoluteId === this.dataSource.cursorAbsPos &&
-                i === this.dataSource.state.selectedColumnIndex,
+              columnselected: vrow.absoluteId === this.dataSource.cursorAbsPos && i === this.dataSource.state.selectedColumnIndex,
               first: i === 0,
               last: i === dataSource.columns.length - 1
             }"
-            [ngStyle]="
-              getContainerStyle(column, vrow.data && vrow.data.data, i, vrow)
-            "
+            [ngStyle]="getContainerStyle(column, vrow.data && vrow.data.data, i, vrow)"
           >
             <!-- {{vrow.absoluteId}}
                         {{vrow.virtualId}} -->
-            <div
-              class="rowbg"
-              *ngIf="vrow.absoluteId % 2 === 0"
-              [ngStyle]="oddRowStyle"
-            ></div>
+            <div class="rowbg" *ngIf="vrow.absoluteId % 2 === 0" [ngStyle]="oddRowStyle"></div>
             <div
               class="cell-content"
               [ngStyle]="getStyle(column, vrow.data && vrow.data.data, i)"
-              [innerHtml]="
-                format(sanitize(getCellContent(vrow, column), column.format))
-              "
+              [innerHtml]="format(sanitize(getCellContent(vrow, column), column.format))"
             ></div>
 
-            <div
-              class="bar"
-              [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data, i)"
-            ></div>
+            <div class="bar" [ngStyle]="getBarStyle(column, vrow.data && vrow.data.data, i)"></div>
           </div>
 
           <!-- <div class="acell">{{vrow.pos+'px'}}</div> -->

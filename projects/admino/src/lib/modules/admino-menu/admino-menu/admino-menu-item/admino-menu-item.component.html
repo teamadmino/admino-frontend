@@ -7,20 +7,10 @@
   [ngClass]="{ routeActive: this.menuItem._isActive, open: open }"
   mat-button
 >
-  <mat-icon class="admino-menu-icon" *ngIf="menuItem.icon">{{
-    menuItem.icon
-  }}</mat-icon>
+  <mat-icon class="admino-menu-icon" *ngIf="menuItem.icon">{{ menuItem.icon }}</mat-icon>
   {{ menuItem.label }}
-  <mat-icon
-    *ngIf="!this.menuItem.children"
-    class="new-window-button"
-    (click)="clicked(true)"
-  >
-    open_in_new</mat-icon
-  >
-  <mat-icon *ngIf="menuItem.children" class="arrow"
-    >keyboard_arrow_down</mat-icon
-  >
+  <mat-icon *ngIf="!this.menuItem.children" class="new-window-button" (click)="clicked(true)"> open_in_new</mat-icon>
+  <mat-icon *ngIf="menuItem.children" class="arrow">keyboard_arrow_down</mat-icon>
   <!-- 
     <mat-icon *ngIf="this.user.settings.multiWindowAllowed" class=" new-window-button"
         (click)="openInNew($event,menuItem.url+'/'+submenu.url)">

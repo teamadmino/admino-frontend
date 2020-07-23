@@ -1,16 +1,7 @@
 import { BeolvasasEvent } from "./../scanner.service";
 import { ScannerView } from "./../scannerview";
 import { FormControl } from "@angular/forms";
-import {
-  Component,
-  OnInit,
-  HostListener,
-  Input,
-  ChangeDetectorRef,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-} from "@angular/core";
+import { Component, OnInit, HostListener, Input, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from "@angular/core";
 import { codeAnimation } from "./scanner.animation";
 import { padStart } from "lodash";
 
@@ -98,10 +89,7 @@ export class InputviewComponent extends ScannerView implements OnInit {
   @HostListener("document:keydown", ["$event"])
   onManualInput(e) {
     if (e.key === "Backspace") {
-      this.currentManualRead = this.currentManualRead.substring(
-        0,
-        this.currentManualRead.length - 1
-      );
+      this.currentManualRead = this.currentManualRead.substring(0, this.currentManualRead.length - 1);
     } else if (e.key === "End" || e.code === "Minus") {
       e.preventDefault();
       this.codeDetected(this.testData[this.testDataId], false);
@@ -119,9 +107,7 @@ export class InputviewComponent extends ScannerView implements OnInit {
       }
       // this.scannerService.setSyncedTill(this.scannerService.syncedTill + 3);
     } else if (e.key === "Enter") {
-      if (
-        this.validateInput(this.currentManualRead, new Date().getFullYear() + 1)
-      ) {
+      if (this.validateInput(this.currentManualRead, new Date().getFullYear() + 1)) {
         this.codeDetected(this.currentManualRead, true);
         this.currentManualRead = "";
         this.currentRead = "";
@@ -136,10 +122,7 @@ export class InputviewComponent extends ScannerView implements OnInit {
 
   @HostListener("document:keypress", ["$event"])
   onInput(e) {
-    if (
-      (this.isNumber(e.key) || e.key === "/") &&
-      this.currentManualRead.length < 10
-    ) {
+    if ((this.isNumber(e.key) || e.key === "/") && this.currentManualRead.length < 10) {
       this.currentManualRead += e.key;
     }
     this.currentRead += e.key;
@@ -147,9 +130,7 @@ export class InputviewComponent extends ScannerView implements OnInit {
       this.currentRead = "_++";
     }
     if (this.currentRead.startsWith("_++") && this.currentRead.endsWith("+_")) {
-      this.codeDetected(
-        this.currentRead.substring(3, this.currentRead.length - 2)
-      );
+      this.codeDetected(this.currentRead.substring(3, this.currentRead.length - 2));
     }
   }
 
@@ -230,8 +211,7 @@ export class InputviewComponent extends ScannerView implements OnInit {
     const balaEvIsNum = /^\d+$/.test(balaEv);
 
     if (balaSorszamIsNum && balaEvIsNum) {
-      const balaSorszamValue: number =
-        parseInt("10000000" + balaSorszam, 10) % 10000000;
+      const balaSorszamValue: number = parseInt("10000000" + balaSorszam, 10) % 10000000;
       const balaEvValue = parseInt("1000" + balaEv, 10) % 1000;
 
       if (balaSorszamValue === 0 || balaEvValue > maxEv) {

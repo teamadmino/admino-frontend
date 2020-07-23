@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChildren,
-  QueryList,
-  AfterContentInit,
-  AfterViewInit,
-} from "@angular/core";
+import { Component, OnInit, ViewChildren, QueryList, AfterContentInit, AfterViewInit } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { AdminoScreenComponent } from "../../admino-screen.component";
 
@@ -14,11 +7,8 @@ import { AdminoScreenComponent } from "../../admino-screen.component";
   templateUrl: "./tabs.component.html",
   styleUrls: ["./tabs.component.scss"],
 })
-export class TabsComponent extends AdminoScreenElement
-  implements OnInit, AfterViewInit {
-  @ViewChildren("screen", { read: AdminoScreenComponent }) screens: QueryList<
-    AdminoScreenComponent
-  >;
+export class TabsComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
+  @ViewChildren("screen", { read: AdminoScreenComponent }) screens: QueryList<AdminoScreenComponent>;
 
   ngOnInit() {}
 

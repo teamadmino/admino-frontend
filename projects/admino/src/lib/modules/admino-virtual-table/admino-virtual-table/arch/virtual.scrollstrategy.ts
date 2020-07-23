@@ -1,7 +1,4 @@
-import {
-  FixedSizeVirtualScrollStrategy,
-  CdkVirtualScrollViewport,
-} from "@angular/cdk/scrolling";
+import { FixedSizeVirtualScrollStrategy, CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
 const ROW_HEIGHT = 48;
 
 /**

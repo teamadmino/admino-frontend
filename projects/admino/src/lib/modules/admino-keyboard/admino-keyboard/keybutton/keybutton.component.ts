@@ -1,14 +1,5 @@
 import { KeyboardKey } from "./../../admino-keyboard.interface";
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  HostBinding,
-  ChangeDetectorRef,
-  OnDestroy,
-} from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter, HostBinding, ChangeDetectorRef, OnDestroy } from "@angular/core";
 
 @Component({
   selector: "admino-keybutton",
@@ -28,9 +19,7 @@ export class KeybuttonComponent implements OnInit, OnDestroy {
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.fontSize = this.config.labelSize
-      ? this.config.labelSize + "rem"
-      : "1rem";
+    this.fontSize = this.config.labelSize ? this.config.labelSize + "rem" : "1rem";
   }
 
   manualClick() {

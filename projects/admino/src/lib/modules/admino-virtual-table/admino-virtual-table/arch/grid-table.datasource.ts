@@ -24,21 +24,14 @@ export class GridTableDataSource extends DataSource<any> {
     this.visibleData.next(this._data.slice(0, this.count));
   }
 
-  constructor(
-    initialData: any[],
-    private viewport: CdkVirtualScrollViewport,
-    private itemSize: number
-  ) {
+  constructor(initialData: any[], private viewport: CdkVirtualScrollViewport, private itemSize: number) {
     super();
     this._data = initialData;
     this.viewport.elementScrolled().subscribe((ev: any) => {
       const start = Math.floor(ev.currentTarget.scrollTop / ROW_HEIGHT);
       const prevExtraData = start > 5 ? 5 : 0;
       // const prevExtraData = 0;
-      const slicedData = this._data.slice(
-        start - prevExtraData,
-        start + (this.count - prevExtraData)
-      );
+      const slicedData = this._data.slice(start - prevExtraData, start + (this.count - prevExtraData));
       const offset = ROW_HEIGHT * (start - prevExtraData);
       this.viewport.setRenderedContentOffset(offset);
       this.offsetSub.next(offset);
@@ -46,17 +39,11 @@ export class GridTableDataSource extends DataSource<any> {
     });
   }
 
-  private readonly visibleData: BehaviorSubject<any[]> = new BehaviorSubject(
-    []
-  );
+  private readonly visibleData: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
-  connect(
-    collectionViewer: import("@angular/cdk/collections").CollectionViewer
-  ): Observable<any[] | ReadonlyArray<any>> {
+  connect(collectionViewer: import("@angular/cdk/collections").CollectionViewer): Observable<any[] | ReadonlyArray<any>> {
     return this.visibleData;
   }
 
-  disconnect(
-    collectionViewer: import("@angular/cdk/collections").CollectionViewer
-  ): void {}
+  disconnect(collectionViewer: import("@angular/cdk/collections").CollectionViewer): void {}
 }

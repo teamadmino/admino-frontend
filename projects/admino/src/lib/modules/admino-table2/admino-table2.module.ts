@@ -7,12 +7,7 @@ import { MaterialModulesModule } from "../material-modules/material-modules.modu
 
 @NgModule({
   declarations: [AdminoTable2Component],
-  imports: [
-    CommonModule,
-    MaterialModulesModule,
-    AdminoTooltipModule,
-    AdminoResizeModule,
-  ],
+  imports: [CommonModule, MaterialModulesModule, AdminoTooltipModule, AdminoResizeModule],
   exports: [AdminoTable2Component],
 })
 export class AdminoTable2Module {}

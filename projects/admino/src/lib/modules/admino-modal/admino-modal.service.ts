@@ -1,23 +1,6 @@
-import {
-  AdminoModalComponent,
-  AdminoModalConfig,
-} from "./admino-modal/admino-modal.component";
-import {
-  Injectable,
-  Injector,
-  ViewContainerRef,
-  ComponentFactoryResolver,
-  ViewRef,
-  ComponentRef,
-  ChangeDetectorRef,
-} from "@angular/core";
-import {
-  Portal,
-  CdkPortalOutlet,
-  ComponentPortal,
-  PortalInjector,
-  ComponentType,
-} from "@angular/cdk/portal";
+import { AdminoModalComponent, AdminoModalConfig } from "./admino-modal/admino-modal.component";
+import { Injectable, Injector, ViewContainerRef, ComponentFactoryResolver, ViewRef, ComponentRef, ChangeDetectorRef } from "@angular/core";
+import { Portal, CdkPortalOutlet, ComponentPortal, PortalInjector, ComponentType } from "@angular/cdk/portal";
 import { Component } from "@angular/compiler/src/core";
 
 export interface AdminoModalRef {
@@ -45,25 +28,14 @@ export class AdminoModalService {
     // console.log(this.viewContainerRef);
     // console.log(componentType);
 
-    const factory = this.componentResolverFactory.resolveComponentFactory(
-      AdminoModalComponent
-    );
-    const component: ComponentRef<AdminoModalComponent> = factory.create(
-      this.injector
-    );
+    const factory = this.componentResolverFactory.resolveComponentFactory(AdminoModalComponent);
+    const component: ComponentRef<AdminoModalComponent> = factory.create(this.injector);
     const viewRef = this.viewContainerRef.insert(component.hostView);
     component.instance.component = componentType;
-    component.instance.componentResolver = config.resolver
-      ? config.resolver
-      : this.componentResolverFactory;
-    component.instance.injector = config.injector
-      ? config.injector
-      : this.injector;
+    component.instance.componentResolver = config.resolver ? config.resolver : this.componentResolverFactory;
+    component.instance.injector = config.injector ? config.injector : this.injector;
     component.instance.data = config.data;
-    component.instance.config = Object.assign(
-      component.instance.config,
-      config
-    );
+    component.instance.config = Object.assign(component.instance.config, config);
     component.instance.create();
 
     const modalData = { viewRef };

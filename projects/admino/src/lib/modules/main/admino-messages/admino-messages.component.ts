@@ -15,8 +15,7 @@ export class AdminoMessagesComponent implements OnInit {
     },
     {
       title: "Emlékeztető",
-      text:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     },
     {
       title: "Riasztás",

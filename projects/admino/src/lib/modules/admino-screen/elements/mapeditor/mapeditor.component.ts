@@ -1,12 +1,5 @@
 import { cloneDeep, isEqual } from "lodash";
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  AfterViewInit,
-  HostListener,
-} from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { ScreenElementChange } from "../../admino-screen.interfaces";
 declare var maptalks: any;
@@ -236,10 +229,7 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
 
   removeVectorObject(objConfig) {
     if (objConfig.listenerFunction) {
-      objConfig.object.off(
-        "click dblclick shapechange editstart editend",
-        objConfig.listenerFunction
-      );
+      objConfig.object.off("click dblclick shapechange editstart editend", objConfig.listenerFunction);
     }
     objConfig.object.remove();
     if (this.editedGeometry && objConfig.id === this.editedGeometry.getId()) {
@@ -323,10 +313,7 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
         param.domEvent.stopPropagation();
       }
     };
-    obj.on(
-      "click dblclick shapechange editstart editend",
-      objectData.listenerFunction
-    );
+    obj.on("click dblclick shapechange editstart editend", objectData.listenerFunction);
 
     return obj;
   }
@@ -396,8 +383,7 @@ export class MapeditorComponent extends AdminoScreenElement implements OnInit {
 
   createMap() {
     this.map = new maptalks.Map(this.mapRef.nativeElement, {
-      center:
-        this.element.center !== undefined ? this.element.center : [0.5, 0.5],
+      center: this.element.center !== undefined ? this.element.center : [0.5, 0.5],
       zoom: this.element.zoom !== undefined ? this.element.zoom : 10,
       pitch: this.element.pitch !== undefined ? this.element.pitch : 0,
       bearing: this.element.bearing !== undefined ? this.element.bearing : 0,

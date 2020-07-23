@@ -23,8 +23,7 @@ import {
   templateUrl: "./admino-grid.component.html",
   styleUrls: ["./admino-grid.component.scss"],
 })
-export class AdminoGridComponent
-  implements OnInit, AfterContentInit, AfterViewInit, OnChanges {
+export class AdminoGridComponent implements OnInit, AfterContentInit, AfterViewInit, OnChanges {
   @Input() colnum = 40;
   @Input() height = "100%";
   rownum = 0;
@@ -93,17 +92,11 @@ export class AdminoGridComponent
       const rowEl = rows[i];
       // console.log(rowEl.nativeElement.offsetTop + rowEl.nativeElement.clientHeight)
       // console.log(posY)
-      if (
-        rowEl.nativeElement.offsetTop + rowEl.nativeElement.clientHeight >
-        posY
-      ) {
+      if (rowEl.nativeElement.offsetTop + rowEl.nativeElement.clientHeight > posY) {
         row = i + 1;
         break;
       }
-      if (
-        i === rows.length - 1 &&
-        rowEl.nativeElement.offsetTop + rowEl.nativeElement.clientHeight < posY
-      ) {
+      if (i === rows.length - 1 && rowEl.nativeElement.offsetTop + rowEl.nativeElement.clientHeight < posY) {
         row = i + 2;
         break;
       }
@@ -170,10 +163,7 @@ export class AdminoGridComponent
         }
         rowDefs += rowSpanDef + " ";
       }
-      this.gridAutoRows =
-        this.gridTemplateRows !== undefined && this.gridTemplateRows !== null
-          ? this.gridTemplateRows
-          : rowDefs;
+      this.gridAutoRows = this.gridTemplateRows !== undefined && this.gridTemplateRows !== null ? this.gridTemplateRows : rowDefs;
       // console.log(this.gridAutoRows)
       // this.rowSizePx = gr.clientHeight / this.rownum;
     }

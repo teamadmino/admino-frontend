@@ -8,12 +8,7 @@ import { AdminoGridItemComponent } from "./admino-grid-item/admino-grid-item.com
 
 @NgModule({
   declarations: [AdminoGridComponent, AdminoGridItemComponent],
-  imports: [
-    CommonModule,
-    MaterialModulesModule,
-    AdminoDragModule,
-    AdminoPreloaderModule,
-  ],
+  imports: [CommonModule, MaterialModulesModule, AdminoDragModule, AdminoPreloaderModule],
   exports: [AdminoGridComponent, AdminoGridItemComponent],
 })
 export class AdminoGridModule {}

@@ -6,10 +6,7 @@ import { AdminoUniversalEditorComponent } from "./admino-universal-editor/admino
 import { AdminoUniversalEditorPopupComponent } from "./admino-universal-editor-popup/admino-universal-editor-popup.component";
 
 @NgModule({
-  declarations: [
-    AdminoUniversalEditorComponent,
-    AdminoUniversalEditorPopupComponent,
-  ],
+  declarations: [AdminoUniversalEditorComponent, AdminoUniversalEditorPopupComponent],
   imports: [CommonModule, AdminoScreenModule, MaterialModulesModule],
   exports: [AdminoUniversalEditorComponent],
   entryComponents: [AdminoUniversalEditorPopupComponent],

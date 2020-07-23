@@ -1,11 +1,4 @@
-import {
-  Directive,
-  Renderer2,
-  HostListener,
-  Output,
-  EventEmitter,
-  OnDestroy,
-} from "@angular/core";
+import { Directive, Renderer2, HostListener, Output, EventEmitter, OnDestroy } from "@angular/core";
 
 @Directive({
   selector: "[adminoDrag]",
@@ -36,18 +29,14 @@ export class AdminoDragDirective implements OnDestroy {
 
     this.adminoDragStart.next(Object.assign({}, this.dragData));
 
-    this.dragMoveListener = this.renderer.listen(
-      "document",
-      "mousemove",
-      (e) => {
-        const mY = e.clientY;
-        const mX = e.clientX;
+    this.dragMoveListener = this.renderer.listen("document", "mousemove", (e) => {
+      const mY = e.clientY;
+      const mX = e.clientX;
 
-        this.dragData.delta.y = mY - this.dragData.start.y;
-        this.dragData.delta.x = mX - this.dragData.start.x;
-        this.adminoDragMove.next(Object.assign({}, this.dragData));
-      }
-    );
+      this.dragData.delta.y = mY - this.dragData.start.y;
+      this.dragData.delta.x = mX - this.dragData.start.x;
+      this.adminoDragMove.next(Object.assign({}, this.dragData));
+    });
 
     this.dragEndListener = this.renderer.listen("document", "mouseup", (e) => {
       this.endDrag();

@@ -63,6 +63,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   _blockingActionRunning = 0;
   @Input() public set blockingActionRunning(val: number) {
     this._blockingActionRunning = val;
+    console.log("setBlocking", val);
     this.cd.detectChanges();
   }
   public get blockingActionRunning(): number {
@@ -107,16 +108,13 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.group.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value) => {
-        this.valueChange.next(value);
-      });
+    this.group.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      this.valueChange.next(value);
+    });
   }
 
   ngAfterViewInit() {
-    this.id =
-      this.parentScreenComponent !== this ? this.parentScreenComponent.id : "";
+    this.id = this.parentScreenComponent !== this ? this.parentScreenComponent.id : "";
     if (this.screenElement.id) {
       this.id += "." + this.screenElement.id.toString();
     }
@@ -204,10 +202,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (Array.isArray(source[key])) {
           if (key.split("__")[1] === "replace") {
             target[key.split("__")[0]] = source[key];
-          } else if (
-            (source[key][0] && source[key][0].id !== undefined) ||
-            key === "elements"
-          ) {
+          } else if ((source[key][0] && source[key][0].id !== undefined) || key === "elements") {
             target[key] = this.mergeArrays(target[key], source[key]);
           } else {
             target[key] = source[key];
@@ -260,10 +255,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   closePopup(e: ScreenElementScreen) {
     if (e.allowClose) {
-      this.screenElement.elements.splice(
-        this.screenElement.elements.indexOf(e),
-        1
-      );
+      this.screenElement.elements.splice(this.screenElement.elements.indexOf(e), 1);
       this.update(this.screenElement);
     }
   }
@@ -271,19 +263,14 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.screenElement.isFluidContainer !== undefined) {
       return this.screenElement.isFluidContainer;
     } else {
-      if (
-        this.parentScreenComponent.screenElement.isFluidContainer !== undefined
-      ) {
+      if (this.parentScreenComponent.screenElement.isFluidContainer !== undefined) {
         return this.parentScreenComponent.screenElement.isFluidContainer;
       }
       return false;
     }
   }
   trapFocus() {
-    if (
-      this.screenElement.allowTabOut !== undefined &&
-      this.screenElement.allowTabOut === false
-    ) {
+    if (this.screenElement.allowTabOut !== undefined && this.screenElement.allowTabOut === false) {
       return true;
     }
     if (this.screenElement.allowTabOut) {

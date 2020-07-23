@@ -1,13 +1,7 @@
 import { AbstractControl } from "@angular/forms";
 import { takeUntil } from "rxjs/operators";
 import { ScannerService } from "./scanner.service";
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  HostListener,
-} from "@angular/core";
+import { ChangeDetectorRef, Component, Input, OnDestroy, HostListener } from "@angular/core";
 import { Subject } from "rxjs";
 @Component({
   template: "",
@@ -43,24 +37,17 @@ export class ScannerView implements OnDestroy {
   isNumber(num) {
     return isFinite(num);
   }
-  constructor(
-    public cd: ChangeDetectorRef,
-    public scannerService: ScannerService
-  ) {
-    this.scannerService.next
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        if (this.isActive()) {
-          this.onNext();
-        }
-      });
-    this.scannerService.prev
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        if (this.isActive()) {
-          this.onPrev();
-        }
-      });
+  constructor(public cd: ChangeDetectorRef, public scannerService: ScannerService) {
+    this.scannerService.next.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      if (this.isActive()) {
+        this.onNext();
+      }
+    });
+    this.scannerService.prev.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      if (this.isActive()) {
+        this.onPrev();
+      }
+    });
   }
 
   onNext() {}

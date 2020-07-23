@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  QueryList,
-  ViewChildren,
-  ChangeDetectionStrategy,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, QueryList, ViewChildren, ChangeDetectionStrategy } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { MatRadioGroup, MatRadioButton } from "@angular/material";
 import { SafeStyle } from "@angular/platform-browser";
@@ -16,8 +9,7 @@ import { SafeStyle } from "@angular/platform-browser";
   styleUrls: ["./radiobutton.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RadiobuttonComponent extends AdminoScreenElement
-  implements OnInit {
+export class RadiobuttonComponent extends AdminoScreenElement implements OnInit {
   // @ViewChild('focusRef', { static: true }) focusRef: MatRadioGroup;
   @ViewChildren("radioButtonRefs") radioButtonRefs: QueryList<MatRadioButton>;
 

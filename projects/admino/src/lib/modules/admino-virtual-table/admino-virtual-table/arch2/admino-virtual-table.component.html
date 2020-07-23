@@ -5,13 +5,7 @@
     'hide-bottom-border': this.hideBottomBorder
   }"
 >
-  <table
-    class="table table-dark"
-    #tableRef
-    adminoResizeObserver
-    [debounceAdminoResize]="10"
-    (adminoResize)="resize()"
-  >
+  <table class="table table-dark" #tableRef adminoResizeObserver [debounceAdminoResize]="10" (adminoResize)="resize()">
     <!-- -->
     <thead class="header-container" #headerRef>
       <tr class="header-row">
@@ -96,9 +90,7 @@
   </table>
 
   <div class="admino-virtual-table-footer">
-    <div class="status flex-grow-1 mb-3">
-      {{ prevVisibleStart + 1 }} - {{ prevVisibleEnd }} / {{ totalsize }}
-    </div>
+    <div class="status flex-grow-1 mb-3">{{ prevVisibleStart + 1 }} - {{ prevVisibleEnd }} / {{ totalsize }}</div>
     <div class="actions">
       <button
         type="button"

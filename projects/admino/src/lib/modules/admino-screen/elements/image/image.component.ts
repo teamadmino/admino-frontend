@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  HostListener,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 
 @Component({
@@ -13,8 +6,7 @@ import { AdminoScreenElement } from "../admino-screen-element";
   templateUrl: "./image.component.html",
   styleUrls: ["./image.component.scss"],
 })
-export class ImageComponent extends AdminoScreenElement
-  implements OnInit, AfterViewInit {
+export class ImageComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   @ViewChild("imageRef", { static: true, read: ElementRef })
   imageRef: ElementRef;
   loadedImage;
@@ -37,10 +29,7 @@ export class ImageComponent extends AdminoScreenElement
 
   recalculate() {
     const maxW = this.imageRef.nativeElement.parentNode.parentNode.clientWidth;
-    this.imgWidth =
-      this.element.width !== undefined
-        ? this.element.width
-        : this.loadedImage.width + "px";
+    this.imgWidth = this.element.width !== undefined ? this.element.width : this.loadedImage.width + "px";
     this.directive.cd.detectChanges();
     let w = this.imageRef.nativeElement.clientWidth;
     let h = this.loadedImage.height;

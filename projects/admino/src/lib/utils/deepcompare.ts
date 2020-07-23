@@ -1,13 +1,7 @@
 import { cloneDeep, isEqual } from "lodash";
 import { isObject } from "./isobject";
 
-export function deepCompare(
-  target,
-  newObj,
-  excludedKeys: string[] = [],
-  arrayCompare = false,
-  diff = {}
-) {
+export function deepCompare(target, newObj, excludedKeys: string[] = [], arrayCompare = false, diff = {}) {
   // target = cloneDeep(target);
 
   if (isObject(newObj)) {
@@ -17,12 +11,7 @@ export function deepCompare(
     }
     for (const key of Object.keys(newObj)) {
       if (isObject(newObj[key]) && excludedKeys.indexOf(key) === -1) {
-        const subDiff = deepCompare(
-          target[key],
-          newObj[key],
-          excludedKeys,
-          arrayCompare
-        );
+        const subDiff = deepCompare(target[key], newObj[key], excludedKeys, arrayCompare);
         // console.log(key);
         // console.log(subDiff);
         if (Object.keys(subDiff).length > 0) {

@@ -22,11 +22,7 @@ export class AdminoApiService {
   PING = "/ping";
   // tabId = 1;
   tabId = uuidv4();
-  constructor(
-    private http: HttpClient,
-    private user: AdminoUserService,
-    private site: AdminoSiteService
-  ) {}
+  constructor(private http: HttpClient, private user: AdminoUserService, private site: AdminoSiteService) {}
 
   init(baseUrl: string) {
     this.BASE_URL = baseUrl;
@@ -40,11 +36,7 @@ export class AdminoApiService {
     }
   }
   downloadFile(downloadid: string): Observable<any> {
-    return this.http.post(
-      this.BASE_URL + this.DOWNLOAD,
-      { downloadid },
-      { responseType: "blob" }
-    );
+    return this.http.post(this.BASE_URL + this.DOWNLOAD, { downloadid }, { responseType: "blob" });
   }
 
   list(
@@ -161,21 +153,18 @@ export class AdminoApiService {
     customVars: any = null,
     activeModifierKeys = []
   ) {
-    return this.http.post(
-      this.BASE_URL + this.REQUEST + "/" + requestedScreen,
-      {
-        screen: requestingScreen,
-        schema,
-        queryParams,
-        screenValue,
-        initiatedBy,
-        customVars,
-        trigger,
-        key,
-        activeModifierKeys,
-        tabId: this.tabId,
-      }
-    );
+    return this.http.post(this.BASE_URL + this.REQUEST + "/" + requestedScreen, {
+      screen: requestingScreen,
+      schema,
+      queryParams,
+      screenValue,
+      initiatedBy,
+      customVars,
+      trigger,
+      key,
+      activeModifierKeys,
+      tabId: this.tabId,
+    });
     // .pipe(delay(3000), map((val) => {
     //   // try {
     //   //   val['updateScreen']["elements"][0]['_forceRefresh'] = true;
@@ -199,9 +188,7 @@ export class AdminoApiService {
 
   stringifyObject(obj: any) {
     const json = JSON.stringify(obj);
-    const withStrings = JSON.parse(json, (key, val) =>
-      typeof val !== "object" && val !== null ? String(val) : val
-    );
+    const withStrings = JSON.parse(json, (key, val) => (typeof val !== "object" && val !== null ? String(val) : val));
     return withStrings;
   }
 }

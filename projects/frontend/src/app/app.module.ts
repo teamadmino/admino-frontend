@@ -1,8 +1,5 @@
 import { MaterialModulesModule } from "./../../../admino/src/lib/modules/material-modules/material-modules.module";
-import {
-  BrowserModule,
-  HAMMER_GESTURE_CONFIG,
-} from "@angular/platform-browser";
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";

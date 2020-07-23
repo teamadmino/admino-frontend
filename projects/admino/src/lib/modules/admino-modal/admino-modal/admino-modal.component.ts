@@ -13,11 +13,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
 } from "@angular/core";
-import {
-  CdkPortalOutlet,
-  PortalInjector,
-  ComponentPortal,
-} from "@angular/cdk/portal";
+import { CdkPortalOutlet, PortalInjector, ComponentPortal } from "@angular/cdk/portal";
 export const MODAL_DATA = new InjectionToken<{}>("MODAL_DATA");
 export const MODAL_REF = new InjectionToken<{}>("MODAL_REF");
 
@@ -75,12 +71,7 @@ export class AdminoModalComponent implements OnInit, OnDestroy {
   }
   create() {
     this.dataChange.next(this.data);
-    const componentPortal = new ComponentPortal(
-      this.component,
-      null,
-      this.createInjector(),
-      this.componentResolver
-    );
+    const componentPortal = new ComponentPortal(this.component, null, this.createInjector(), this.componentResolver);
     this.componentInstance = componentPortal.attach(this.portalOutletRef);
     this.cd.markForCheck();
   }

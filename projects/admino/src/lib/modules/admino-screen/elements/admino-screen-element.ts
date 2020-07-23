@@ -1,19 +1,9 @@
 import { ScreenElementChange } from "./../admino-screen.interfaces";
-import {
-  AdminoAction,
-  ActionEvent,
-  ActionSubscription,
-} from "./../../../interfaces";
+import { AdminoAction, ActionEvent, ActionSubscription } from "./../../../interfaces";
 import { AdminoScreenComponent } from "../admino-screen.component";
 import { FormGroup, FormControl } from "@angular/forms";
 import { ScreenElement } from "../admino-screen.interfaces";
-import {
-  ViewChild,
-  ElementRef,
-  HostBinding,
-  Component,
-  ChangeDetectorRef,
-} from "@angular/core";
+import { ViewChild, ElementRef, HostBinding, Component, ChangeDetectorRef } from "@angular/core";
 import { Subject } from "rxjs";
 import { AdminoScreenElementDirective } from "../admino-screen-element.directive";
 import { isArray } from "util";
@@ -66,24 +56,13 @@ export class AdminoScreenElement {
   init() {
     if (this.focusElRef) {
       this.boundFocusFunction = this.focusEvent.bind(this);
-      this.focusElRef.nativeElement.addEventListener(
-        "focus",
-        this.boundFocusFunction,
-        true
-      );
+      this.focusElRef.nativeElement.addEventListener("focus", this.boundFocusFunction, true);
 
       this.boundBlurFunction = this.blurEvent.bind(this);
-      this.focusElRef.nativeElement.addEventListener(
-        "blur",
-        this.boundBlurFunction,
-        true
-      );
+      this.focusElRef.nativeElement.addEventListener("blur", this.boundBlurFunction, true);
 
       if (has(this.element, "tabIndex")) {
-        this.focusElRef.nativeElement.setAttribute(
-          "tabindex",
-          this.element.tabIndex
-        );
+        this.focusElRef.nativeElement.setAttribute("tabindex", this.element.tabIndex);
       }
     }
     this.change(null);
@@ -92,10 +71,7 @@ export class AdminoScreenElement {
   }
 
   createMouseTriggers() {
-    const filteredActions: AdminoAction[] = this.filterActions(
-      this.element.actions,
-      { trigger: "mouse" }
-    );
+    const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger: "mouse" });
     if (this.filterActions.length > 0) {
       filteredActions.forEach((action: AdminoAction) => {
         const mouseTrigger = {
@@ -106,31 +82,20 @@ export class AdminoScreenElement {
           },
         };
         this.mouseTriggers.push(mouseTrigger);
-        this.focusElRef.nativeElement.addEventListener(
-          action.mouseEvent,
-          mouseTrigger.boundFunc
-        );
+        this.focusElRef.nativeElement.addEventListener(action.mouseEvent, mouseTrigger.boundFunc);
       });
     }
   }
   clearMouseTriggers() {
-    this.mouseTriggers.forEach(
-      (mouseTrigger: { trigger: string; boundFunc: any }) => {
-        this.focusElRef.nativeElement.removeEventListener(
-          mouseTrigger.trigger,
-          mouseTrigger.boundFunc
-        );
-      }
-    );
+    this.mouseTriggers.forEach((mouseTrigger: { trigger: string; boundFunc: any }) => {
+      this.focusElRef.nativeElement.removeEventListener(mouseTrigger.trigger, mouseTrigger.boundFunc);
+    });
   }
 
   createKeyTiggers() {
     this.clearKeyTriggers();
     this.supportedKeyTriggers.forEach((trigger) => {
-      const filteredActions: AdminoAction[] = this.filterActions(
-        this.element.actions,
-        { trigger }
-      );
+      const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger });
       if (filteredActions.length > 0) {
         const keyTrigger = {
           trigger,
@@ -141,10 +106,7 @@ export class AdminoScreenElement {
                 if (action.overrideDefault) {
                   e.preventDefault();
                 }
-              } else if (
-                e.key !== undefined &&
-                action.key.toLowerCase() === e.key.toLowerCase()
-              ) {
+              } else if (e.key !== undefined && action.key.toLowerCase() === e.key.toLowerCase()) {
                 this.handleAction(action);
                 if (action.overrideDefault) {
                   e.preventDefault();
@@ -159,18 +121,13 @@ export class AdminoScreenElement {
     });
   }
   clearKeyTriggers() {
-    this.keyTriggers.forEach(
-      (keyTrigger: { trigger: string; boundFunc: any }) => {
-        document.removeEventListener(keyTrigger.trigger, keyTrigger.boundFunc);
-      }
-    );
+    this.keyTriggers.forEach((keyTrigger: { trigger: string; boundFunc: any }) => {
+      document.removeEventListener(keyTrigger.trigger, keyTrigger.boundFunc);
+    });
   }
 
   createShortcutTriggers() {
-    const filteredActions: AdminoAction[] = this.filterActions(
-      this.element.actions,
-      { trigger: "shortcut" }
-    );
+    const filteredActions: AdminoAction[] = this.filterActions(this.element.actions, { trigger: "shortcut" });
     if (filteredActions.length > 0) {
       const shortcutKeydownTrigger = {
         trigger: "keydown",
@@ -180,10 +137,7 @@ export class AdminoScreenElement {
           }
           const key = e.key.toLowerCase();
           if (this.currentShortcutKeys.indexOf(key) > -1) {
-            this.currentShortcutKeys.splice(
-              this.currentShortcutKeys.indexOf(key),
-              1
-            );
+            this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
           }
           this.currentShortcutKeys.push(key);
 
@@ -208,10 +162,7 @@ export class AdminoScreenElement {
           }
           const key = e.key.toLowerCase();
           if (this.currentShortcutKeys.indexOf(key) > -1) {
-            this.currentShortcutKeys.splice(
-              this.currentShortcutKeys.indexOf(key),
-              1
-            );
+            this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
             // this.currentShortcutKeys.splice(0, this.currentShortcutKeys.indexOf(key) + 1);
           }
         },
@@ -221,10 +172,7 @@ export class AdminoScreenElement {
         boundFunc: (e) => {
           const key = "click";
           if (this.currentShortcutKeys.indexOf(key) > -1) {
-            this.currentShortcutKeys.splice(
-              this.currentShortcutKeys.indexOf(key),
-              1
-            );
+            this.currentShortcutKeys.splice(this.currentShortcutKeys.indexOf(key), 1);
           }
           this.currentShortcutKeys.push(key);
           filteredActions.forEach((action: AdminoAction) => {
@@ -254,14 +202,9 @@ export class AdminoScreenElement {
   //     }
   // }
   clearShortcutTriggers() {
-    this.shortcutTriggers.forEach(
-      (shortcutTrigger: { trigger: string; boundFunc: any }) => {
-        document.removeEventListener(
-          shortcutTrigger.trigger,
-          shortcutTrigger.boundFunc
-        );
-      }
-    );
+    this.shortcutTriggers.forEach((shortcutTrigger: { trigger: string; boundFunc: any }) => {
+      document.removeEventListener(shortcutTrigger.trigger, shortcutTrigger.boundFunc);
+    });
     this.currentShortcutKeys = [];
   }
 
@@ -274,10 +217,7 @@ export class AdminoScreenElement {
     });
     return mapped;
   }
-  filterActions(
-    actions: AdminoAction[],
-    filters: { trigger?: string; key?: string; overrideDefault?: boolean }
-  ) {
+  filterActions(actions: AdminoAction[], filters: { trigger?: string; key?: string; overrideDefault?: boolean }) {
     if (actions) {
       const filtered = actions.filter((action: AdminoAction) => {
         let match = true;
@@ -329,35 +269,27 @@ export class AdminoScreenElement {
       if (action.isBlocking) {
         this.rootScreenComponent.blockingActionRunning = +action.isBlocking;
       }
-      actionSub.subscription = this.rootScreenComponent
-        .handleAction(actionSub.actionEvent)
-        .subscribe(
-          (result) => {
-            this.activeActionSubscriptions.slice(
-              this.activeActionSubscriptions.indexOf(actionSub),
-              1
-            );
-            // if (action.isBlocking) {
+      actionSub.subscription = this.rootScreenComponent.handleAction(actionSub.actionEvent).subscribe(
+        (result) => {
+          this.activeActionSubscriptions.slice(this.activeActionSubscriptions.indexOf(actionSub), 1);
+          // if (action.isBlocking) {
+          this.rootScreenComponent.blockingActionRunning = 0;
+          // }
+          resolve(result);
+        },
+        (error) => {
+          this.activeActionSubscriptions.slice(this.activeActionSubscriptions.indexOf(actionSub), 1);
+          if (action.isBlocking) {
             this.rootScreenComponent.blockingActionRunning = 0;
-            // }
-            resolve(result);
-          },
-          (error) => {
-            this.activeActionSubscriptions.slice(
-              this.activeActionSubscriptions.indexOf(actionSub),
-              1
-            );
-            if (action.isBlocking) {
-              this.rootScreenComponent.blockingActionRunning = 0;
-            }
-            reject(error);
-          },
-          () => {
-            if (action.isBlocking) {
-              this.rootScreenComponent.blockingActionRunning = 0;
-            }
           }
-        );
+          reject(error);
+        },
+        () => {
+          if (action.isBlocking) {
+            this.rootScreenComponent.blockingActionRunning = 0;
+          }
+        }
+      );
     });
   }
 
@@ -419,10 +351,7 @@ export class AdminoScreenElement {
     }
     if (changes && changes.tabIndex) {
       if (this.focusElRef) {
-        this.focusElRef.nativeElement.setAttribute(
-          "tabindex",
-          changes.tabIndex.new
-        );
+        this.focusElRef.nativeElement.setAttribute("tabindex", changes.tabIndex.new);
         console.log("Tabindex");
       }
     }
@@ -443,14 +372,8 @@ export class AdminoScreenElement {
     this.onDestroy();
     this.clearSubscriptions();
     if (this.focusElRef) {
-      this.focusElRef.nativeElement.removeEventListener(
-        "focus",
-        this.boundFocusFunction
-      );
-      this.focusElRef.nativeElement.removeEventListener(
-        "blur",
-        this.boundBlurFunction
-      );
+      this.focusElRef.nativeElement.removeEventListener("focus", this.boundFocusFunction);
+      this.focusElRef.nativeElement.removeEventListener("blur", this.boundBlurFunction);
     }
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

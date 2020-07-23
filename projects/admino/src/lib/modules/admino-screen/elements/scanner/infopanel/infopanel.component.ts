@@ -11,17 +11,12 @@ import { Subject } from "rxjs";
 export class InfopanelComponent implements OnInit, OnDestroy {
   public ngUnsubscribe: Subject<null> = new Subject();
 
-  constructor(
-    public scannerService: ScannerService,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(public scannerService: ScannerService, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.scannerService.page
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.cd.markForCheck();
-      });
+    this.scannerService.page.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.cd.markForCheck();
+    });
   }
   ngOnDestroy() {
     this.ngUnsubscribe.next();

@@ -3,11 +3,7 @@ import { Injectable } from "@angular/core";
 
 @Injectable()
 export class FormatService {
-  constructor(
-    private decimalPipe: DecimalPipe,
-    private currencyPipe: CurrencyPipe,
-    private datePipe: DatePipe
-  ) {}
+  constructor(private decimalPipe: DecimalPipe, private currencyPipe: CurrencyPipe, private datePipe: DatePipe) {}
 
   format(value, format: string) {
     if (format === undefined) {

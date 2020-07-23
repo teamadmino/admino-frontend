@@ -1,14 +1,6 @@
 import { takeUntil } from "rxjs/operators";
 import { AdminoTooltipService } from "./../admino-tooltip.service";
-import {
-  Component,
-  OnInit,
-  HostListener,
-  OnDestroy,
-  ChangeDetectorRef,
-  ElementRef,
-  ViewChild,
-} from "@angular/core";
+import { Component, OnInit, HostListener, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild } from "@angular/core";
 import { Subject } from "rxjs";
 
 @Component({
@@ -49,22 +41,16 @@ export class AdminoTooltipContainerComponent implements OnInit, OnDestroy {
       this.posY = Math.round(screenSizeH - this.calculatedHeight - gap);
     }
   }
-  constructor(
-    public tooltip: AdminoTooltipService,
-    private cd: ChangeDetectorRef,
-    private el: ElementRef
-  ) {}
+  constructor(public tooltip: AdminoTooltipService, private cd: ChangeDetectorRef, private el: ElementRef) {}
 
   ngOnInit() {
-    this.tooltip.tooltipChange
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.cd.detectChanges();
-        if (this.tooltipRef) {
-          this.calculatedHeight = this.tooltipRef.nativeElement.children[0].clientHeight;
-          this.calculatedWidth = this.tooltipRef.nativeElement.children[0].clientWidth;
-        }
-      });
+    this.tooltip.tooltipChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.cd.detectChanges();
+      if (this.tooltipRef) {
+        this.calculatedHeight = this.tooltipRef.nativeElement.children[0].clientHeight;
+        this.calculatedWidth = this.tooltipRef.nativeElement.children[0].clientWidth;
+      }
+    });
   }
 
   ngOnDestroy() {

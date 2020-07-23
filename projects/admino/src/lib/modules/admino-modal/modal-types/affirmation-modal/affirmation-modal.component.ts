@@ -1,9 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import {
-  MODAL_DATA,
-  MODAL_REF,
-  AdminoModalComponent,
-} from "../../admino-modal/admino-modal.component";
+import { MODAL_DATA, MODAL_REF, AdminoModalComponent } from "../../admino-modal/admino-modal.component";
 
 @Component({
   selector: "admino-affirmation-modal",
@@ -16,10 +12,7 @@ export class AffirmationModalComponent implements OnInit {
     deleteButtonLabel: "Törlés",
     message: "Biztos?",
   };
-  constructor(
-    @Inject(MODAL_DATA) public _data: any,
-    @Inject(MODAL_REF) public modalRef: AdminoModalComponent
-  ) {
+  constructor(@Inject(MODAL_DATA) public _data: any, @Inject(MODAL_REF) public modalRef: AdminoModalComponent) {
     Object.assign(this.data, _data);
   }
 

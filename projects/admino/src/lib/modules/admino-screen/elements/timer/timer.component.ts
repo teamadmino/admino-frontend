@@ -1,9 +1,6 @@
 import { cloneDeep } from "lodash";
 import { takeUntil } from "rxjs/operators";
-import {
-  ScreenElementTimer,
-  ScreenElementChange,
-} from "./../../admino-screen.interfaces";
+import { ScreenElementTimer, ScreenElementChange } from "./../../admino-screen.interfaces";
 import { Component, OnInit, OnDestroy, OnChanges } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { Subject } from "rxjs";
@@ -36,12 +33,7 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
   startTimeout() {
     this.clearTimeout();
     if (this.element.frequency > 0) {
-      if (
-        this.control.value === undefined ||
-        this.control.value === null ||
-        this.control.value < 0 ||
-        this.control.value > 0
-      ) {
+      if (this.control.value === undefined || this.control.value === null || this.control.value < 0 || this.control.value > 0) {
         this.timeoutHelper = setTimeout(() => {
           this.handleAction(this.element.action).then(
             () => {
@@ -52,10 +44,7 @@ export class TimerComponent extends AdminoScreenElement implements OnInit {
             }
           );
 
-          let currval =
-            this.control.value !== null || this.control.value !== undefined
-              ? this.control.value
-              : 0;
+          let currval = this.control.value !== null || this.control.value !== undefined ? this.control.value : 0;
           if (currval > 0) {
             currval--;
           }

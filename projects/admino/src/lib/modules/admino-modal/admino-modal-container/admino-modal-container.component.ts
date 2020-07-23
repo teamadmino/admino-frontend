@@ -1,12 +1,5 @@
 import { AdminoModalService } from "./../admino-modal.service";
-import {
-  Component,
-  OnInit,
-  ViewContainerRef,
-  ViewChild,
-  ComponentFactoryResolver,
-  Injector,
-} from "@angular/core";
+import { Component, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver, Injector } from "@angular/core";
 
 @Component({
   selector: "admino-modal-container",
@@ -17,11 +10,7 @@ export class AdminoModalContainerComponent implements OnInit {
   @ViewChild("modalContainerRef", { static: true, read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
 
-  constructor(
-    private ms: AdminoModalService,
-    private resolver: ComponentFactoryResolver,
-    private injector: Injector
-  ) {}
+  constructor(private ms: AdminoModalService, private resolver: ComponentFactoryResolver, private injector: Injector) {}
 
   ngOnInit() {
     this.ms.setViewContainer(this.viewContainerRef);

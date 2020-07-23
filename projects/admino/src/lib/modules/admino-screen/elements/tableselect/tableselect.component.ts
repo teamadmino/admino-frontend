@@ -1,11 +1,5 @@
 import { OverlaycontentComponent } from "./overlaycontent/overlaycontent.component";
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { ComponentPortal } from "@angular/cdk/portal";
 import { FlexibleConnectedPositionStrategy } from "@angular/cdk/overlay";
@@ -15,8 +9,7 @@ import { FlexibleConnectedPositionStrategy } from "@angular/cdk/overlay";
   templateUrl: "./tableselect.component.html",
   styleUrls: ["./tableselect.component.scss"],
 })
-export class TableselectComponent extends AdminoScreenElement
-  implements OnInit, AfterViewInit {
+export class TableselectComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   @ViewChild("searchboxRef", { static: true }) sbRef: ElementRef;
 
   ngOnInit() {}

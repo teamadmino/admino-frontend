@@ -33,25 +33,16 @@ export class AdminoResizeObserverDirective implements OnInit, OnDestroy {
   callResize: Subject<any> = new Subject();
   callResizeObs: Observable<any> = this.callResize.asObservable();
   breakpoints = { xs: 0, sm: 576, md: 768, lg: 992, xl: 1200 };
-  constructor(
-    private el: ElementRef,
-    private renderer: Renderer2,
-    private cd: ChangeDetectorRef
-  ) {
+  constructor(private el: ElementRef, private renderer: Renderer2, private cd: ChangeDetectorRef) {
     const target = this.el.nativeElement;
     entriesMap.set(target, this);
     ro.observe(target);
   }
   ngOnInit() {
-    this.callResizeObs
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        debounceTime(this.debounceAdminoResize)
-      )
-      .subscribe(() => {
-        this.adminoResize.emit();
-        this.cd.detectChanges();
-      });
+    this.callResizeObs.pipe(takeUntil(this.ngUnsubscribe), debounceTime(this.debounceAdminoResize)).subscribe(() => {
+      this.adminoResize.emit();
+      this.cd.detectChanges();
+    });
   }
   _resizeCallback(entry) {
     const width = entry.contentRect.width;

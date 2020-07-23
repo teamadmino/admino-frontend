@@ -1,15 +1,4 @@
-import {
-  trigger,
-  sequence,
-  state,
-  animate,
-  transition,
-  style,
-  animateChild,
-  query,
-  group,
-  stagger,
-} from "@angular/animations";
+import { trigger, sequence, state, animate, transition, style, animateChild, query, group, stagger } from "@angular/animations";
 
 const inEasing = " ease-in";
 const outEasing = " ease-out";
@@ -19,10 +8,7 @@ const elastic = " cubic-bezier(.42,1.4,.58,1.01)";
 export const codeAnimation = trigger("codeAnimation", [
   transition("void => *", [
     style({ transform: "scale(1.2)", opacity: 0, height: 0 }),
-    group([
-      animate("1.4s", style({ opacity: 1, height: "*" })),
-      animate("0.2s ease-out", style({ transform: "scale(1)" })),
-    ]),
+    group([animate("1.4s", style({ opacity: 1, height: "*" })), animate("0.2s ease-out", style({ transform: "scale(1)" }))]),
   ]),
   // , transform: 'translateX(0px)'
   // transition(':leave', [

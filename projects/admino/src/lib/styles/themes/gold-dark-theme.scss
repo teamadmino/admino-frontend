@@ -213,8 +213,7 @@
 
   admino-theme-emitter {
     .multi::after {
-      content: mat-color($gdprimary) + ";" + mat-color($gdaccent) + ";" +
-        mat-color($gdprimary, 800) + ";" + mat-color($gdaccent, 800) !important;
+      content: mat-color($gdprimary) + ";" + mat-color($gdaccent) + ";" + mat-color($gdprimary, 800) + ";" + mat-color($gdaccent, 800) !important;
     }
   }
 

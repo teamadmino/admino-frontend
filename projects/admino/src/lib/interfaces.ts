@@ -134,7 +134,7 @@ export interface BackendResponse {
   closePopup: boolean | string;
   setTheme: ThemeConfig;
 
-  setBlocking: boolean;
+  setBlocking: 0 | 1 | 2;
 
   setClipboard: string;
 }

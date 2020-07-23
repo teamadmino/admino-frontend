@@ -1,17 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { AdminoTable2DataSource } from "../../../admino-table2/admino-table2/admino-table2.datasource";
-import {
-  ScreenElementTable,
-  ScreenElementChange,
-} from "../../admino-screen.interfaces";
+import { ScreenElementTable, ScreenElementChange } from "../../admino-screen.interfaces";
 import { AdminoTableComponent } from "../../../admino-table/admino-table/admino-table.component";
-import {
-  takeUntil,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-} from "rxjs/operators";
+import { takeUntil, debounceTime, distinctUntilChanged, filter } from "rxjs/operators";
 import { isEqual, debounce, cloneDeep } from "lodash";
 import { propExists } from "../../../../utils/propExists";
 import { timer, Subscription } from "rxjs";
@@ -22,8 +14,7 @@ import { AdminoTable2Component } from "../../../admino-table2/admino-table2/admi
   templateUrl: "./table.component.html",
   styleUrls: ["./table.component.scss"],
 })
-export class TableComponent extends AdminoScreenElement
-  implements OnInit, AfterViewInit {
+export class TableComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   dataSource: AdminoTable2DataSource;
   @ViewChild(AdminoTable2Component, { static: true })
   table: AdminoTable2Component;
@@ -37,17 +28,7 @@ export class TableComponent extends AdminoScreenElement
     this.dataSource = new AdminoTable2DataSource(
       {
         listFunction: (keys, cursorpos, shift, count, index, before, after) =>
-          this.screenComponent.api.list(
-            conf.viewName,
-            keys,
-            cursorpos,
-            shift,
-            count,
-            index,
-            before,
-            after,
-            this.element.customVars
-          ),
+          this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after, this.element.customVars),
       },
       this.directive.sanitizer
     );
@@ -55,10 +36,7 @@ export class TableComponent extends AdminoScreenElement
 
   ngAfterViewInit() {
     if (this.element.value) {
-      this.dataSource.state = Object.assign(
-        this.dataSource.state,
-        this.element.value
-      );
+      this.dataSource.state = Object.assign(this.dataSource.state, this.element.value);
       this.dataSource.setKeys(this.element.value.keys);
       this.table.dataSource.loadData().then((params) => {
         this.table.gotoPos(this.dataSource.viewpos);
@@ -72,10 +50,7 @@ export class TableComponent extends AdminoScreenElement
       this.valueChangeSub.unsubscribe();
     }
     const keyChangeAction = this.getAction("keyChange");
-    const dt =
-      keyChangeAction && keyChangeAction.debounce
-        ? keyChangeAction.debounce
-        : 50;
+    const dt = keyChangeAction && keyChangeAction.debounce ? keyChangeAction.debounce : 50;
     this.valueChangeSub = this.directive.valueChangeEvent
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -124,25 +99,8 @@ export class TableComponent extends AdminoScreenElement
       this.dataSource.clearRequests();
       this.dataSource.buffer.clearAll();
       this.dataSource.initialBrowseRequestHappend = false;
-      this.dataSource.config.listFunction = (
-        keys,
-        cursor,
-        shift,
-        count,
-        index,
-        before,
-        after
-      ) =>
-        this.screenComponent.api.list(
-          changes.viewName.new,
-          keys,
-          cursor,
-          shift,
-          count,
-          index,
-          before,
-          after
-        );
+      this.dataSource.config.listFunction = (keys, cursor, shift, count, index, before, after) =>
+        this.screenComponent.api.list(changes.viewName.new, keys, cursor, shift, count, index, before, after);
       reinitNeeded = true;
     }
     if (changes._clearCache) {
@@ -171,10 +129,7 @@ export class TableComponent extends AdminoScreenElement
     }
 
     if (propExists(changes.value)) {
-      this.dataSource.state = Object.assign(
-        this.dataSource.state,
-        this.element.value
-      );
+      this.dataSource.state = Object.assign(this.dataSource.state, this.element.value);
       this.dataSource.setKeys(this.element.value.keys);
     }
     if (changes.hidden) {
@@ -189,11 +144,7 @@ export class TableComponent extends AdminoScreenElement
     }
     if (changes.value || changes._forceRefresh || changes.forceRefresh) {
       const shift =
-        propExists(changes.value) &&
-        propExists(changes.value.new) &&
-        changes.value.new.shift !== undefined
-          ? changes.value.new.shift
-          : 0;
+        propExists(changes.value) && propExists(changes.value.new) && changes.value.new.shift !== undefined ? changes.value.new.shift : 0;
       // console.log("shift", shift)
       // console.log(this.dataSource.state)
       this.table.dataSource.loadData(shift).then((params) => {

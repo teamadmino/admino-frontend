@@ -55,10 +55,7 @@ export class AdminoSiteService {
 
   // private es: ElectronService,@Inject(DOCUMENT) private document: any, private deviceService: DeviceDetectorService
   // private es: ElectronService,
-  constructor(
-    private deviceService: DeviceDetectorService,
-    private http: HttpClient
-  ) {
+  constructor(private deviceService: DeviceDetectorService, private http: HttpClient) {
     window.addEventListener("resize", () => {
       this.refreshScreenSize();
     });

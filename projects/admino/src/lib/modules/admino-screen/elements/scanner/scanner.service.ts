@@ -150,13 +150,11 @@ export class ScannerService {
   // }
 
   init() {
-    this.logoutRestartEventSub = this.logoutRestartEvent
-      .pipe(debounceTime(500))
-      .subscribe((params) => {
-        if (this.page.value > 0) {
-          this.restartTimer();
-        }
-      });
+    this.logoutRestartEventSub = this.logoutRestartEvent.pipe(debounceTime(500)).subscribe((params) => {
+      if (this.page.value > 0) {
+        this.restartTimer();
+      }
+    });
   }
 
   loadConfig() {
@@ -164,14 +162,10 @@ export class ScannerService {
     this.dolgozok = JSON.parse(localStorage.getItem(this.JSON_DOLGOZOK));
     this.version = JSON.parse(localStorage.getItem(this.JSON_VERSION));
     this.syncId = JSON.parse(localStorage.getItem(this.JSON_SYNCID));
-    this.syncId =
-      this.syncId === undefined || this.syncId === null ? -1 : this.syncId;
+    this.syncId = this.syncId === undefined || this.syncId === null ? -1 : this.syncId;
 
     this.syncedTill = JSON.parse(localStorage.getItem(this.JSON_SYNCEDTILL));
-    this.syncedTill =
-      this.syncedTill === undefined || this.syncedTill === null
-        ? 0
-        : this.syncedTill;
+    this.syncedTill = this.syncedTill === undefined || this.syncedTill === null ? 0 : this.syncedTill;
 
     // this.beolvasasok = JSON.parse(localStorage.getItem(this.JSON_BEOLVASASOK));
     // this.beolvasasok = this.beolvasasok ? this.beolvasasok : { version: this.version, scanner: this.scanner, data: [] };
@@ -196,9 +190,7 @@ export class ScannerService {
       const key = localStorage.key(i);
       if (key.startsWith(this.JSON_BEOLVASASOK + "_")) {
         const el = localStorage.getItem(localStorage.key(i));
-        this.beolvasasChunks[key] = this.beolvasasChunks[key].concat(
-          JSON.parse(el)
-        );
+        this.beolvasasChunks[key] = this.beolvasasChunks[key].concat(JSON.parse(el));
       }
     }
   }
@@ -216,10 +208,7 @@ export class ScannerService {
 
   setSyncedTill(incomingSyncedTill) {
     this.syncedTill = incomingSyncedTill;
-    localStorage.setItem(
-      this.JSON_SYNCEDTILL,
-      JSON.stringify(incomingSyncedTill)
-    );
+    localStorage.setItem(this.JSON_SYNCEDTILL, JSON.stringify(incomingSyncedTill));
   }
 
   logActivity() {
@@ -297,15 +286,9 @@ export class ScannerService {
     const chunkId = this.JSON_BEOLVASASOK + "_" + chunknum;
     const index = next - chunknum * this.chunkSize;
     this.beolvasasChunks[chunkId][index] = beolvasas;
-    localStorage.setItem(
-      chunkId,
-      JSON.stringify(this.beolvasasChunks[chunkId])
-    );
+    localStorage.setItem(chunkId, JSON.stringify(this.beolvasasChunks[chunkId]));
 
-    localStorage.setItem(
-      this.JSON_POS,
-      JSON.stringify({ start: this.pos.start, length: this.pos.length })
-    );
+    localStorage.setItem(this.JSON_POS, JSON.stringify({ start: this.pos.start, length: this.pos.length }));
     // localStorage.setItem(this.JSON_BEOLVASASOK, JSON.stringify(this.beolvasasok));
     localStorage.setItem(this.JSON_SYNCID, JSON.stringify(this.syncId));
     this.newBeolvasasEvent.next(beolvasas);

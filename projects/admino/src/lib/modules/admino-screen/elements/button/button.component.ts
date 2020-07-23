@@ -12,9 +12,7 @@ export class ButtonComponent extends AdminoScreenElement implements OnInit {
   @ViewChild("focusRef", { static: true }) focusRef: any;
   sanitizedLabel;
   ngOnInit() {
-    this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(
-      this.element.label
-    );
+    this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.label);
   }
   clicked() {
     if (this.element.action) {
@@ -30,9 +28,7 @@ export class ButtonComponent extends AdminoScreenElement implements OnInit {
   }
   onChange(changes: { [id: string]: ScreenElementChange }) {
     if (changes && changes.label) {
-      this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(
-        this.element.label
-      );
+      this.sanitizedLabel = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.label);
     }
   }
   focusEvent() {

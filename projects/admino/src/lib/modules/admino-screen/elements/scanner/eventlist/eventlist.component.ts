@@ -1,12 +1,5 @@
 import { ScannerService, BeolvasasEvent } from "./../scanner.service";
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  ChangeDetectorRef,
-  OnDestroy,
-} from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef, OnDestroy } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 
@@ -29,23 +22,16 @@ export class EventlistComponent implements OnInit, OnDestroy {
 
   timeouts = [];
   animated = [];
-  constructor(
-    private cd: ChangeDetectorRef,
-    private scannerService: ScannerService
-  ) {
-    this.scannerService.newBeolvasasEvent
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((beolv: BeolvasasEvent) => {
-        this.showConfirmationId = -1;
-        this.selectedId = -1;
+  constructor(private cd: ChangeDetectorRef, private scannerService: ScannerService) {
+    this.scannerService.newBeolvasasEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((beolv: BeolvasasEvent) => {
+      this.showConfirmationId = -1;
+      this.selectedId = -1;
 
-        this.newCode(beolv.id);
-      });
+      this.newCode(beolv.id);
+    });
   }
   scrollEvt() {
-    const scrollPos =
-      this.virtualScrollRef.nativeElement.scrollTop +
-      this.virtualScrollRef.nativeElement.offsetHeight;
+    const scrollPos = this.virtualScrollRef.nativeElement.scrollTop + this.virtualScrollRef.nativeElement.offsetHeight;
     const max = this.virtualScrollRef.nativeElement.scrollHeight;
     if (scrollPos > max - 300) {
       this.hiderOpacity = (max - scrollPos) / 300;

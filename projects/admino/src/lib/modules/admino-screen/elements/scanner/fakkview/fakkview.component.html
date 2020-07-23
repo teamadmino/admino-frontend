@@ -6,10 +6,4 @@
 
 </mat-form-field> -->
 
-<admino-keyboard
-  [layout]="layout1"
-  [availableCharacters]="fakkok"
-  #keyboardRef
-  (keyEvent)="keyEvent($event.character)"
->
-</admino-keyboard>
+<admino-keyboard [layout]="layout1" [availableCharacters]="fakkok" #keyboardRef (keyEvent)="keyEvent($event.character)"> </admino-keyboard>

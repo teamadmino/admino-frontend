@@ -1,13 +1,7 @@
-import {
-  NgModuleFactory,
-  ɵisObservable as isObservable,
-  ɵisPromise as isPromise,
-} from "@angular/core";
+import { NgModuleFactory, ɵisObservable as isObservable, ɵisPromise as isPromise } from "@angular/core";
 import { Observable, from, of } from "rxjs";
 
-export function wrapIntoObservable<T>(
-  value: T | NgModuleFactory<T> | Promise<T> | Observable<T>
-) {
+export function wrapIntoObservable<T>(value: T | NgModuleFactory<T> | Promise<T> | Observable<T>) {
   if (isObservable(value)) {
     return value;
   }

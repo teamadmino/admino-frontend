@@ -1,13 +1,5 @@
 import { AdminoKeyboardComponent } from "./../../../../admino-keyboard/admino-keyboard/admino-keyboard.component";
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  HostListener,
-} from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, HostListener } from "@angular/core";
 import { FormControl, FormGroup, AbstractControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { startWith, map } from "rxjs/operators";
@@ -20,8 +12,7 @@ import { layout2 } from "./../../../../admino-keyboard/admino-keyboard.layouts";
   templateUrl: "./utcaview.component.html",
   styleUrls: ["./utcaview.component.scss"],
 })
-export class UtcaviewComponent extends ScannerView
-  implements OnInit, AfterViewInit {
+export class UtcaviewComponent extends ScannerView implements OnInit, AfterViewInit {
   // @ViewChild('utcaRef', { static: true, read: ElementRef }) utcaRef: ElementRef;
   // @ViewChild('triggerUtca', { static: true, read: MatAutocompleteTrigger }) triggerUtcaRef: MatAutocompleteTrigger;
   control = new FormControl(null, this.validateUtca.bind(this));
@@ -59,13 +50,10 @@ export class UtcaviewComponent extends ScannerView
   }
   keyEvent(char) {
     this.scannerService.logActivity();
-    const currentval =
-      this.control.value !== null ? this.control.value.toString() : "";
+    const currentval = this.control.value !== null ? this.control.value.toString() : "";
     if (char === "Backspace") {
       if (currentval !== null && currentval.toString().length > 0) {
-        this.control.setValue(
-          currentval.toString().slice(0, currentval.toString().length - 1)
-        );
+        this.control.setValue(currentval.toString().slice(0, currentval.toString().length - 1));
       }
     } else if (this.isNumber(char)) {
       // if (this.getAvailableCharaters().indexOf(parseInt(char, 10)) > -1) {
@@ -117,10 +105,7 @@ export class UtcaviewComponent extends ScannerView
   }
 
   getAvailableCharaters() {
-    const nextCharNum =
-      this.control.value !== undefined && this.control.value !== null
-        ? this.control.value.length
-        : 0;
+    const nextCharNum = this.control.value !== undefined && this.control.value !== null ? this.control.value.length : 0;
     const possibleValues = [];
 
     this.scannerService.utcak
@@ -153,11 +138,7 @@ export class UtcaviewComponent extends ScannerView
     const found =
       this.scannerService.utcak &&
       this.scannerService.utcak.find((_utca) => {
-        return (
-          _utca.utca !== null &&
-          _utca.utca !== undefined &&
-          _utca.utca.toString() === utca.toString()
-        );
+        return _utca.utca !== null && _utca.utca !== undefined && _utca.utca.toString() === utca.toString();
       });
     return found;
   }
@@ -179,9 +160,7 @@ export class UtcaviewComponent extends ScannerView
       return [];
     }
     const filterValue = value;
-    return this.scannerService.utcak.filter((option) =>
-      option.utca.toString().includes(filterValue.toString())
-    );
+    return this.scannerService.utcak.filter((option) => option.utca.toString().includes(filterValue.toString()));
   }
   // displayWith(value) {
   //   return (value) => { return value + 100000 }

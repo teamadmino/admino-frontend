@@ -1,12 +1,5 @@
 import { AdminoMenuItem, AdminoMenuEvent } from "./../../../interfaces";
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewEncapsulation,
-  EventEmitter,
-  Output,
-} from "@angular/core";
+import { Component, OnInit, Input, ViewEncapsulation, EventEmitter, Output } from "@angular/core";
 
 @Component({
   selector: "admino-menu",

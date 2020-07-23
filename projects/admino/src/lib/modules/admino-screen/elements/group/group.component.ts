@@ -1,12 +1,6 @@
 import { ActionEvent } from "./../../../../interfaces";
 import { AdminoScreenComponent } from "./../../admino-screen.component";
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-  OnDestroy,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -16,8 +10,7 @@ import { Subject } from "rxjs";
   templateUrl: "./group.component.html",
   styleUrls: ["./group.component.scss"],
 })
-export class GroupComponent extends AdminoScreenElement
-  implements OnInit, AfterViewInit {
+export class GroupComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   @ViewChild(AdminoScreenComponent, { static: true })
   screen: AdminoScreenComponent;
 

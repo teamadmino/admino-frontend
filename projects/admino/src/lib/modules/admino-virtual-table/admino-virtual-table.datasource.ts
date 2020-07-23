@@ -3,15 +3,7 @@ import { DataSource } from "@angular/cdk/table";
 import { Observable, Subject, BehaviorSubject, of, Subscription } from "rxjs";
 import { takeUntil, catchError } from "rxjs/operators";
 export interface AdminoVirtualTableDataSourceConfig {
-  listFunction: (
-    keys,
-    cursor,
-    shift,
-    count,
-    index,
-    before,
-    after
-  ) => Observable<any>;
+  listFunction: (keys, cursor, shift, count, index, before, after) => Observable<any>;
 }
 export interface VirtualDataSourceInfoColumn {
   id: string;
