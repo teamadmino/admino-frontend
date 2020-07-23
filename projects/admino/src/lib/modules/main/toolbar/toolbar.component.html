@@ -1,7 +1,4 @@
-<mat-toolbar
-  class="admino-toolbar"
-  [ngClass]="{ scrolling: !this.site.isScrollAtTop }"
->
+<mat-toolbar class="admino-toolbar" [ngClass]="{ scrolling: !this.site.isScrollAtTop }">
   <mat-toolbar-row>
     <button
       class="toolbar-button ml-2 mr-2"
@@ -16,13 +13,8 @@
     </button>
 
     <!-- <admino-logo class="toolbar-button" [ngClass]="{'hide': this.user.userLoggedIn.value}"></admino-logo> -->
-    <div
-      class="toolbar-button logo-component"
-      *ngIf="this.site.logoComponent"
-      [ngClass]="{ hide: this.user.userLoggedIn.value }"
-    >
-      <ng-container *ngComponentOutlet="this.site.logoComponent">
-      </ng-container>
+    <div class="toolbar-button logo-component" *ngIf="this.site.logoComponent" [ngClass]="{ hide: this.user.userLoggedIn.value }">
+      <ng-container *ngComponentOutlet="this.site.logoComponent"> </ng-container>
     </div>
 
     <!-- <h1 class="logo d-inline-block toolbar-button" [ngClass]="{'hide': this.user.userLoggedIn.value}">
@@ -77,9 +69,7 @@
 
       <button mat-icon-button (click)="this.site.maximize()">
         <mat-icon class="" *ngIf="!this.site.isMaximized">fullscreen</mat-icon>
-        <mat-icon class="" *ngIf="this.site.isMaximized"
-          >fullscreen_exit</mat-icon
-        >
+        <mat-icon class="" *ngIf="this.site.isMaximized">fullscreen_exit</mat-icon>
       </button>
 
       <!-- <button *ngIf="this.site.isElectron" mat-icon-button (click)="this.site.close()">

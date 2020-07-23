@@ -1,13 +1,6 @@
 import { takeUntil } from "rxjs/operators";
 import { ScannerService } from "./scanner.service";
-import {
-  Component,
-  OnInit,
-  HostListener,
-  AfterViewInit,
-  ChangeDetectorRef,
-  ElementRef,
-} from "@angular/core";
+import { Component, OnInit, HostListener, AfterViewInit, ChangeDetectorRef, ElementRef } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { codeAnimation } from "./inputview/scanner.animation";
 import { ScreenElementChange } from "../../admino-screen.interfaces";
@@ -42,19 +35,13 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   //   this.scannerService.online = true;
   // }
 
-  constructor(
-    public scannerService: ScannerService,
-    public cd: ChangeDetectorRef,
-    public el: ElementRef
-  ) {
+  constructor(public scannerService: ScannerService, public cd: ChangeDetectorRef, public el: ElementRef) {
     super(el, cd);
     this.scannerService.online = window.navigator.onLine;
-    this.scannerService.newBeolvasasEvent
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.control.setValue(this.scannerService.getUnsyncedBeolvasasok());
-        this.tryUpload();
-      });
+    this.scannerService.newBeolvasasEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.control.setValue(this.scannerService.getUnsyncedBeolvasasok());
+      this.tryUpload();
+    });
 
     this.scannerService.init();
     this.scannerService.loadConfig();
@@ -63,11 +50,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
   ngOnInit() {
     // this.directive.ts.setTheme('gold', false);
     if (this.element.database !== undefined) {
-      this.scannerService.updateConfig(
-        this.element.database.version,
-        this.element.database.utcak,
-        this.element.database.dolgozok
-      );
+      this.scannerService.updateConfig(this.element.database.version, this.element.database.utcak, this.element.database.dolgozok);
     }
     this.scannerService.scanner = this.element.scanner;
 
@@ -75,11 +58,9 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
       this.control.setValue(this.scannerService.getUnsyncedBeolvasasok());
       this.tryUpload();
     }
-    this.scannerService.page
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.directive.cd.detectChanges();
-      });
+    this.scannerService.page.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.directive.cd.detectChanges();
+    });
     this.scannerService.dataLoaded = true;
   }
   tryUpload(_currentSyncId = null) {
@@ -87,8 +68,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
     if (this.retryTimer) {
       clearTimeout(this.retryTimer);
     }
-    const currentSyncId =
-      _currentSyncId !== null ? _currentSyncId : this.scannerService.syncId;
+    const currentSyncId = _currentSyncId !== null ? _currentSyncId : this.scannerService.syncId;
     const uploadAction = this.getAction("uploadAction");
     if (uploadAction) {
       this.handleAction(uploadAction)
@@ -121,8 +101,7 @@ export class ScannerComponent extends AdminoScreenElement implements OnInit {
       clearTimeout(this.connectionLostHelperTimeout);
     }
     this.connectionLostHelperTimeout = setTimeout(() => {
-      this.connectionLost =
-        this.scannerService.syncId - this.scannerService.syncedTill > 0;
+      this.connectionLost = this.scannerService.syncId - this.scannerService.syncedTill > 0;
       this.cd.markForCheck();
     }, 1000);
   }

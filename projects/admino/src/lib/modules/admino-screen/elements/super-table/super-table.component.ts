@@ -1,16 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
-import {
-  ScreenElementTable,
-  ScreenElementChange,
-} from "../../admino-screen.interfaces";
+import { ScreenElementTable, ScreenElementChange } from "../../admino-screen.interfaces";
 import { AdminoTableComponent } from "../../../admino-table/admino-table/admino-table.component";
-import {
-  takeUntil,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-} from "rxjs/operators";
+import { takeUntil, debounceTime, distinctUntilChanged, filter } from "rxjs/operators";
 import { isEqual, debounce, cloneDeep } from "lodash";
 import { propExists } from "../../../../utils/propExists";
 import { timer, Subscription } from "rxjs";
@@ -21,8 +13,7 @@ import { AdminoTableDataSource } from "../../../admino-table/admino-table/admino
   templateUrl: "./super-table.component.html",
   styleUrls: ["./super-table.component.scss"],
 })
-export class SuperTableComponent extends AdminoScreenElement
-  implements OnInit, AfterViewInit {
+export class SuperTableComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   dataSource: AdminoTableDataSource;
   @ViewChild(AdminoTableComponent, { static: true })
   table: AdminoTableComponent;
@@ -36,17 +27,7 @@ export class SuperTableComponent extends AdminoScreenElement
     this.dataSource = new AdminoTableDataSource(
       {
         listFunction: (keys, cursorpos, shift, count, index, before, after) =>
-          this.screenComponent.api.list(
-            conf.viewName,
-            keys,
-            cursorpos,
-            shift,
-            count,
-            index,
-            before,
-            after,
-            this.element.customVars
-          ),
+          this.screenComponent.api.list(conf.viewName, keys, cursorpos, shift, count, index, before, after, this.element.customVars),
       },
       this.directive.sanitizer
     );
@@ -54,10 +35,7 @@ export class SuperTableComponent extends AdminoScreenElement
 
   ngAfterViewInit() {
     if (this.element.value) {
-      this.dataSource.state = Object.assign(
-        this.dataSource.state,
-        this.element.value
-      );
+      this.dataSource.state = Object.assign(this.dataSource.state, this.element.value);
       this.dataSource.setKeys(this.element.value.keys);
       this.table.dataSource.loadData().then((params) => {
         this.table.gotoPos(this.dataSource.viewpos);
@@ -70,10 +48,7 @@ export class SuperTableComponent extends AdminoScreenElement
       this.valueChangeSub.unsubscribe();
     }
     const keyChangeAction = this.getAction("keyChange");
-    const dt =
-      keyChangeAction && keyChangeAction.debounce
-        ? keyChangeAction.debounce
-        : 50;
+    const dt = keyChangeAction && keyChangeAction.debounce ? keyChangeAction.debounce : 50;
     this.valueChangeSub = this.directive.valueChangeEvent
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -125,25 +100,8 @@ export class SuperTableComponent extends AdminoScreenElement
       this.table.indexes = changes.indexes.new;
     }
     if (changes.viewName) {
-      this.dataSource.config.listFunction = (
-        keys,
-        cursor,
-        shift,
-        count,
-        index,
-        before,
-        after
-      ) =>
-        this.screenComponent.api.list(
-          changes.viewName.new,
-          keys,
-          cursor,
-          shift,
-          count,
-          index,
-          before,
-          after
-        );
+      this.dataSource.config.listFunction = (keys, cursor, shift, count, index, before, after) =>
+        this.screenComponent.api.list(changes.viewName.new, keys, cursor, shift, count, index, before, after);
     }
     if (changes.rowHeight) {
       reinitNeeded = true;
@@ -158,10 +116,7 @@ export class SuperTableComponent extends AdminoScreenElement
     }
 
     if (propExists(changes.value)) {
-      this.dataSource.state = Object.assign(
-        this.dataSource.state,
-        this.element.value
-      );
+      this.dataSource.state = Object.assign(this.dataSource.state, this.element.value);
       this.dataSource.setKeys(this.element.value.keys);
     }
     if (changes.hidden) {
@@ -180,11 +135,7 @@ export class SuperTableComponent extends AdminoScreenElement
       console.log("forcerefresh", changes);
 
       const shift =
-        propExists(changes.value) &&
-        propExists(changes.value.new) &&
-        changes.value.new.shift !== undefined
-          ? changes.value.new.shift
-          : 0;
+        propExists(changes.value) && propExists(changes.value.new) && changes.value.new.shift !== undefined ? changes.value.new.shift : 0;
       // console.log("shift", shift)
       // console.log(this.dataSource.state)
       this.table.dataSource.loadData(shift).then((params) => {

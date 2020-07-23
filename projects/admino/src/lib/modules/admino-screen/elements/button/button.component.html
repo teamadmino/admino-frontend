@@ -7,9 +7,7 @@
     #focusRef
     [color]="element.color ? element.color : 'primary'"
     [disabled]="element.disabled"
-    [ngClass]="[
-      'focusinnerglow-' + (element.color ? element.color : 'primary')
-    ]"
+    [ngClass]="['focusinnerglow-' + (element.color ? element.color : 'primary')]"
   >
     <mat-icon class="" *ngIf="element.icon"> {{ element.icon }}</mat-icon>
     <span [innerHTML]="sanitizedLabel"></span>

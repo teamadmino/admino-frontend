@@ -1,9 +1,5 @@
 import { cloneDeep } from "lodash";
-import {
-  AdminoTableDataSource,
-  VirtualDataSourceInfoColumn,
-  DataSourceState,
-} from "./admino-table.datasource";
+import { AdminoTableDataSource, VirtualDataSourceInfoColumn, DataSourceState } from "./admino-table.datasource";
 import {
   Component,
   OnInit,
@@ -40,8 +36,7 @@ export interface VirtualRow {
   styleUrls: ["./admino-table.component.scss"],
   animations: [adminoTableAnimation],
 })
-export class AdminoOldTableComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+export class AdminoOldTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Output() cellClick: EventEmitter<any> = new EventEmitter();
@@ -149,10 +144,7 @@ export class AdminoOldTableComponent
   @HostListener("keydown", ["$event"]) onKeydownHandler(event: KeyboardEvent) {
     if (
       this.keyOverrides.find((override) => {
-        return (
-          override.key === "any" ||
-          (override.key === event.key && override.trigger === "keydown")
-        );
+        return override.key === "any" || (override.key === event.key && override.trigger === "keydown");
       })
     ) {
       console.log("OVERRIDE");
@@ -176,9 +168,7 @@ export class AdminoOldTableComponent
     switch (event.key) {
       case "ArrowDown":
         if (
-          ((this.isViewOutsideTop() || this.isViewOutsideBottom()) &&
-            !this.isAtStart() &&
-            !this.isAtEnd()) ||
+          ((this.isViewOutsideTop() || this.isViewOutsideBottom()) && !this.isAtStart() && !this.isAtEnd()) ||
           this.dataSource.state.cursorpos < 0 ||
           this.dataSource.state.cursorpos > this.dataSource.state.count - 1
         ) {
@@ -194,10 +184,7 @@ export class AdminoOldTableComponent
           this.dataSource.loadData().then(() => {
             this.gotoPos(this.dataSource.viewpos);
           });
-        } else if (
-          !this.isOutsideBottomMinusOne() &&
-          this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1
-        ) {
+        } else if (!this.isOutsideBottomMinusOne() && this.dataSource.cursorAbsPos < this.dataSource.totalsize - 1) {
           // léptet egyet le csak frontenden
           console.log("léptet");
 
@@ -223,11 +210,7 @@ export class AdminoOldTableComponent
         event.preventDefault();
         break;
       case "ArrowUp":
-        if (
-          (this.isViewOutsideTop() || this.isViewOutsideBottom()) &&
-          !this.isAtStart() &&
-          !this.isAtEnd()
-        ) {
+        if ((this.isViewOutsideTop() || this.isViewOutsideBottom()) && !this.isAtStart() && !this.isAtEnd()) {
           // cursorpos = Math.floor(this.dataSource.state.count / 2);
           if (this.isOutsideBottom()) {
             cursorpos = this.dataSource.state.count - this.leavespace;
@@ -239,10 +222,7 @@ export class AdminoOldTableComponent
           this.dataSource.loadData().then(() => {
             this.gotoPos(this.dataSource.viewpos);
           });
-        } else if (
-          !this.isOutsideTopMinusOne() &&
-          this.dataSource.cursorAbsPos > 0
-        ) {
+        } else if (!this.isOutsideTopMinusOne() && this.dataSource.cursorAbsPos > 0) {
           cursorpos -= 1;
           this.dataSource.cursorAbsPos--;
           this.dataSource.state.cursorpos = cursorpos;
@@ -285,11 +265,9 @@ export class AdminoOldTableComponent
 
         break;
       case "PageUp":
-        this.dataSource
-          .loadData(-(this.dataSource.state.count - 1))
-          .then(() => {
-            this.gotoPos(this.dataSource.viewpos);
-          });
+        this.dataSource.loadData(-(this.dataSource.state.count - 1)).then(() => {
+          this.gotoPos(this.dataSource.viewpos);
+        });
         event.preventDefault();
 
         break;
@@ -304,10 +282,7 @@ export class AdminoOldTableComponent
         event.preventDefault();
         break;
       case "ArrowRight":
-        if (
-          this.dataSource.state.selectedColumnIndex <
-          this.dataSource.columns.length - 1
-        ) {
+        if (this.dataSource.state.selectedColumnIndex < this.dataSource.columns.length - 1) {
           this.dataSource.state.selectedColumnIndex++;
         }
         event.preventDefault();
@@ -337,25 +312,16 @@ export class AdminoOldTableComponent
     return this.dataSource.state.cursorpos <= this.leavespace;
   }
   isOutsideBottom() {
-    return (
-      this.dataSource.state.cursorpos >
-      this.dataSource.state.count - this.leavespace
-    );
+    return this.dataSource.state.cursorpos > this.dataSource.state.count - this.leavespace;
   }
   isOutsideBottomMinusOne() {
-    return (
-      this.dataSource.state.cursorpos >=
-      this.dataSource.state.count - this.leavespace
-    );
+    return this.dataSource.state.cursorpos >= this.dataSource.state.count - this.leavespace;
   }
   isAtStart() {
     return this.dataSource.cursorAbsPos < this.leavespace;
   }
   isAtEnd() {
-    return (
-      this.dataSource.cursorAbsPos >
-      this.dataSource.state.totalsize - 1 - this.leavespace
-    );
+    return this.dataSource.cursorAbsPos > this.dataSource.state.totalsize - 1 - this.leavespace;
   }
   getKeyAtCursor(cursorpos) {
     if (this.dataSource.data && this.dataSource.data.data[cursorpos]) {
@@ -367,11 +333,7 @@ export class AdminoOldTableComponent
     this.valueChange.next(this.dataSource.state);
   }
 
-  constructor(
-    public cd: ChangeDetectorRef,
-    public formatService: FormatService,
-    private sanitizer: DomSanitizer
-  ) {}
+  constructor(public cd: ChangeDetectorRef, public formatService: FormatService, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     this.browserMaxSize = this.calcMaxBrowserScrollSize();
@@ -392,11 +354,9 @@ export class AdminoOldTableComponent
     // this.gotoPos(9007199254740991);
   }
   ngAfterViewInit() {
-    this.dataSource.loadDataStart
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value) => {
-        this.valueChange.next(value);
-      });
+    this.dataSource.loadDataStart.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      this.valueChange.next(value);
+    });
 
     this.dataSource
       .connect()
@@ -475,15 +435,12 @@ export class AdminoOldTableComponent
       lastRowFix = this.notfittingRowHeight;
     }
 
-    const targetPage =
-      this.largePageSize > 0 ? Math.floor(absoluteId / this.largePageSize) : 0;
+    const targetPage = this.largePageSize > 0 ? Math.floor(absoluteId / this.largePageSize) : 0;
     this.largePage = targetPage;
     this.pageChange();
 
-    const remainder =
-      this.largePageSize > 0 ? absoluteId % this.largePageSize : 0;
-    this.scrollPos = this.tableRef.nativeElement.scrollTop =
-      (remainder + this.largePageCoeff) * this.rowHeight + lastRowFix;
+    const remainder = this.largePageSize > 0 ? absoluteId % this.largePageSize : 0;
+    this.scrollPos = this.tableRef.nativeElement.scrollTop = (remainder + this.largePageCoeff) * this.rowHeight + lastRowFix;
     this.updateRows();
     // console.log("remainder", this.largePageCoeff)
     this.refreshVrows();
@@ -495,14 +452,9 @@ export class AdminoOldTableComponent
     if (this.manualScroll) {
       const target =
         (this.scrollerRef.nativeElement.scrollTop /
-          (this.scrollerRef.nativeElement.scrollHeight -
-            this.scrollerRef.nativeElement.clientHeight)) *
+          (this.scrollerRef.nativeElement.scrollHeight - this.scrollerRef.nativeElement.clientHeight)) *
         this.adjustedTotalsize;
-      console.log(
-        "maxscrollpos",
-        this.scrollerRef.nativeElement.scrollHeight -
-          this.scrollerRef.nativeElement.clientHeight
-      );
+      console.log("maxscrollpos", this.scrollerRef.nativeElement.scrollHeight - this.scrollerRef.nativeElement.clientHeight);
       console.log("target", target);
       this.gotoPos(target);
     }
@@ -521,20 +473,14 @@ export class AdminoOldTableComponent
     this.scrollPos = this.tableRef.nativeElement.scrollTop;
     // console.log(this.largePage, this.lastLargePage)
     // console.log((this.rowCountOnLastLargePage + 1) * this.rowHeight - 1)
-    const scrollmax =
-      (this.rowCountOnLastLargePage + 1) * this.rowHeight +
-      this.notfittingRowHeight -
-      1;
+    const scrollmax = (this.rowCountOnLastLargePage + 1) * this.rowHeight + this.notfittingRowHeight - 1;
     if (this.largePage === this.lastLargePage && this.scrollPos >= scrollmax) {
       this.scrollPos = this.tableRef.nativeElement.scrollTop = scrollmax;
     }
 
     // && this.adjustedTotalsize > (this.lpage + 1) * this.lpageSize
     // console.log(this.scrollPos, this.maxScrollPos)
-    if (
-      this.scrollPos >= this.maxScrollPos &&
-      this.largePage < this.lastLargePage
-    ) {
+    if (this.scrollPos >= this.maxScrollPos && this.largePage < this.lastLargePage) {
       this.largePage++;
       this.pageChange();
       console.log("pageChange up");
@@ -543,8 +489,7 @@ export class AdminoOldTableComponent
       this.largePage--;
       this.pageChange();
       console.log("pageChange down");
-      this.scrollPos = this.tableRef.nativeElement.scrollTop =
-        this.maxScrollPos - this.rowHeight;
+      this.scrollPos = this.tableRef.nativeElement.scrollTop = this.maxScrollPos - this.rowHeight;
     }
 
     // this.scrollPosCoeffNormal + this.rowCount + ((this.rowCount) * this.spage)
@@ -556,8 +501,7 @@ export class AdminoOldTableComponent
 
     this.scrollPercent = this.rowStart / this.adjustedTotalsize;
     if (!this.manualScroll) {
-      this.scrollerRef.nativeElement.scrollTop =
-        (this.maxScrollPos + this.notfittingRowHeight) * this.scrollPercent;
+      this.scrollerRef.nativeElement.scrollTop = (this.maxScrollPos + this.notfittingRowHeight) * this.scrollPercent;
     }
     this.updateDataSource();
     // if (this.scrollPos >= this.rowHeight * this.bufferSize) {
@@ -567,8 +511,7 @@ export class AdminoOldTableComponent
     this.prevScrollPos = this.scrollPos;
 
     if (this.headerRef) {
-      this.headerRef.nativeElement.style.marginLeft =
-        -this.tableRef.nativeElement.scrollLeft + "px";
+      this.headerRef.nativeElement.style.marginLeft = -this.tableRef.nativeElement.scrollLeft + "px";
     }
   }
 
@@ -577,14 +520,9 @@ export class AdminoOldTableComponent
     // console.log("start", this.dataSource.viewpos, "end", this.dataSource.viewpos + this.dataSource.state.count)
     // console.log("start", this.rowStart, "end", this.rowEnd)
     const currentLoadedStart = this.dataSource.viewpos;
-    const currentLoadedEnd =
-      this.dataSource.viewpos + this.dataSource.state.count;
+    const currentLoadedEnd = this.dataSource.viewpos + this.dataSource.state.count;
 
-    if (
-      force ||
-      currentLoadedStart !== this.rowStart ||
-      currentLoadedEnd !== this.rowEnd
-    ) {
+    if (force || currentLoadedStart !== this.rowStart || currentLoadedEnd !== this.rowEnd) {
       // console.log("UPDATE")
 
       // if (this.prevRowEnd < this.rowEnd) {
@@ -603,9 +541,7 @@ export class AdminoOldTableComponent
       // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
       // console.log(this.dataSource.buffer.container);
       // console.log(this.dataSource.buffer.container);
-      this.dataSource.state.cursorpos = -(
-        this.rowStart - this.dataSource.cursorAbsPos
-      );
+      this.dataSource.state.cursorpos = -(this.rowStart - this.dataSource.cursorAbsPos);
       this.dataSource.loadData();
       this.cd.detectChanges();
     }
@@ -619,15 +555,12 @@ export class AdminoOldTableComponent
     // } else {
     //   this.maxScrollPos = Math.floor((this.largePageSize + 1) * this.rowHeight);
     // }
-    this.fakeScrollerHeight =
-      this.maxScrollPos + (this.visibleRowCount - 1) * this.rowHeight;
-    this.fakeContentRef.nativeElement.style.height =
-      this.fakeScrollerHeight + "px";
+    this.fakeScrollerHeight = this.maxScrollPos + (this.visibleRowCount - 1) * this.rowHeight;
+    this.fakeContentRef.nativeElement.style.height = this.fakeScrollerHeight + "px";
 
     if (this.largePage > this.lastLargePage) {
       this.largePage = this.lastLargePage;
-      this.scrollPos = this.tableRef.nativeElement.scrollTop =
-        this.rowCountOnLastLargePage * this.rowHeight - 1;
+      this.scrollPos = this.tableRef.nativeElement.scrollTop = this.rowCountOnLastLargePage * this.rowHeight - 1;
     }
     this.largePageCoeff = this.largePage - 1 >= 0 ? 1 : 0;
 
@@ -658,28 +591,16 @@ export class AdminoOldTableComponent
       this.totalsize = this.visibleRowCount;
       // console.log("totatlsiz", this.tableRef.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight)
     }
-    this.visibleRowCount =
-      this.visibleRowCount > this.totalsize
-        ? this.totalsize
-        : this.visibleRowCount;
+    this.visibleRowCount = this.visibleRowCount > this.totalsize ? this.totalsize : this.visibleRowCount;
 
-    this.notfittingRowHeight =
-      Math.ceil(this.viewportSize / this.rowHeight) * this.rowHeight -
-      this.viewportSize;
+    this.notfittingRowHeight = Math.ceil(this.viewportSize / this.rowHeight) * this.rowHeight - this.viewportSize;
 
-    this.largePageSize = Math.floor(
-      (this.browserMaxSize * 0.5) / this.rowHeight
-    );
+    this.largePageSize = Math.floor((this.browserMaxSize * 0.5) / this.rowHeight);
     this.largePageSize = 15000;
     this.adjustedTotalsize = this.totalsize - (this.visibleRowCount - 1);
-    this.lastLargePage = Math.floor(
-      this.adjustedTotalsize / this.largePageSize
-    );
+    this.lastLargePage = Math.floor(this.adjustedTotalsize / this.largePageSize);
     this.rowCountOnLastLargePage = this.adjustedTotalsize % this.largePageSize;
-    this.largePageSize =
-      this.adjustedTotalsize > this.largePageSize
-        ? this.largePageSize
-        : this.adjustedTotalsize;
+    this.largePageSize = this.adjustedTotalsize > this.largePageSize ? this.largePageSize : this.adjustedTotalsize;
     // this.dataSource.buffer.maxBufferSize = this.lpageSize;
     // this.dataSource.buffer.maxBufferSize = 100;
     // this.lastPage = this.lpageSize - 1 > 0 ? Math.floor(this.totalsize / (this.lpageSize - 1)) : 0;
@@ -714,9 +635,7 @@ export class AdminoOldTableComponent
     this.maxScrollPos = Math.floor(this.largePageSize * this.rowHeight);
     // this.fakeContentRef.nativeElement.style.height = this.maxScrollPos + (this.rowCount - 1) * this.rowHeight + 'px';
     this.scrollerContentRef.nativeElement.style.height =
-      this.largePageSize * this.rowHeight +
-      (this.visibleRowCount - 1) * this.rowHeight +
-      "px";
+      this.largePageSize * this.rowHeight + (this.visibleRowCount - 1) * this.rowHeight + "px";
     // this.tableRef.nativeElement.clientHeight * 5 + 'px';
     // this.fakeContentRef.nativeElement.style.width = 1 + 'px';
     // this.fakeContentRef.nativeElement.style.background = 'red';
@@ -732,19 +651,12 @@ export class AdminoOldTableComponent
 
     // this.scrollPosCoeff = this.scrollPosCoeff >= this.adjustedTotalsize - this.lpage * this.lpageSize ? this.adjustedTotalsize - this.lpage * this.lpageSize - 1 : this.scrollPosCoeff;
     this.smallPage = Math.floor(this.scrollPosCoeff / this.visibleRowCount);
-    this.scrollPosCoeffNormal =
-      this.scrollPosCoeff - this.smallPage * this.visibleRowCount;
+    this.scrollPosCoeffNormal = this.scrollPosCoeff - this.smallPage * this.visibleRowCount;
 
     // console.log("smallPage", this.smallPage);
     // console.log("largePageCoeff", this.largePageCoeff);
-    this.rowStart =
-      this.scrollPosCoeff +
-      this.largePage * this.largePageSize -
-      this.largePageCoeff;
-    this.rowEnd = Math.max(
-      this.rowStart + this.visibleRowCount - 1,
-      this.rowStart
-    );
+    this.rowStart = this.scrollPosCoeff + this.largePage * this.largePageSize - this.largePageCoeff;
+    this.rowEnd = Math.max(this.rowStart + this.visibleRowCount - 1, this.rowStart);
 
     for (const vrow of this.vrows) {
       this.updateRow(vrow);
@@ -766,9 +678,7 @@ export class AdminoOldTableComponent
         // console.log("sethere")
         // console.log(vrow.absoluteId)
         vrow.pos =
-          vrow.virtualId * this.rowHeight +
-          this.visibleRowCount * this.rowHeight +
-          this.smallPage * this.rowHeight * this.visibleRowCount;
+          vrow.virtualId * this.rowHeight + this.visibleRowCount * this.rowHeight + this.smallPage * this.rowHeight * this.visibleRowCount;
       }
     } else {
       vrow.absoluteId =
@@ -777,9 +687,7 @@ export class AdminoOldTableComponent
         this.largePage * (this.largePageSize - 1) +
         this.largePageCoeff * (this.largePage - 1);
       if (vrow.absoluteId < this.totalsize) {
-        vrow.pos =
-          vrow.virtualId * this.rowHeight +
-          this.smallPage * this.rowHeight * this.visibleRowCount;
+        vrow.pos = vrow.virtualId * this.rowHeight + this.smallPage * this.rowHeight * this.visibleRowCount;
       }
     }
     // console.log(vrow.absoluteId);
@@ -835,9 +743,7 @@ export class AdminoOldTableComponent
     }
     const fullWidth = this.bodyRef.nativeElement.clientWidth;
     // const trArr = (this.bodyRef.nativeElement as HTMLElement).children[0].children;
-    this.scrollBarWidth =
-      this.bodyRef.nativeElement.offsetWidth -
-      this.bodyRef.nativeElement.clientWidth;
+    this.scrollBarWidth = this.bodyRef.nativeElement.offsetWidth - this.bodyRef.nativeElement.clientWidth;
     // console.log(fullWidth)
     // const actionsWidth = trArr[trArr.length - 1].clientWidth;
     // const availableWidth = fullWidth - actionsWidth - this.scrollBarWidth;
@@ -964,8 +870,7 @@ export class AdminoOldTableComponent
   // }
 
   getHeaderContainerStyle(column, i) {
-    const lastColumnFix =
-      i === this.dataSource.columns.length - 1 ? this.scrollBarWidth : 0;
+    const lastColumnFix = i === this.dataSource.columns.length - 1 ? this.scrollBarWidth : 0;
     const w = this.columnWidths[i] + lastColumnFix;
     return Object.assign(
       {
@@ -983,10 +888,7 @@ export class AdminoOldTableComponent
   getRowStyle(vrow) {
     // transform1: 'translateY(' + vrow.pos + 'px)',
     const style = { height: this.rowHeight + "px", top: vrow.pos + "px" };
-    if (
-      vrow.absoluteId === this.dataSource.cursorAbsPos &&
-      this.selectedRowStyle
-    ) {
+    if (vrow.absoluteId === this.dataSource.cursorAbsPos && this.selectedRowStyle) {
       Object.assign(style, this.selectedRowStyle);
     }
     return style;
@@ -1001,11 +903,7 @@ export class AdminoOldTableComponent
       column.containerStyle
     );
 
-    const extra =
-      data &&
-      data.styles &&
-      data.styles[column.id] &&
-      data.styles[column.id].containerStyle;
+    const extra = data && data.styles && data.styles[column.id] && data.styles[column.id].containerStyle;
 
     // data && data[column.extraCellDefinitions];
     // const extraStyle = extra && extra.containerStyle;
@@ -1019,11 +917,7 @@ export class AdminoOldTableComponent
       Object.assign(containerStyle, extra);
     }
 
-    if (
-      vrow.absoluteId === this.dataSource.cursorAbsPos &&
-      i === this.dataSource.state.selectedColumnIndex &&
-      this.selectedCellStyle
-    ) {
+    if (vrow.absoluteId === this.dataSource.cursorAbsPos && i === this.dataSource.state.selectedColumnIndex && this.selectedCellStyle) {
       Object.assign(containerStyle, this.selectedCellStyle);
     }
 
@@ -1042,12 +936,7 @@ export class AdminoOldTableComponent
     // if (extraPredefinedStyle) {
     //   Object.assign(style, extraPredefinedStyle);
     // }
-    return (
-      data &&
-      data.styles &&
-      data.styles[column.id] &&
-      data.styles[column.id].style
-    );
+    return data && data.styles && data.styles[column.id] && data.styles[column.id].style;
   }
   getBarStyle(column, data, i) {
     // const style = {};
@@ -1064,12 +953,7 @@ export class AdminoOldTableComponent
     //   Object.assign(style, extraPredefinedBarStyle);
     // }
 
-    return (
-      data &&
-      data.styles &&
-      data.styles[column.id] &&
-      data.styles[column.id].barStyle
-    );
+    return data && data.styles && data.styles[column.id] && data.styles[column.id].barStyle;
   }
   sanitize(val) {
     if (val === undefined) {

@@ -1,11 +1,5 @@
 import { AdminoTooltipService } from "./admino-tooltip.service";
-import {
-  Directive,
-  Input,
-  HostBinding,
-  HostListener,
-  OnDestroy,
-} from "@angular/core";
+import { Directive, Input, HostBinding, HostListener, OnDestroy } from "@angular/core";
 import { v4 as uuid } from "uuid";
 
 @Directive({

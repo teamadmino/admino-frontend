@@ -1,15 +1,6 @@
 import { AdminoKeyboardComponent } from "./../../../../admino-keyboard/admino-keyboard/admino-keyboard.component";
-import {
-  layout2,
-  LAYOUT1,
-} from "./../../../../admino-keyboard/admino-keyboard.layouts";
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-} from "@angular/core";
+import { layout2, LAYOUT1 } from "./../../../../admino-keyboard/admino-keyboard.layouts";
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
 import { FormControl, AbstractControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { ScannerView } from "../scannerview";
@@ -21,8 +12,7 @@ import { MatAutocompleteTrigger } from "@angular/material";
   templateUrl: "./fakkview.component.html",
   styleUrls: ["./fakkview.component.scss"],
 })
-export class FakkviewComponent extends ScannerView
-  implements OnInit, AfterViewInit {
+export class FakkviewComponent extends ScannerView implements OnInit, AfterViewInit {
   // @ViewChild('fakkRef', { static: true, read: ElementRef }) fakkRef: ElementRef;
   @ViewChild("triggerFakk", { static: true, read: MatAutocompleteTrigger })
   triggerFakkRef: MatAutocompleteTrigger;

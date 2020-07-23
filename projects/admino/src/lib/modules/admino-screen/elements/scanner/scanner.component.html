@@ -1,9 +1,6 @@
 <div class="admino-scanner">
   <div class="popups" *ngIf="this.scannerService.popups.length > 0">
-    <admino-popup
-      *ngFor="let popup of this.scannerService.popups"
-      [popupData]="popup"
-    ></admino-popup>
+    <admino-popup *ngFor="let popup of this.scannerService.popups" [popupData]="popup"></admino-popup>
     <!-- <div class="popup" ngfor="let popup of popups"></div> -->
   </div>
   <div class="header">
@@ -14,10 +11,7 @@
     </div>
 
     <div class="user">
-      <h6
-        *ngIf="scannerService.dolgozo"
-        class="username mb-0 mt-1 d-inline-block"
-      >
+      <h6 *ngIf="scannerService.dolgozo" class="username mb-0 mt-1 d-inline-block">
         {{ scannerService.dolgozo && scannerService.dolgozo.nev }}
       </h6>
     </div>
@@ -42,12 +36,8 @@
     </div>
     <div class="toolbarbtn">
       <button mat-icon-button (click)="tryUpload()">
-        <mat-icon class="color-accent" *ngIf="scannerService.online"
-          >wifi</mat-icon
-        >
-        <mat-icon class="color-warn" *ngIf="!scannerService.online"
-          >wifi_off
-        </mat-icon>
+        <mat-icon class="color-accent" *ngIf="scannerService.online">wifi</mat-icon>
+        <mat-icon class="color-warn" *ngIf="!scannerService.online">wifi_off </mat-icon>
         <!-- <mat-icon>refresh</mat-icon> -->
       </button>
     </div>
@@ -60,14 +50,8 @@
   <!-- -->
   <!--  -->
 
-  <div
-    class="content"
-    [ngSwitch]="this.scannerService.page.value"
-    *ngIf="scannerService.dataLoaded"
-  >
-    <admino-infopanel
-      *ngIf="this.scannerService.page.value > 0"
-    ></admino-infopanel>
+  <div class="content" [ngSwitch]="this.scannerService.page.value" *ngIf="scannerService.dataLoaded">
+    <admino-infopanel *ngIf="this.scannerService.page.value > 0"></admino-infopanel>
     <admino-erroroverlay></admino-erroroverlay>
     <div class="page" *ngSwitchCase="0">
       <admino-loginview [pageNum]="0"></admino-loginview>
@@ -79,10 +63,7 @@
       <admino-fakkview [pageNum]="2"></admino-fakkview>
     </div>
     <div class="page h-100" *ngSwitchCase="3">
-      <admino-inputview
-        [pageNum]="3"
-        [testData]="this.element.testData"
-      ></admino-inputview>
+      <admino-inputview [pageNum]="3" [testData]="this.element.testData"></admino-inputview>
     </div>
   </div>
 
@@ -94,13 +75,9 @@
       mat-flat-button
       [color]="button.color"
     >
-      <mat-icon class="lefticon" *ngIf="button.iconleft">
-        {{ button.iconleft }}</mat-icon
-      >
+      <mat-icon class="lefticon" *ngIf="button.iconleft"> {{ button.iconleft }}</mat-icon>
       {{ button.label }}
-      <mat-icon class="righticon" *ngIf="button.iconright">
-        {{ button.iconright }}</mat-icon
-      >
+      <mat-icon class="righticon" *ngIf="button.iconright"> {{ button.iconright }}</mat-icon>
     </button>
 
     <!-- <button class="prevbutton" *ngIf="scannerService.labels[scannerService.page.value][0]" [type]="'button'"

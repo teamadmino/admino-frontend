@@ -20,15 +20,15 @@ import { HttpResponse, HttpClient } from "@angular/common/http";
 import { ClipboardService } from "./clipboard.service";
 declare var html2canvas: any;
 import { v4 as uuidv4 } from "uuid";
+import { setTimeout } from "timers";
 
 @Injectable({
   providedIn: "root",
 })
 export class AdminoActionService {
-  redrawScreen: BehaviorSubject<ScreenElementScreen> = new BehaviorSubject(
-    null
-  );
+  redrawScreen: BehaviorSubject<ScreenElementScreen> = new BehaviorSubject(null);
   updateScreen: BehaviorSubject<any> = new BehaviorSubject(null);
+  setBlocking: BehaviorSubject<0 | 1 | 2> = new BehaviorSubject(0);
   snackbarEvent: Subject<any> = new Subject();
 
   showToolbar: BehaviorSubject<boolean> = new BehaviorSubject(true);
@@ -59,13 +59,8 @@ export class AdminoActionService {
       this.currentQueryParams = decodeParams(params);
     });
 
-    if (
-      this.currentQueryParams &&
-      Object.keys(this.currentQueryParams).indexOf("scanner") > -1
-    ) {
-      const params = window.location.href.substring(
-        window.location.href.indexOf("?")
-      );
+    if (this.currentQueryParams && Object.keys(this.currentQueryParams).indexOf("scanner") > -1) {
+      const params = window.location.href.substring(window.location.href.indexOf("?"));
       this.backendGetRequest(this.cs.config.loginScreen + params).subscribe();
     } else {
       this.backendRequest(this.cs.config.loginScreen).subscribe();
@@ -83,9 +78,7 @@ export class AdminoActionService {
           if (actionEvent.action.includeScreenshot === "body") {
             el = document.body;
           } else {
-            el = document.getElementById(
-              "screenElementId__." + actionEvent.action.includeScreenshot
-            );
+            el = document.getElementById("screenElementId__." + actionEvent.action.includeScreenshot);
           }
 
           el.style.background = actionEvent.action.screenshotBackgroundColor
@@ -102,16 +95,12 @@ export class AdminoActionService {
               // const blob = new Blob([asArray.buffer], { type: "image/png" });
               // document.body.appendChild(canvas);
               if (actionEvent.action.openScreenshot) {
-                window
-                  .open()
-                  .document.write('<img src="' + base64image + '"/>');
+                window.open().document.write('<img src="' + base64image + '"/>');
               }
 
-              this.prepareAction(actionEvent, base64image).subscribe(
-                (result) => {
-                  resolve(result);
-                }
-              );
+              this.prepareAction(actionEvent, base64image).subscribe((result) => {
+                resolve(result);
+              });
             })
             .catch((params) => {
               this.prepareAction(actionEvent).subscribe((result) => {
@@ -125,10 +114,7 @@ export class AdminoActionService {
     }
   }
 
-  prepareAction(
-    actionEvent: ActionEvent,
-    screenshotData: any = null
-  ): Observable<any> {
+  prepareAction(actionEvent: ActionEvent, screenshotData: any = null): Observable<any> {
     if (!actionEvent.action) {
       console.warn("No action defined");
       return wrapIntoObservable(null);
@@ -141,24 +127,13 @@ export class AdminoActionService {
       let a = 0;
 
       // needed for keeping undefined values
-      const replacer = (key, value) =>
-        typeof value === "undefined" ? null : value;
+      const replacer = (key, value) => (typeof value === "undefined" ? null : value);
 
       if (actionEvent.openScreens) {
         for (const scr of actionEvent.openScreens) {
-          const id = scr.screenElement.id
-            ? scr.screenElement.id
-            : "ID_WAS_NOT_PROVIDED_" + a.toString();
+          const id = scr.screenElement.id ? scr.screenElement.id : "ID_WAS_NOT_PROVIDED_" + a.toString();
           // console.log(JSON.stringify(scr.group.value))
-          screenValue[id] = JSON.parse(
-            JSON.stringify(
-              this.addTypesToValueKeys(
-                scr.group.getRawValue(),
-                scr.screenElement
-              ),
-              replacer
-            )
-          );
+          screenValue[id] = JSON.parse(JSON.stringify(this.addTypesToValueKeys(scr.group.getRawValue(), scr.screenElement), replacer));
           a++;
         }
       }
@@ -176,9 +151,7 @@ export class AdminoActionService {
       if (actionEvent.action.includeSchema) {
         schema = actionEvent.screenConfig;
       }
-      const requestingScreen = actionEvent.screenConfig
-        ? actionEvent.screenConfig.id
-        : null;
+      const requestingScreen = actionEvent.screenConfig ? actionEvent.screenConfig.id : null;
       return this.backendRequest(
         actionEvent.action.backendAction,
         requestingScreen,
@@ -195,17 +168,9 @@ export class AdminoActionService {
     } else if (actionEvent.action.type === "download") {
       this.api.downloadFile(actionEvent.action.downloadId).subscribe((data) => {
         if (actionEvent.action.fileAction === "open") {
-          this.openFile(
-            data,
-            actionEvent.action.fileName,
-            actionEvent.action.fileType
-          );
+          this.openFile(data, actionEvent.action.fileName, actionEvent.action.fileType);
         } else {
-          this.saveFile(
-            data,
-            actionEvent.action.fileName,
-            actionEvent.action.fileType
-          );
+          this.saveFile(data, actionEvent.action.fileName, actionEvent.action.fileType);
         }
         // const blob = new Blob([data], { type: actionEvent.action.fileType });
         // const url = window.URL.createObjectURL(blob);
@@ -292,13 +257,8 @@ export class AdminoActionService {
       this.showMenu.next(response.showMenu);
     }
     if (response.setTheme !== undefined) {
-      const color = response.setTheme.themeColor
-        ? response.setTheme.themeColor
-        : this.ts.currentTheme;
-      const isDark =
-        response.setTheme.isDark !== undefined
-          ? response.setTheme.isDark
-          : this.ts.isDarkTheme;
+      const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;
+      const isDark = response.setTheme.isDark !== undefined ? response.setTheme.isDark : this.ts.isDarkTheme;
       this.ts.setTheme(color, isDark);
     }
     if (response.setBottomButtons !== undefined) {
@@ -325,7 +285,11 @@ export class AdminoActionService {
     if (response.setPing !== undefined) {
       this.pingFrequency.next(response.setPing);
     }
-
+    if (response.setBlocking !== undefined) {
+      setTimeout(() => {
+        this.setBlocking.next(response.setBlocking);
+      }, 0);
+    }
     if (response.setSnackbars !== undefined) {
       this.snackbarEvent.next(response.setSnackbars);
     }
@@ -350,10 +314,7 @@ export class AdminoActionService {
       this.api.tabId = uuidv4();
       this.user.logout();
       this.redrawScreen.next({});
-      const logoutScreen =
-        action.logoutScreen !== undefined
-          ? action.logoutScreen
-          : this.cs.config.loginScreen;
+      const logoutScreen = action.logoutScreen !== undefined ? action.logoutScreen : this.cs.config.loginScreen;
       this.activeScreenId = "";
       this.pingFrequency.next(0);
       return this.backendRequest(logoutScreen);
@@ -410,11 +371,7 @@ export class AdminoActionService {
         //   filtered[key] = { config, value: value[key] };
         // }
       } else {
-        const filteredSubObject = this.filterScreenValue(
-          filters[key],
-          value[key],
-          filtered[key]
-        );
+        const filteredSubObject = this.filterScreenValue(filters[key], value[key], filtered[key]);
         if (Object.keys(filteredSubObject).length > 0) {
           filtered[key] = filteredSubObject;
         }
@@ -422,21 +379,14 @@ export class AdminoActionService {
     }
     return filtered;
   }
-  addTypesToValueKeys(
-    value: any,
-    schema: ScreenElementScreen,
-    newScreenVal = {}
-  ) {
+  addTypesToValueKeys(value: any, schema: ScreenElementScreen, newScreenVal = {}) {
     for (const key of Object.keys(value)) {
       const found = schema.elements.find((el) => {
         return el.id === key;
       });
       if (found) {
         if (found.type === "group") {
-          newScreenVal[key + ":" + found.type] = this.addTypesToValueKeys(
-            value[key],
-            found
-          );
+          newScreenVal[key + ":" + found.type] = this.addTypesToValueKeys(value[key], found);
         } else {
           newScreenVal[key + ":" + found.type] = value[key];
         }

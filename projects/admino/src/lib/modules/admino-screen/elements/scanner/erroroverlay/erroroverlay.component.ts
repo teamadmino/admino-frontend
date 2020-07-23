@@ -14,16 +14,11 @@ export class ErroroverlayComponent implements OnInit, OnDestroy {
   showError = false;
   error: any = {};
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    private scannerService: ScannerService
-  ) {
-    this.scannerService.newErrorEvent
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((err) => {
-        this.error = err;
-        this.playError();
-      });
+  constructor(private cd: ChangeDetectorRef, private scannerService: ScannerService) {
+    this.scannerService.newErrorEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((err) => {
+      this.error = err;
+      this.playError();
+    });
   }
 
   playError() {

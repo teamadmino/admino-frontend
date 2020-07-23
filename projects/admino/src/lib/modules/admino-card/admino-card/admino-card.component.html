@@ -16,11 +16,7 @@
     </mat-card-title> -->
   <!-- <mat-card-subtitle *ngIf="subtitle">{{subtitle}}</mat-card-subtitle> -->
 
-  <mat-card-content
-    class="mb-0"
-    [ngClass]="{ nopadding: nopadding }"
-    [ngStyle]="{ height: height }"
-  >
+  <mat-card-content class="mb-0" [ngClass]="{ nopadding: nopadding }" [ngStyle]="{ height: height }">
     <ng-content #content></ng-content>
   </mat-card-content>
 

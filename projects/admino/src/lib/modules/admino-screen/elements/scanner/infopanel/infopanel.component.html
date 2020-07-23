@@ -1,22 +1,13 @@
 <div class="raktar">
   <h3>
-    {{
-      scannerService.selectedUtca
-        ? scannerService.selectedUtca.raktar
-        : "Utcaválasztás"
-    }}
+    {{ scannerService.selectedUtca ? scannerService.selectedUtca.raktar : "Utcaválasztás" }}
   </h3>
 </div>
 <div class="infoheader">
   <div class="headerdata mr-0">
-    <div
-      class="num"
-      [ngClass]="{ active: this.scannerService.page.value === 1 }"
-    >
+    <div class="num" [ngClass]="{ active: this.scannerService.page.value === 1 }">
       <h1>
-        {{
-          scannerService.selectedUtca ? scannerService.selectedUtca.utca : "-"
-        }}
+        {{ scannerService.selectedUtca ? scannerService.selectedUtca.utca : "-" }}
       </h1>
       <span class="label">
         utca
@@ -25,15 +16,10 @@
   </div>
 
   <div class="headerdata ml-0">
-    <div
-      class="num"
-      [ngClass]="{ active: this.scannerService.page.value === 2 }"
-    >
+    <div class="num" [ngClass]="{ active: this.scannerService.page.value === 2 }">
       <h1>
         {{
-          scannerService.selectedFakk !== null &&
-          scannerService.selectedFakk !== "" &&
-          scannerService.selectedFakk !== undefined
+          scannerService.selectedFakk !== null && scannerService.selectedFakk !== "" && scannerService.selectedFakk !== undefined
             ? scannerService.selectedFakk
             : "-"
         }}

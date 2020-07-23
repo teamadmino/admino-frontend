@@ -1,10 +1,7 @@
 import { TableValue } from "./../../admino-screen/admino-screen.interfaces";
 import { ActionEvent, AdminoButton, AdminoAction } from "./../../../interfaces";
 import { takeUntil } from "rxjs/operators";
-import {
-  AdminoVirtualTableDataSource,
-  VirtualDataSourceInfoColumn,
-} from "../admino-virtual-table.datasource";
+import { AdminoVirtualTableDataSource, VirtualDataSourceInfoColumn } from "../admino-virtual-table.datasource";
 import {
   Component,
   OnInit,
@@ -20,12 +17,7 @@ import {
 } from "@angular/core";
 import { Subject } from "rxjs";
 import { AdminoVirtualScrollDirective } from "../admino-virtual-scroll.directive";
-import {
-  DOWN_ARROW,
-  UP_ARROW,
-  PAGE_DOWN,
-  PAGE_UP,
-} from "@angular/cdk/keycodes";
+import { DOWN_ARROW, UP_ARROW, PAGE_DOWN, PAGE_UP } from "@angular/cdk/keycodes";
 import { adminoVirtualTableAnimation } from "./admino-virtual-table.animation";
 import { FormatService } from "admino/src/lib/services/format.service";
 
@@ -35,8 +27,7 @@ import { FormatService } from "admino/src/lib/services/format.service";
   styleUrls: ["./admino-virtual-table.component.scss"],
   animations: [adminoVirtualTableAnimation],
 })
-export class AdminoVirtualTableComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+export class AdminoVirtualTableComponent implements OnInit, OnDestroy, AfterViewInit {
   private ngUnsubscribe: Subject<null> = new Subject();
 
   @ViewChild("tableRef", { static: true }) tableRef: ElementRef;
@@ -85,9 +76,7 @@ export class AdminoVirtualTableComponent
   @Input() hideBottomBorder = false;
   @Input() hideSideBorder = false;
 
-  @HostListener("document:keydown", ["$event"]) onKeydownHandler(
-    event: KeyboardEvent
-  ) {
+  @HostListener("document:keydown", ["$event"]) onKeydownHandler(event: KeyboardEvent) {
     // if (!this.focused && !this.forceFocus) {
     //   return;
     // }
@@ -128,10 +117,7 @@ export class AdminoVirtualTableComponent
     //   this.ctrlKey.next(true);
     // }
   }
-  constructor(
-    private cd: ChangeDetectorRef,
-    public formatService: FormatService
-  ) {}
+  constructor(private cd: ChangeDetectorRef, public formatService: FormatService) {}
 
   handleInteraction(shift) {
     // this.dataSource.state.shift = shift;
@@ -171,8 +157,7 @@ export class AdminoVirtualTableComponent
       const count = e.visibleEnd - e.visibleStart;
       this.dataSource.state.count = count;
       // this.dataSource.state.cursor = -e.visibleStart + this.dataSource.cursorAbsPos;
-      this.dataSource.state.cursorpos =
-        -e.visibleStart + this.dataSource.cursorAbsPos;
+      this.dataSource.state.cursorpos = -e.visibleStart + this.dataSource.cursorAbsPos;
       this.dataSource.loadData();
       this.cd.detectChanges();
       this.refresh();
@@ -185,13 +170,11 @@ export class AdminoVirtualTableComponent
   }
 
   ngAfterViewInit() {
-    this.dataSource.loadDataStart
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value) => {
-        // console.log('table value change');
-        // console.log(value);
-        this.valueChange.next(value);
-      });
+    this.dataSource.loadDataStart.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      // console.log('table value change');
+      // console.log(value);
+      this.valueChange.next(value);
+    });
 
     this.dataSource
       .connect()
@@ -297,9 +280,7 @@ export class AdminoVirtualTableComponent
   }
 
   scrollToSelected(cursorPosPercent = 0.5) {
-    const cursorPos =
-      this.dataSource.cursorAbsPos -
-      Math.floor((this.dataSource.state.count - 1) * cursorPosPercent);
+    const cursorPos = this.dataSource.cursorAbsPos - Math.floor((this.dataSource.state.count - 1) * cursorPosPercent);
     this.vsRef.scrollToItem(cursorPos);
   }
 
@@ -316,8 +297,7 @@ export class AdminoVirtualTableComponent
         return index.keys[0] === this.sortedColumn.id;
       });
       if (found) {
-        this.dataSource.state.index =
-          (this.dataSource.indexes.indexOf(found) + 1) * sorter.direction;
+        this.dataSource.state.index = (this.dataSource.indexes.indexOf(found) + 1) * sorter.direction;
       } else {
         this.dataSource.state.index = 1;
       }
@@ -336,9 +316,7 @@ export class AdminoVirtualTableComponent
     }
     const fullWidth = this.bodyRef.nativeElement.clientWidth;
     // const trArr = (this.bodyRef.nativeElement as HTMLElement).children[0].children;
-    this.scrollBarWidth =
-      this.bodyRef.nativeElement.offsetWidth -
-      this.bodyRef.nativeElement.clientWidth;
+    this.scrollBarWidth = this.bodyRef.nativeElement.offsetWidth - this.bodyRef.nativeElement.clientWidth;
 
     // const actionsWidth = trArr[trArr.length - 1].clientWidth;
     // const availableWidth = fullWidth - actionsWidth - this.scrollBarWidth;
@@ -361,19 +339,15 @@ export class AdminoVirtualTableComponent
   }
 
   refresh() {
-    this.headerRef.nativeElement.childNodes[0].style.marginLeft =
-      -this.bodyRef.nativeElement.scrollLeft + "px";
-    this.scrollBarWidth =
-      this.bodyRef.nativeElement.offsetWidth -
-      this.bodyRef.nativeElement.clientWidth;
+    this.headerRef.nativeElement.childNodes[0].style.marginLeft = -this.bodyRef.nativeElement.scrollLeft + "px";
+    this.scrollBarWidth = this.bodyRef.nativeElement.offsetWidth - this.bodyRef.nativeElement.clientWidth;
     // const availableWidth = this.tableRef.nativeElement.clientWidth - this.columnWidths[this.columnWidths.length - 1];
   }
 
   setSelected(e, index, absIndex) {
     if (e.__loaded__) {
       this.dataSource.cursorAbsPos = absIndex;
-      this.dataSource.state.cursor =
-        this.dataSource.cursorAbsPos - this.prevVisibleStart;
+      this.dataSource.state.cursor = this.dataSource.cursorAbsPos - this.prevVisibleStart;
       this.dataSource.setKeys(e);
     }
     this.dataSource.loadData();
@@ -386,8 +360,7 @@ export class AdminoVirtualTableComponent
   resize() {
     const availableH = this.bodyRef.nativeElement.clientHeight;
     const count = Math.floor(availableH / this.itemSize);
-    this.calculatedSize =
-      (availableH / (count * this.itemSize)) * this.itemSize;
+    this.calculatedSize = (availableH / (count * this.itemSize)) * this.itemSize;
     // this.afterRender();
     this.calculateWidths();
     this.refresh();

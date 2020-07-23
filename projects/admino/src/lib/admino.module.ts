@@ -8,12 +8,7 @@ import { AdminoCardModule } from "./modules/admino-card/admino-card.module";
 import { AdminoModalModule } from "./modules/admino-modal/admino-modal.module";
 import { AdminoResizeModule } from "./directives/admino-resize/admino-resize.module";
 import { NgModule } from "@angular/core";
-import {
-  CommonModule,
-  DecimalPipe,
-  CurrencyPipe,
-  DatePipe,
-} from "@angular/common";
+import { CommonModule, DecimalPipe, CurrencyPipe, DatePipe } from "@angular/common";
 import { DisableDefaultKeyEventsDirective } from "./directives/disable-default-key-events.directive";
 import { ThemeEmitterComponent } from "./modules/main/theme-emitter/theme-emitter.component";
 import { AdminoResizeObserverDirective } from "./directives/admino-resize/resize-observer.directive";

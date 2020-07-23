@@ -69,17 +69,14 @@ $check-length: 36px;
 }
 
 .successAnimation.animated {
-  animation: 1s ease-out 0s 1 both scaleAnimation,
-    0.3s linear 1.7s 1 forwards fadeOut;
+  animation: 1s ease-out 0s 1 both scaleAnimation, 0.3s linear 1.7s 1 forwards fadeOut;
 
   .successAnimationCircle {
-    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCircle,
-      0.3s linear 0.9s 1 both fadeOut;
+    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCircle, 0.3s linear 0.9s 1 both fadeOut;
   }
 
   .successAnimationCheck {
-    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCheck,
-      0.3s linear 0.9s 1 both fadeOut;
+    animation: 1s cubic-bezier(0.77, 0, 0.175, 1) 0s 1 both drawCheck, 0.3s linear 0.9s 1 both fadeOut;
   }
 
   .successAnimationResult {

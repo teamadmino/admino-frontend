@@ -20,9 +20,7 @@
       >
         Hibás azonosító
       </mat-error>
-      <mat-error *ngIf="this.formGroup.get('dolgozo').hasError('minlength')"
-        >Minimum 6 karakter
-      </mat-error>
+      <mat-error *ngIf="this.formGroup.get('dolgozo').hasError('minlength')">Minimum 6 karakter </mat-error>
     </mat-form-field>
   </form>
 </div>

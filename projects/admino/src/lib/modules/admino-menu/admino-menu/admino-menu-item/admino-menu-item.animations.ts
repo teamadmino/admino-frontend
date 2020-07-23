@@ -1,15 +1,4 @@
-import {
-  trigger,
-  sequence,
-  state,
-  animate,
-  transition,
-  style,
-  animateChild,
-  query,
-  group,
-  stagger,
-} from "@angular/animations";
+import { trigger, sequence, state, animate, transition, style, animateChild, query, group, stagger } from "@angular/animations";
 
 const inEasing = " ease-in";
 const outEasing = " ease-out";

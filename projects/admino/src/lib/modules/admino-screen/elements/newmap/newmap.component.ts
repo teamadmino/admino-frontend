@@ -1,11 +1,5 @@
 import { cloneDeep, isEqual } from "lodash";
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  AfterViewInit,
-} from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { ScreenElementChange } from "../../admino-screen.interfaces";
 import { deepCompare } from "admino/src/lib/utils/deepcompare";
@@ -29,8 +23,7 @@ interface ObjectData {
   templateUrl: "./newmap.component.html",
   styleUrls: ["./newmap.component.scss"],
 })
-export class NewmapComponent extends AdminoScreenElement
-  implements OnInit, AfterViewInit {
+export class NewmapComponent extends AdminoScreenElement implements OnInit, AfterViewInit {
   @ViewChild("mapRef", { static: true, read: ElementRef }) mapRef: ElementRef;
   map;
   layerDatas: LayerData[] = [];
@@ -251,8 +244,7 @@ export class NewmapComponent extends AdminoScreenElement
 
   createMap() {
     this.map = new maptalks.Map(this.mapRef.nativeElement, {
-      center:
-        this.element.center !== undefined ? this.element.center : [0.5, 0.5],
+      center: this.element.center !== undefined ? this.element.center : [0.5, 0.5],
       zoom: this.element.zoom !== undefined ? this.element.zoom : 10,
       pitch: this.element.pitch !== undefined ? this.element.pitch : 60,
       bearing: this.element.bearing !== undefined ? this.element.bearing : -40,

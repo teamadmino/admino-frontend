@@ -29,32 +29,18 @@ export const slotTransition = trigger("slotTransition", [
     // query(':leave', sequence([
     //     style({ display: 'none', position: 'absolute' })
     // ]), { optional: true }),
-    query(
-      ".routeAnimated",
-      style({ opacity: 0, transform: "translateY(0px)" }),
-      { optional: true }
-    ),
+    query(".routeAnimated", style({ opacity: 0, transform: "translateY(0px)" }), { optional: true }),
 
     group([
       query(
         ":enter",
-        sequence([
-          style({ opacity: "0", height: "100%" }),
-          animate("300ms" + outEasing, style({ opacity: 1, height: "100%" })),
-        ]),
+        sequence([style({ opacity: "0", height: "100%" }), animate("300ms" + outEasing, style({ opacity: 1, height: "100%" }))]),
         { optional: true }
       ),
 
-      query(
-        ".routeAnimated",
-        stagger("50ms", [
-          animate(
-            "200ms 50ms" + outEasing,
-            style({ opacity: 1, transform: "translateY(0px)" })
-          ),
-        ]),
-        { optional: true }
-      ),
+      query(".routeAnimated", stagger("50ms", [animate("200ms 50ms" + outEasing, style({ opacity: 1, transform: "translateY(0px)" }))]), {
+        optional: true,
+      }),
     ]),
   ]),
 ]);

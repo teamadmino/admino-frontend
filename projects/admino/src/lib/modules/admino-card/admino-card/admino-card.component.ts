@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  InjectionToken,
-  Injector,
-  OnDestroy,
-} from "@angular/core";
+import { Component, OnInit, Input, InjectionToken, Injector, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 export const CONTAINER_DATA = new InjectionToken<{}>("CONTAINER_DATA");
 

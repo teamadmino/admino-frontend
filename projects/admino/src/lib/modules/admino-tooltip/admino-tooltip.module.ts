@@ -5,16 +5,8 @@ import { AdminoTooltipContainerComponent } from "./admino-tooltip-container/admi
 import { AdminoTooltipDirective } from "./admino-tooltip.directive";
 
 @NgModule({
-  declarations: [
-    AdminoTooltipComponent,
-    AdminoTooltipContainerComponent,
-    AdminoTooltipDirective,
-  ],
+  declarations: [AdminoTooltipComponent, AdminoTooltipContainerComponent, AdminoTooltipDirective],
   imports: [CommonModule],
-  exports: [
-    AdminoTooltipComponent,
-    AdminoTooltipContainerComponent,
-    AdminoTooltipDirective,
-  ],
+  exports: [AdminoTooltipComponent, AdminoTooltipContainerComponent, AdminoTooltipDirective],
 })
 export class AdminoTooltipModule {}

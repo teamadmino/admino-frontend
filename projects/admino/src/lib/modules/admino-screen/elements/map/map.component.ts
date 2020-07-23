@@ -84,14 +84,7 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
     }
   }
 
-  drawPolygon(
-    points,
-    color,
-    height,
-    altitude,
-    opacity = 0.9,
-    wireframe = false
-  ) {
+  drawPolygon(points, color, height, altitude, opacity = 0.9, wireframe = false) {
     const rectangle = new maptalks.Polygon([points], {
       symbol: {
         lineColor: color,
@@ -292,8 +285,7 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
 
   map2() {
     this.map = new maptalks.Map(this.mapRef.nativeElement, {
-      center:
-        this.element.center !== undefined ? this.element.center : [0.5, 0.5],
+      center: this.element.center !== undefined ? this.element.center : [0.5, 0.5],
       zoom: this.element.zoom !== undefined ? this.element.zoom : 10,
       pitch: this.element.pitch !== undefined ? this.element.pitch : 60,
       bearing: this.element.bearing !== undefined ? this.element.bearing : -40,
@@ -359,11 +351,7 @@ export class MapComponent extends AdminoScreenElement implements OnInit {
         const y1 = y0 + 1 / numY;
         const capacityFull = Math.random();
         const altitude = capacityFull * 10000;
-        const col = this.directive.ts.psbc(
-          capacityFull,
-          this.directive.ts.primaryColor,
-          this.directive.ts.warnColor
-        );
+        const col = this.directive.ts.psbc(capacityFull, this.directive.ts.primaryColor, this.directive.ts.warnColor);
         var rectangle = new maptalks.Polygon(
           [
             [

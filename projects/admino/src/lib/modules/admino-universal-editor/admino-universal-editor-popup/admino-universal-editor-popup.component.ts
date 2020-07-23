@@ -2,11 +2,7 @@ import { ScreenPopup } from "./../../admino-screen/admino-screen.interfaces";
 import { AdminoUniversalEditorComponent } from "./../admino-universal-editor/admino-universal-editor.component";
 import { BehaviorSubject } from "rxjs";
 import { Component, OnInit, Inject, ViewChild } from "@angular/core";
-import {
-  MODAL_DATA,
-  MODAL_REF,
-  AdminoModalComponent,
-} from "../../admino-modal/admino-modal/admino-modal.component";
+import { MODAL_DATA, MODAL_REF, AdminoModalComponent } from "../../admino-modal/admino-modal/admino-modal.component";
 import { ScreenElementScreen } from "../../admino-screen/admino-screen.interfaces";
 import { slotTransition } from "../../main/main.animation";
 import { AdminoScreenComponent } from "../../admino-screen/admino-screen.component";
@@ -24,10 +20,7 @@ export class AdminoUniversalEditorPopupComponent implements OnInit {
   universalEditor: AdminoUniversalEditorComponent;
   mainScreenComponent: AdminoScreenComponent;
 
-  constructor(
-    @Inject(MODAL_DATA) public dataSubject: BehaviorSubject<any>,
-    @Inject(MODAL_REF) public modalRef: AdminoModalComponent
-  ) {
+  constructor(@Inject(MODAL_DATA) public dataSubject: BehaviorSubject<any>, @Inject(MODAL_REF) public modalRef: AdminoModalComponent) {
     // console.log(dataSubject)
   }
 

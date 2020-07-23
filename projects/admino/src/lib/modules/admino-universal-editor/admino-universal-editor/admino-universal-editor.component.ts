@@ -1,22 +1,9 @@
 import { slotTransition } from "./../../main/main.animation";
 import { AdminoActionService } from "./../../../services/action.service";
 import { AdminoApiService } from "./../../../services/api.service";
-import {
-  ScreenElementScreen,
-  ScreenPopup,
-} from "./../../admino-screen/admino-screen.interfaces";
-import {
-  AdminoModalService,
-  AdminoModalRef,
-} from "./../../admino-modal/admino-modal.service";
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-  ViewChild,
-  HostListener,
-} from "@angular/core";
+import { ScreenElementScreen, ScreenPopup } from "./../../admino-screen/admino-screen.interfaces";
+import { AdminoModalService, AdminoModalRef } from "./../../admino-modal/admino-modal.service";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, HostListener } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs";
 import { AdminoScreenComponent } from "../../admino-screen/admino-screen.component";
@@ -32,8 +19,9 @@ import { map } from "rxjs/operators";
 })
 export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
-  @ViewChild(AdminoScreenComponent, { static: false })
-  screen: AdminoScreenComponent;
+
+  @ViewChild(AdminoScreenComponent, { static: true }) screen: AdminoScreenComponent;
+
   screenElement: ScreenElementScreen;
 
   openPopups: { popup: ScreenPopup; ref: AdminoModalRef }[] = [];
@@ -150,6 +138,10 @@ export class AdminoUniversalEditorComponent implements OnInit, OnDestroy {
       // if (updatedScreen) {
       //   this.redrawScreen(updatedScreen);
       // }
+    });
+    console.log(this.screen);
+    this.as.setBlocking.subscribe((val) => {
+      this.screen.blockingActionRunning = val;
     });
   }
 

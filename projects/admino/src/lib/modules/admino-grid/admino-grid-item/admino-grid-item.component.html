@@ -15,14 +15,7 @@
     <button type="button" mat-mini-fab color="accent" class="mini-button">
       <mat-icon>edit</mat-icon>
     </button>
-    <button
-      type="button"
-      mat-mini-fab
-      color="primary"
-      (mousedown)="dragStart($event)"
-      #dragRef
-      class="mini-button"
-    >
+    <button type="button" mat-mini-fab color="primary" (mousedown)="dragStart($event)" #dragRef class="mini-button">
       <mat-icon>drag_indicator</mat-icon>
     </button>
   </div>
@@ -45,10 +38,6 @@
 
 <admino-preloader *ngIf="isLoading"></admino-preloader>
 
-<div
-  class="content"
-  [ngClass]="{ inline: inline, firstrow: this.row === 1, loading: isLoading }"
-  [ngStyle]="this.style"
->
+<div class="content" [ngClass]="{ inline: inline, firstrow: this.row === 1, loading: isLoading }" [ngStyle]="this.style">
   <ng-content></ng-content>
 </div>

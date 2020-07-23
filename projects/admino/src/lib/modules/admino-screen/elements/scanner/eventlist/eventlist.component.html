@@ -5,22 +5,13 @@
   </div>
   <!-- <mat-list class="codes pt-0" #codesRef> -->
   <div class="hider" [ngStyle]="{ opacity: hiderOpacity }"></div>
-  <cdk-virtual-scroll-viewport
-    itemSize="80"
-    class="codes pt-0"
-    #virtualScrollRef
-    (scroll)="scrollEvt()"
-  >
+  <cdk-virtual-scroll-viewport itemSize="80" class="codes pt-0" #virtualScrollRef (scroll)="scrollEvt()">
     <!-- <div  class="example-item">{{item}}</div> -->
 
     <!-- *ngFor="let reading of getCodes();let i=index; trackBy: trackByFn" -->
     <div
       class="listitem"
-      *cdkVirtualFor="
-        let reading of getCodes();
-        let i = index;
-        trackBy: trackByFn
-      "
+      *cdkVirtualFor="let reading of getCodes(); let i = index; trackBy: trackByFn"
       [ngClass]="{
         selected: reading.id === this.selectedId,
         animate: this.animated.indexOf(reading.id) > -1,
@@ -52,26 +43,15 @@
       </div>
 
       <div class="codewrapper pt-2 pr-2 pb-2">
-        <div
-          class="code"
-          *ngIf="reading.type === 'bala' || reading.type === 'sztorno'"
-        >
+        <div class="code" *ngIf="reading.type === 'bala' || reading.type === 'sztorno'">
           <h2>{{ reading.bala }}</h2>
           <p class="datap opacity-70 mb-0">
             <span class="utca"
-              >{{
-                reading.type === "sztorno"
-                  ? reading.eredetiBeolvasas.utca
-                  : reading.utca
-              }}
+              >{{ reading.type === "sztorno" ? reading.eredetiBeolvasas.utca : reading.utca }}
               <span class="smalltext">utca</span>
             </span>
             <span class="fakk ml-2">
-              {{
-                reading.type === "sztorno"
-                  ? reading.eredetiBeolvasas.fakk
-                  : reading.fakk
-              }}
+              {{ reading.type === "sztorno" ? reading.eredetiBeolvasas.fakk : reading.fakk }}
               <span class="smalltext">fakk</span></span
             >
 
@@ -84,10 +64,7 @@
             <span class="id ml-2 opacity-50"> #{{ reading.id }}</span>
           </p>
         </div>
-        <div
-          class="code"
-          *ngIf="reading.type === 'dolgozoBe' || reading.type === 'dolgozoKi'"
-        >
+        <div class="code" *ngIf="reading.type === 'dolgozoBe' || reading.type === 'dolgozoKi'">
           <h2>{{ reading.dolgozoNev }}</h2>
           <p class="datap opacity-70 mb-0">
             <span class="id opacity-50">
@@ -100,18 +77,10 @@
           </p>
         </div>
 
-        <mat-icon
-          color="warn"
-          class="unsyncindicator"
-          *ngIf="reading.id !== this.selectedId || reading.type !== 'bala'"
+        <mat-icon color="warn" class="unsyncindicator" *ngIf="reading.id !== this.selectedId || reading.type !== 'bala'"
           >sync_problem
         </mat-icon>
-        <mat-icon
-          color="accent"
-          class="syncindicator"
-          *ngIf="reading.id !== this.selectedId || reading.type !== 'bala'"
-          >check
-        </mat-icon>
+        <mat-icon color="accent" class="syncindicator" *ngIf="reading.id !== this.selectedId || reading.type !== 'bala'">check </mat-icon>
         <button
           class="deletebtn"
           mat-icon-button
@@ -122,10 +91,7 @@
         </button>
       </div>
 
-      <div
-        class="confirmation p-3 d-flex align-items-center"
-        *ngIf="this.showConfirmationId === reading.id"
-      >
+      <div class="confirmation p-3 d-flex align-items-center" *ngIf="this.showConfirmationId === reading.id">
         Biztosan sztornózza?
         <div class="flex-grow-1"></div>
         <button (click)="stornoCode(reading)" mat-flat-button color="warn">

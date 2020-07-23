@@ -13,10 +13,7 @@ export class ChartjsComponent extends AdminoScreenElement implements OnInit {
   @ViewChild("canvasRef", { static: true }) canvasRef: ElementRef;
   chart: Chart;
   ngOnInit() {
-    this.chart = new Chart(
-      this.canvasRef.nativeElement,
-      cloneDeep(this.element.config)
-    );
+    this.chart = new Chart(this.canvasRef.nativeElement, cloneDeep(this.element.config));
   }
   onChange(changes: { [id: string]: ScreenElementChange }) {
     if (this.element.config) {
@@ -30,10 +27,7 @@ export class ChartjsComponent extends AdminoScreenElement implements OnInit {
     }
     if (changes.__forceRefresh) {
       this.chart.destroy();
-      this.chart = new Chart(
-        this.canvasRef.nativeElement,
-        cloneDeep(this.element.config)
-      );
+      this.chart = new Chart(this.canvasRef.nativeElement, cloneDeep(this.element.config));
     }
   }
 }

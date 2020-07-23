@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-  ChangeDetectorRef,
-} from "@angular/core";
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AdminoThemeService } from "../../../services/theme.service";
@@ -34,17 +26,13 @@ export class ThemeEmitterComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(public ts: AdminoThemeService, private cd: ChangeDetectorRef) {}
   ngOnInit() {}
   ngAfterViewInit() {
-    this.ts.updateColors
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((route: string[]) => {
-        this.updateColors();
-      });
+    this.ts.updateColors.pipe(takeUntil(this.ngUnsubscribe)).subscribe((route: string[]) => {
+      this.updateColors();
+    });
   }
 
   updateColors() {
-    this.ts.colors = getComputedStyle(this.multiElement.nativeElement, ":after")
-      .content.replace(/"/g, "")
-      .split(";");
+    this.ts.colors = getComputedStyle(this.multiElement.nativeElement, ":after").content.replace(/"/g, "").split(";");
     this.ts.colors = this.ts.colors.map((col) => {
       const found = colors[col.toLowerCase()];
       if (found) {
@@ -53,24 +41,14 @@ export class ThemeEmitterComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.hexToRgb(col);
       }
     });
-    this.ts.primaryColor = getComputedStyle(
-      this.primaryElement.nativeElement
-    ).color;
-    this.ts.accentColor = getComputedStyle(
-      this.accentElement.nativeElement
-    ).color;
+    this.ts.primaryColor = getComputedStyle(this.primaryElement.nativeElement).color;
+    this.ts.accentColor = getComputedStyle(this.accentElement.nativeElement).color;
     this.ts.warnColor = getComputedStyle(this.warnElement.nativeElement).color;
     this.ts.bgColor = getComputedStyle(this.bgElement.nativeElement).color;
     this.ts.fgColor = getComputedStyle(this.fgElement.nativeElement).color;
-    this.ts.primaryContrast = getComputedStyle(
-      this.primaryContrastElement.nativeElement
-    ).color;
-    this.ts.accentContrast = getComputedStyle(
-      this.accentContrastElement.nativeElement
-    ).color;
-    this.ts.warnContrast = getComputedStyle(
-      this.warnContrastElement.nativeElement
-    ).color;
+    this.ts.primaryContrast = getComputedStyle(this.primaryContrastElement.nativeElement).color;
+    this.ts.accentContrast = getComputedStyle(this.accentContrastElement.nativeElement).color;
+    this.ts.warnContrast = getComputedStyle(this.warnContrastElement.nativeElement).color;
 
     this.ts.colorList.primary = this.ts.primaryColor;
     this.ts.colorList.accent = this.ts.accentColor;
@@ -89,15 +67,7 @@ export class ThemeEmitterComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   hexToRgb(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? "rgb(" +
-          parseInt(result[1], 16) +
-          "," +
-          parseInt(result[2], 16) +
-          "," +
-          parseInt(result[3], 16) +
-          ")"
-      : null;
+    return result ? "rgb(" + parseInt(result[1], 16) + "," + parseInt(result[2], 16) + "," + parseInt(result[3], 16) + ")" : null;
   }
 }
 

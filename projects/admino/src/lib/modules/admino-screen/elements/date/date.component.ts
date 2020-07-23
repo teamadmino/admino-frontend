@@ -1,10 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from "@angular/material";
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 export const MY_FORMATS = {
   parse: {

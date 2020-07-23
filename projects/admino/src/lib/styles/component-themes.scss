@@ -31,15 +31,13 @@
   $bgrad1: darken(mat-color($background, background), 5%);
 
   input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px mat-color($background, raised-button)
-      inset;
+    -webkit-box-shadow: 0 0 0px 1000px mat-color($background, raised-button) inset;
     // background-color: transparent;
     -webkit-text-fill-color: mat-color($foreground, secondary-text) !important;
   }
 
   input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px mat-color($background, raised-button)
-      inset;
+    -webkit-box-shadow: 0 0 0px 1000px mat-color($background, raised-button) inset;
     -webkit-text-fill-color: mat-color($foreground, base) !important;
   }
 
@@ -92,11 +90,7 @@
       background-color: mat-color($background, card);
 
       &:before {
-        background: linear-gradient(
-          0deg,
-          mat-color($background, card) 0%,
-          rgba(mat-color($background, card), 0) 100%
-        ) !important;
+        background: linear-gradient(0deg, mat-color($background, card) 0%, rgba(mat-color($background, card), 0) 100%) !important;
       }
     }
   }
@@ -153,23 +147,13 @@
   .grad-primary {
     // background: linear-gradient(141deg, mat-color($primary, 300) 0%, mat-color($primary, 600) 51%, mat-color($primary, 700) 75%) !important;
     color: mat-color($primary, default-contrast) !important;
-    background: linear-gradient(
-      160deg,
-      mat-color($primary, 300) 0%,
-      mat-color($primary, 400) 51%,
-      mat-color($primary, 500) 75%
-    ) !important;
+    background: linear-gradient(160deg, mat-color($primary, 300) 0%, mat-color($primary, 400) 51%, mat-color($primary, 500) 75%) !important;
   }
 
   .grad-accent {
     // background: linear-gradient(141deg, mat-color($primary, 300) 0%, mat-color($primary, 600) 51%, mat-color($primary, 700) 75%) !important;
     color: mat-color($accent, default-contrast) !important;
-    background: linear-gradient(
-      340deg,
-      mat-color($accent, 300) 0%,
-      mat-color($accent, 400) 51%,
-      mat-color($accent, 500) 75%
-    ) !important;
+    background: linear-gradient(340deg, mat-color($accent, 300) 0%, mat-color($accent, 400) 51%, mat-color($accent, 500) 75%) !important;
   }
 
   .c-primary-contrast {
@@ -200,8 +184,7 @@
     color: mat-color($background, background);
   }
 
-  $_colors: mat-color($primary) mat-color($accent) mat-color($warn)
-    mat-color($background, background) mat-color($foreground, base)
+  $_colors: mat-color($primary) mat-color($accent) mat-color($warn) mat-color($background, background) mat-color($foreground, base)
     mat-color($accent, default-contrast);
   $_colornames: primary accent warn background foreground accent-contrast;
 
@@ -255,8 +238,7 @@
 
   @for $i from 1 through length($_colors) {
     .cdk-focused.focusinnerglow-#{nth($_colornames, $i)} {
-      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%),
-        inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
+      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%), inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
       text-shadow: 0px 0px 5px lighten(nth($_colors, $i), 50%) !important;
       background-color: lighten(nth($_colors, $i), 20%) !important;
       // transform: scale(1.05) !important;
@@ -267,15 +249,13 @@
 
   @for $i from 1 through length($_colors) {
     *:focus.focusinnerglow-#{nth($_colornames, $i)} {
-      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%),
-        inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
+      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%), inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
     }
   }
 
   @for $i from 1 through length($_colors) {
     .innerglow-#{nth($_colornames, $i)} {
-      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%),
-        inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
+      box-shadow: inset 0px 0px 10px lighten(nth($_colors, $i), 30%), inset 0px 0px 0px 1px lighten(nth($_colors, $i), 50%) !important;
     }
   }
 
@@ -339,8 +319,7 @@
       &.landscape {
         $shdist: 4px;
         $shcol: mat-color($background, hover);
-        text-shadow: 0px (-5px) 0px $shcol, 0px $shdist 0px $shcol,
-          (-$shdist) 0px 0px $shcol, $shdist 0px 0px $shcol;
+        text-shadow: 0px (-5px) 0px $shcol, 0px $shdist 0px $shcol, (-$shdist) 0px 0px $shcol, $shdist 0px 0px $shcol;
       }
     }
   }
@@ -351,8 +330,7 @@
         &.landscape {
           $shdist: 4px;
           $shcol: mat-color($background, background);
-          text-shadow: 0px (-5px) 0px $shcol, 0px $shdist 0px $shcol,
-            (-$shdist) 0px 0px $shcol, $shdist 0px 0px $shcol;
+          text-shadow: 0px (-5px) 0px $shcol, 0px $shdist 0px $shcol, (-$shdist) 0px 0px $shcol, $shdist 0px 0px $shcol;
         }
       }
     }
@@ -374,8 +352,7 @@
 
   .sh-dark-xs,
   .sh-dark-xs.override {
-    box-shadow: 0 0px 10px
-      rgba(darken(mat-color($background, background), 20%), 0.5) !important;
+    box-shadow: 0 0px 10px rgba(darken(mat-color($background, background), 20%), 0.5) !important;
   }
 
   .sh-bg-xs,
@@ -407,10 +384,7 @@
     background-color: rgba(mat-color($background, status-bar), 0) !important;
 
     &.mat-drawer-shown {
-      background-color: rgba(
-        mat-color($background, status-bar),
-        0.9
-      ) !important;
+      background-color: rgba(mat-color($background, status-bar), 0.9) !important;
     }
   }
 
@@ -464,8 +438,7 @@
 
   admino-theme-emitter {
     .multi::after {
-      content: mat-color($primary) + ";" + mat-color($accent) + ";" +
-        mat-color($warn);
+      content: mat-color($primary) + ";" + mat-color($accent) + ";" + mat-color($warn);
       position: fixed;
       top: -10000px;
       height: 0;
@@ -535,8 +508,7 @@
           border: 1px solid rgba(mat-color($primary), 0.3) !important;
           padding: 8px;
           border-radius: 5px;
-          box-shadow: 0 0 15px 0px
-            rgba(darken(mat-color($background, background), 50%), 0.05);
+          box-shadow: 0 0 15px 0px rgba(darken(mat-color($background, background), 50%), 0.05);
           // text-shadow: 2px 2px 10px mat-color($accent);
           // box-shadow: 10px 10px 10px 0px red;
         }
@@ -578,8 +550,7 @@
       border-color: $kgrad2 !important;
       border-left-color: $kgrad1 !important;
       border-top-color: $kgrad1 !important;
-      box-shadow: 3px 3px 3px 0px
-        rgba(darken(mat-color($background, background), 70%), 0.1);
+      box-shadow: 3px 3px 3px 0px rgba(darken(mat-color($background, background), 70%), 0.1);
 
       &:after {
         background: linear-gradient(to bottom, $kgrad2, $kgrad2) !important;
@@ -589,8 +560,7 @@
         border-color: $kgrad2 !important;
         border-left-color: $kgrad2 !important;
         border-top-color: $kgrad2 !important;
-        box-shadow: 1px 1px 1px 0px
-          rgba(darken(mat-color($background, background), 70%), 0.1);
+        box-shadow: 1px 1px 1px 0px rgba(darken(mat-color($background, background), 70%), 0.1);
 
         // border-color: mat-color($background, selected-button) !important;
       }
@@ -634,10 +604,7 @@
 
       tr {
         &.secondrow {
-          background-color: darken(
-            mat-color($background, background),
-            1%
-          ) !important;
+          background-color: darken(mat-color($background, background), 1%) !important;
         }
 
         &.selected {
@@ -651,16 +618,10 @@
             }
           }
 
-          background-color: lighten(
-            mat-color($background, card),
-            8%
-          ) !important;
+          background-color: lighten(mat-color($background, card), 8%) !important;
 
           .mat-table-sticky {
-            background-color: lighten(
-              mat-color($background, card),
-              8%
-            ) !important;
+            background-color: lighten(mat-color($background, card), 8%) !important;
           }
         }
 
@@ -670,17 +631,11 @@
         &.active {
           // background-color: transparent !important;
           td {
-            background-color: lighten(
-              mat-color($background, card),
-              10%
-            ) !important;
+            background-color: lighten(mat-color($background, card), 10%) !important;
           }
 
           .mat-table-sticky {
-            background-color: lighten(
-              mat-color($background, card),
-              10%
-            ) !important;
+            background-color: lighten(mat-color($background, card), 10%) !important;
           }
         }
       }
@@ -692,8 +647,7 @@
     .admino-modal-content-bg {
       background-color: mat-color($background, background) !important;
       // box-shadow: 5px 5px 10px rgba(mat-color($foreground, base), 0.5) !important;
-      box-shadow: 5px 5px 30px
-        rgba(darken(mat-color($background, card), 20%), 0.3) !important;
+      box-shadow: 5px 5px 30px rgba(darken(mat-color($background, card), 20%), 0.3) !important;
       border: 1px solid mat-color($foreground, divider) !important;
     }
 
@@ -716,8 +670,7 @@
       .admino-screen-modal-content {
         background-color: mat-color($background, card);
         border: 1px solid mat-color($foreground, divider);
-        box-shadow: 5px 5px 30px
-          rgba(darken(mat-color($background, card), 20%), 0.3);
+        box-shadow: 5px 5px 30px rgba(darken(mat-color($background, card), 20%), 0.3);
       }
     }
   }
@@ -734,8 +687,7 @@
 
   .admino-tooltip {
     background: mat-color($background, background) !important;
-    box-shadow: 5px 5px 30px
-      rgba(darken(mat-color($background, card), 20%), 0.3) !important;
+    box-shadow: 5px 5px 30px rgba(darken(mat-color($background, card), 20%), 0.3) !important;
   }
 
   ///////////
@@ -827,10 +779,7 @@
       }
 
       .hider {
-        background: linear-gradient(
-          rgba(mat-color($background, card), 0),
-          rgba(mat-color($background, card), 0.9)
-        ) !important;
+        background: linear-gradient(rgba(mat-color($background, card), 0), rgba(mat-color($background, card), 0.9)) !important;
       }
     }
 
@@ -870,16 +819,14 @@
   ////////////////////////////
   .table-focused {
     outline: 1px dotted rgba(mat-color($foreground, divider), 0.2);
-    box-shadow: inset 0px 0px 10px
-        rgba(lighten(mat-color($primary, 500), 30%), 0.3),
+    box-shadow: inset 0px 0px 10px rgba(lighten(mat-color($primary, 500), 30%), 0.3),
       inset 0px 0px 0px 1px rgba(lighten(mat-color($primary, 500), 50%), 0.2) !important;
   }
 
   .matrix-focused {
     outline: 1px dotted rgba(mat-color($foreground, divider), 0.8);
     outline-offset: -2px;
-    box-shadow: inset 0px 0px 10px
-        rgba(lighten(mat-color($primary, 500), 30%), 0.3),
+    box-shadow: inset 0px 0px 10px rgba(lighten(mat-color($primary, 500), 30%), 0.3),
       inset 0px 0px 0px 1px rgba(lighten(mat-color($primary, 500), 50%), 0.2) !important;
   }
 

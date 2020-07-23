@@ -17,14 +17,7 @@ import { AdminoVirtualTableSorterComponent } from "./admino-virtual-table/admino
     AdminoVirtualScrollDirective,
     AdminoVirtualTableSorterComponent,
   ],
-  imports: [
-    CommonModule,
-    MaterialModulesModule,
-    AdminoResizeModule,
-    AdminoCardModule,
-    AdminoFocusTrapModule,
-    AdminoTooltipModule,
-  ],
+  imports: [CommonModule, MaterialModulesModule, AdminoResizeModule, AdminoCardModule, AdminoFocusTrapModule, AdminoTooltipModule],
 
   exports: [AdminoVirtualTableComponent, AdminoVirtualTableWrapperComponent],
 })

@@ -28,11 +28,6 @@ export class SelectComponent extends AdminoScreenElement implements OnInit {
       return this.element.options;
     }
     const filterValue = value;
-    return this.element.options.filter((option) =>
-      option.label
-        .toString()
-        .toLowerCase()
-        .includes(filterValue.toString().toLowerCase())
-    );
+    return this.element.options.filter((option) => option.label.toString().toLowerCase().includes(filterValue.toString().toLowerCase()));
   }
 }

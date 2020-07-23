@@ -1,22 +1,8 @@
 import { AdminoScreenComponent } from "./../../../admino-screen/admino-screen.component";
 import { AdminoSnackbarContainerComponent } from "./../admino-snackbar-container.component";
 import { AdminoSnackbar } from "./../../../../interfaces";
-import {
-  Component,
-  OnInit,
-  Input,
-  OnDestroy,
-  ChangeDetectorRef,
-  AfterViewInit,
-  ViewChild,
-} from "@angular/core";
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from "@angular/animations";
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef, AfterViewInit, ViewChild } from "@angular/core";
+import { trigger, state, style, transition, animate } from "@angular/animations";
 import { AdminoThemeService } from "../../../../services/theme.service";
 
 @Component({
@@ -47,8 +33,7 @@ import { AdminoThemeService } from "../../../../services/theme.service";
     ],
   ],
 })
-export class AdminoSnackbarComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+export class AdminoSnackbarComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("screenRef", { static: true }) screenRef: AdminoScreenComponent;
 
   @Input() snackbarContainer: AdminoSnackbarContainerComponent;

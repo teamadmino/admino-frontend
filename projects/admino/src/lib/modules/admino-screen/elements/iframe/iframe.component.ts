@@ -39,10 +39,7 @@ export class IframeComponent extends AdminoScreenElement implements OnInit {
     this.updateIframe();
   }
   updateIframe() {
-    this.iframeRef.nativeElement.contentWindow.postMessage(
-      "testMessage",
-      this.directive.config.config.server
-    );
+    this.iframeRef.nativeElement.contentWindow.postMessage("testMessage", this.directive.config.config.server);
   }
 
   onDestroy() {

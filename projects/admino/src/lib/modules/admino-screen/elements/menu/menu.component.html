@@ -1,27 +1,13 @@
-<button
-  *ngIf="element.label !== undefined"
-  mat-flat-button
-  [matMenuTriggerFor]="menu"
-  #focusRef
->
+<button *ngIf="element.label !== undefined" mat-flat-button [matMenuTriggerFor]="menu" #focusRef>
   <mat-icon *ngIf="element.icon">{{ element.icon }}</mat-icon>
   {{ element.label }}
 </button>
-<button
-  *ngIf="element.label === undefined"
-  mat-icon-button
-  [matMenuTriggerFor]="menu"
-  #focusRef
->
+<button *ngIf="element.label === undefined" mat-icon-button [matMenuTriggerFor]="menu" #focusRef>
   <mat-icon>{{ element.icon }}</mat-icon>
 </button>
 
 <mat-menu #menu="matMenu">
-  <button
-    mat-menu-item
-    *ngFor="let item of element.buttons"
-    (click)="buttonClicked(item)"
-  >
+  <button mat-menu-item *ngFor="let item of element.buttons" (click)="buttonClicked(item)">
     <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
     <span>{{ item.label }}</span>
   </button>

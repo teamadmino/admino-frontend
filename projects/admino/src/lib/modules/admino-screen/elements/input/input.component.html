@@ -1,9 +1,5 @@
 <!-- [adminoKeyItem]="this.keyAreaId" [adminoKeyIndex]="index" [focusElementSelector]="'input'" -->
-<mat-form-field
-  class="admino-input"
-  [formGroup]="group"
-  [appearance]="element.appearance"
->
+<mat-form-field class="admino-input" [formGroup]="group" [appearance]="element.appearance">
   <mat-label>{{ element.label }}</mat-label>
 
   <input
@@ -38,14 +34,6 @@
     <mat-error *ngIf="getError()"> {{ getError() }}</mat-error>
   </ng-container>
 
-  <span
-    *ngIf="element && element.prefix !== undefined"
-    matPrefix
-    [innerHtml]="element.prefix"
-  ></span>
-  <span
-    *ngIf="element && element.suffix !== undefined"
-    matSuffix
-    [innerHtml]="element.suffix"
-  ></span>
+  <span *ngIf="element && element.prefix !== undefined" matPrefix [innerHtml]="element.prefix"></span>
+  <span *ngIf="element && element.suffix !== undefined" matSuffix [innerHtml]="element.suffix"></span>
 </mat-form-field>

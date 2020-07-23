@@ -1,9 +1,5 @@
 $primary-color: #b29551;
-$primary-gradient: linear-gradient(
-  200deg,
-  rgba(221, 204, 135, 1) 0%,
-  rgba(178, 149, 81, 1) 100%
-);
+$primary-gradient: linear-gradient(200deg, rgba(221, 204, 135, 1) 0%, rgba(178, 149, 81, 1) 100%);
 $accent-gradient: linear-gradient(200deg, #98afff 0%, rgb(64, 92, 162) 100%);
 $strong-shadow: 0 0px 25px rgba(0, 0, 0, 0.2);
 $soft-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);

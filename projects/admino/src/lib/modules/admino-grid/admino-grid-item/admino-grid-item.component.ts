@@ -159,12 +159,9 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   }
 
   convert(style) {
-    return Object.entries(style).reduce(
-      (styleString, [propName, propValue]) => {
-        return `${styleString}${propName}:${propValue};`;
-      },
-      ""
-    );
+    return Object.entries(style).reduce((styleString, [propName, propValue]) => {
+      return `${styleString}${propName}:${propValue};`;
+    }, "");
   }
 
   // dragStart(dragEvent) {
@@ -192,12 +189,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     this.gridComponent.activeItem.next(this);
   }
   removeActive() {
-    if (
-      this.gridComponent.activeItem.value === this &&
-      !this.dragging &&
-      !this.resizing &&
-      !this.isMouseOver
-    ) {
+    if (this.gridComponent.activeItem.value === this && !this.dragging && !this.resizing && !this.isMouseOver) {
       this.gridComponent.activeItem.next(null);
     }
   }
@@ -232,27 +224,13 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
       const deltaY = e.clientY - this.dragStartY;
       const deltaX = e.clientX - this.dragStartX;
 
-      const posX =
-        this.elRef.nativeElement.offsetLeft +
-        deltaX -
-        (this.elRef.nativeElement.offsetLeft - this.prevOffsetLeft);
-      const posY =
-        this.elRef.nativeElement.offsetTop +
-        deltaY -
-        (this.elRef.nativeElement.offsetTop - this.prevOffsetTop);
+      const posX = this.elRef.nativeElement.offsetLeft + deltaX - (this.elRef.nativeElement.offsetLeft - this.prevOffsetLeft);
+      const posY = this.elRef.nativeElement.offsetTop + deltaY - (this.elRef.nativeElement.offsetTop - this.prevOffsetTop);
 
-      const coord = this.gridComponent.calcCoordinates(
-        posX + this.dragElRef.nativeElement.offsetLeft,
-        posY
-      );
+      const coord = this.gridComponent.calcCoordinates(posX + this.dragElRef.nativeElement.offsetLeft, posY);
 
       const newCol = coord.col;
-      this.col =
-        newCol < 1
-          ? 1
-          : newCol > this.colnum - this.colSpan + 1
-          ? this.colnum - this.colSpan + 1
-          : newCol;
+      this.col = newCol < 1 ? 1 : newCol > this.colnum - this.colSpan + 1 ? this.colnum - this.colSpan + 1 : newCol;
 
       const newRow = coord.row;
       this.row = newRow < 1 ? 1 : newRow;
@@ -308,11 +286,7 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
     const newColSize = coord.col - this.col + 1;
 
     this.colSpan =
-      newColSize < 1
-        ? 1
-        : newColSize > this.gridComponent.colnum - this.col + 1
-        ? this.gridComponent.colnum - this.col + 1
-        : newColSize;
+      newColSize < 1 ? 1 : newColSize > this.gridComponent.colnum - this.col + 1 ? this.gridComponent.colnum - this.col + 1 : newColSize;
 
     // const yd = dragEvent.delta.y;
     // const rowsize = this.gridComponent.rowSizePx;

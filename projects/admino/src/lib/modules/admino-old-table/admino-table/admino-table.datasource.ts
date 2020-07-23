@@ -5,15 +5,7 @@ import { AdminoTableBuffer } from "./admino-table.buffer";
 import { SafeHtml, DomSanitizer } from "@angular/platform-browser";
 import { isString } from "util";
 export interface AdminoTableDataSourceConfig {
-  listFunction: (
-    keys,
-    cursor,
-    shift,
-    count,
-    index,
-    before,
-    after
-  ) => Observable<any>;
+  listFunction: (keys, cursor, shift, count, index, before, after) => Observable<any>;
 }
 export interface VirtualDataSourceInfoColumn {
   // label: SafeHtml;
@@ -120,10 +112,7 @@ export class AdminoTableDataSource {
   autoRefresh = 0;
   counter = 0;
   keyChangedByFrontend = false;
-  constructor(
-    public config: AdminoTableDataSourceConfig,
-    public sanitizer: DomSanitizer
-  ) {}
+  constructor(public config: AdminoTableDataSourceConfig, public sanitizer: DomSanitizer) {}
   connect(): Observable<any[]> {
     return this.resultSubject.asObservable();
   }
@@ -326,9 +315,7 @@ export class AdminoTableDataSource {
       // const extraStyle = extra && extra.containerStyle;
       if (key.startsWith("$") && isString(newData[key])) {
         if (newData[key] !== bufferData.origData[key]) {
-          newProcessedData[key] = this.sanitizer.bypassSecurityTrustHtml(
-            newData[key]
-          );
+          newProcessedData[key] = this.sanitizer.bypassSecurityTrustHtml(newData[key]);
         } else {
           newProcessedData[key] = bufferData.processedData[key];
         }
@@ -339,16 +326,11 @@ export class AdminoTableDataSource {
 
     bufferData.styles = {};
     for (const column of this.columns) {
-      const cell =
-        newData["$" + column.id] !== undefined
-          ? newData["$" + column.id]
-          : newData[column.id];
+      const cell = newData["$" + column.id] !== undefined ? newData["$" + column.id] : newData[column.id];
       bufferData.styles[column.id] = {};
 
       const style = column.style ? cloneDeep(column.style) : {};
-      const containerStyle = column.containerStyle
-        ? cloneDeep(column.containerStyle)
-        : {};
+      const containerStyle = column.containerStyle ? cloneDeep(column.containerStyle) : {};
       const barStyle = {};
 
       const extra = newData[column.extraCellDefinitions];

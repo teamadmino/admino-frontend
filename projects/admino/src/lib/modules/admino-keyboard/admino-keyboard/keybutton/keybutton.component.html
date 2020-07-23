@@ -1,9 +1,4 @@
-<button
-  class="key"
-  (click)="clicked()"
-  [attr.disabled]="config.disabled ? '' : null"
-  [ngClass]="{ manualclick: _manualClick }"
->
+<button class="key" (click)="clicked()" [attr.disabled]="config.disabled ? '' : null" [ngClass]="{ manualclick: _manualClick }">
   <div class="label">
     {{ config.label ? config.label : config.character }}
   </div>

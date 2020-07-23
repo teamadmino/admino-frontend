@@ -1,13 +1,6 @@
 import { menuItemAnimation } from "./admino-menu-item.animations";
 import { AdminoMenuItem, AdminoMenuEvent } from "./../../../../interfaces";
-import {
-  Component,
-  OnInit,
-  Input,
-  HostBinding,
-  Output,
-  EventEmitter,
-} from "@angular/core";
+import { Component, OnInit, Input, HostBinding, Output, EventEmitter } from "@angular/core";
 import { AdminoMenuComponent } from "../admino-menu.component";
 
 @Component({

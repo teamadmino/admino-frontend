@@ -37,17 +37,9 @@ import {
   ElementRef,
 } from "@angular/core";
 import { Subject, Subscription } from "rxjs";
-import {
-  FormGroup,
-  Validators,
-  FormControl,
-  AbstractControl,
-} from "@angular/forms";
+import { FormGroup, Validators, FormControl, AbstractControl } from "@angular/forms";
 import { cloneDeep, isEqual } from "lodash";
-import {
-  ScreenElementValidator,
-  ScreenElement,
-} from "./admino-screen.interfaces";
+import { ScreenElementValidator, ScreenElement } from "./admino-screen.interfaces";
 
 import { InputComponent } from "./elements/input/input.component";
 import { ButtonComponent } from "./elements/button/button.component";
@@ -149,118 +141,95 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.activeElementConfig = this.ts.processColorPaths(
-      cloneDeep(this.element),
-      this.element.colorPaths
-    );
+    this.activeElementConfig = this.ts.processColorPaths(cloneDeep(this.element), this.element.colorPaths);
 
     // this.ts.themeChanged((params) => {
     // })
-    this.screenComponent.updateEvent
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        // console.log("UPDATEEVENT", this.element.id)
-        // if (this.element.id === 'uszips') {
-        //   console.log("value", this.element);
-        //   // console.log(this.activeElementConfig.value && cloneDeep(this.activeElementConfig.value));
-        // }
-        if (this.componentRef && this.element) {
-          // Destroy
-          if (this.element.destroy) {
-            this.destroyComponent();
-            return;
-          }
-
-          if (this.element.colorPaths) {
-            this.ts.processColorPaths(this.element, this.element.colorPaths);
-          }
-
-          // Type change
-          if (
-            this.element.type !== undefined &&
-            this.element.type !== this.activeElementConfig.type
-          ) {
-            this.destroyComponent();
-            this.createComponent();
-          }
-          // Value change
-          const control = this.parentGroup.get(this.element.id);
-          if (
-            this.element.value !== undefined &&
-            !isEqual(this.element.value, control.value)
-          ) {
-            if (control) {
-              control.setValue(this.element.value, { emitEvent: false });
-            }
-          }
-          if (
-            this.element.disabled !== undefined &&
-            !isEqual(this.element.disabled, this.activeElementConfig.disabled)
-          ) {
-            if (control) {
-              if (this.element.disabled) {
-                control.disable();
-              } else {
-                control.enable();
-              }
-            }
-          }
-
-          const changes = cloneDeep(
-            deepCompare(this.activeElementConfig, this.element, ["value"])
-          );
-
-          if (this.themeChangeSub) {
-            this.themeChangeSub.unsubscribe();
-          }
-          this.themeChangeSub = this.ts.themeChanged.subscribe((params) => {
-            if (this.element.colorPaths) {
-              // this.activeElementConfig = cloneDeep(this.element);
-              // this.ts.processColorPaths(this.activeElementConfig, this.element.colorPaths);
-              // this.elementComponent.element = this.activeElementConfig;
-              // console.log("THEMESU")
-              // console.log(this.activeElementConfig)
-              // this.cd.detectChanges();
-            }
-          });
-
-          this.activeElementConfig = cloneDeep(this.element);
-
-          // || this.element.value !== undefined
-          if (
-            Object.keys(changes).length > 0 ||
-            this.element.type === "group"
-          ) {
-            // if (this.element.id === 'uszips') {
-            //   console.log("ONCHANGE")
-            // }
-            this.elementComponent.onChange(changes);
-            this.elementComponent.change(changes);
-          }
-          this.removeEventsFromConfig(this.element);
-          this.removeEventsFromConfig(this.activeElementConfig);
+    this.screenComponent.updateEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      // console.log("UPDATEEVENT", this.element.id)
+      // if (this.element.id === 'uszips') {
+      //   console.log("value", this.element);
+      //   // console.log(this.activeElementConfig.value && cloneDeep(this.activeElementConfig.value));
+      // }
+      if (this.componentRef && this.element) {
+        // Destroy
+        if (this.element.destroy) {
+          this.destroyComponent();
+          return;
         }
-      });
+
+        if (this.element.colorPaths) {
+          this.ts.processColorPaths(this.element, this.element.colorPaths);
+        }
+
+        // Type change
+        if (this.element.type !== undefined && this.element.type !== this.activeElementConfig.type) {
+          this.destroyComponent();
+          this.createComponent();
+        }
+        // Value change
+        const control = this.parentGroup.get(this.element.id);
+        if (this.element.value !== undefined && !isEqual(this.element.value, control.value)) {
+          if (control) {
+            control.setValue(this.element.value, { emitEvent: false });
+          }
+        }
+        if (this.element.disabled !== undefined && !isEqual(this.element.disabled, this.activeElementConfig.disabled)) {
+          if (control) {
+            if (this.element.disabled) {
+              control.disable();
+            } else {
+              control.enable();
+            }
+          }
+        }
+
+        const changes = cloneDeep(deepCompare(this.activeElementConfig, this.element, ["value"]));
+
+        if (this.themeChangeSub) {
+          this.themeChangeSub.unsubscribe();
+        }
+        this.themeChangeSub = this.ts.themeChanged.subscribe((params) => {
+          if (this.element.colorPaths) {
+            // this.activeElementConfig = cloneDeep(this.element);
+            // this.ts.processColorPaths(this.activeElementConfig, this.element.colorPaths);
+            // this.elementComponent.element = this.activeElementConfig;
+            // console.log("THEMESU")
+            // console.log(this.activeElementConfig)
+            // this.cd.detectChanges();
+          }
+        });
+
+        this.activeElementConfig = cloneDeep(this.element);
+
+        // || this.element.value !== undefined
+        if (Object.keys(changes).length > 0 || this.element.type === "group") {
+          // if (this.element.id === 'uszips') {
+          //   console.log("ONCHANGE")
+          // }
+          this.elementComponent.onChange(changes);
+          this.elementComponent.change(changes);
+        }
+        this.removeEventsFromConfig(this.element);
+        this.removeEventsFromConfig(this.activeElementConfig);
+      }
+    });
 
     if (!this.element.type) {
       console.warn(
-        "Couldnt update or create element with id " +
-          this.element.id +
-          ": Element id does not exist or new element is missing type"
+        "Couldnt update or create element with id " + this.element.id + ": Element id does not exist or new element is missing type"
       );
     } else {
       this.createComponent();
     }
 
-    this.rootScreenComponent.focusEvent
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((elpath) => {
-        if (elpath && this.elementComponent) {
-          if (isEqual(elpath, this.elementComponent.controlPath)) {
-            this.focus();
-          }
+    this.rootScreenComponent.focusEvent.pipe(takeUntil(this.ngUnsubscribe)).subscribe((elpath) => {
+      if (elpath && this.elementComponent) {
+        if (isEqual(elpath, this.elementComponent.controlPath)) {
+          this.focus();
         }
-      });
+      }
+    });
   }
 
   removeEventsFromConfig(config) {
@@ -273,9 +242,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
   }
 
   createComponent() {
-    const factory = this.resolver.resolveComponentFactory(
-      componentMapper[this.element.type]
-    );
+    const factory = this.resolver.resolveComponentFactory(componentMapper[this.element.type]);
     this.componentRef = this.container.createComponent(factory);
     this.elementComponent = this.componentRef.instance as AdminoScreenElement;
     this.elementComponent.element = this.element;
@@ -327,9 +294,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
           action.filterValue = { [this.element.id]: true };
           this.elementComponent.handleAction(action);
         } else {
-          this.elementComponent.handleAction(
-            this.activeElementConfig.changeAction
-          );
+          this.elementComponent.handleAction(this.activeElementConfig.changeAction);
         }
         // console.log(changes);
       }
@@ -347,24 +312,20 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       {},
       {
         validators: this.bindValidations(this.element.validators || []),
-        asyncValidators: this.getAsyncValidations(
-          this.element.validators || []
-        ),
+        asyncValidators: this.getAsyncValidations(this.element.validators || []),
         // updateOn: this.element.updateOn
       }
     );
     this.group = group;
     this.addControlToParentGroup(group);
-    this.valueChangeSub = this.group.valueChanges
-      .pipe(filter((_) => !this.rootScreenComponent.pauseValueChange))
-      .subscribe((changes) => {
-        // TODO Group value changes handling
-        // console.log(this.screenComponent.pauseValueChange);
-        // console.log('GROUP VALUE CHANGE');
-        // console.log(changes);
-        // this.handleValueChange(changes);
-        // this.elementComponent.valueChanges.next(changes);
-      });
+    this.valueChangeSub = this.group.valueChanges.pipe(filter((_) => !this.rootScreenComponent.pauseValueChange)).subscribe((changes) => {
+      // TODO Group value changes handling
+      // console.log(this.screenComponent.pauseValueChange);
+      // console.log('GROUP VALUE CHANGE');
+      // console.log(changes);
+      // this.handleValueChange(changes);
+      // this.elementComponent.valueChanges.next(changes);
+    });
   }
 
   createControl() {
@@ -372,9 +333,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
       { value: this.element.value, disabled: this.element.disabled },
       {
         validators: this.bindValidations(this.element.validators || []),
-        asyncValidators: this.getAsyncValidations(
-          this.element.validators || []
-        ),
+        asyncValidators: this.getAsyncValidations(this.element.validators || []),
         // updateOn: this.element.updateOn
       }
     );

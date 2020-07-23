@@ -7,17 +7,9 @@ import { AffirmationModalComponent } from "./modal-types/affirmation-modal/affir
 import { AdminoModalContainerComponent } from "./admino-modal-container/admino-modal-container.component";
 
 @NgModule({
-  declarations: [
-    AdminoModalComponent,
-    AffirmationModalComponent,
-    AdminoModalContainerComponent,
-  ],
+  declarations: [AdminoModalComponent, AffirmationModalComponent, AdminoModalContainerComponent],
   imports: [CommonModule, PortalModule, AdminoCardModule],
-  exports: [
-    AdminoModalComponent,
-    AffirmationModalComponent,
-    AdminoModalContainerComponent,
-  ],
+  exports: [AdminoModalComponent, AffirmationModalComponent, AdminoModalContainerComponent],
   entryComponents: [AdminoModalComponent, AffirmationModalComponent],
 })
 export class AdminoModalModule {}

@@ -209,8 +209,7 @@
   $foreground: map_merge(
     $foreground,
     (
-      slider-off-active:
-        rgba(map_get($foreground-color, $foreground-base), 0.38),
+      slider-off-active: rgba(map_get($foreground-color, $foreground-base), 0.38),
     )
   );
   $blue-light-theme: map_merge(

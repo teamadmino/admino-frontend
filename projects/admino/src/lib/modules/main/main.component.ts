@@ -97,12 +97,10 @@ export class MainComponent implements OnInit, OnDestroy {
       this.cd.markForCheck();
     });
 
-    this.user.bottomButtons
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((buttons) => {
-        this.bottomButtons = buttons;
-        this.cd.markForCheck();
-      });
+    this.user.bottomButtons.pipe(takeUntil(this.ngUnsubscribe)).subscribe((buttons) => {
+      this.bottomButtons = buttons;
+      this.cd.markForCheck();
+    });
 
     this.as.showToolbar.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.cd.markForCheck();
@@ -127,15 +125,13 @@ export class MainComponent implements OnInit, OnDestroy {
       this.renderer.addClass(document.body, this.ts.currentTheme);
     });
 
-    this.site.screenSizeChange
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        if (this.site.screen.w < this.site.breakpoints.sm) {
-          this.site.closeSideNav();
-          this.site.closeMessages();
-        }
-        this.cd.detectChanges();
-      });
+    this.site.screenSizeChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      if (this.site.screen.w < this.site.breakpoints.sm) {
+        this.site.closeSideNav();
+        this.site.closeMessages();
+      }
+      this.cd.detectChanges();
+    });
     this.site.documentElement = document.documentElement;
     // this.rendererListenerFn = this.renderer.listen(this.scrollAreaRef.nativeElement, 'scroll', (evt) => {
     //   this.site.refreshScroll(evt);
@@ -156,21 +152,21 @@ export class MainComponent implements OnInit, OnDestroy {
 
   menuClicked(menuEvent: AdminoMenuEvent) {
     if (menuEvent.menuItem.action.isBlocking) {
-      this.universalEditor.screen.blockingActionRunning =
-        menuEvent.menuItem.action.isBlocking;
+      this.universalEditor.screen.blockingActionRunning = menuEvent.menuItem.action.isBlocking;
     }
-    this.universalEditor.screen.blockingActionRunning = 2;
 
-    let action = { type: "backend", backendAction: menuEvent.menuItem.action };
+    let action: any = {
+      type: "backend",
+      backendAction: menuEvent.menuItem.action,
+    };
     // if ()
 
     this.as
       .handleAction({
-        action: action as any,
+        action: action,
         initiatedBy: { menuButton: menuEvent.menuItem.id },
         openScreens: this.universalEditor.screen.allOpenScreens,
-        screenConfig: this.universalEditor.screen.mainScreenComponent
-          .screenElement,
+        screenConfig: this.universalEditor.screen.mainScreenComponent.screenElement,
       })
       .subscribe(
         () => {
@@ -184,8 +180,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   bottomMenuClicked(button: AdminoButton) {
     if (button.action.isBlocking) {
-      this.universalEditor.screen.blockingActionRunning =
-        button.action.isBlocking;
+      this.universalEditor.screen.blockingActionRunning = button.action.isBlocking;
     }
     const actionEvent: ActionEvent = {
       action: button.action,

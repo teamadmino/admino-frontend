@@ -275,8 +275,7 @@
 
   admino-theme-emitter {
     .multi::after {
-      content: mat-color($primary) + ";" + mat-color($accent) + ";" +
-        mat-color($primary, 800) + ";" + mat-color($accent, 800) !important;
+      content: mat-color($primary) + ";" + mat-color($accent) + ";" + mat-color($primary, 800) + ";" + mat-color($accent, 800) !important;
     }
   }
 

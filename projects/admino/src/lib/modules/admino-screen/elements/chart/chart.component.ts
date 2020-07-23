@@ -35,10 +35,7 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
   onChange(changes: { [id: string]: ScreenElementChange }) {
     this.labels = cloneDeep(this.element.labels);
     this.legend = this.element.legend;
-    this.height =
-      this.element.height !== undefined
-        ? this.element.height
-        : this.defaultHeight;
+    this.height = this.element.height !== undefined ? this.element.height : this.defaultHeight;
     this.chartType = this.element.chartType;
     this.data = cloneDeep(this.element.data);
     this.options = deepMerge(this.options, this.element.options);
@@ -50,11 +47,9 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
   }
 
   ngOnInit() {
-    this.directive.ts.themeUpdated
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((params) => {
-        this.setColors();
-      });
+    this.directive.ts.themeUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => {
+      this.setColors();
+    });
     this.onChange({});
   }
 
@@ -102,9 +97,7 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
     const colors = this.directive.ts.getColor(this.element.colors);
     this.colors = [];
 
-    let colsettings = CHART_COLOR_SETTINGS[this.chartType]
-      ? CHART_COLOR_SETTINGS[this.chartType]
-      : CHART_COLOR_SETTINGS["bar"];
+    let colsettings = CHART_COLOR_SETTINGS[this.chartType] ? CHART_COLOR_SETTINGS[this.chartType] : CHART_COLOR_SETTINGS["bar"];
 
     if (this.element.visualizationSettings) {
       colsettings = deepMerge(colsettings, this.element.visualizationSettings);
@@ -112,46 +105,25 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
 
     for (const color of colors) {
       this.colors.push({
-        backgroundColor: this.preprocessColor(
-          color,
-          colsettings.backgroundColor
-        ),
+        backgroundColor: this.preprocessColor(color, colsettings.backgroundColor),
         borderWidth: colsettings.borderWidth,
         borderColor: this.preprocessColor(color, colsettings.borderColor),
         borderCapStyle: colsettings.borderCapStyle,
         borderDash: colsettings.borderDash,
         borderDashOffset: colsettings.borderDashOffset,
         borderJoinStyle: colsettings.borderJoinStyle,
-        pointBorderColor: this.preprocessColor(
-          color,
-          colsettings.pointBorderColor
-        ),
-        pointBackgroundColor: this.preprocessColor(
-          color,
-          colsettings.pointBackgroundColor
-        ),
+        pointBorderColor: this.preprocessColor(color, colsettings.pointBorderColor),
+        pointBackgroundColor: this.preprocessColor(color, colsettings.pointBackgroundColor),
         pointBorderWidth: colsettings.pointBorderWidth,
         pointRadius: colsettings.pointRadius,
         pointHoverRadius: colsettings.pointHoverRadius,
         pointHitRadius: colsettings.pointHitRadius,
-        pointHoverBackgroundColor: this.preprocessColor(
-          color,
-          colsettings.pointHoverBackgroundColor
-        ),
-        pointHoverBorderColor: this.preprocessColor(
-          color,
-          colsettings.pointHoverBorderColor
-        ),
+        pointHoverBackgroundColor: this.preprocessColor(color, colsettings.pointHoverBackgroundColor),
+        pointHoverBorderColor: this.preprocessColor(color, colsettings.pointHoverBorderColor),
         pointHoverBorderWidth: colsettings.pointHoverBorderWidth,
         pointStyle: colsettings.pointStyle,
-        hoverBackgroundColor: this.preprocessColor(
-          color,
-          colsettings.hoverBackgroundColor
-        ),
-        hoverBorderColor: this.preprocessColor(
-          color,
-          colsettings.hoverBorderColor
-        ),
+        hoverBackgroundColor: this.preprocessColor(color, colsettings.hoverBackgroundColor),
+        hoverBorderColor: this.preprocessColor(color, colsettings.hoverBorderColor),
         hoverBorderWidth: colsettings.hoverBorderWidth,
       });
     }
@@ -182,23 +154,11 @@ export class ChartComponent extends AdminoScreenElement implements OnInit {
   // }
 
   // events
-  public chartClicked({
-    event,
-    active,
-  }: {
-    event: MouseEvent;
-    active: {}[];
-  }): void {
+  public chartClicked({ event, active }: { event: MouseEvent; active: {}[] }): void {
     // console.log(event, active);
   }
 
-  public chartHovered({
-    event,
-    active,
-  }: {
-    event: MouseEvent;
-    active: {}[];
-  }): void {
+  public chartHovered({ event, active }: { event: MouseEvent; active: {}[] }): void {
     // console.log(event, active);
   }
 }

@@ -16,9 +16,7 @@ export class TextComponent extends AdminoScreenElement implements OnInit {
   sanitizedVal;
   ngOnInit() {
     this.onChange(null);
-    this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(
-      this.element.value
-    );
+    this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.value);
   }
   onChange(changes: { [id: string]: ScreenElementChange }) {
     // this.size = this.element.size;
@@ -32,9 +30,7 @@ export class TextComponent extends AdminoScreenElement implements OnInit {
     //   this.weight = this.element.weight;
     // }
     if (changes && changes.value) {
-      this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(
-        this.element.value
-      );
+      this.sanitizedVal = this.directive.sanitizer.bypassSecurityTrustHtml(this.element.value);
     }
   }
 }

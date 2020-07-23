@@ -28,8 +28,7 @@ import { NgForOfContext } from "@angular/common";
 @Directive({
   selector: "[adminoVsFor]",
 })
-export class AdminoVirtualScrollDirective
-  implements AfterViewInit, OnDestroy, DoCheck {
+export class AdminoVirtualScrollDirective implements AfterViewInit, OnDestroy, DoCheck {
   // private collection: any;
   // private differ: IterableDiffer<any>;
 
@@ -43,10 +42,7 @@ export class AdminoVirtualScrollDirective
   private jumpCoefficient = 0;
   private combinedSizeOfItems = 0;
   private viewportSize = 0;
-  private cache: Map<any, EmbeddedViewRef<any>> = new Map<
-    any,
-    EmbeddedViewRef<any>
-  >();
+  private cache: Map<any, EmbeddedViewRef<any>> = new Map<any, EmbeddedViewRef<any>>();
   private collectionCache = [];
   maxScrollSize = 0;
 
@@ -108,9 +104,7 @@ export class AdminoVirtualScrollDirective
     console.log("scrollTo", index);
     const virtualPos = index * this.itemSize;
     const currPage = /*this.currPage*/ Math.floor(virtualPos / this.pageHeight);
-    const currPageOffset = /*this.currPageOffset*/ Math.round(
-      currPage * this.jumpCoefficient
-    );
+    const currPageOffset = /*this.currPageOffset*/ Math.round(currPage * this.jumpCoefficient);
     // this.$viewport[this.isHorzontal() ? 'scrollLeft' : 'scrollTop'] = this.prevScrollPos = (virtualPos - this.currPageOffset);
     this.$viewport.scrollTop = virtualPos - currPageOffset;
   }
@@ -127,11 +121,7 @@ export class AdminoVirtualScrollDirective
     this.rdr.appendChild(this.$viewport, this.$scroller);
     this.viewportSize = this.$viewport.getBoundingClientRect().height;
     this.cd.detectChanges();
-    this.scrollListener = this.rdr.listen(
-      this.$viewport,
-      "scroll",
-      this.onScroll.bind(this)
-    );
+    this.scrollListener = this.rdr.listen(this.$viewport, "scroll", this.onScroll.bind(this));
     // this.refresh();
     this.$viewport.scrollTop = 0;
   }
@@ -162,10 +152,7 @@ export class AdminoVirtualScrollDirective
       // JUMP
       console.log("JUMP");
       this.currPage = Math.floor(
-        scrollPos *
-          ((this.combinedSizeOfItems - this.viewportSize) /
-            (this.realScrollSize - this.viewportSize)) *
-          (1 / this.pageHeight)
+        scrollPos * ((this.combinedSizeOfItems - this.viewportSize) / (this.realScrollSize - this.viewportSize)) * (1 / this.pageHeight)
       );
       this.currPageOffset = Math.round(this.currPage * this.jumpCoefficient);
       // this.currPageOffset = this.currPage * this.jumpCoefficient;
@@ -175,31 +162,23 @@ export class AdminoVirtualScrollDirective
       this.clear();
     } else {
       // NEAR SCROLL
-      if (
-        scrollPos + this.currPageOffset >=
-        (this.currPage + 1) * this.pageHeight
-      ) {
+      if (scrollPos + this.currPageOffset >= (this.currPage + 1) * this.pageHeight) {
         // oldalváltás következőre
         console.log("NEAR next");
         this.currPage++;
         this.currPageOffset = Math.ceil(this.currPage * this.jumpCoefficient);
         // this.currPageOffset = this.currPage * this.jumpCoefficient;
-        this.$viewport.scrollTop = this.prevScrollPos =
-          scrollPos - this.jumpCoefficient;
+        this.$viewport.scrollTop = this.prevScrollPos = scrollPos - this.jumpCoefficient;
         this.clear();
         console.log("currPage", this.currPage);
         console.log("currPageOffset", this.currPageOffset);
-      } else if (
-        scrollPos + this.currPageOffset <
-        this.currPage * this.pageHeight
-      ) {
+      } else if (scrollPos + this.currPageOffset < this.currPage * this.pageHeight) {
         // oldalváltás előzőre
         console.log(scrollPos + this.currPageOffset);
         console.log("NEAR prev");
         this.currPage--;
         this.currPageOffset = Math.floor(this.currPage * this.jumpCoefficient);
-        this.$viewport.scrollTop = this.prevScrollPos =
-          scrollPos + this.jumpCoefficient;
+        this.$viewport.scrollTop = this.prevScrollPos = scrollPos + this.jumpCoefficient;
         this.clear();
         console.log("currPage", this.currPage);
         console.log("currPageOffset", this.currPageOffset);
@@ -266,8 +245,7 @@ export class AdminoVirtualScrollDirective
       const existingView = this.cache.get(i + start);
       if (!existingView) {
         const view = this.viewContainer.createEmbeddedView(this.template);
-        view.context.__position__ =
-          (i + start) * this.itemSize - this.currPageOffset;
+        view.context.__position__ = (i + start) * this.itemSize - this.currPageOffset;
         view.context.$implicit = item;
         view.context.start = start;
         view.context.end = end;
@@ -352,15 +330,11 @@ export class AdminoVirtualScrollDirective
     this.numPages = Math.ceil(this.combinedSizeOfItems / this.pageHeight);
     console.log("numOfPages", this.numPages);
 
-    const coff =
-      (this.combinedSizeOfItems - this.maxScrollSize) / (this.numPages - 1);
+    const coff = (this.combinedSizeOfItems - this.maxScrollSize) / (this.numPages - 1);
     this.jumpCoefficient = coff > 0 ? coff : 1;
     console.log("jumpCoeff", this.jumpCoefficient);
 
-    this.realScrollSize =
-      this.maxScrollSize > this.combinedSizeOfItems
-        ? this.combinedSizeOfItems
-        : this.maxScrollSize;
+    this.realScrollSize = this.maxScrollSize > this.combinedSizeOfItems ? this.combinedSizeOfItems : this.maxScrollSize;
     console.log("realScrollSize", this.realScrollSize);
     // if (this.realScrollSize > this.combinedSizeOfItems) {
     // }

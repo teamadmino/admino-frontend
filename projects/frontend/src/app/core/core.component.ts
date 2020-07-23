@@ -1,10 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import {
-  AdminoThemeService,
-  AdminoApiService,
-  AdminoSiteService,
-} from "admino";
+import { AdminoThemeService, AdminoApiService, AdminoSiteService } from "admino";
 import { Observable } from "rxjs";
 
 @Component({
