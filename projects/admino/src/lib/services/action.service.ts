@@ -20,7 +20,6 @@ import { HttpResponse, HttpClient } from "@angular/common/http";
 import { ClipboardService } from "./clipboard.service";
 declare var html2canvas: any;
 import { v4 as uuidv4 } from "uuid";
-import { setTimeout } from "timers";
 
 @Injectable({
   providedIn: "root",
