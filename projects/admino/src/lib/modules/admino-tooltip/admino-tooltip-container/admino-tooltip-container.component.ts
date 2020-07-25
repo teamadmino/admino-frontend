@@ -11,7 +11,7 @@ import { Subject } from "rxjs";
 export class AdminoTooltipContainerComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
 
-  @ViewChild("tooltipRef", { static: false, read: ElementRef })
+  @ViewChild("tooltipRef", { read: ElementRef })
   tooltipRef: ElementRef;
 
   posX = 100;

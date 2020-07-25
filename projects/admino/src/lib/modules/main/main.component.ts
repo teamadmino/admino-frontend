@@ -44,8 +44,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   private mobileQueryListener: () => void;
 
-  @ViewChild("scrollAreaRef", { static: false }) scrollAreaRef;
-  @ViewChild(AdminoUniversalEditorComponent, { static: false })
+  @ViewChild("scrollAreaRef") scrollAreaRef;
+  @ViewChild(AdminoUniversalEditorComponent)
   universalEditor: AdminoUniversalEditorComponent;
 
   @Input() configPath: string;

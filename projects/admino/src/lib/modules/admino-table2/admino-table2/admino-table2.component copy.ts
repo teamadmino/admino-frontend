@@ -1,19 +1,6 @@
 import { cloneDeep } from "lodash";
 import { AdminoTable2DataSource, VirtualDataSourceInfoColumn } from "./admino-table2.datasource";
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  HostListener,
-  ChangeDetectorRef,
-  Input,
-  OnDestroy,
-  EventEmitter,
-  Output,
-  ChangeDetectionStrategy,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef, Input, OnDestroy, EventEmitter, Output, ChangeDetectionStrategy, Directive } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { FormatService } from "admino/src/lib/services/format.service";
@@ -40,6 +27,7 @@ export interface VirtualRow {
 //   // changeDetection: ChangeDetectionStrategy.OnPush
 
 // })
+@Directive()
 export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<null> = new Subject();
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
@@ -82,7 +70,7 @@ export class AdminoTable2Component implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("scrollerContentRef", { read: ElementRef, static: true })
   scrollerContentRef;
   @ViewChild("bodyRef", { static: true }) bodyRef: ElementRef;
-  @ViewChild("headerRef", { static: false }) headerRef: ElementRef;
+  @ViewChild("headerRef") headerRef: ElementRef;
   @ViewChild("mainRef", { static: true }) mainRef: ElementRef;
 
   columnWidths = [];

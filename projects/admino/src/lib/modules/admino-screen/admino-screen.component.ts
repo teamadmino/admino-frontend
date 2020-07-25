@@ -77,7 +77,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
 
   popups = [];
 
-  @ViewChild(AdminoGridComponent, { static: false })
+  @ViewChild(AdminoGridComponent)
   adminoGrid: AdminoGridComponent;
 
   @HostListener("dblclick", ["$event"])

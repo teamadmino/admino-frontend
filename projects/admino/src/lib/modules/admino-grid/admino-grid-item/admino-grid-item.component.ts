@@ -37,11 +37,11 @@ export class AdminoGridItemComponent implements OnInit, AfterContentInit {
   @HostBinding("class.border-color-primary") bcolor = false;
   @HostBinding("attr.draggable") dragging = false;
 
-  @ViewChild("dragRef", { static: false, read: AdminoDragDirective })
+  @ViewChild("dragRef", { read: AdminoDragDirective })
   dragRef: AdminoDragDirective;
-  @ViewChild("resizeRef", { static: false, read: ElementRef })
+  @ViewChild("resizeRef", { read: ElementRef })
   resizeRef: ElementRef;
-  @ViewChild("dragRef", { static: false, read: ElementRef })
+  @ViewChild("dragRef", { read: ElementRef })
   dragElRef: ElementRef;
 
   @Input() colnum = 12;

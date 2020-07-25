@@ -80,7 +80,7 @@ export class AdminoTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("scrollerContentRef", { read: ElementRef, static: true })
   scrollerContentRef;
   @ViewChild("bodyRef", { static: true }) bodyRef: ElementRef;
-  @ViewChild("headerRef", { static: false }) headerRef: ElementRef;
+  @ViewChild("headerRef") headerRef: ElementRef;
   @ViewChild("mainRef", { static: true }) mainRef: ElementRef;
 
   columnWidths = [];
