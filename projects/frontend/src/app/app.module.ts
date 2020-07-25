@@ -8,7 +8,7 @@ import { DeviceDetectorModule } from "ngx-device-detector";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AdminoSidInterceptor } from "admino";
-import { GestureConfig } from "@angular/material";
+import { GestureConfig } from "@angular/material/core";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 

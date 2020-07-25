@@ -2,7 +2,7 @@ import { ScreenElementInput } from "./../../admino-screen.interfaces";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material";
+import { ErrorStateMatcher } from "@angular/material/core";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 // export class MyErrorStateMatcher implements ErrorStateMatcher {

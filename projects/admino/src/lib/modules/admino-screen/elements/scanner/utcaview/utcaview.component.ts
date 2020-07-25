@@ -4,7 +4,7 @@ import { FormControl, FormGroup, AbstractControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { startWith, map } from "rxjs/operators";
 import { ScannerView } from "../scannerview";
-import { MatAutocompleteTrigger } from "@angular/material";
+import { MatAutocompleteTrigger } from "@angular/material/autocomplete";
 import { layout2 } from "./../../../../admino-keyboard/admino-keyboard.layouts";
 
 @Component({

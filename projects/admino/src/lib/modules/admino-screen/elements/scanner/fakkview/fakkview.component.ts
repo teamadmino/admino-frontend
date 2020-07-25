@@ -5,7 +5,7 @@ import { FormControl, AbstractControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { ScannerView } from "../scannerview";
 import { map } from "rxjs/operators";
-import { MatAutocompleteTrigger } from "@angular/material";
+import { MatAutocompleteTrigger } from "@angular/material/autocomplete";
 
 @Component({
   selector: "admino-fakkview",

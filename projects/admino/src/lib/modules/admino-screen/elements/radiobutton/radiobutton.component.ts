@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, QueryList, ViewChildren, ChangeDetectionStrategy } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
-import { MatRadioGroup, MatRadioButton } from "@angular/material";
+import { MatRadioGroup, MatRadioButton } from "@angular/material/radio";
 import { SafeStyle } from "@angular/platform-browser";
 
 @Component({
