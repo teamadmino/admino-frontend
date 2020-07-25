@@ -1,5 +1,5 @@
 import { MaterialModulesModule } from "./../../../admino/src/lib/modules/material-modules/material-modules.module";
-import { BrowserModule, HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
+import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -8,7 +8,6 @@ import { DeviceDetectorModule } from "ngx-device-detector";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AdminoSidInterceptor } from "admino";
-import { GestureConfig } from "@angular/material/core";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 
@@ -26,7 +25,6 @@ import { environment } from "../environments/environment";
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AdminoSidInterceptor, multi: true },
-    { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
   ],
   bootstrap: [AppComponent],
 })

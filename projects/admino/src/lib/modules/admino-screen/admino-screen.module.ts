@@ -61,6 +61,7 @@ import { AdminoTableModule } from "../admino-table/admino-table.module";
 import { MenuComponent } from "./elements/menu/menu.component";
 import { MatrixComponent } from "./elements/matrix/matrix.component";
 import { AdminoResizeModule } from "../../directives/admino-resize/admino-resize.module";
+import { DaterangeComponent } from "./elements/daterange/daterange.component";
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { AdminoResizeModule } from "../../directives/admino-resize/admino-resize
     DividerComponent,
     MenuComponent,
     MatrixComponent,
+    DaterangeComponent,
   ],
   imports: [
     CommonModule,
@@ -164,6 +166,7 @@ import { AdminoResizeModule } from "../../directives/admino-resize/admino-resize
     DividerComponent,
     MenuComponent,
     MatrixComponent,
+    DaterangeComponent,
   ],
 })
 export class AdminoScreenModule {}

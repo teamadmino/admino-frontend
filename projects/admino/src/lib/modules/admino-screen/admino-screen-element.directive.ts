@@ -60,6 +60,7 @@ import { TableComponent } from "./elements/table/table.component";
 import { MenuComponent } from "./elements/menu/menu.component";
 import { MatrixComponent } from "./elements/matrix/matrix.component";
 import { HttpClient } from "@angular/common/http";
+import { DaterangeComponent } from "./elements/daterange/daterange.component";
 
 const componentMapper = {
   input: InputComponent,
@@ -93,6 +94,7 @@ const componentMapper = {
   divider: DividerComponent,
   menu: MenuComponent,
   matrix: MatrixComponent,
+  daterange: DaterangeComponent,
   // supertable: SuperTableComponent,
 };
 
