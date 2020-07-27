@@ -4,7 +4,6 @@
   <input matInput [matDatepicker]="picker" [formControlName]="element.id" [readonly]="element.readonly" #focusRef />
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field> -->
-<p>{{ this.control.value | json }}</p>
 
 <mat-form-field [appearance]="element.appearance" [ngStyle]="element.innerStyle">
   <mat-label>{{ element.label }}</mat-label>

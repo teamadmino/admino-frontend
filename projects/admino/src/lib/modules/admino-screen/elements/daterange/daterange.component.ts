@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ChangeDetectorRef } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
-import { MomentDateAdapter } from "@angular/material-moment-adapter";
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from "@angular/material-moment-adapter";
 import { FormGroup, FormControl } from "@angular/forms";
 import { ScreenElementChange } from "../../admino-screen.interfaces";
 import { takeUntil, debounceTime } from "rxjs/operators";
@@ -21,6 +21,13 @@ export const MY_FORMATS = {
   selector: "admino-daterange",
   templateUrl: "./daterange.component.html",
   styleUrls: ["./daterange.component.scss"],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+  ],
 })
 export class DaterangeComponent extends AdminoScreenElement implements OnInit {
   range = new FormGroup({
@@ -30,7 +37,7 @@ export class DaterangeComponent extends AdminoScreenElement implements OnInit {
 
   constructor(private _adapter: DateAdapter<any>, public el: ElementRef, public cd: ChangeDetectorRef) {
     super(el, cd);
-    // this._adapter.setLocale("fr");
+    this._adapter.setLocale("fr");
   }
   ngOnInit() {
     if (this.element.value) {
