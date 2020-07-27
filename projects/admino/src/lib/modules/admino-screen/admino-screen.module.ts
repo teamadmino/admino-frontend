@@ -60,6 +60,8 @@ import { DividerComponent } from "./elements/divider/divider.component";
 import { AdminoTableModule } from "../admino-table/admino-table.module";
 import { MenuComponent } from "./elements/menu/menu.component";
 import { MatrixComponent } from "./elements/matrix/matrix.component";
+import { StopWatchComponent } from "./elements/stopwatch/stopwatch.component";
+import { ProgressBarComponent } from "./elements/progressbar/progressbar.component";
 import { AdminoResizeModule } from "../../directives/admino-resize/admino-resize.module";
 import { DaterangeComponent } from "./elements/daterange/daterange.component";
 
@@ -110,6 +112,8 @@ import { DaterangeComponent } from "./elements/daterange/daterange.component";
     DividerComponent,
     MenuComponent,
     MatrixComponent,
+    StopWatchComponent,
+    ProgressBarComponent,
     DaterangeComponent,
   ],
   imports: [
@@ -166,6 +170,8 @@ import { DaterangeComponent } from "./elements/daterange/daterange.component";
     DividerComponent,
     MenuComponent,
     MatrixComponent,
+    StopWatchComponent,
+    ProgressBarComponent,
     DaterangeComponent,
   ],
 })

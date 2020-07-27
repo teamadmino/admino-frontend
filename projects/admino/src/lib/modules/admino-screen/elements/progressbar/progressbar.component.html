@@ -1,0 +1,11 @@
+<div
+        class="wrapper"
+        [ngClass]="{ 'progressbar-focused': this.isFocused }"
+        adminoResizeObserver
+        [debounceAdminoResize]="100"
+        (adminoResize)="onResize()"
+        tabindex="0"
+        #focusRef
+>
+    <div [id]="this.idPrefix + 'progressbardiv'" class="progressbar"></div>
+</div>

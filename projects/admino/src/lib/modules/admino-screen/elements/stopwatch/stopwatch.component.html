@@ -1,0 +1,11 @@
+<div
+        class="wrapper"
+        [ngClass]="{ 'stopwatch-focused': this.isFocused }"
+        adminoResizeObserver
+        [debounceAdminoResize]="100"
+        (adminoResize)="onResize()"
+        tabindex="0"
+        #focusRef
+>
+    <div [id]="this.idPrefix + 'stopwatchdiv'" class="stopwatch"></div>
+</div>

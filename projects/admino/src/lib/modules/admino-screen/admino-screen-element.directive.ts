@@ -59,6 +59,8 @@ import { DividerComponent } from "./elements/divider/divider.component";
 import { TableComponent } from "./elements/table/table.component";
 import { MenuComponent } from "./elements/menu/menu.component";
 import { MatrixComponent } from "./elements/matrix/matrix.component";
+import { StopWatchComponent } from "./elements/stopwatch/stopwatch.component";
+import { ProgressBarComponent } from "./elements/progressbar/progressbar.component";
 import { HttpClient } from "@angular/common/http";
 import { DaterangeComponent } from "./elements/daterange/daterange.component";
 
@@ -94,6 +96,8 @@ const componentMapper = {
   divider: DividerComponent,
   menu: MenuComponent,
   matrix: MatrixComponent,
+  stopwatch: StopWatchComponent,
+  progressbar: ProgressBarComponent,
   daterange: DaterangeComponent,
   // supertable: SuperTableComponent,
 };
