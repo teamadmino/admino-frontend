@@ -15,9 +15,11 @@ export class ProgressBarComponent extends AdminoScreenElement implements OnInit 
     percent: 0,
     width: 600,
     height: 50,
+    animation: "on",
   };
 
   frequency = 20;
+  colorFrequency = 100;
   setup: any = {};
   timerInterval;
   divFull;
@@ -37,7 +39,8 @@ export class ProgressBarComponent extends AdminoScreenElement implements OnInit 
     this.setupParameter("height");
     this.setupParameter("width");
     this.setupParameter("percent");
-    this.setup.current = this.setup.percent;
+    this.setupParameter("animation");
+    this.setup.current = 0;
     this.divFull = document.getElementById(this.idPrefix + "progressbardiv");
     this.divFull.style.height = this.setup.height + "px";
     this.divFull.style.lineHeight = this.setup.height + "px";
@@ -52,6 +55,7 @@ export class ProgressBarComponent extends AdminoScreenElement implements OnInit 
     this.divCompleted.style.backgroundColor = "#060";
     this.divCompleted.style.textAlign = "center";
     this.divCompleted.innerHTML = "&nbspRunning&nbsp";
+    this.setup.updated = 0;
     this.updateDiv();
   }
 
@@ -72,6 +76,8 @@ export class ProgressBarComponent extends AdminoScreenElement implements OnInit 
     //   Object.assign(this.setup, this.element.setup);
     // }
     this.setupParameter("percent");
+    this.setupParameter("animation");
+    this.setup.updated = 16;
     this.updateDiv();
   }
 
@@ -83,15 +89,26 @@ export class ProgressBarComponent extends AdminoScreenElement implements OnInit 
 
   updateDiv() {
     clearInterval(this.timerInterval);
-    var diff = this.setup.percent - this.setup.current;
-    var step = (((Math.abs(diff) + 19) / 20) | 0) * Math.sign(diff);
-    this.setup.current += step;
     var div2 = document.getElementById(this.idPrefix + "inner");
+    if (this.setup.animation != "on") {
+      this.setup.current = this.setup.percent;
+      this.setup.updated = 0;
+    } else {
+      var diff = this.setup.percent - this.setup.current;
+      var step = (((Math.abs(diff) + 19) / 20) | 0) * Math.sign(diff);
+      this.setup.current += step;
+      if (this.setup.updated > 0) this.setup.updated--;
+    }
+    var color = "#" + (0xfff - this.setup.updated).toString(16);
     div2.style.width = (this.setup.width * this.setup.current) / 100 + "px";
     div2.innerHTML = "&nbspRunning&nbsp" + this.setup.current + "%";
-    if (this.setup.percent == this.setup.current) return;
-    this.timerInterval = setInterval(() => {
-      this.updateDiv();
-    }, this.frequency);
+    div2.style.color = color;
+    if (this.setup.percent == this.setup.current && this.setup.updated == 0) return;
+    this.timerInterval = setInterval(
+      () => {
+        this.updateDiv();
+      },
+      this.setup.percent == this.setup.current ? this.colorFrequency : this.frequency
+    );
   }
 }
