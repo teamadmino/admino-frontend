@@ -1,0 +1,25 @@
+:host {
+  //   min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.info {
+  //   display: none;
+}
+
+.wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progressbar {
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
