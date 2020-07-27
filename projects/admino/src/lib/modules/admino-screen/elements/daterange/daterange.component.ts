@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ElementRef, ChangeDetectorRef } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material/core";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
@@ -27,7 +27,18 @@ export class DaterangeComponent extends AdminoScreenElement implements OnInit {
     start: new FormControl(),
     end: new FormControl(),
   });
+
+  constructor(private _adapter: DateAdapter<any>, public el: ElementRef, public cd: ChangeDetectorRef) {
+    super(el, cd);
+    // this._adapter.setLocale("fr");
+  }
   ngOnInit() {
+    if (this.element.value) {
+      this.setVal(this.element.value.start, this.element.value.end);
+    }
+    if (this.element.locale) {
+      this._adapter.setLocale(this.element.locale);
+    }
     this.range.valueChanges.pipe(takeUntil(this.ngUnsubscribe), debounceTime(10)).subscribe((val) => {
       this.control.setValue({
         start: this.convertToJSON(val.start),
@@ -35,10 +46,21 @@ export class DaterangeComponent extends AdminoScreenElement implements OnInit {
       });
     });
   }
+  setVal(start, end) {
+    this.range.get("start").setValue(start);
+    this.range.get("end").setValue(end);
+  }
   convertToJSON(val) {
     if (val) {
       return val.toJSON();
     }
   }
-  onChange(changes: { [id: string]: ScreenElementChange }) {}
+  onChange(changes: { [id: string]: ScreenElementChange }) {
+    if (this.element.value) {
+      this.setVal(this.element.value.start, this.element.value.end);
+    }
+    if (changes.locale) {
+      this._adapter.setLocale(this.element.locale);
+    }
+  }
 }

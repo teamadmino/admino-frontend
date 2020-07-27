@@ -6,8 +6,7 @@ import { ThemeConfig } from "../interfaces";
 // import { pSBC } from '../modules/admino-theming/utils/color-manipulator';
 import * as pSBC from "../modules/admino-theming/utils/color-manipulator";
 
-import { isArray } from "lodash";
-import { isObject } from "util";
+import { isArray, isObject } from "lodash";
 // const pSBC = require('../modules/admino-theming/utils/color-manipulator');
 
 @Injectable({
@@ -295,7 +294,7 @@ export class AdminoThemeService {
       }
     } else if (isObject(p)) {
       if (lastPath) {
-        obj[currentPath] = this.getColor(p);
+        obj[currentPath] = this.getColor(p as any);
       } else {
         this.traverseByPaths(p, paths);
       }

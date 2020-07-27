@@ -171,9 +171,6 @@ export class AdminoActionService {
         } else {
           this.saveFile(data, actionEvent.action.fileName, actionEvent.action.fileType);
         }
-        // const blob = new Blob([data], { type: actionEvent.action.fileType });
-        // const url = window.URL.createObjectURL(blob);
-        // window.open(url);
       });
     }
     return wrapIntoObservable(null);

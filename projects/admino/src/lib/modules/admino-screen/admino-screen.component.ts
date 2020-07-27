@@ -63,8 +63,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   _blockingActionRunning = 0;
   @Input() public set blockingActionRunning(val: number) {
     this._blockingActionRunning = val;
-    console.log("setBlocking", val);
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
   public get blockingActionRunning(): number {
     return this._blockingActionRunning;
@@ -135,6 +134,7 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   update(element: ScreenElementScreen, replace: boolean = false) {
     // console.log(config);
     // deepMerge(this.config, config);
+
     if (replace) {
       this.focusEvent.next(null);
       this.screenElement = this.mergeConfig({}, element);
@@ -150,7 +150,6 @@ export class AdminoScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.group.patchValue(merged);
 
     // this.updatePopups();
-
     this.cd.detectChanges();
     this.adminoGrid.refresh();
     this.updateEvent.next();
