@@ -1,11 +1,21 @@
 <div
-        class="wrapper"
-        [ngClass]="{ 'progressbar-focused': this.isFocused }"
-        adminoResizeObserver
-        [debounceAdminoResize]="100"
-        (adminoResize)="onResize()"
-        tabindex="0"
-        #focusRef
+  class="wrapper animated"
+  [ngClass]="{ 'progressbar-focused': this.isFocused }"
+  adminoResizeObserver
+  [debounceAdminoResize]="100"
+  (adminoResize)="onResize()"
+  tabindex="0"
+  #focusRef
 >
-    <div [id]="this.idPrefix + 'progressbardiv'" class="progressbar"></div>
+  <!-- [id]="this.idPrefix + 'progressbardiv'" -->
+  <div class="progressbar" [ngStyle]="{ 'background-color': wrapperColor }" #wrapperRef>
+    <div
+      class="inner"
+      [ngClass]="{ animated: applyAnimation }"
+      [ngStyle]="{ width: percent + '%', 'background-color': preloaderColor, color: this.appliedColor }"
+      #innerRef
+    >
+      Running {{ this.label }} %
+    </div>
+  </div>
 </div>
