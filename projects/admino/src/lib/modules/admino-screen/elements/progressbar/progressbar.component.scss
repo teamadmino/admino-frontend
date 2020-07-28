@@ -18,19 +18,20 @@
   width: 100%;
   height: 100%;
 }
+$align: center;
+$widthAnimationDuration: 1000ms;
+$colorAnimationDuration: 500ms;
 
 .progressbar {
   height: 100%;
   width: 100%;
   z-index: -1;
   position: relative;
-
   .inner {
     white-space: nowrap;
-    text-align: center;
-    transition: width 1s ease-in-out;
+    text-align: $align;
     &.animated {
-      transition: width 2s ease-in-out, background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+      transition: width $widthAnimationDuration ease-in-out, color $colorAnimationDuration ease-in-out;
     }
   }
 }

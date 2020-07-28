@@ -7,15 +7,14 @@
   tabindex="0"
   #focusRef
 >
-  <!-- [id]="this.idPrefix + 'progressbardiv'" -->
-  <div class="progressbar" [ngStyle]="{ 'background-color': wrapperColor }" #wrapperRef>
+  <div class="progressbar" [ngStyle]="{ 'background-color': setup.wrapperColor }" #wrapperRef>
     <div
       class="inner"
-      [ngClass]="{ animated: applyAnimation }"
-      [ngStyle]="{ width: percent + '%', 'background-color': preloaderColor, color: this.appliedColor }"
+      [ngClass]="{ animated: setup.animation }"
+      [ngStyle]="{ width: setup.percent + '%', 'background-color': setup.preloaderColor, color: this.private.appliedColor }"
       #innerRef
     >
-      Running {{ this.label }} %
+      {{ this.setup.showValue ? this.setup.prefix + this.private.displayValue + this.setup.postfix : this.setup.staticLabel + "\u00A0" }}
     </div>
   </div>
 </div>
