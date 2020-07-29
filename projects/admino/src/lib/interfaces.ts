@@ -129,11 +129,11 @@ export interface BackendResponse {
   setPing: number;
   setSnackbars: AdminoSnackbar[];
   startAction: AdminoAction[];
-  showToolbar: boolean;
   showMenu: boolean;
+  showToolbar: boolean;
+  setMenuState: boolean;
   closePopup: boolean | string;
   setTheme: ThemeConfig;
-
   setBlocking: 0 | 1 | 2;
 
   setClipboard: string;

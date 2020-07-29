@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { AdminoScreenElement } from "../admino-screen-element";
-import { v4 as uuidv4 } from "uuid";
 import { ScreenElementChange } from "../../admino-screen.interfaces";
+import { deepMerge } from "../../../../utils/deepmerge";
 
 @Component({
   selector: "admino-progressbar",
@@ -9,89 +9,71 @@ import { ScreenElementChange } from "../../admino-screen.interfaces";
   styleUrls: ["./progressbar.component.scss"],
 })
 export class ProgressBarComponent extends AdminoScreenElement implements OnInit {
-  idPrefix;
+  @ViewChild("innerRef", { static: true }) innerRef: ElementRef;
+  @ViewChild("wrapperRef", { static: true }) wrapperRef: ElementRef;
 
-  defaultSetup = {
+  setup = {
     percent: 0,
-    width: 600,
-    height: 50,
+    showValue: true,
+    animation: true,
+    preloaderColor: "#040",
+    wrapperColor: "#444",
+    textColor: "#FFF",
+    textHighlight: "#AA0",
+    prefix: " Running ",
+    postfix: "%",
+    staticLabel: "",
   };
 
-  frequency = 20;
-  setup: any = {};
-  timerInterval;
-  divFull;
-  divCompleted;
+  private = {
+    displayValue: undefined,
+    appliedColor: undefined,
+    animationFrame: undefined,
+    restoreTextColorTimeout: undefined,
+  };
 
   ngOnInit() {
-    this.idPrefix = "admino_" + this.element.id + "_" + uuidv4() + "_";
-    this.cd.detectChanges();
-    // this.onResize();
-    // if (this.element.setup) {
-    //   Object.assign(this.setup, this.element.setup);
-    // }
-    this.setupProgressBar();
-  }
-
-  setupProgressBar() {
-    this.setupParameter("height");
-    this.setupParameter("width");
-    this.setupParameter("percent");
-    this.setup.current = this.setup.percent;
-    this.divFull = document.getElementById(this.idPrefix + "progressbardiv");
-    this.divFull.style.height = this.setup.height + "px";
-    this.divFull.style.lineHeight = this.setup.height + "px";
-    this.divFull.style.width = this.setup.width + "px";
-    this.divFull.style.position = "relative";
-    this.divFull.style.backgroundColor = "#777";
-    this.divFull.style.color = "#FFF";
-    this.divFull.innerHTML = "<div id='" + this.idPrefix + "inner'></div>";
-    this.divCompleted = document.getElementById(this.idPrefix + "inner");
-    this.divCompleted.style.height = this.setup.height + "px";
-    this.divCompleted.style.width = "0px";
-    this.divCompleted.style.backgroundColor = "#060";
-    this.divCompleted.style.textAlign = "center";
-    this.divCompleted.innerHTML = "&nbspRunning&nbsp";
-    this.updateDiv();
-  }
-
-  setupParameter(param) {
-    if (this.element.setup != undefined) {
-      if (this.element.setup[param] != undefined) {
-        this.setup[param] = this.element.setup[param];
-        this.element.setup[param] = undefined;
-      }
-    }
-    if (this.setup[param] === undefined) {
-      this.setup[param] = this.defaultSetup[param];
-    }
+    this.setup = deepMerge(this.setup, this.element.setup);
+    this.private.appliedColor = this.setup.textColor;
+    this.updateLabel();
   }
 
   onChange(changes: { [id: string]: ScreenElementChange }) {
-    // if (changes.setup) {
-    //   Object.assign(this.setup, this.element.setup);
-    // }
-    this.setupParameter("percent");
-    this.updateDiv();
+    Object.assign(this.setup, this.element.setup);
+    this.highlightText();
+    this.updateLabel();
   }
 
   onDestroy() {
-    clearInterval(this.timerInterval);
+    cancelAnimationFrame(this.private.animationFrame);
+    clearTimeout(this.private.animationFrame);
+    clearTimeout(this.private.restoreTextColorTimeout);
   }
 
   onResize() {}
 
-  updateDiv() {
-    clearInterval(this.timerInterval);
-    var diff = this.setup.percent - this.setup.current;
-    var step = (((Math.abs(diff) + 19) / 20) | 0) * Math.sign(diff);
-    this.setup.current += step;
-    var div2 = document.getElementById(this.idPrefix + "inner");
-    div2.style.width = (this.setup.width * this.setup.current) / 100 + "px";
-    div2.innerHTML = "&nbspRunning&nbsp" + this.setup.current + "%";
-    if (this.setup.percent == this.setup.current) return;
-    this.timerInterval = setInterval(() => {
-      this.updateDiv();
-    }, this.frequency);
+  updateLabel() {
+    this.private.animationFrame = window.requestAnimationFrame(() => {
+      if (
+        this.setup.animation &&
+        Math.abs(this.innerRef.nativeElement.clientWidth - (this.setup.percent / 100) * this.wrapperRef.nativeElement.clientWidth) > 2
+      ) {
+        this.private.displayValue = Math.floor((this.innerRef.nativeElement.clientWidth / this.wrapperRef.nativeElement.clientWidth) * 100);
+        this.updateLabel();
+      } else {
+        this.private.displayValue = this.setup.percent;
+      }
+      this.directive.cd.markForCheck();
+    });
+  }
+
+  highlightText() {
+    if (this.setup.animation) {
+      this.private.appliedColor = this.setup.textHighlight;
+      this.private.restoreTextColorTimeout = setTimeout(() => {
+        this.private.appliedColor = this.setup.textColor;
+        this.directive.cd.markForCheck();
+      }, 500);
+    }
   }
 }

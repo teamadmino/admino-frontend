@@ -164,6 +164,7 @@ export class AdminoApiService {
       key,
       activeModifierKeys,
       tabId: this.tabId,
+      menuState: this.site.isSideNavOpen.value,
     });
     // .pipe(delay(3000), map((val) => {
     //   // try {
@@ -183,6 +184,7 @@ export class AdminoApiService {
     return this.http.post(this.BASE_URL + this.PING, {
       screenName,
       tabId: this.tabId,
+      menuState: this.site.isSideNavOpen.value,
     });
   }
 

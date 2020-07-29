@@ -34,6 +34,9 @@ export class StopWatchComponent extends AdminoScreenElement implements OnInit {
     //   Object.assign(this.setup, this.element.setup);
     // }
     this.setupStopWatch();
+
+    if (this.idPrefix !== this.divHeight) {
+    }
   }
 
   setupStopWatch() {
@@ -46,7 +49,7 @@ export class StopWatchComponent extends AdminoScreenElement implements OnInit {
     this.div.style.width = this.divWidth;
     this.div.style.position = "relative";
     this.div.style.overflow = "hidden";
-    this.div.style.fontFamily = "Monaco";
+    // this.div.style.fontFamily = "Monaco";
     this.div.style.fontSize = this.divFontSize;
     this.updateSetup();
   }
@@ -68,12 +71,16 @@ export class StopWatchComponent extends AdminoScreenElement implements OnInit {
     if (this.setup[param] === undefined) {
       this.setup[param] = this.defaultSetup[param];
     }
+    // delete this.setup[param];
   }
 
   onChange(changes: { [id: string]: ScreenElementChange }) {
     // if (changes.setup) {
     //   Object.assign(this.setup, this.element.setup);
     // }
+
+    this.control.setValue(this.setup);
+
     this.updateSetup();
   }
 
