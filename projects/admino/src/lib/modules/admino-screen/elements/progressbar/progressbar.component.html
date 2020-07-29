@@ -8,13 +8,8 @@
   #focusRef
 >
   <div class="progressbar" [ngStyle]="{ 'background-color': setup.wrapperColor }" #wrapperRef>
-    <div
-      class="inner"
-      [ngClass]="{ animated: setup.animation }"
-      [ngStyle]="{ width: setup.percent + '%', 'background-color': setup.preloaderColor, color: this.private.appliedColor }"
-      #innerRef
-    >
-      {{ this.setup.showValue ? this.setup.prefix + this.private.displayValue + this.setup.postfix : this.setup.staticLabel + "\u00A0" }}
+    <div class="inner" [ngStyle]="getStyle()" #innerRef>
+      <div class="label">{{ getText() }}</div>
     </div>
   </div>
 </div>
