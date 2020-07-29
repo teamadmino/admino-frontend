@@ -20,6 +20,7 @@ import { HttpResponse, HttpClient } from "@angular/common/http";
 import { ClipboardService } from "./clipboard.service";
 declare var html2canvas: any;
 import { v4 as uuidv4 } from "uuid";
+import { AdminoSiteService } from "./site.service";
 
 @Injectable({
   providedIn: "root",
@@ -32,6 +33,7 @@ export class AdminoActionService {
 
   showToolbar: BehaviorSubject<boolean> = new BehaviorSubject(true);
   showMenu: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  // menuState: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   setFocus: BehaviorSubject<string> = new BehaviorSubject("");
   currentQueryParams = null;
@@ -50,7 +52,8 @@ export class AdminoActionService {
     private cs: ConfigService,
     private ts: AdminoThemeService,
     private key: KeyService,
-    private clipboard: ClipboardService
+    private clipboard: ClipboardService,
+    private ss: AdminoSiteService
   ) {}
 
   init() {
@@ -251,6 +254,10 @@ export class AdminoActionService {
     }
     if (response.showMenu !== undefined) {
       this.showMenu.next(response.showMenu);
+    }
+    if (response.setMenuState !== undefined) {
+      this.ss.isSideNavOpen.next(response.setMenuState);
+      // this.menuState.next(response.setMenuState);
     }
     if (response.setTheme !== undefined) {
       const color = response.setTheme.themeColor ? response.setTheme.themeColor : this.ts.currentTheme;
