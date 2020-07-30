@@ -1,3 +1,4 @@
+import { isObject } from 'lodash';
 import { AdminoUniversalEditorComponent } from "./../admino-universal-editor/admino-universal-editor/admino-universal-editor.component";
 import { AdminoActionService } from "./../../services/action.service";
 import { ConfigService } from "./../../services/config.service";
@@ -159,7 +160,10 @@ export class MainComponent implements OnInit, OnDestroy {
       type: "backend",
       backendAction: menuEvent.menuItem.action,
     };
-    // if ()
+
+    if (isObject(menuEvent.menuItem.action)) {
+      action = menuEvent.menuItem.action;
+    }
 
     this.as
       .handleAction({
