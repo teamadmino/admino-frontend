@@ -19,10 +19,11 @@ export class ProgressBarComponent extends AdminoScreenElement implements OnInit 
     preloaderColor: "#040",
     wrapperColor: "#444",
     textColor: "#FFF",
-    textHighlight: "#AA0",
+    textHighlight: "#DD0",
     prefix: " Running ",
     postfix: "%",
     staticLabel: "",
+    transitionDuration: 500,
   };
 
   private = {
@@ -89,10 +90,10 @@ export class ProgressBarComponent extends AdminoScreenElement implements OnInit 
           style["backgroundImage"] = "linear-gradient(135deg, transparent, #fff1 25%, transparent 50%, #fff1 75%, transparent)";
           style["backgroundSize"] = "30px 30px";
         }
-        style["transition"] = "width 800ms ease-in-out, color 500ms ease-in-out";
+        style["transition"] = "width " + this.setup.transitionDuration + "ms ease-in-out, color ease-in-out";
         break;
       case "solid":
-        style["transition"] = "width 800ms ease-in-out, color 500ms ease-in-out";
+        style["transition"] = "width " + this.setup.transitionDuration + "ms ease-in-out, color ease-in-out";
         break;
     }
     return style;
