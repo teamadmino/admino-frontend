@@ -36,8 +36,7 @@
   </div>
 </div>
 
-<admino-preloader *ngIf="isLoading"></admino-preloader>
-
 <div class="content" [ngClass]="{ inline: inline, firstrow: this.row === 1, loading: isLoading }" [ngStyle]="this.style">
+  <admino-preloader *ngIf="isLoading"></admino-preloader>
   <ng-content></ng-content>
 </div>

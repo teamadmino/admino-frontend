@@ -82,8 +82,9 @@ export interface AdminoAction {
   screenshotBackgroundColor?: string;
   openScreenshot?: boolean;
   // frontend
-  frontendAction?: "logout" | "print";
+  frontendAction?: "logout" | "print" | "screen";
   logoutScreen?: string;
+  updateScreen?: any;
   // url config
   url?: string;
   target?: "_blank" | "_self";

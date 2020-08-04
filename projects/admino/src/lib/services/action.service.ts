@@ -321,6 +321,11 @@ export class AdminoActionService {
       this.activeScreenId = "";
       this.pingFrequency.next(0);
       return this.backendRequest(logoutScreen);
+    } else if (action.frontendAction === "screen") {
+      if (action.updateScreen !== undefined) {
+        this.updateScreen.next(action.updateScreen);
+      }
+      return wrapIntoObservable(null);
     } else {
       return wrapIntoObservable(null);
     }

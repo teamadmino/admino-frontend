@@ -22,6 +22,7 @@ export class AdminoApiService {
   PING = "/ping";
   // tabId = 1;
   tabId = uuidv4();
+  messageId = 0;
   constructor(private http: HttpClient, private user: AdminoUserService, private site: AdminoSiteService) {}
 
   init(baseUrl: string) {
@@ -165,6 +166,7 @@ export class AdminoApiService {
       activeModifierKeys,
       tabId: this.tabId,
       menuState: this.site.isSideNavOpen.value,
+      messageId: this.messageId++,
     });
     // .pipe(delay(3000), map((val) => {
     //   // try {
