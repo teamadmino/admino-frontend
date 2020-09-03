@@ -10,10 +10,10 @@
     #inputRef
     #focusRef
     [readonly]="element.readonly"
-    name="inputnameplaceholder3"
     [type]="element.inputType ? element.inputType : 'text'"
     [maxlength]="element.maxLength"
-    autocomplete="new-password"
+    [name]="autocompleteOff"
+    [autocomplete]="autocompleteOff"
     (keypress)="filterInput($event)"
   />
   <!-- [errorStateMatcher]="matcher" -->

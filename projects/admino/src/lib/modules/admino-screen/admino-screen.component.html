@@ -1,5 +1,6 @@
 <admino-preloader *ngIf="blockingActionRunning === 2"></admino-preloader>
 <form
+  autocomplete="off"
   [formGroup]="group"
   class="admino-screen"
   [ngClass]="{
@@ -22,7 +23,7 @@
         [allowEdit]="_screenElement.allowEdit"
         [editMode]="this.editMode"
         adminoTrapFocus
-        [adminoTrapFocus]="this.rootScreenComponent===this"
+        [adminoTrapFocus]="this.rootScreenComponent === this"
         [colnum]="_screenElement.colNum !== undefined ? _screenElement.colNum : 12"
         [inline]="screenElement.inline"
         [gridTemplateRows]="screenElement.gridTemplateRows"

@@ -15,7 +15,7 @@
 <mat-form-field [formGroup]="group" [appearance]="element.appearance" *ngIf="element.autoselect">
   <mat-label>{{ element.label }}</mat-label>
 
-  <input matInput [formControlName]="element.id" #inputRef [matAutocomplete]="autoRef" #triggerUtca="matAutocompleteTrigger" />
+  <input matInput [formControlName]="element.id" #inputRef #focusRef [matAutocomplete]="autoRef" #triggerUtca="matAutocompleteTrigger" />
   <mat-autocomplete class="scanner-autocomplete" autoActiveFirstOption #autoRef="matAutocomplete" [displayWith]="displayFn">
     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
       {{ option.label }}

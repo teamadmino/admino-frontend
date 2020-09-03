@@ -20,7 +20,7 @@ import { ErrorStateMatcher } from "@angular/material/core";
 export class InputComponent extends AdminoScreenElement implements OnInit {
   element: ScreenElementInput;
   // matcher = new MyErrorStateMatcher();
-
+  autocompleteOff = Math.random();
   ngOnInit() {}
   onChange(changes: any) {}
   filterInput(e) {

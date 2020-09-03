@@ -123,7 +123,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   @Input() keyAreaId: string;
   @Input() index: number;
-  componentRef: ComponentRef<any>;
+  componentRef: ComponentRef<AdminoScreenElement>;
   elementComponent: AdminoScreenElement;
 
   activeElementConfig: any = {};
@@ -249,7 +249,7 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
 
   createComponent() {
     const factory = this.resolver.resolveComponentFactory(componentMapper[this.element.type]);
-    this.componentRef = this.container.createComponent(factory);
+    this.componentRef = this.container.createComponent(factory) as ComponentRef<AdminoScreenElement>;
     this.elementComponent = this.componentRef.instance as AdminoScreenElement;
     this.elementComponent.element = this.element;
     this.elementComponent.screenComponent = this.screenComponent;
@@ -290,6 +290,8 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
     // TODO group elements filterValue is not correct
     // console.log(this.activeElementConfig.changeAction)
     // needs to solve group
+    // console.log();
+
     this.valueChangeTimeout = setTimeout(() => {
       this.valueChangeEvent.next(value);
       // this.element.value = cloneDeep(value);
@@ -303,6 +305,10 @@ export class AdminoScreenElementDirective implements OnInit, OnDestroy {
           this.elementComponent.handleAction(this.activeElementConfig.changeAction);
         }
         // console.log(changes);
+      }
+      const actions = this.componentRef.instance.getAction("valueChange");
+      if (actions) {
+        console.log(actions);
       }
     });
   }

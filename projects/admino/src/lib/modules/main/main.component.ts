@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import { isObject } from "lodash";
 import { AdminoUniversalEditorComponent } from "./../admino-universal-editor/admino-universal-editor/admino-universal-editor.component";
 import { AdminoActionService } from "./../../services/action.service";
 import { ConfigService } from "./../../services/config.service";
